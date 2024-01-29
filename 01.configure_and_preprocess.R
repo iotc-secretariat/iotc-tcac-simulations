@@ -1,0 +1,375 @@
+library(openxlsx)
+library(data.table)
+library(stringr)
+
+options(scipen = 9999)
+
+read_configuration = function(file = "./CPC_core_data.xlsx") {
+  print("Reading configuration...")
+  
+  CPC_CONFIG   = as.data.table(read.xlsx(xlsxFile = file, rowNames = FALSE, sheet = "CPC"))[, 1:8] # Removes unnecessary cols
+  
+  CPC_CONFIG$CODE      = as.factor(CPC_CONFIG$CODE)
+  CPC_CONFIG$STATUS    = as.factor(CPC_CONFIG$STATUS)
+  CPC_CONFIG$COASTAL   = as.logical(CPC_CONFIG$COASTAL)
+  CPC_CONFIG$AUNJ_AREA = as.logical(CPC_CONFIG$AUNJ_AREA)
+  CPC_CONFIG$SIDS      = as.logical(CPC_CONFIG$SIDS)
+  
+  # See para. 6.6(c) of IOTC-2024-TCAC13-REF02 "Draft allocation regime v7", under Coastal State Allocation
+  CPC_CONFIG[, EEZ_SIZE_WEIGHTING := ifelse(EEZ_IOTC_RELATIVE_SIZE == 0, 0, floor(EEZ_IOTC_RELATIVE_SIZE * 100) + 1)]
+  
+  # CPC_CONFIG[EEZ_SIZE_WEIGHTING >  0, EEZ_SIZE_WEIGHTING_NORMALIZED := EEZ_SIZE_WEIGHTING / sum(EEZ_SIZE_WEIGHTING)]
+  # CPC_CONFIG[EEZ_SIZE_WEIGHTING == 0, EEZ_SIZE_WEIGHTING_NORMALIZED := 0]
+
+  CS_SE_CONFIG = as.data.table(read.xlsx(xlsxFile = file, rowNames = FALSE, sheet = "COASTAL_STATE_SOCIO_ECONOMIC", na.strings = ""))[1:25] # Removes unnecessary rows 
+  CS_SE_CONFIG = CS_SE_CONFIG[order(CODE)]
+  
+  CS_SE_CONFIG$CODE                            = as.factor (CS_SE_CONFIG$CODE)
+  CS_SE_CONFIG$DEVELOPMENT_STATUS              = as.factor (CS_SE_CONFIG$DEVELOPMENT_STATUS)
+  CS_SE_CONFIG$PER_CAPITA_FISH_CONSUMPTION_KG  = as.numeric(CS_SE_CONFIG$PER_CAPITA_FISH_CONSUMPTION_KG)
+  CS_SE_CONFIG$CUV_INDEX                       = as.numeric(CS_SE_CONFIG$CUV_INDEX)
+  CS_SE_CONFIG$PROPORTION_WORKERS_EMPLOYED_SSF = as.numeric(CS_SE_CONFIG$PROPORTION_WORKERS_EMPLOYED_SSF)
+  CS_SE_CONFIG$FISHERIES_CONTRIBUTION_GDP      = as.numeric(CS_SE_CONFIG$FISHERIES_CONTRIBUTION_GDP)
+  CS_SE_CONFIG$PROPORTION_EXPORT_VALUE_FISHERY = as.numeric(CS_SE_CONFIG$PROPORTION_EXPORT_VALUE_FISHERY)
+  CS_SE_CONFIG$HDI_STATUS                      = as.numeric(CS_SE_CONFIG$HDI_STATUS)
+  CS_SE_CONFIG$GNI_STATUS                      = as.factor (CS_SE_CONFIG$GNI_STATUS)
+
+  # To be removed when these indicators will be available (required by para. 6.6(1)(b) - Option 1
+  CS_SE_CONFIG$PER_CAPITA_FISH_CONSUMPTION_KG  = NULL
+  CS_SE_CONFIG$CUV_INDEX                       = NULL
+  CS_SE_CONFIG$PROPORTION_WORKERS_EMPLOYED_SSF = NULL
+  CS_SE_CONFIG$FISHERIES_CONTRIBUTION_GDP      = NULL
+  CS_SE_CONFIG$PROPORTION_EXPORT_VALUE_FISHERY = NULL
+    
+  # See para. 6.6(b) Option 2.i
+  CS_SE_CONFIG[CODE == "SOM", HDI_STATUS := min(CS_SE_CONFIG$HDI_STATUS, na.rm = TRUE)] # There's no HDI available for SOM... We assume it's the same as the lowest scored CPC
+  
+  CS_SE_CONFIG[HDI_STATUS  < 0.55,                     `:=`(HDI_TIER = "LO", HDI_TIER_WEIGHT =  1.00)]
+  CS_SE_CONFIG[HDI_STATUS >= 0.55 & HDI_STATUS < 0.70, `:=`(HDI_TIER = "ME", HDI_TIER_WEIGHT =  0.75)]
+  CS_SE_CONFIG[HDI_STATUS >= 0.70 & HDI_STATUS < 0.79, `:=`(HDI_TIER = "HI", HDI_TIER_WEIGHT =  0.50)]
+  CS_SE_CONFIG[HDI_STATUS >= 0.80,                     `:=`(HDI_TIER = "VH", HDI_TIER_WEIGHT =    NA)] # Should be NA as no developing or least-developed CS exists with this HDI tier
+  
+  #CS_SE_CONFIG[!is.na(HDI_TIER_WEIGHT), HDI_TIER_WEIGHT_NORMALIZED := HDI_TIER_WEIGHT / sum(HDI_TIER_WEIGHT, na.rm = TRUE)]
+  
+  # See para. 6.6(b) Option 2.ii
+  CS_SE_CONFIG[GNI_STATUS == "LO", GNI_STATUS_WEIGHT := 1.00]
+  CS_SE_CONFIG[GNI_STATUS == "LM", GNI_STATUS_WEIGHT := 0.75]
+  CS_SE_CONFIG[GNI_STATUS == "UM", GNI_STATUS_WEIGHT := 0.50]
+  CS_SE_CONFIG[GNI_STATUS == "HI", GNI_STATUS_WEIGHT := 0.25]
+  
+  #CS_SE_CONFIG[!is.na(GNI_STATUS_WEIGHT), GNI_STATUS_WEIGHT_NORMALIZED := GNI_STATUS_WEIGHT / sum(GNI_STATUS_WEIGHT, na.rm = TRUE)]
+   
+  CS_SE_CONFIG[, COASTAL     := CODE %in% CPC_CONFIG[COASTAL   == TRUE]$CODE]
+  CS_SE_CONFIG[, AUNJ_AREA   := CODE %in% CPC_CONFIG[AUNJ_AREA == TRUE]$CODE]
+  CS_SE_CONFIG[, SIDS_STATUS := CODE %in% CPC_CONFIG[SIDS      == TRUE]$CODE]
+  
+  # See para. 6.6(b) Option 2.iii
+  CS_SE_CONFIG[SIDS_STATUS == TRUE,  SIDS_STATUS_WEIGHT := 1.00]
+  CS_SE_CONFIG[SIDS_STATUS == FALSE, SIDS_STATUS_WEIGHT := 0.00]
+  
+  #CS_SE_CONFIG[!is.na(SIDS_STATUS_WEIGHT), SIDS_STATUS_WEIGHT_NORMALIZED := SIDS_STATUS_WEIGHT / sum(SIDS_STATUS_WEIGHT, na.rm = TRUE)]
+  
+  CS_SE_CONFIG = CS_SE_CONFIG[, .(CODE, 
+                                  COASTAL, AUNJ_AREA, 
+                                  DEVELOPMENT_STATUS, 
+                                  HDI_STATUS, HDI_TIER, HDI_TIER_WEIGHT,   # HDI_TIER_WEIGHT_NORMALIZED,
+                                  GNI_STATUS,           GNI_STATUS_WEIGHT, #  GNI_STATUS_WEIGHT_NORMALIZED,
+                                  SIDS_STATUS,          SIDS_STATUS_WEIGHT #, SIDS_STATUS_WEIGHT_NORMALIZED
+                                 )]
+  
+  return(
+    list(
+      CPC_CONFIG   = CPC_CONFIG,    # Basic CPC data, including its being a coastal state or having an NJA, as well as the size of the EEZ
+      CS_SE_CONFIG = CS_SE_CONFIG   # Coastal states data, including their socio-economic indicators
+    )
+  )
+}
+
+read_raw_catch_data = function(file = "./IOTC-2023-TCAC12-DATA01 - Historical catch estimates.xlsx") {
+  return(
+    as.data.table(
+      read.xlsx(
+        xlsxFile = file, 
+        rowNames = FALSE,
+        sheet = "Data"
+      )
+    )
+  )
+}
+
+read_catch_data = function(file = "./HISTORICAL_CATCH_ESTIMATES.csv", CPC_data = read_configuration()$CPC_CONFIG) { 
+  # These are the ones used for the TCAC12 interactive app, and represent the output of
+  # the initialization process for https://bitbucket.org/iotc-ws/iotc-tcac/src/master/
+  
+  POSTPROCESSED_CATCH_DATA = 
+    as.data.table(
+      read.csv2(
+        file = file, 
+        sep = ",",
+        header = TRUE
+      )
+    )
+
+  # For the time being we consider the Chagos archipelago to still be under sovereignity of GBR
+  POSTPROCESSED_CATCH_DATA[ASSIGNED_AREA == "NJA_CHAGOS", ASSIGNED_AREA := "NJA_GBR"]
+  
+  # We need to decide if we want to keep only catches from current CPCs for the catch-based allocation part
+  # If so:
+  
+  if(TRUE) {
+    POSTPROCESSED_CATCH_DATA = POSTPROCESSED_CATCH_DATA[FLEET_CODE %in% CPC_data[STATUS == "CPC"]$CODE]
+  }
+  
+  # We need to decide if we want to consider only catches in the high seas or within CPC EEZs
+  # If so:
+  
+  if(TRUE) {
+    POSTPROCESSED_CATCH_DATA = POSTPROCESSED_CATCH_DATA[ASSIGNED_AREA == "HIGH_SEAS" | ASSIGNED_AREA %in% paste0("NJA_", CPC_data[AUNJ_AREA == TRUE]$CODE)]
+  }
+  
+  POSTPROCESSED_CATCH_DATA$FLAG_CODE        = factor(POSTPROCESSED_CATCH_DATA$FLAG_CODE)
+  POSTPROCESSED_CATCH_DATA$FLEET_CODE       = factor(POSTPROCESSED_CATCH_DATA$FLEET_CODE)
+  POSTPROCESSED_CATCH_DATA$FISHERY_TYPE     = factor(POSTPROCESSED_CATCH_DATA$FISHERY_TYPE)
+  POSTPROCESSED_CATCH_DATA$FISHERY_CODE     = factor(POSTPROCESSED_CATCH_DATA$FISHERY_CODE)
+  POSTPROCESSED_CATCH_DATA$SCHOOL_TYPE_CODE = factor(POSTPROCESSED_CATCH_DATA$SCHOOL_TYPE_CODE)
+  POSTPROCESSED_CATCH_DATA$ASSIGNED_AREA    = factor(POSTPROCESSED_CATCH_DATA$ASSIGNED_AREA)
+  POSTPROCESSED_CATCH_DATA$SPECIES_CODE     = factor(POSTPROCESSED_CATCH_DATA$SPECIES_CODE)
+  POSTPROCESSED_CATCH_DATA$CATCH_MT         = as.numeric(POSTPROCESSED_CATCH_DATA$CATCH_MT)
+  
+  return(POSTPROCESSED_CATCH_DATA)
+}
+
+subset_and_postprocess_catch_data = function(catch_data,
+                                             species_code,
+                                             years) {
+  
+  catch_data = catch_data[SPECIES_CODE == species_code & YEAR %in% years, .(CATCH_MT = sum(CATCH_MT, na.rm = TRUE)),
+                                                                            keyby = .(FLEET_CODE, YEAR, ASSIGNED_AREA)]
+
+  catch_data_EEZ       = catch_data[ASSIGNED_AREA == paste0("NJA_", FLEET_CODE),                                .(EEZ_CATCH_MT     = sum(CATCH_MT, na.rm = TRUE)), keyby = .(CPC_CODE = FLEET_CODE, YEAR)]
+  catch_data_HS        = catch_data[ASSIGNED_AREA == "HIGH_SEAS",                                               .(HS_CATCH_MT      = sum(CATCH_MT, na.rm = TRUE)), keyby = .(CPC_CODE = FLEET_CODE, YEAR)]
+  catch_data_other_EEZ = catch_data[ASSIGNED_AREA != paste0("NJA_", FLEET_CODE) & ASSIGNED_AREA != "HIGH_SEAS", .(ABNJ_CATCH_MT    = sum(CATCH_MT, na.rm = TRUE)), keyby = .(CPC_CODE = FLEET_CODE, YEAR)]
+  catch_data_foreign   = catch_data[ASSIGNED_AREA != paste0("NJA_", FLEET_CODE) & ASSIGNED_AREA != "HIGH_SEAS", .(FOREIGN_CATCH_MT = sum(CATCH_MT, na.rm = TRUE)), keyby = .(CPC_CODE = str_sub(ASSIGNED_AREA, 5), YEAR)]
+
+  catch_data_all = 
+    merge.data.table(
+      catch_data_EEZ, # CPC catches in their own EEZ
+      catch_data_HS,  # CPC catches on the high seas
+      by = c("CPC_CODE", "YEAR"),
+      all.x = TRUE, all.y = TRUE
+    )
+  
+  catch_data_all = 
+    merge.data.table(
+      catch_data_all,
+      catch_data_other_EEZ, # CPC catches into foreign EEZs
+      by = c("CPC_CODE", "YEAR"),
+      all.x = TRUE, all.y = TRUE
+    )
+  
+  catch_data_all = 
+    merge.data.table(
+      catch_data_all,
+      catch_data_foreign,   # Foreign catches inthe CPC EEZ
+      by = c("CPC_CODE", "YEAR"),
+      all.x = TRUE, all.y = TRUE
+    )
+  
+  catch_data_all[is.na(EEZ_CATCH_MT),     EEZ_CATCH_MT     := 0]
+  catch_data_all[is.na(HS_CATCH_MT),      HS_CATCH_MT      := 0]
+  catch_data_all[is.na(ABNJ_CATCH_MT),    ABNJ_CATCH_MT    := 0]
+  catch_data_all[is.na(FOREIGN_CATCH_MT), FOREIGN_CATCH_MT := 0]
+
+  return(catch_data_all)
+}
+
+weight_catch_data = function(catch_data,
+                             coastal_weight) {
+   return(
+     catch_data[, .(CATCH_MT = sum(EEZ_CATCH_MT + 
+                                   HS_CATCH_MT + 
+                                   ABNJ_CATCH_MT * ( 1 - coastal_weight) + 
+                                   FOREIGN_CATCH_MT * coastal_weight)), 
+                    keyby = .(CPC_CODE, YEAR)][CATCH_MT > 0]
+  )
+}
+
+period_average_catch_data = function(weighted_catch_data) {
+  return(
+    weighted_catch_data[, .(CATCH_MT = sum(CATCH_MT) / .N), keyby = .(CPC_CODE)]
+  )
+}
+
+best_years_average_catch_data = function(weighted_catch_data,
+                                         max_num_years) {
+  weighted_catch_best_years =
+    # See: https://stackoverflow.com/questions/14800161/select-the-top-n-values-by-group
+    weighted_catch_data[,.SD[order(CATCH_MT, decreasing = TRUE),][1:max_num_years], by = "CPC_CODE"][, .(CPC_CODE, YEAR, CATCH_MT)][order(CPC_CODE, YEAR)][!is.na(CATCH_MT)]
+
+    #print(weighted_catch_data)
+  
+  return(
+    weighted_catch_best_years[, .(CATCH_MT = sum(CATCH_MT) / .N), keyby = .(CPC_CODE)]
+  )
+}
+
+################
+
+baseline_allocation = function(CPC_data = read_configuration()$CPC_CONFIG) {
+  component_allocation_table = CPC_data[STATUS == "CPC", .(CPC_CODE = CODE)]
+  
+  # Baseline allocation - para. 6.5
+  component_allocation_table[, BASELINE_ALLOCATION := 1.00 / nrow(component_allocation_table)] 
+  
+  return(
+    component_allocation_table
+  )
+}
+
+coastal_state_allocation = function(CPC_data,
+                                    CS_SE_data,
+                                    equal_portion_weight,
+                                    socio_economic_weight,
+                                      socio_economic_weight_HDI,
+                                      socio_economic_weight_GNI,
+                                      socio_economic_weight_SIDS,
+                                    EEZ_weight
+                                   ) {
+  
+  all_weights = equal_portion_weight + socio_economic_weight + EEZ_weight
+  
+  if(all_weights != 1)
+    stop(paste0("The weights provided for the allocation sub-components should sum up to 100% (now: ", all_weights * 100, "%)"))
+  
+  all_se_weights = socio_economic_weight_HDI + socio_economic_weight_GNI + socio_economic_weight_SIDS
+  
+  if(all_se_weights != 1)
+    stop(paste0("The weights provided for the socio-economic allocation sub-components should sum up to 100% (now: ", all_se_weights * 100, "%)"))
+  
+  print(paste0("Coastal state allocation params: EQ_wgt = ", equal_portion_weight, ", ", 
+                                                "SE_wgt = ", socio_economic_weight, ", ",
+                                                "EZ_wgt = ", EEZ_weight))
+  
+  print(paste0("Coastal state socio-economic allocation params: HDI_wgt = ", socio_economic_weight_HDI, ", ", 
+                                                               "GNI_wgt = ", socio_economic_weight_GNI, ", ",
+                                                               "SIDS_wgt = ", socio_economic_weight_SIDS))
+  
+  component_allocation_table = CS_SE_data[AUNJ_AREA == TRUE]
+  
+  component_allocation_table = 
+    merge(
+      component_allocation_table, CPC_data[, .(CODE, EEZ_SIZE_WEIGHTING)],
+      by = "CODE", all.x = TRUE
+    )
+  
+  # Coastal state allocation - para. 6.6(1)(a)
+  component_allocation_table[, EQUAL_ALLOCATION := 1.00 / nrow(component_allocation_table)]
+  
+  # Coastal state allocation - para. 6.6(1)(b) - only developing / least developed countries should be considered
+  
+  component_allocation_table[DEVELOPMENT_STATUS != "DE", HDI_ALLOCATION  := HDI_TIER_WEIGHT    / sum(HDI_TIER_WEIGHT,    na.rm = TRUE)]
+  component_allocation_table[DEVELOPMENT_STATUS != "DE", GNI_ALLOCATION  := GNI_STATUS_WEIGHT  / sum(GNI_STATUS_WEIGHT , na.rm = TRUE)]
+  component_allocation_table[DEVELOPMENT_STATUS != "DE", SIDS_ALLOCATION := SIDS_STATUS_WEIGHT / sum(SIDS_STATUS_WEIGHT, na.rm = TRUE)]
+  
+  component_allocation_table[is.na(HDI_ALLOCATION),  HDI_ALLOCATION  := 0]
+  component_allocation_table[is.na(GNI_ALLOCATION),  GNI_ALLOCATION  := 0]
+  component_allocation_table[is.na(SIDS_ALLOCATION), SIDS_ALLOCATION := 0]
+  
+  # Coastal state allocation - para. 6.6(1)(c)
+  component_allocation_table[, EEZ_ALLOCATION := EEZ_SIZE_WEIGHTING / sum(EEZ_SIZE_WEIGHTING)]
+
+  component_allocation_table = 
+    component_allocation_table[, COASTAL_STATE_ALLOCATION := ((equal_portion_weight * EQUAL_ALLOCATION) + 
+                                                              (socio_economic_weight * (socio_economic_weight_HDI  * HDI_ALLOCATION) ) + 
+                                                              (socio_economic_weight * (socio_economic_weight_GNI  * GNI_ALLOCATION) ) + 
+                                                              (socio_economic_weight * (socio_economic_weight_SIDS * SIDS_ALLOCATION)) + 
+                                                              (EEZ_weight * EEZ_ALLOCATION))][, .(CPC_CODE = CODE, COASTAL_STATE_ALLOCATION)]
+}
+
+catch_based_allocation = function(CPC_data,   # Unused
+                                  CS_SE_data, # Unused
+                                  catch_data,
+                                  average_catch_function,
+                                  coastal_weights) {
+
+  print(paste0("Catch-based allocation: EEZ attribution weights [", paste0(coastal_weights, collapse = ", "), "]"))
+  
+  if(length(which(coastal_weights > 100)) > 0)
+    stop("The EEZ attribution weights should not exceed 100% each")
+  
+  if(length(which(coastal_weights < 0)) > 0)
+    stop("The EEZ attribution weights should not be negative")
+  
+  catch_allocation_table = data.table(CPC_CODE = unique(catch_data$CPC_CODE))
+  
+  year = 1
+  
+  for(weight in coastal_weights) {
+    current_data = average_catch_function(weight_catch_data(catch_data, weight))
+    current_data[, CATCH_MT := CATCH_MT / sum(CATCH_MT, na.rm = TRUE)]
+    
+    colnames(current_data)[2] = paste0("CATCH_BASED_ALLOCATION_YEAR_", year)
+    
+    catch_allocation_table = merge(catch_allocation_table, current_data,
+                                   by = "CPC_CODE", all.x = TRUE)
+    
+    year = year + 1
+  }
+  
+  catch_allocation_table[is.na(catch_allocation_table)] = 0
+  
+  return(catch_allocation_table)
+}
+
+allocate_TAC = function(TAC, 
+                        baseline_allocation,      baseline_allocation_weight, 
+                        coastal_state_allocation, coastal_state_allocation_weight,
+                        catch_based_allocation,   catch_based_allocation_weight) {
+  
+  all_weights = baseline_allocation_weight + coastal_state_allocation_weight + catch_based_allocation_weight
+  
+  if(all_weights != 1)
+    stop(paste0("The weights provided for the various allocation components should sum up to 100% (now:", all_weights * 100, " %)"))
+
+  print(paste0("Allocate TAC parameters: [ TAC = ", TAC, 
+                                        ", BA_wgt = ", baseline_allocation_weight, 
+                                        ", CS_wgt = ", coastal_state_allocation_weight,
+                                        ", CB_wgt = ", catch_based_allocation_weight, " ]"))
+  
+  # Need to 'copy' the inputs, otherwise the code below will update the originally provided allocation tables by reference...
+  baseline_allocation      = copy(baseline_allocation)    
+  coastal_state_allocation = copy(coastal_state_allocation)
+  catch_based_allocation   = copy(catch_based_allocation)
+
+  baseline_allocation     [, BASELINE_ALLOCATION            := TAC * BASELINE_ALLOCATION      * baseline_allocation_weight]
+  coastal_state_allocation[, COASTAL_STATE_ALLOCATION       := TAC * COASTAL_STATE_ALLOCATION * coastal_state_allocation_weight]
+  catch_based_allocation  [, 2:ncol(catch_based_allocation) := lapply(.SD, function(x) { x * TAC * catch_based_allocation_weight }), .SDcols = 2:ncol(catch_based_allocation)]
+  
+  # This sucks, and can definitely be implemented better...
+  constant_allocation = merge(baseline_allocation, coastal_state_allocation,  
+                              by = "CPC_CODE", 
+                              all.x = TRUE)
+  
+  # Removes NAs in the coastal state allocation (for non-coastal CPCs)
+  constant_allocation[is.na(COASTAL_STATE_ALLOCATION), COASTAL_STATE_ALLOCATION := 0.0]
+  
+  # Calculates the 'constant' allocation for all CPCs as the sum of the baseline allocation and the coastal state allocation factor (does not change with selected catch periods and coastal catches weights)
+  constant_allocation = constant_allocation[, CONSTANT_ALLOCATION := BASELINE_ALLOCATION + COASTAL_STATE_ALLOCATION][, .(CPC_CODE, CONSTANT_ALLOCATION)]
+  
+  # This also sucks, and can definitely be implemented better...
+  final_allocation_table = merge(baseline_allocation[, .(CPC_CODE)], catch_based_allocation,
+                                 by = "CPC_CODE", 
+                                 all.x = TRUE) # Ensures all CPCs are kept, regardless of whether they had catches in the considered timeframe or not
+  
+  # Adds the 'constant' allocation (see above) to the catch-based allocations for the first 10 years of projections
+  for(CPC in final_allocation_table$CPC_CODE) { # The ifelse(is.na(x), 0, x) part is necessary to address catch-based allocation values for CPCs with no historical catches in the selected period 
+    final_allocation_table[CPC_CODE == CPC, 2:ncol(final_allocation_table) := lapply(.SD, function(x) { ifelse(is.na(x), 0, x) + constant_allocation[CPC_CODE == CPC]$CONSTANT_ALLOCATION }), .SDcols = 2:ncol(final_allocation_table)]
+  }
+  
+  # Renames the output columns
+  colnames(final_allocation_table)[2:ncol(final_allocation_table)] = paste0("QUOTA_YEAR_", seq(1:(ncol(final_allocation_table) - 1)))
+  
+  return(
+    final_allocation_table
+  )
+}
