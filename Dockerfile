@@ -4,9 +4,6 @@ FROM rocker/shiny:4.1.2
 
 ENV _R_SHLIB_STRIP_=true
 
-ARG BB_user
-ARG BB_password
-
 WORKDIR /
 
 # Installs R packages
