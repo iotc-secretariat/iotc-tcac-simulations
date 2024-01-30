@@ -1,0 +1,1 @@
+docker build --build-arg BB_user=%BITBUCKET_USER% --build-arg BB_password=%BITBUCKET_PASSWORD% -t iotc/tcac_simulation:13 -f Dockerfile --progress=plain . 

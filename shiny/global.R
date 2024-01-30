@@ -1,8 +1,8 @@
 source("../01.configure_and_preprocess.R")
 
-CONFIG = read_configuration("../CPC_core_data.xlsx")
+CONFIG = read_configuration("../cfg/CPC_CONFIGURATIONS.xlsx")
 
-ALL_CATCH_DATA = read_catch_data("../HISTORICAL_CATCH_ESTIMATES.csv", CPC_data = CONFIG$CPC_CONFIG)[CATCH_MT > 0]
+ALL_CATCH_DATA = read_catch_data("../cfg/HISTORICAL_CATCH_ESTIMATES.csv", CPC_data = CONFIG$CPC_CONFIG)[CATCH_MT > 0]
 
 AVAILABLE_YEARS = list(MIN = min(ALL_CATCH_DATA$YEAR), 
                        MAX = max(ALL_CATCH_DATA$YEAR))

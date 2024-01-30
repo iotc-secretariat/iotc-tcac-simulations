@@ -5,7 +5,7 @@ library(scales)
 
 options(scipen = 9999)
 
-read_configuration = function(file = "./CPC_core_data.xlsx") {
+read_configuration = function(file = "./cfg/CPC_CONFIGURATIONS.xlsx") {
   print("Reading configuration...")
   
   CPC_CONFIG   = as.data.table(read.xlsx(xlsxFile = file, rowNames = FALSE, sheet = "CPC"))[, 1:8] # Removes unnecessary cols
@@ -105,7 +105,7 @@ read_configuration = function(file = "./CPC_core_data.xlsx") {
   )
 }
 
-read_raw_catch_data = function(file = "./IOTC-2023-TCAC12-DATA01 - Historical catch estimates.xlsx") {
+read_raw_catch_data = function(file = "./cfg/IOTC-2023-TCAC12-DATA01 - Historical catch estimates.xlsx") {
   return(
     as.data.table(
       read.xlsx(
@@ -117,7 +117,7 @@ read_raw_catch_data = function(file = "./IOTC-2023-TCAC12-DATA01 - Historical ca
   )
 }
 
-read_catch_data = function(file = "./HISTORICAL_CATCH_ESTIMATES.csv", CPC_data = read_configuration()$CPC_CONFIG) { 
+read_catch_data = function(file = "./cfg/HISTORICAL_CATCH_ESTIMATES.csv", CPC_data = read_configuration()$CPC_CONFIG) { 
   # These are the ones used for the TCAC12 interactive app, and represent the output of
   # the initialization process for https://bitbucket.org/iotc-ws/iotc-tcac/src/master/
   
