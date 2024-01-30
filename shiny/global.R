@@ -1,4 +1,4 @@
-source("../01.configure_and_preprocess.R")
+source("../scripts/01.configure_and_preprocess.R")
 
 CONFIG = read_configuration("../cfg/CPC_CONFIGURATIONS.xlsx")
 

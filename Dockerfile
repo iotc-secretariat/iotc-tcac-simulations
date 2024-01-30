@@ -29,7 +29,7 @@ COPY ./shiny/conf/shiny-server.conf /etc/shiny-server
 
 RUN mkdir /srv/shiny-server/cfg
 
-COPY ./01.configure_and_preprocess.R /srv/shiny-server
+COPY ./scripts/01.configure_and_preprocess.R /srv/shiny-server/scripts
 COPY ./cfg/CPC_CONFIGURATIONS.xlsx /srv/shiny-server/cfg
 COPY ./cfg/HISTORICAL_CATCH_ESTIMATES.csv /srv/shiny-server/cfg
 
