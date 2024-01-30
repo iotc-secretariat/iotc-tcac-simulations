@@ -11,9 +11,13 @@ BA_ALLOCATION = baseline_allocation()
 CS_ALLOCATION = coastal_state_allocation(CPC_data = CPC_data, CS_SE_data = CS_SE_data,
                                          equal_portion_weight       = 0.350,
                                          socio_economic_weight      = 0.475,
-                                          socio_economic_weight_HDI  = 0.3,
-                                          socio_economic_weight_GNI  = 0.3,
-                                          socio_economic_weight_SIDS = 0.4,
+                                          socio_economic_option     = "O2",
+                                          socio_economic_option_subweights = 
+                                           list(
+                                             HDI_wgt  = 0.3,
+                                             GNI_wgt  = 0.3,
+                                             SIDS_wgt = 0.4
+                                           ),
                                          EEZ_weight                 = 0.175)
 
 CB_ALLOCATION = catch_based_allocation(CPC_data = CPC_data, CS_SE_data = CS_SE_data,

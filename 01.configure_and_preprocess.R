@@ -1,6 +1,7 @@
 library(openxlsx)
 library(data.table)
 library(stringr)
+library(scales)
 
 options(scipen = 9999)
 
@@ -26,20 +27,27 @@ read_configuration = function(file = "./CPC_core_data.xlsx") {
   
   CS_SE_CONFIG$CODE                            = as.factor (CS_SE_CONFIG$CODE)
   CS_SE_CONFIG$DEVELOPMENT_STATUS              = as.factor (CS_SE_CONFIG$DEVELOPMENT_STATUS)
-  CS_SE_CONFIG$PER_CAPITA_FISH_CONSUMPTION_KG  = as.numeric(CS_SE_CONFIG$PER_CAPITA_FISH_CONSUMPTION_KG)
-  CS_SE_CONFIG$CUV_INDEX                       = as.numeric(CS_SE_CONFIG$CUV_INDEX)
-  CS_SE_CONFIG$PROPORTION_WORKERS_EMPLOYED_SSF = as.numeric(CS_SE_CONFIG$PROPORTION_WORKERS_EMPLOYED_SSF)
-  CS_SE_CONFIG$FISHERIES_CONTRIBUTION_GDP      = as.numeric(CS_SE_CONFIG$FISHERIES_CONTRIBUTION_GDP)
-  CS_SE_CONFIG$PROPORTION_EXPORT_VALUE_FISHERY = as.numeric(CS_SE_CONFIG$PROPORTION_EXPORT_VALUE_FISHERY)
+  CS_SE_CONFIG$PER_CAPITA_FISH_CONSUMPTION_KG  = round(as.numeric(CS_SE_CONFIG$PER_CAPITA_FISH_CONSUMPTION_KG), 2)
+  CS_SE_CONFIG$CUV_INDEX                       = round(as.numeric(CS_SE_CONFIG$CUV_INDEX), 2)
+  CS_SE_CONFIG$PROP_WORKERS_EMPLOYED_SSF       = round(as.numeric(CS_SE_CONFIG$PROP_WORKERS_EMPLOYED_SSF), 4)
+  CS_SE_CONFIG$PROP_FISHERIES_CONTRIBUTION_GDP = round(as.numeric(CS_SE_CONFIG$PROP_FISHERIES_CONTRIBUTION_GDP), 4)
+  CS_SE_CONFIG$PROP_EXPORT_VALUE_FISHERY       = round(as.numeric(CS_SE_CONFIG$PROP_EXPORT_VALUE_FISHERY), 4)
   CS_SE_CONFIG$HDI_STATUS                      = as.numeric(CS_SE_CONFIG$HDI_STATUS)
   CS_SE_CONFIG$GNI_STATUS                      = as.factor (CS_SE_CONFIG$GNI_STATUS)
 
-  # To be removed when these indicators will be available (required by para. 6.6(1)(b) - Option 1
-  CS_SE_CONFIG$PER_CAPITA_FISH_CONSUMPTION_KG  = NULL
-  CS_SE_CONFIG$CUV_INDEX                       = NULL
-  CS_SE_CONFIG$PROPORTION_WORKERS_EMPLOYED_SSF = NULL
-  CS_SE_CONFIG$FISHERIES_CONTRIBUTION_GDP      = NULL
-  CS_SE_CONFIG$PROPORTION_EXPORT_VALUE_FISHERY = NULL
+  CS_SE_CONFIG$GNI_STATUS = 
+    factor(
+      CS_SE_CONFIG$GNI_STATUS,
+      levels = c("LO", "LM", "UM", "HI"),
+      ordered = TRUE
+    )
+  
+  # To be update when these indicators will be available (required by para. 6.6(1)(b) - Option 1
+  #CS_SE_CONFIG$PER_CAPITA_FISH_CONSUMPTION_KG  = NULL
+  #CS_SE_CONFIG$CUV_INDEX                       = NULL
+  #CS_SE_CONFIG$PROPORTION_WORKERS_EMPLOYED_SSF = NULL
+  #CS_SE_CONFIG$FISHERIES_CONTRIBUTION_GDP      = NULL
+  #CS_SE_CONFIG$PROPORTION_EXPORT_VALUE_FISHERY = NULL
     
   # See para. 6.6(b) Option 2.i
   CS_SE_CONFIG[CODE == "SOM", HDI_STATUS := min(CS_SE_CONFIG$HDI_STATUS, na.rm = TRUE)] # There's no HDI available for SOM... We assume it's the same as the lowest scored CPC
@@ -48,6 +56,13 @@ read_configuration = function(file = "./CPC_core_data.xlsx") {
   CS_SE_CONFIG[HDI_STATUS >= 0.55 & HDI_STATUS < 0.70, `:=`(HDI_TIER = "ME", HDI_TIER_WEIGHT =  0.75)]
   CS_SE_CONFIG[HDI_STATUS >= 0.70 & HDI_STATUS < 0.79, `:=`(HDI_TIER = "HI", HDI_TIER_WEIGHT =  0.50)]
   CS_SE_CONFIG[HDI_STATUS >= 0.80,                     `:=`(HDI_TIER = "VH", HDI_TIER_WEIGHT =    NA)] # Should be NA as no developing or least-developed CS exists with this HDI tier
+  
+  CS_SE_CONFIG$HDI_TIER = 
+    factor(
+      CS_SE_CONFIG$HDI_TIER,
+      levels = c("LO", "ME", "HI", "VH"),
+      ordered = TRUE
+    )
   
   #CS_SE_CONFIG[!is.na(HDI_TIER_WEIGHT), HDI_TIER_WEIGHT_NORMALIZED := HDI_TIER_WEIGHT / sum(HDI_TIER_WEIGHT, na.rm = TRUE)]
   
@@ -71,10 +86,15 @@ read_configuration = function(file = "./CPC_core_data.xlsx") {
   
   CS_SE_CONFIG = CS_SE_CONFIG[, .(CODE, 
                                   COASTAL, AUNJ_AREA, 
-                                  DEVELOPMENT_STATUS, 
+                                  DEVELOPMENT_STATUS,
+                                  PER_CAPITA_FISH_CONSUMPTION_KG, 
+                                  CUV_INDEX,
+                                  PROP_WORKERS_EMPLOYED_SSF,
+                                  PROP_FISHERIES_CONTRIBUTION_GDP,
+                                  PROP_EXPORT_VALUE_FISHERY,
                                   HDI_STATUS, HDI_TIER, HDI_TIER_WEIGHT,   # HDI_TIER_WEIGHT_NORMALIZED,
-                                  GNI_STATUS,           GNI_STATUS_WEIGHT, #  GNI_STATUS_WEIGHT_NORMALIZED,
-                                  SIDS_STATUS,          SIDS_STATUS_WEIGHT #, SIDS_STATUS_WEIGHT_NORMALIZED
+                                  GNI_STATUS,           GNI_STATUS_WEIGHT, # GNI_STATUS_WEIGHT_NORMALIZED,
+                                  SIDS_STATUS,          SIDS_STATUS_WEIGHT # SIDS_STATUS_WEIGHT_NORMALIZED
                                  )]
   
   return(
@@ -230,9 +250,11 @@ coastal_state_allocation = function(CPC_data,
                                     CS_SE_data,
                                     equal_portion_weight,
                                     socio_economic_weight,
-                                      socio_economic_weight_HDI,
-                                      socio_economic_weight_GNI,
-                                      socio_economic_weight_SIDS,
+                                      socio_economic_option,
+                                      socio_economic_option_subweights,
+                                      #socio_economic_weight_HDI,
+                                      #socio_economic_weight_GNI,
+                                      #socio_economic_weight_SIDS,
                                     EEZ_weight
                                    ) {
   
@@ -240,19 +262,31 @@ coastal_state_allocation = function(CPC_data,
   
   if(all_weights != 1)
     stop(paste0("The weights provided for the allocation sub-components should sum up to 100% (now: ", all_weights * 100, "%)"))
-  
-  all_se_weights = socio_economic_weight_HDI + socio_economic_weight_GNI + socio_economic_weight_SIDS
-  
-  if(all_se_weights != 1)
-    stop(paste0("The weights provided for the socio-economic allocation sub-components should sum up to 100% (now: ", all_se_weights * 100, "%)"))
-  
+   
   print(paste0("Coastal state allocation params: EQ_wgt = ", equal_portion_weight, ", ", 
                                                 "SE_wgt = ", socio_economic_weight, ", ",
                                                 "EZ_wgt = ", EEZ_weight))
+
+  print(paste0("Coastal state socio-economic allocation option: ", socio_economic_option))
   
-  print(paste0("Coastal state socio-economic allocation params: HDI_wgt = ", socio_economic_weight_HDI, ", ", 
-                                                               "GNI_wgt = ", socio_economic_weight_GNI, ", ",
-                                                               "SIDS_wgt = ", socio_economic_weight_SIDS))
+  if(socio_economic_option == "O1") {
+    print(paste0("Coastal state socio-economic allocation params: vul_wgt = ",     socio_economic_option_subweights$VUL_wgt,     ", ", 
+                                                                 "pri_sec_wgt = ", socio_economic_option_subweights$PRI_SEC_wgt, ", ",
+                                                                 "dis_bur_wgt = ", socio_economic_option_subweights$DIS_BUR_wgt))
+
+    all_se_weights = socio_economic_option_subweights$VUL + socio_economic_option_subweights$PRI_SEC + socio_economic_option_subweights$DIS_BUR
+  }
+    
+  if(socio_economic_option == "O2") {
+    print(paste0("Coastal state socio-economic allocation params: HDI_wgt = ",  socio_economic_option_subweights$HDI_wgt, ", ", 
+                                                                 "GNI_wgt = ",  socio_economic_option_subweights$GNI_wgt, ", ",
+                                                                 "SIDS_wgt = ", socio_economic_option_subweights$SIDS_wgt))
+    
+    all_se_weights = socio_economic_option_subweights$HDI + socio_economic_option_subweights$GNI + socio_economic_option_subweights$SIDS
+  }
+  
+  if(all_se_weights != 1)
+    stop(paste0("The weights provided for the socio-economic allocation sub-components should sum up to 100% (now: ", all_se_weights * 100, "%)"))
   
   component_allocation_table = CS_SE_data[AUNJ_AREA == TRUE]
   
@@ -266,6 +300,34 @@ coastal_state_allocation = function(CPC_data,
   component_allocation_table[, EQUAL_ALLOCATION := 1.00 / nrow(component_allocation_table)]
   
   # Coastal state allocation - para. 6.6(1)(b) - only developing / least developed countries should be considered
+
+  # Option 1
+  
+  component_allocation_table[DEVELOPMENT_STATUS != "DE", VUL_PCF_ALLOCATION  := PER_CAPITA_FISH_CONSUMPTION_KG  / sum(PER_CAPITA_FISH_CONSUMPTION_KG, na.rm = TRUE)]
+  component_allocation_table[DEVELOPMENT_STATUS != "DE", VUL_CUVI_ALLOCATION := CUV_INDEX                       / sum(CUV_INDEX , na.rm = TRUE)]
+  
+  component_allocation_table[DEVELOPMENT_STATUS != "DE", PRI_SEC_SSF_ALLOCATION  := PROP_WORKERS_EMPLOYED_SSF   / sum(PROP_WORKERS_EMPLOYED_SSF, na.rm = TRUE)]
+  component_allocation_table[DEVELOPMENT_STATUS != "DE", PRI_SEC_SIDS_ALLOCATION := SIDS_STATUS                 / sum(SIDS_STATUS, na.rm = TRUE)]
+
+  component_allocation_table[DEVELOPMENT_STATUS != "DE", DIS_BUR_GDP_ALLOCATION := PROP_WORKERS_EMPLOYED_SSF    / sum(PROP_WORKERS_EMPLOYED_SSF, na.rm = TRUE)]
+  component_allocation_table[DEVELOPMENT_STATUS != "DE", DIS_BUR_EXP_ALLOCATION := PROP_EXPORT_VALUE_FISHERY    / sum(PROP_EXPORT_VALUE_FISHERY, na.rm = TRUE)]
+  
+  component_allocation_table[is.na(VUL_PCF_ALLOCATION),  VUL_PCF_ALLOCATION  := 0]
+  component_allocation_table[is.na(VUL_CUVI_ALLOCATION), VUL_CUVI_ALLOCATION := 0]
+  
+  component_allocation_table[is.na(PRI_SEC_SSF_ALLOCATION),  PRI_SEC_SSF_ALLOCATION := 0]
+  component_allocation_table[is.na(PRI_SEC_SIDS_ALLOCATION), PRI_SEC_SIDS_ALLOCATION   := 0]
+  
+  component_allocation_table[is.na(DIS_BUR_GDP_ALLOCATION), DIS_BUR_GDP_ALLOCATION := 0]
+  component_allocation_table[is.na(DIS_BUR_EXP_ALLOCATION), DIS_BUR_EXP_ALLOCATION := 0]
+  
+  # We weight every sub-sub-component at 50%
+  
+  component_allocation_table[, VUL_ALLOCATION     := .5 * VUL_PCF_ALLOCATION     + .5 * VUL_CUVI_ALLOCATION]
+  component_allocation_table[, PRI_SEC_ALLOCATION := .5 * PRI_SEC_SSF_ALLOCATION + .5 * PRI_SEC_SIDS_ALLOCATION]
+  component_allocation_table[, DIS_BUR_ALLOCATION := .5 * DIS_BUR_GDP_ALLOCATION + .5 * DIS_BUR_EXP_ALLOCATION]
+  
+  # Option 2
   
   component_allocation_table[DEVELOPMENT_STATUS != "DE", HDI_ALLOCATION  := HDI_TIER_WEIGHT    / sum(HDI_TIER_WEIGHT,    na.rm = TRUE)]
   component_allocation_table[DEVELOPMENT_STATUS != "DE", GNI_ALLOCATION  := GNI_STATUS_WEIGHT  / sum(GNI_STATUS_WEIGHT , na.rm = TRUE)]
@@ -278,12 +340,25 @@ coastal_state_allocation = function(CPC_data,
   # Coastal state allocation - para. 6.6(1)(c)
   component_allocation_table[, EEZ_ALLOCATION := EEZ_SIZE_WEIGHTING / sum(EEZ_SIZE_WEIGHTING)]
 
-  component_allocation_table = 
-    component_allocation_table[, COASTAL_STATE_ALLOCATION := ((equal_portion_weight * EQUAL_ALLOCATION) + 
-                                                              (socio_economic_weight * (socio_economic_weight_HDI  * HDI_ALLOCATION) ) + 
-                                                              (socio_economic_weight * (socio_economic_weight_GNI  * GNI_ALLOCATION) ) + 
-                                                              (socio_economic_weight * (socio_economic_weight_SIDS * SIDS_ALLOCATION)) + 
-                                                              (EEZ_weight * EEZ_ALLOCATION))][, .(CPC_CODE = CODE, COASTAL_STATE_ALLOCATION)]
+  if(socio_economic_option == "O1") {
+    component_allocation_table = 
+      component_allocation_table[, COASTAL_STATE_ALLOCATION := ((equal_portion_weight * EQUAL_ALLOCATION) + 
+                                                                (socio_economic_weight * (socio_economic_option_subweights$VUL_wgt     * VUL_ALLOCATION)    ) + 
+                                                                (socio_economic_weight * (socio_economic_option_subweights$PRI_SEC_wgt * PRI_SEC_ALLOCATION)) + 
+                                                                (socio_economic_weight * (socio_economic_option_subweights$DIS_BUR_wgt * DIS_BUR_ALLOCATION)) + 
+                                                                (EEZ_weight * EEZ_ALLOCATION))][, .(CPC_CODE = CODE, COASTAL_STATE_ALLOCATION)]
+  }
+
+  if(socio_economic_option == "O2") {
+    component_allocation_table = 
+      component_allocation_table[, COASTAL_STATE_ALLOCATION := ((equal_portion_weight * EQUAL_ALLOCATION) + 
+                                                                  (socio_economic_weight * (socio_economic_option_subweights$HDI_wgt  * HDI_ALLOCATION) ) + 
+                                                                  (socio_economic_weight * (socio_economic_option_subweights$GNI_wgt  * GNI_ALLOCATION) ) + 
+                                                                  (socio_economic_weight * (socio_economic_option_subweights$SIDS_wgt * SIDS_ALLOCATION)) + 
+                                                                  (EEZ_weight * EEZ_ALLOCATION))][, .(CPC_CODE = CODE, COASTAL_STATE_ALLOCATION)]
+  }
+  
+  return(component_allocation_table)
 }
 
 catch_based_allocation = function(CPC_data,   # Unused
