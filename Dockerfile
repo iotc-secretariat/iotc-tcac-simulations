@@ -28,6 +28,7 @@ COPY ./shiny /srv/shiny-server/tcac_simulation
 COPY ./shiny/conf/shiny-server.conf /etc/shiny-server
 
 RUN mkdir /srv/shiny-server/cfg
+RUN mkdir /srv/shiny-server/scripts
 
 COPY ./scripts/01.configure_and_preprocess.R /srv/shiny-server/scripts
 COPY ./cfg/CPC_CONFIGURATIONS.xlsx /srv/shiny-server/cfg
