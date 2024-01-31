@@ -142,7 +142,7 @@ server = function(input, output, session) {
   })
   
   prepare_output = function(input) {
-    ot     = input$out_type
+    unit = input$out_unit
     
     ba_wgt = (input$weights[1]) * 0.01
     cs_wgt = (input$weights[2] - input$weights[1]) * 0.01
@@ -188,7 +188,7 @@ server = function(input, output, session) {
                                                             years        = input$period[1]:input$period[2])
     average_catch_function = period_average_catch_data
     
-    if(input$avg_period == "BY") {
+    if(input$avg_period == "best") {
       average_catch_function = function(catches) { 
         return(best_years_average_catch_data(catches, max_num_years = input$num_years))
       }
@@ -203,8 +203,8 @@ server = function(input, output, session) {
                                                                input$cb_year07_wgt * 0.01, input$cb_year08_wgt * 0.01, input$cb_year09_wgt * 0.01,
                                                                input$cb_year10_wgt * 0.01))
     
-    QUOTAS = 
-      allocate_TAC(TAC = ifelse(ot == "quota", 1, input$tac), 
+    QUOTAS = # Scales down the resulting catches if the output unit is set to 'quota' (so as to get this as % instead)
+      allocate_TAC(TAC = ifelse(unit == "quota", 1, input$tac), 
                    baseline_allocation      = BA_ALLOCATION, baseline_allocation_weight      = ba_wgt, #input$ba_wgt * 0.01,
                    coastal_state_allocation = CS_ALLOCATION, coastal_state_allocation_weight = cs_wgt, #input$cs_wgt * 0.01,
                    catch_based_allocation   = CB_ALLOCATION, catch_based_allocation_weight   = cb_wgt) #input$cb_wgt * 0.01)
@@ -215,7 +215,7 @@ server = function(input, output, session) {
   }
   
   output$quotas_table = DT::renderDataTable({
-    ot = input$out_type
+    unit = input$out_unit
     
     QUOTAS = prepare_output(input)
     
@@ -237,7 +237,7 @@ server = function(input, output, session) {
           )
       )
     
-    if(ot == "quota")
+    if(unit == "quota")
       QUOTAS_DT = QUOTAS_DT %>% DT::formatPercentage(2:ncol(QUOTAS), digits = 2)
     else
       QUOTAS_DT = QUOTAS_DT %>% DT::formatCurrency(2:ncol(QUOTAS), digits = 2, currency = "&nbsp;t", before = FALSE)
@@ -245,7 +245,7 @@ server = function(input, output, session) {
     QUOTAS_NORM = QUOTAS[, 2:ncol(QUOTAS)]
     
     if(input$out_heat_style == "color") {
-      if(input$out_heat_type  == "by_column") {
+      if(input$out_heat_type  == "by_year") {
         for(column in colnames(QUOTAS_NORM)) {
           breaks = quantile(range(QUOTAS_NORM[[column]]), probs = seq(0, 1, .05))
           colors = round(seq(255, 40, length.out = length(breaks) + 1), 0) %>% { paste0("rgb(255, ", ., ",", ., ")") }
@@ -261,7 +261,7 @@ server = function(input, output, session) {
           QUOTAS_DT %>% DT::formatStyle(colnames(QUOTAS_NORM), backgroundColor = DT::styleInterval(breaks, colors))
       }
     } else if(input$out_heat_style == "bar") {
-      if(input$out_heat_type  == "by_column") {
+      if(input$out_heat_type  == "by_year") {
         for(column in colnames(QUOTAS_NORM)) {
           QUOTAS_DT = 
             QUOTAS_DT %>% DT::formatStyle(column,
@@ -298,9 +298,9 @@ server = function(input, output, session) {
       config = rbind(config, as.list(c("HISTORICAL_CATCH_INTERVAL_START", input$period[1])))
       config = rbind(config, as.list(c("HISTORICAL_CATCH_INTERVAL_END",   input$period[2])))
       
-      config = rbind(config, as.list(c("HISTORICAL_CATCH_AVERAGE",        ifelse(input$avg_period == "BY", "Best 'n' years", "Selected period"))))
+      config = rbind(config, as.list(c("HISTORICAL_CATCH_AVERAGE",        ifelse(input$avg_period == "best", "Best \"n\" years", "Selected period"))))
       
-      if(input$avg_period == "BY")
+      if(input$avg_period == "best")
         config = rbind(config, as.list(c("NUMBER_OF_YEARS", input$num_years)))
       
       config = rbind(config, as.list(c("BASELINE_WEIGHT",      paste0(format(as.numeric(input$weights[1]), nsmall = 1), "%"))))
@@ -338,11 +338,11 @@ server = function(input, output, session) {
       config = rbind(config, as.list(c("CATCH_BASED_WEIGHT_EEZ_ATTRIBUTION_YEAR_09", paste0(format(input$cb_year09_wgt, nsmall = 1), "%"))))
       config = rbind(config, as.list(c("CATCH_BASED_WEIGHT_EEZ_ATTRIBUTION_YEAR_10", paste0(format(input$cb_year10_wgt, nsmall = 1), "%"))))
       
-      config = rbind(config, as.list(c("OUTPUT_UNIT", input$out_type)))
+      config = rbind(config, as.list(c("OUTPUT_UNIT", input$out_unit)))
             
       quotas = prepare_output(input)
       
-      if(input$out_type == "quota") {
+      if(input$out_unit == "quota") {
         quotas = 
           quotas %>% 
             dplyr::mutate_if(startsWith(names(.), "QUOTA_"), scales::percent, accuracy = 0.01)
@@ -365,7 +365,15 @@ server = function(input, output, session) {
       writeData(WB, sheet = 3, ALL_CATCH_DATA[SPECIES_CODE == input$species], rowNames = FALSE)
       writeData(WB, sheet = 4, config, rowNames = FALSE)
       writeData(WB, sheet = 5, quotas, rowNames = FALSE)
+
+      # Column widths are taken directly from Excel once all cols have been expanded to their maximum
       
+      setColWidths(WB, 1, 1:9,  widths = c(5.14, 48.71, 6.86, 8.29, 9, 5.43, 7.86, 22.57, 19.43))
+      setColWidths(WB, 2, 1:16, widths = c(5.14, 8.29, 10.71, 21.43, 34.71, 10.43, 30, 34.86, 28.29, 11, 8.14, 16.29, 11.14, 19.43, 11.71, 20))
+      setColWidths(WB, 3, 1:9,  widths = c(4.71, 10.57, 11, 12.57, 13.29, 18.71, 15, 13.14, 9.86)) 
+      setColWidths(WB, 4, 1   , widths = 56.43)
+      setColWidths(WB, 5, 2:11, widths = 15.71)
+
       activeSheet(WB) <- 5
       
       saveWorkbook(WB, file = file, overwrite = TRUE)

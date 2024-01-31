@@ -13,21 +13,21 @@ AVAILABLE_SPECIES = list(`ALB - Albacore tuna`  = "ALB",
                          `YFT - Yellowfin tuna` = "YFT",
                          `SWO - Swordfish`      = "SWO")
 
-AVAILABLE_HISTORICAL_CATCH_AVERAGE_PERIODS = list(`Selected period`  = "PE", 
-                                                  `Best "n" years` = "BY")
+AVAILABLE_HISTORICAL_CATCH_AVERAGE_PERIODS = list(`Selected period` = "period", 
+                                                  `Best "n" years`  = "best")
 
 
 AVAILABLE_SOCIO_ECONOMIC_OPTIONS = list(`Option #1 - Vulnerability + Priority sectors + Disproportionate burden` = "O1", 
                                         `Option #2 - HDI + GNI + SIDS` = "O2")
 
-AVAILABLE_OUTPUT_TYPES = list(`Quota (%)`   = "quota",
+AVAILABLE_OUTPUT_UNITS = list(`Quota (%)`   = "quota",
                               `Catches (t)` = "catches")
 
-AVAILABLE_HEATMAP_STYLES = list(`Color` = "color",
-                                `Bar`   = "bar")
+AVAILABLE_HEATMAP_STYLES = list(`Background color` = "color",
+                                `Bar`              = "bar")
 
-AVAILABLE_HEATMAP_TYPES = list(`Global`    = "global",
-                               `By column` = "by_column")
+AVAILABLE_HEATMAP_TYPES = list(`Global`  = "global",
+                               `By year` = "by_year")
 
 CPC_DATA   = CONFIG$CPC_CONFIG
 CS_SE_DATA = CONFIG$CS_SE_CONFIG

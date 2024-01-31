@@ -2,71 +2,8 @@ ui = function() {
   return(
     fluidPage(
       title = "IOTC TCAC simulation tool v1.0",
-      tags$style(
-        HTML("
-        #glasspane {
-        	position: fixed;
-        	height: 100%;
-        	width: 100%;
-        	background-color: #99999933;
-        	z-index: 10000;
-        }
-        
-        .loading {
-        	width: 320px;
-        
-        	color: #000000;
-        	background-color: white;
-        
-        	font-weight: bold;
-        	font-size: 100%;
-        
-        	padding: 1em;
-        	margin-left: calc(50vw - 160px);
-        	margin-top: calc(40vh);
-        
-        	text-align: center;
-        
-        	border-radius: 1em;
-        	border: 2px solid gray;
-        
-        	-webkit-box-shadow: -1px 10px 25px -11px rgba(0,0,0,0.75);
-        	-moz-box-shadow: -1px 10px 25px -11px rgba(0,0,0,0.75);
-        	box-shadow: -1px 10px 25px -11px rgba(0,0,0,0.75);
-         }
-        
-        #main + .tab-content,
-        #data + .tab-content
-        {
-          padding: .5em;
-        }
-
-        .left-padded { 
-          padding-left: 2em;
-        }
-        
-        .top-padded {
-          padding-top: 2em;
-        }
-        
-        .button-padded {
-          padding-top: 1.8em;
-        }
-        
-        .tab-content {
-          padding-top: 1em;
-        }
-        
-        hr.thin {
-          margin-top: 0 !important;
-        }
-        
-       .triple .irs-line {
-          background: #428bca;
-          border-top: #428bca;
-          border-bottom: #428bca;
-        }
-      ")
+      tags$head(
+        tags$link(rel = "stylesheet", type = "text/css", href = "custom.css")
       ),
       tags$div(
         class = "main-container",
@@ -144,7 +81,7 @@ ui = function() {
                     ), 
                     column(width = 6,
                       conditionalPanel(
-                        condition = "input.avg_period == 'BY'",                           
+                        condition = "input.avg_period == 'best'",                           
                         numericInput("num_years", "Number of years", value = 5, min = 1, max = 60, step = 1)
                       )
                     )
@@ -297,7 +234,7 @@ ui = function() {
                   fluidRow(
                     column(
                       width = 3,
-                      selectInput("out_type", "Output unit", width = "100%", choices = AVAILABLE_OUTPUT_TYPES, selected = "quota")
+                      selectInput("out_unit", "Output unit", width = "100%", choices = AVAILABLE_OUTPUT_UNITS, selected = "quota")
                     ),
                     column(
                       width = 3,
@@ -316,7 +253,9 @@ ui = function() {
                     )
                   ),
                   fluidRow(
-                    DT::dataTableOutput("quotas_table")
+                    column(width = 12,
+                      DT::dataTableOutput("quotas_table")
+                    )
                   )
                 )
               )

@@ -251,10 +251,7 @@ coastal_state_allocation = function(CPC_data,
                                     equal_portion_weight,
                                     socio_economic_weight,
                                       socio_economic_option,
-                                      socio_economic_option_subweights,
-                                      #socio_economic_weight_HDI,
-                                      #socio_economic_weight_GNI,
-                                      #socio_economic_weight_SIDS,
+                                      socio_economic_option_subweights, # A list of weights depending on the selected socio-economic option (see previous parameter)
                                     EEZ_weight
                                    ) {
   
