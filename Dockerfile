@@ -6,7 +6,7 @@ ENV _R_SHLIB_STRIP_=true
 
 WORKDIR /
 
-# Installs R packages
+# Installs all required R packages (and their dependencies)
 
 RUN install2.r --error --skipinstalled \
     stringr \

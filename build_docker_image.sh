@@ -1,2 +1,1 @@
-docker build -t iotc/tcac/simulations:13 \
-			       -f Dockerfile .
+docker build -t iotc/tcac/simulations:13 -f Dockerfile .
