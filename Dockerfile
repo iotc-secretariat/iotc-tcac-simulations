@@ -20,7 +20,7 @@ RUN install2.r --error --skipinstalled \
     shinycssloaders \ 
     DT
 
-# Copies the initialization scripts and shiny app sources in the container
+# Copies the configuration, the initialization scripts and the Shiny app sources in the proper container folders
 
 RUN rm -rf /srv/shiny-server/*
 
@@ -40,10 +40,8 @@ COPY ./README.html /srv/shiny-server/tcac_simulations/www
 COPY ./cfg/CPC_CONFIGURATIONS.xlsx /srv/shiny-server/tcac_simulations/www        
 COPY ./cfg/HISTORICAL_CATCH_ESTIMATES.csv /srv/shiny-server/tcac_simulations/www 
 
-# Updates the R environment with all variables necessary to connect to the DB etc.
-
-RUN echo SHINY_LOG_LEVEL=TRACE >> /home/shiny/.Renviron && \
-    chown shiny.shiny /home/shiny/.Renviron
+# Sets the Shiny log level to 'TRACE', stores the environment variable in .Renviron and copies that file under the 'shiny' user folder
+RUN echo SHINY_LOG_LEVEL=TRACE >> /home/shiny/.Renviron && chown shiny.shiny /home/shiny/.Renviron
 
 # Removes an unnecessary directory under the Shiny app folder
 RUN rm -rf /srv/shiny-server/tcac_simulations/conf
