@@ -1,10 +1,10 @@
 # IOTC TCAC 13 - Allocation simulations
 
-This document provides an overview of the assumptions made, and of the output produced by the R scripts that implement the allocation criteria as defined in [IOTC-2024-TCAC13-REF02](https://iotc.org/sites/default/files/documents/2023/11/IOTC-2024-TCAC13-REF02E_TCAC_draft_Allocation_Regime_v7_clean.docx).
+This document provides an overview of the preliminary assumptions and final outputs produced by the simulation of the allocation criteria defined in [IOTC-2024-TCAC13-REF02](https://iotc.org/sites/default/files/documents/2023/11/IOTC-2024-TCAC13-REF02E_TCAC_draft_Allocation_Regime_v7_clean.docx) as developed by the IOTC Secretariat.
 
 ## Configuration
 
-The definition of all relevant parameters characterising each CPC with respect to the allocation criteria is provided in the `cfg/CPC_CONFIGURATIONS.xlsx` file.
+The definition of all relevant parameters characterising each CPC with respect to the allocation criteria is provided in the [`cfg/CPC_CONFIGURATIONS.xlsx`](https://bitbucket.org/iotc-ws/iotc-tcac-simulations/raw/8ce5f9630e1e3ef119848324bd4b71132f0e1336/cfg/CPC_CONFIGURATIONS.xlsx) file.
 
 This includes two worksheets:
 
@@ -34,7 +34,7 @@ The identification of a CPC as being or not an IOTC coastal state is still a mat
 
 For the sake of this simulation we assume the following:
 
--   That beside having an NJA in the Indian Ocean, `FRAT` (*France (OT)*) shall be *de facto* considered an IOTC coastal state (see [IOTC-2023-TCAC12-04](https://iotc.org/sites/default/files/documents/2023/09/IOTC-2023-TCAC12-04_E_-_Chairs_Explanatory_Note.pdf) \_Chair's explanatory memorandum to TCAC12 participants).
+-   That beside having an NJA in the Indian Ocean, `FRAT` (*France (OT)*) shall be *de facto* considered an IOTC coastal state (see [IOTC-2023-TCAC12-04](https://iotc.org/sites/default/files/documents/2023/09/IOTC-2023-TCAC12-04_E_-_Chairs_Explanatory_Note.pdf) *Chair's explanatory memorandum to TCAC12 participants*).
 
 -   That `EUR` (*European Union / REIO*) has an NJA in the Indian Ocean (i.e., the NJA around Réunion and Mayotte) and that for this reason "(...) *should benefit from an allocation that relates to the size of the EEZ of its outermost territories in the IOTC area of competence.*" (see [IOTC-2023-TCAC12-04](https://iotc.org/sites/default/files/documents/2023/09/IOTC-2023-TCAC12-04_E_-_Chairs_Explanatory_Note.pdf) *Chair's explanatory memorandum to TCAC12 participants*).
 
@@ -46,6 +46,8 @@ For the sake of this simulation we assume the following:
 
 -   That clarity shall be made regarding the sovereignty over the NJA of the Chagos archipelago which are currently disputed between two IOTC CPCs (`MUS` and `GBR`) as this will have an impact not only on the attribution of the relative NJA area weight for the coastal state allocation criteria, but also on the status of `GBR` (*United Kingdom of Great Britain and Northern Ireland*) as a coastal state itself.
 
-> In lack of other indications, the simulation considers `GBR` (*United Kingdom of Great Britain and Northern Ireland*) as having sovereignty over the NJA of the Chagos archipelago, and that this will not automatically qualify the CPC as a coastal state. Furthermore, `GBR` focal points have confirmed that the CPC will request the application of paragraph 6.6(1)(a) and (c) the coastal state allocation criteria, but not (b), and this has been properly reflected in the current implementation of the TCAC simulations. 
+> In lack of other indications, the simulation considers `GBR` (*United Kingdom of Great Britain and Northern Ireland*) as having sovereignty over the NJA of the Chagos archipelago, and that this will not automatically qualify the CPC as a coastal state. Furthermore, `GBR` focal points have confirmed that the CPC will request the application of paragraph 6.6(1)(a) and (c) the coastal state allocation criteria, but not (b), and this has been properly reflected in the current implementation of the TCAC simulations.
 
 # User interface
+
+TBD
