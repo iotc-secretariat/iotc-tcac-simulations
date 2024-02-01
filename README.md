@@ -58,7 +58,7 @@ For the sake of this simulation we assume the following:
 
 -   That beside having an NJA in the Indian Ocean, `FRAT` (*France (OT)*) shall be *de facto* considered an IOTC coastal state (see [IOTC-2023-TCAC12-04](https://iotc.org/sites/default/files/documents/2023/09/IOTC-2023-TCAC12-04_E_-_Chairs_Explanatory_Note.pdf) *Chair's explanatory memorandum to TCAC12 participants*).
 
--   That `EUR` (*European Union / REIO*) has an NJA in the Indian Ocean (i.e., the NJA around Réunion and Mayotte) and that for this reason "(...) *should benefit from an allocation that relates to the size of the EEZ of its outermost territories in the IOTC area of competence.*" (see [IOTC-2023-TCAC12-04](https://iotc.org/sites/default/files/documents/2023/09/IOTC-2023-TCAC12-04_E_-_Chairs_Explanatory_Note.pdf) *Chair's explanatory memorandum to TCAC12 participants*).
+-   That `EUR` (*European Union / REIO*) has an NJA in the Indian Ocean (i.e., the NJA around RÃ©union and Mayotte) and that for this reason "(...) *should benefit from an allocation that relates to the size of the EEZ of its outermost territories in the IOTC area of competence.*" (see [IOTC-2023-TCAC12-04](https://iotc.org/sites/default/files/documents/2023/09/IOTC-2023-TCAC12-04_E_-_Chairs_Explanatory_Note.pdf) *Chair's explanatory memorandum to TCAC12 participants*).
 
 -   That `EUR` (*European Union / REIO*), notwithstanding the above, "(...) *would not be seeking the application of paragraph 6.6(1)(b) of the coastal state allocation criteria (...)*" (see [IOTC-2023-TCAC12-04](https://iotc.org/sites/default/files/documents/2023/09/IOTC-2023-TCAC12-04_E_-_Chairs_Explanatory_Note.pdf) *Chair's explanatory memorandum to TCAC12 participants*).
 
