@@ -35,9 +35,10 @@ COPY ./scripts/01.configure_and_preprocess.R /srv/shiny-server/scripts
 COPY ./cfg/CPC_CONFIGURATIONS.xlsx /srv/shiny-server/cfg
 COPY ./cfg/HISTORICAL_CATCH_ESTIMATES.csv /srv/shiny-server/cfg
 
-COPY ./README.html /srv/shiny-server/tcac_simulations/www       # To be able to download this file
-COPY ./cfg/CPC_CONFIGURATIONS.xlsx /srv/shiny-server/www        # To be able to download this file
-COPY ./cfg/HISTORICAL_CATCH_ESTIMATES.csv /srv/shiny-server/www # To be able to download this file
+# To be able to download these files they need to be copied under the 'www' folder
+COPY ./README.html /srv/shiny-server/tcac_simulations/www       
+COPY ./cfg/CPC_CONFIGURATIONS.xlsx /srv/shiny-server/tcac_simulations/www        
+COPY ./cfg/HISTORICAL_CATCH_ESTIMATES.csv /srv/shiny-server/tcac_simulations/www 
 
 # Updates the R environment with all variables necessary to connect to the DB etc.
 
