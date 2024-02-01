@@ -8,7 +8,7 @@ The definition of all relevant parameters characterising each CPC with respect t
 
 This includes two worksheets:
 
--   `CPC` - listing all current IOTC CPCs and CNCPs with their code, English name, CPC status, *small islands developing state* (SIDS) status, coastal state status, presence of a *national jurisdiction area* (NJA) within the Indian Ocean, size of the NJA (in km\^2) , and relative size of the NJA with respect to the IOTC area.
+-   `CPC` - listing all current IOTC CPCs and CNCPs with their code, English name, CPC status, *small islands developing state* (SIDS) status, coastal state status, presence of a *national jurisdiction area* (NJA) within the Indian Ocean, size of the NJA (in km^2^) , and relative size of the NJA with respect to the IOTC area.
 
     The size of the NJAs has been calculated from the shapefiles available to the IOTC Secretariat and originally downloaded from the VLIZ / Marine Regions [*maritime boundaries* database](https://www.marineregions.org/eezsearch.php).
 
