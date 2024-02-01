@@ -295,13 +295,6 @@ server = function(input, output, session) {
       
       config = rbind(config, as.list(c("SPECIES",      input$species)))
       config = rbind(config, as.list(c("TARGET_TAC_T", input$tac)))
-      config = rbind(config, as.list(c("HISTORICAL_CATCH_INTERVAL_START", input$period[1])))
-      config = rbind(config, as.list(c("HISTORICAL_CATCH_INTERVAL_END",   input$period[2])))
-      
-      config = rbind(config, as.list(c("HISTORICAL_CATCH_AVERAGE",        ifelse(input$avg_period == "best", "Best \"n\" years", "Selected period"))))
-      
-      if(input$avg_period == "best")
-        config = rbind(config, as.list(c("NUMBER_OF_YEARS", input$num_years)))
       
       config = rbind(config, as.list(c("BASELINE_WEIGHT",      paste0(format(as.numeric(input$weights[1]), nsmall = 1), "%"))))
       config = rbind(config, as.list(c("COASTAL_STATE_WEIGHT", paste0(format(as.numeric((input$weights[2] - input$weights[1])), nsmall = 1), "%"))))
@@ -326,6 +319,14 @@ server = function(input, output, session) {
       config = rbind(config, as.list(c("COASTAL_STATE_NJA_WEIGHT",            paste0(format(as.numeric((100 - input$cs_weights[2])), nsmall = 1), "%"))))
       
       config = rbind(config, as.list(c("CATCH_BASED_WEIGHT",                  paste0(format(as.numeric((100 - input$weights[2])), nsmall = 1), "%"))))
+
+      config = rbind(config, as.list(c("HISTORICAL_CATCH_INTERVAL_START", input$period[1])))
+      config = rbind(config, as.list(c("HISTORICAL_CATCH_INTERVAL_END",   input$period[2])))
+      
+      config = rbind(config, as.list(c("HISTORICAL_CATCH_AVERAGE",        ifelse(input$avg_period == "best", "Best \"n\" years", "Selected period"))))
+      
+      if(input$avg_period == "best")
+        config = rbind(config, as.list(c("NUMBER_OF_YEARS", input$num_years)))
       
       config = rbind(config, as.list(c("CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_01", paste0(format(input$cb_year01_wgt, nsmall = 1), "%"))))
       config = rbind(config, as.list(c("CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_02", paste0(format(input$cb_year02_wgt, nsmall = 1), "%"))))
@@ -368,7 +369,7 @@ server = function(input, output, session) {
 
       # Column widths are taken directly from Excel once all cols have been expanded to their maximum
       
-      setColWidths(WB, 1, 1:9,  widths = c(5.14, 48.71, 6.86, 8.29, 9, 5.43, 7.86, 22.57, 19.43))
+      setColWidths(WB, 1, 1:9,  widths = c(5.14, 48.71, 6.86, 5.43, 8.29, 11.29, 8.29, 23, 19.86))
       setColWidths(WB, 2, 1:16, widths = c(5.14, 8.29, 10.71, 21.43, 34.71, 10.43, 30, 34.86, 28.29, 11, 8.14, 16.29, 11.14, 19.43, 11.71, 20))
       setColWidths(WB, 3, 1:9,  widths = c(4.71, 10.57, 11, 12.57, 13.29, 18.71, 15, 13.14, 9.86)) 
       setColWidths(WB, 4, 1   , widths = 56.43)

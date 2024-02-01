@@ -20,7 +20,9 @@ ui = function() {
               h4(
                 img(src = "iotc-logo.png", height = "48px"), 
                 span("IOTC TCAC simulation tool v1.0 [ "),
-                a("source code", href="https://bitbucket.org/iotc-ws/iotc-tcac-simulations/src/master/", target = "_BLANK"),
+                a("source code", href = "https://bitbucket.org/iotc-ws/iotc-tcac-simulations/src/master/", target = "_BLANK"),
+                span(" | "),
+                a("readme", href = "./README.html"),
                 span(" ]")
               )
             )
@@ -68,25 +70,6 @@ ui = function() {
                       numericInput("tac", "Target TAC (t)", value = 500000, min = 10000, step = 10000),
                     )
                   ),
-                  sliderInput("period", "Historical catch interval", 
-                              width = "100%",
-                              min = AVAILABLE_YEARS$MIN, 
-                              max = AVAILABLE_YEARS$MAX, 
-                              value = range(2000, 2016),
-                              step = 1, sep = "", animate = FALSE
-                  ),
-                  fluidRow(
-                    column(width = 6,
-                      selectInput ("avg_period", "Historical catch average", width = "100%", choices = AVAILABLE_HISTORICAL_CATCH_AVERAGE_PERIODS, selected = "PE")
-                    ), 
-                    column(width = 6,
-                      conditionalPanel(
-                        condition = "input.avg_period == 'best'",                           
-                        numericInput("num_years", "Number of years", value = 5, min = 1, max = 60, step = 1)
-                      )
-                    )
-                  ),
-                  hr(class="thin"),
                   
                   span(class="triple",
                     sliderInput("weights", label = "Main component weights (%)",
@@ -188,6 +171,27 @@ ui = function() {
                     tabPanel(
                       "Catch-based weights",
                       div(class="top-padded", 
+                        sliderInput("period", "Historical catch interval", 
+                                    width = "100%",
+                                    min = AVAILABLE_YEARS$MIN, 
+                                    max = AVAILABLE_YEARS$MAX, 
+                                    value = range(2000, 2016),
+                                    step = 1, sep = "", animate = FALSE
+                        ),
+                        fluidRow(
+                          column(width = 6,
+                                 selectInput ("avg_period", "Historical catch average", width = "100%", choices = AVAILABLE_HISTORICAL_CATCH_AVERAGE_PERIODS, selected = "PE")
+                          ), 
+                          column(width = 6,
+                                 conditionalPanel(
+                                   condition = "input.avg_period == 'best'",                           
+                                   numericInput("num_years", "Number of years", value = 5, min = 1, max = 60, step = 1)
+                                 )
+                          )
+                        ),  
+                        
+                        hr(class = "thin"),
+                        
                         strong("Coastal state EEZ attribution weights (%)"),
                         
                         hr(),
