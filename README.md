@@ -4,7 +4,7 @@ This document provides an overview of the preliminary assumptions and final outp
 
 ## Configuration
 
-The definition of all relevant parameters characterising each CPC with respect to the allocation criteria is provided in the [`cfg/CPC_CONFIGURATIONS.xlsx`](https://bitbucket.org/iotc-ws/iotc-tcac-simulations/raw/8ce5f9630e1e3ef119848324bd4b71132f0e1336/cfg/CPC_CONFIGURATIONS.xlsx) file.
+The definition of all relevant parameters characterising each CPC with respect to the allocation criteria is provided in the [`CPC_CONFIGURATIONS.xlsx`](./CPC_CONFIGURATIONS.xlsx) file.
 
 This includes two worksheets:
 
@@ -74,7 +74,7 @@ For the sake of this simulation we assume the following:
 
 #### Historical catches
 
-This information is required to calculate the third component (*catch-based*) of the allocation criteria and can be downloaded from: [`cfg/HISTORICAL_CATCH_ESTIMATES.csv`](https://bitbucket.org/iotc-ws/iotc-tcac-simulations/raw/3b65fece8385b6e051e2b984f46b21bc9dd73bdd/cfg/HISTORICAL_CATCH_ESTIMATES.csv).
+This information is required to calculate the third component (*catch-based*) of the allocation criteria and can be downloaded from: [`HISTORICAL_CATCH_ESTIMATES.csv`](./HISTORICAL_CATCH_ESTIMATES.csv).
 
 Historical catches are available for all years from 1950 to 2021 stratified by year, fleet, gear, school type, species, and assigned area.
 
@@ -188,8 +188,8 @@ The context in which the relative cell value is calculated can also be changed v
 
 Finally, the simulation results can be downloaded as an Excel file through the **Download** button. The name of the file corresponds to the serialized date (including the time) at which the download request was issued (e.g., `TCAC13_simulation_2024_02_01_150856.xlsx`), while its content includes the following five worksheets:
 
-1.  `CPC_REFERENCES` containing the CPC configuration parameters as in [`cfg/CPC_CONFIGURATIONS.xlsx`](https://bitbucket.org/iotc-ws/iotc-tcac-simulations/raw/8ce5f9630e1e3ef119848324bd4b71132f0e1336/cfg/CPC_CONFIGURATIONS.xlsx)
-2.  `COASTAL_STATE_REFERENCES` containing the coastal states configuration parameters as in [`cfg/CPC_CONFIGURATIONS.xlsx`](https://bitbucket.org/iotc-ws/iotc-tcac-simulations/raw/8ce5f9630e1e3ef119848324bd4b71132f0e1336/cfg/CPC_CONFIGURATIONS.xlsx)
-3.  `HISTORICAL_CATCHES` containing the historical catches for the selected species as extracted from [`cfg/HISTORICAL_CATCH_ESTIMATES.csv`](https://bitbucket.org/iotc-ws/iotc-tcac-simulations/raw/3b65fece8385b6e051e2b984f46b21bc9dd73bdd/cfg/HISTORICAL_CATCH_ESTIMATES.csv).
+1.  `CPC_REFERENCES` containing the CPC configuration parameters as in [`CPC_CONFIGURATIONS.xlsx`](./CPC_CONFIGURATIONS.xlsx)
+2.  `COASTAL_STATE_REFERENCES` containing the coastal states configuration parameters as in [`CPC_CONFIGURATIONS.xlsx`](./CPC_CONFIGURATIONS.xlsx)
+3.  `HISTORICAL_CATCHES` containing the historical catches for the selected species as extracted from [`HISTORICAL_CATCH_ESTIMATES.csv`](./HISTORICAL_CATCH_ESTIMATES.csv).
 4.  `SIMULATION_CONFIGURATION` containing all the configuration parameters set by the users for the specific simulation round
 5.  `OUTPUT_QUOTAS` containing the outputs of the simulation expressed either as fraction of the annual TAC or as catches in tons by CPC and simulation year (depending on the chosen value of the **output unit** parameter)

@@ -22,7 +22,7 @@ ui = function() {
                 span("IOTC TCAC simulation tool v1.0 [ "),
                 a("source code", href = "https://bitbucket.org/iotc-ws/iotc-tcac-simulations/src/master/", target = "_BLANK"),
                 span(" | "),
-                a("readme", href = "./README.html"),
+                a("readme", href = "./README.html", target = "_BLANK"),
                 span(" ]")
               )
             )
