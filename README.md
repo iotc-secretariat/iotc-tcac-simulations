@@ -14,7 +14,7 @@ This includes two worksheets:
 
     -   official English name (as an IOTC CPC)
 
-    -   CPC / CPNC status
+    -   CPC / CNCP status
 
     -   *small islands developing state* (SIDS) status
 
@@ -22,7 +22,7 @@ This includes two worksheets:
 
     -   presence of a *national jurisdiction area* (NJA) within the [IOTC area of competence](https://iotc.org/about-iotc/competence)
 
-    -   size of the NJA (in km^2^, calculated from the shapefiles available to the IOTC Secretariat and originally downloaded from the VLIZ / Marine Regions [*maritime boundaries* database](https://www.marineregions.org/eezsearch.php))
+    -   size of the NJA (in km<sup>2</sup>, calculated from the shapefiles available to the IOTC Secretariat and originally downloaded from the VLIZ / Marine Regions [*maritime boundaries* database](https://www.marineregions.org/eezsearch.php))
 
     -   relative size of the NJA with respect to the IOTC area of competence.
 
