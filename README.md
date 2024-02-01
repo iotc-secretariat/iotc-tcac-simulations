@@ -10,23 +10,21 @@ This includes two worksheets:
 
 -   `CPC` - listing all current IOTC CPCs and CNCPs together with their:
 
-    - mnemonic code
-    
-    - official English name (as IOTC CPC)
-    
-    - CPC / CPNC status
-    
-    - *small islands developing state* (SIDS) status
-    
-    - coastal state status
-    
-    - presence of a *national jurisdiction area* (NJA) within the Indian Ocean
-    
-    - size of the NJA (in km^2^)
-    
-    - relative size of the NJA with respect to the IOTC area.
+    -   mnemonic code
 
-    The size of the NJAs has been calculated from the shapefiles available to the IOTC Secretariat and originally downloaded from the VLIZ / Marine Regions [*maritime boundaries* database](https://www.marineregions.org/eezsearch.php).
+    -   official English name (as IOTC CPC)
+
+    -   CPC / CPNC status
+
+    -   *small islands developing state* (SIDS) status
+
+    -   coastal state status
+
+    -   presence of a *national jurisdiction area* (NJA) within the Indian Ocean
+
+    -   size of the NJA (in km^2^, calculated from the shapefiles available to the IOTC Secretariat and originally downloaded from the VLIZ / Marine Regions [*maritime boundaries* database](https://www.marineregions.org/eezsearch.php))
+
+    -   relative size of the NJA with respect to the IOTC area.
 
 -   `COASTAL_STATE_SOCIO_ECONOMIC` - listing all IOTC CPCs that are either a coastal state or have a NJA within the Indian Ocean, together with their development status (retrieved from [here](https://www.un.org/development/desa/dpad/wp-content/uploads/sites/45/WESP2020_Annex.pdf)), and a set of socio-economic indicators to address the requirements of both *Option 1* and *Option 2* in [IOTC-2024-TCAC13-REF02](https://iotc.org/sites/default/files/documents/2023/11/IOTC-2024-TCAC13-REF02E_TCAC_draft_Allocation_Regime_v7_clean.docx) para. 6.6(1)(b). More specifically, the following indicators required by *Option 1*, i.e.:
 

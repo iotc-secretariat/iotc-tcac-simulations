@@ -6,7 +6,7 @@ server = function(input, output, session) {
         class = "stripe cell-border",
         rownames = FALSE,
         escape = FALSE,
-        colnames = c("Code", "Name", "Status", "Is coastal?", "Has AUNJ area?", "Is SIDS?", "AUNJ size", "AUNJ IOTC size", "AUNJ size weighting"),
+        colnames = c("Code", "Name", "Status", "Is SIDS?", "Is coastal?", "Has NJA in the IO?", "NJA size", "NJA vs. IOTC size", "NJA size weighting"),
         options = 
           list(
             pageLength= 15,
