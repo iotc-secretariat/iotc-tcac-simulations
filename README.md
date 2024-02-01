@@ -58,7 +58,7 @@ For the sake of this simulation we assume the following:
 
 -   That beside having an NJA in the Indian Ocean, `FRAT` (*France (OT)*) shall be *de facto* considered an IOTC coastal state (see [IOTC-2023-TCAC12-04](https://iotc.org/sites/default/files/documents/2023/09/IOTC-2023-TCAC12-04_E_-_Chairs_Explanatory_Note.pdf) *Chair's explanatory memorandum to TCAC12 participants*).
 
--   That `EUR` (*European Union / REIO*) has an NJA in the Indian Ocean (i.e., the NJA around RÃ©union and Mayotte) and that for this reason "(...) *should benefit from an allocation that relates to the size of the EEZ of its outermost territories in the IOTC area of competence.*" (see [IOTC-2023-TCAC12-04](https://iotc.org/sites/default/files/documents/2023/09/IOTC-2023-TCAC12-04_E_-_Chairs_Explanatory_Note.pdf) *Chair's explanatory memorandum to TCAC12 participants*).
+-   That `EUR` (*European Union / REIO*) has an NJA in the Indian Ocean (i.e., the NJA around Réunion and Mayotte) and that for this reason "(...) *should benefit from an allocation that relates to the size of the EEZ of its outermost territories in the IOTC area of competence.*" (see [IOTC-2023-TCAC12-04](https://iotc.org/sites/default/files/documents/2023/09/IOTC-2023-TCAC12-04_E_-_Chairs_Explanatory_Note.pdf) *Chair's explanatory memorandum to TCAC12 participants*).
 
 -   That `EUR` (*European Union / REIO*), notwithstanding the above, "(...) *would not be seeking the application of paragraph 6.6(1)(b) of the coastal state allocation criteria (...)*" (see [IOTC-2023-TCAC12-04](https://iotc.org/sites/default/files/documents/2023/09/IOTC-2023-TCAC12-04_E_-_Chairs_Explanatory_Note.pdf) *Chair's explanatory memorandum to TCAC12 participants*).
 
@@ -66,7 +66,7 @@ For the sake of this simulation we assume the following:
 
 > In lack of other indications, the simulation considers `EUR` (*European Union / REIO*) as benefiting from the portion of allocation specified by paragraph 6.6(1)(a) of [IOTC-2024-TCAC13-REF02](https://iotc.org/sites/default/files/documents/2023/11/IOTC-2024-TCAC13-REF02E_TCAC_draft_Allocation_Regime_v7_clean.docx).
 
--   That clarity shall be made regarding the NJA sovereignty of the Chagos archipelago which iscurrently disputed between two IOTC CPCs (`MUS` and `GBR`) as this will have an impact not only on the attribution of the relative NJA area weight for the coastal state allocation criteria, but also on the status of `GBR` (*United Kingdom of Great Britain and Northern Ireland*) as a coastal state itself.
+-   That clarity shall be made regarding the NJA sovereignty of the Chagos archipelago which is currently disputed between two IOTC CPCs (`MUS` and `GBR`) as this will have an impact not only on the attribution of the relative NJA area weight for the coastal state allocation criteria, but also on the status of `GBR` (*United Kingdom of Great Britain and Northern Ireland*) as a coastal state itself.
 
 > In lack of other indications, the simulation considers `GBR` (*United Kingdom of Great Britain and Northern Ireland*) as having NJA sovereignty over the Chagos archipelago for the purpose of the quota calculation, and that this assumption does not qualify the CPC as a coastal state.
 
@@ -94,7 +94,7 @@ In the latter case, the *best years* are considered to be those with the highest
 
 # User Interface
 
-The simulation is presented through an interactive web application developed using R-Shiny, and accessible through a [https://data.iotc.org/tcac/simulations/](dedicated%20web%20page) which is currently password-protected (credentials to be provided to the delegates participating to the TCAC).
+The simulation is presented through an interactive web application developed using R-Shiny, and accessible through [https://data.iotc.org/tcac/simulations/](dedicated%20web%20page) which is currently password-protected (credentials to be provided to the delegates participating to the TCAC).
 
 The main screen presents two tabbed panels, one to display the reference data used by the simulation, and one to present users with all configuration parameters and the final simulation results.
 
