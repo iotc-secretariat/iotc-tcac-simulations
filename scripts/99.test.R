@@ -18,7 +18,7 @@ CS_ALLOCATION = coastal_state_allocation(CPC_data = CPC_data, CS_SE_data = CS_SE
                                              GNI_wgt  = 0.3,
                                              SIDS_wgt = 0.4
                                            ),
-                                         EEZ_weight                 = 0.175)
+                                         NJA_weight                 = 0.175)
 
 CB_ALLOCATION = catch_based_allocation(CPC_data = CPC_data, CS_SE_data = CS_SE_data,
                                        catch_data = subset_and_postprocess_catch_data(catch_data = catch_data,

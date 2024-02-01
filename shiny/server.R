@@ -17,8 +17,8 @@ server = function(input, output, session) {
           ),
         filter = list(position = "top") 
       )
-      %>% DT::formatCurrency("EEZ_SIZE", mark = ",", digits = 0, currency = "&nbsp;km<sup>2</sup>", before = FALSE)
-      %>% DT::formatPercentage("EEZ_IOTC_RELATIVE_SIZE", digits = 2)
+      %>% DT::formatCurrency("NJA_SIZE", mark = ",", digits = 0, currency = "&nbsp;km<sup>2</sup>", before = FALSE)
+      %>% DT::formatPercentage("NJA_IOTC_RELATIVE_SIZE", digits = 2)
     )
   
   output$coastal_states_summary_table = 
@@ -99,7 +99,7 @@ server = function(input, output, session) {
     paste0(format(as.numeric((input$cs_weights[2] - input$cs_weights[1])), nsmall = 1), "%")
   })
   
-  # Coastal states / EEZ weight
+  # Coastal states / NJA weight
   
   output$cs_ez_wgt = renderText({
     paste0(format(as.numeric((100 - input$cs_weights[2])), nsmall = 1), "%")
@@ -181,7 +181,7 @@ server = function(input, output, session) {
                                              #socio_economic_weight_HDI  = cs_se_HDI_wgt,
                                              #socio_economic_weight_GNI  = cs_se_GNI_wgt,
                                              #socio_economic_weight_SIDS = cs_se_SIDS_wgt,
-                                             EEZ_weight                  = cs_ez_wgt)
+                                             NJA_weight                  = cs_ez_wgt)
     
     filtered_catch_data = subset_and_postprocess_catch_data(catch_data   = ALL_CATCH_DATA,
                                                             species_code = input$species,
@@ -323,20 +323,20 @@ server = function(input, output, session) {
         config = rbind(config, as.list(c("COASTAL_STATE_SOCIO_ECONOMIC_OPTION_2_SIDS_WEIGHT", paste0(format(as.numeric((100 - input$cs_se_o2_weights[2])), nsmall = 1), "%"))))
       }
 
-      config = rbind(config, as.list(c("COASTAL_STATE_EEZ_WEIGHT",            paste0(format(as.numeric((100 - input$cs_weights[2])), nsmall = 1), "%"))))
+      config = rbind(config, as.list(c("COASTAL_STATE_NJA_WEIGHT",            paste0(format(as.numeric((100 - input$cs_weights[2])), nsmall = 1), "%"))))
       
       config = rbind(config, as.list(c("CATCH_BASED_WEIGHT",                  paste0(format(as.numeric((100 - input$weights[2])), nsmall = 1), "%"))))
       
-      config = rbind(config, as.list(c("CATCH_BASED_WEIGHT_EEZ_ATTRIBUTION_YEAR_01", paste0(format(input$cb_year01_wgt, nsmall = 1), "%"))))
-      config = rbind(config, as.list(c("CATCH_BASED_WEIGHT_EEZ_ATTRIBUTION_YEAR_02", paste0(format(input$cb_year02_wgt, nsmall = 1), "%"))))
-      config = rbind(config, as.list(c("CATCH_BASED_WEIGHT_EEZ_ATTRIBUTION_YEAR_03", paste0(format(input$cb_year03_wgt, nsmall = 1), "%"))))
-      config = rbind(config, as.list(c("CATCH_BASED_WEIGHT_EEZ_ATTRIBUTION_YEAR_04", paste0(format(input$cb_year04_wgt, nsmall = 1), "%"))))
-      config = rbind(config, as.list(c("CATCH_BASED_WEIGHT_EEZ_ATTRIBUTION_YEAR_05", paste0(format(input$cb_year05_wgt, nsmall = 1), "%"))))
-      config = rbind(config, as.list(c("CATCH_BASED_WEIGHT_EEZ_ATTRIBUTION_YEAR_06", paste0(format(input$cb_year06_wgt, nsmall = 1), "%"))))
-      config = rbind(config, as.list(c("CATCH_BASED_WEIGHT_EEZ_ATTRIBUTION_YEAR_07", paste0(format(input$cb_year07_wgt, nsmall = 1), "%"))))
-      config = rbind(config, as.list(c("CATCH_BASED_WEIGHT_EEZ_ATTRIBUTION_YEAR_08", paste0(format(input$cb_year08_wgt, nsmall = 1), "%"))))
-      config = rbind(config, as.list(c("CATCH_BASED_WEIGHT_EEZ_ATTRIBUTION_YEAR_09", paste0(format(input$cb_year09_wgt, nsmall = 1), "%"))))
-      config = rbind(config, as.list(c("CATCH_BASED_WEIGHT_EEZ_ATTRIBUTION_YEAR_10", paste0(format(input$cb_year10_wgt, nsmall = 1), "%"))))
+      config = rbind(config, as.list(c("CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_01", paste0(format(input$cb_year01_wgt, nsmall = 1), "%"))))
+      config = rbind(config, as.list(c("CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_02", paste0(format(input$cb_year02_wgt, nsmall = 1), "%"))))
+      config = rbind(config, as.list(c("CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_03", paste0(format(input$cb_year03_wgt, nsmall = 1), "%"))))
+      config = rbind(config, as.list(c("CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_04", paste0(format(input$cb_year04_wgt, nsmall = 1), "%"))))
+      config = rbind(config, as.list(c("CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_05", paste0(format(input$cb_year05_wgt, nsmall = 1), "%"))))
+      config = rbind(config, as.list(c("CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_06", paste0(format(input$cb_year06_wgt, nsmall = 1), "%"))))
+      config = rbind(config, as.list(c("CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_07", paste0(format(input$cb_year07_wgt, nsmall = 1), "%"))))
+      config = rbind(config, as.list(c("CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_08", paste0(format(input$cb_year08_wgt, nsmall = 1), "%"))))
+      config = rbind(config, as.list(c("CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_09", paste0(format(input$cb_year09_wgt, nsmall = 1), "%"))))
+      config = rbind(config, as.list(c("CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_10", paste0(format(input$cb_year10_wgt, nsmall = 1), "%"))))
       
       config = rbind(config, as.list(c("OUTPUT_UNIT", input$out_unit)))
             
