@@ -11,7 +11,7 @@
 
 
 
-<title>README</title>
+<title>IOTC TCAC 13 - Allocation simulations</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -348,19 +348,24 @@ display: none;
 
 
 
+<h1 class="title toc-ignore">IOTC TCAC 13 - Allocation simulations</h1>
 
 </div>
 
 
-<div id="iotc-tcac-13---allocation-simulations" class="section level1">
-<h1>IOTC TCAC 13 - Allocation simulations</h1>
+<div id="purpose-of-this-document" class="section level1">
+<h1>Purpose of this document</h1>
 <p>This document provides an overview of the preliminary assumptions and
 final outputs produced by the simulation of the allocation criteria in
 <a href="https://iotc.org/sites/default/files/documents/2023/11/IOTC-2024-TCAC13-REF02E_TCAC_draft_Allocation_Regime_v7_clean.docx">IOTC-2024-TCAC13-REF02</a>
 as developed by the <a href="mailto:IOTC-Secretariat@fao.org">IOTC
 Secretariat</a>.</p>
-<div id="configuration" class="section level2">
-<h2>Configuration</h2>
+<p>It also describes the <em>user interface</em> of the simulation tool,
+with additional details on the various configuration parameters for both
+the simulation process and the produced outputs.</p>
+</div>
+<div id="process-configuration" class="section level1">
+<h1>Process configuration</h1>
 <p>The definition of all relevant parameters characterising each CPC
 with respect to the allocation criteria is provided in the <a href="./CPC_CONFIGURATIONS.xlsx"><code>cfg/CPC_CONFIGURATIONS.xlsx</code></a>
 file.</p>
@@ -417,10 +422,10 @@ and <a href="https://datahelpdesk.worldbank.org/knowledgebase/articles/906519-wo
 websites, respectively, with the HDI index for the EU averaged from <a href="https://www.theglobaleconomy.com/rankings/human_development/European-union/">here</a>.</p></li>
 </ul></li>
 </ul>
-<div id="assumptions" class="section level3">
-<h3>Assumptions</h3>
-<div id="cpc-coastal-state-configuration" class="section level4">
-<h4>CPC / coastal state configuration</h4>
+<div id="assumptions" class="section level2">
+<h2>Assumptions</h2>
+<div id="cpc-coastal-state-configuration" class="section level3">
+<h3>CPC / coastal state configuration</h3>
 <p>The identification of a CPC as <em>being</em> or <em>not being</em>
 an IOTC coastal state is still a matter of debate for some IOTC members
 that have NJAs within the IOTC area of competence.</p>
@@ -485,8 +490,8 @@ properly reflected in the current implementation of the TCAC simulations
 made by the Secretariat.</p>
 </blockquote>
 </div>
-<div id="historical-catches" class="section level4">
-<h4>Historical catches</h4>
+<div id="historical-catches" class="section level3">
+<h3>Historical catches</h3>
 <p>This information is required to calculate the third component
 (<em>catch-based</em>) of the allocation criteria and can be downloaded
 from: <a href="./HISTORICAL_CATCH_ESTIMATES.csv"><code>cfg/HISTORICAL_CATCH_ESTIMATES.csv</code></a>.</p>
@@ -525,7 +530,6 @@ period</p></li>
 <p>In the latter case, the <em>best years</em> are considered to be
 those with the highest catches across the selected period (for a given
 fleet / species).</p>
-</div>
 </div>
 </div>
 </div>

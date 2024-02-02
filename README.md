@@ -1,8 +1,17 @@
-# IOTC TCAC 13 - Allocation simulations
+---
+title: IOTC TCAC 13 - Allocation simulations
+output: 
+  html_document: 
+    fig_caption: yes
+---
+
+# Purpose of this document
 
 This document provides an overview of the preliminary assumptions and final outputs produced by the simulation of the allocation criteria in [IOTC-2024-TCAC13-REF02](https://iotc.org/sites/default/files/documents/2023/11/IOTC-2024-TCAC13-REF02E_TCAC_draft_Allocation_Regime_v7_clean.docx) as developed by the [IOTC Secretariat](mailto:IOTC-Secretariat@fao.org).
 
-## Configuration
+It also describes the _user interface_ of the simulation tool, with additional details on the various configuration parameters for both the simulation process and the produced outputs.
+
+# Process configuration
 
 The definition of all relevant parameters characterising each CPC with respect to the allocation criteria is provided in the [`cfg/CPC_CONFIGURATIONS.xlsx`](./CPC_CONFIGURATIONS.xlsx) file.
 
@@ -46,9 +55,9 @@ This includes two worksheets:
 
     -   The HDI (2021) and GNI indicators required by *Option 2* have been retrieved from the [UNDP](https://hdr.undp.org/data-center/human-development-index#/indicies/HDI) and [WorldBank](https://datahelpdesk.worldbank.org/knowledgebase/articles/906519-world-bank-country-and-lending-group) websites, respectively, with the HDI index for the EU averaged from [here](https://www.theglobaleconomy.com/rankings/human_development/European-union/).
 
-### Assumptions
+## Assumptions
 
-#### CPC / coastal state configuration
+### CPC / coastal state configuration
 
 The identification of a CPC as *being* or *not being* an IOTC coastal state is still a matter of debate for some IOTC members that have NJAs within the IOTC area of competence.
 
@@ -72,7 +81,7 @@ For the sake of this simulation we assume the following:
 
 > Furthermore, `GBR` focal points have confirmed that they will request the application of paragraph 6.6(1)(a) and (c) of the coastal state allocation criteria, but not (b), and this has been properly reflected in the current implementation of the TCAC simulations made by the Secretariat.
 
-#### Historical catches
+### Historical catches
 
 This information is required to calculate the third component (*catch-based*) of the allocation criteria and can be downloaded from: [`cfg/HISTORICAL_CATCH_ESTIMATES.csv`](./HISTORICAL_CATCH_ESTIMATES.csv).
 
