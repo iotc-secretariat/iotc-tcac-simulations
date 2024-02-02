@@ -1,16 +1,16 @@
 # IOTC TCAC 13 - Allocation simulations
 
-This document provides an overview of the preliminary assumptions and final outputs produced by the simulation of the allocation criteria defined in [IOTC-2024-TCAC13-REF02](https://iotc.org/sites/default/files/documents/2023/11/IOTC-2024-TCAC13-REF02E_TCAC_draft_Allocation_Regime_v7_clean.docx) as developed by the [IOTC Secretariat](mailto:IOTC-Secretariat@fao.org).
+This document provides an overview of the preliminary assumptions and final outputs produced by the simulation of the allocation criteria in [IOTC-2024-TCAC13-REF02](https://iotc.org/sites/default/files/documents/2023/11/IOTC-2024-TCAC13-REF02E_TCAC_draft_Allocation_Regime_v7_clean.docx) as developed by the [IOTC Secretariat](mailto:IOTC-Secretariat@fao.org).
 
 ## Configuration
 
-The definition of all relevant parameters characterising each CPC with respect to the allocation criteria is provided in the [`CPC_CONFIGURATIONS.xlsx`](./CPC_CONFIGURATIONS.xlsx) file.
+The definition of all relevant parameters characterising each CPC with respect to the allocation criteria is provided in the [`cfg/CPC_CONFIGURATIONS.xlsx`](./CPC_CONFIGURATIONS.xlsx) file.
 
 This includes two worksheets:
 
 -   `CPC` - listing all current IOTC *contracting parties* (CPC) and *cooperating non-contracting parties* (CNCP) together with their:
 
-    -   mnemonic code (generally the ISO3 code of the country)
+    -   mnemonic code (generally, the ISO3 code of the country)
 
     -   official English name (as an IOTC CPC)
 
@@ -74,7 +74,7 @@ For the sake of this simulation we assume the following:
 
 #### Historical catches
 
-This information is required to calculate the third component (*catch-based*) of the allocation criteria and can be downloaded from: [`HISTORICAL_CATCH_ESTIMATES.csv`](./HISTORICAL_CATCH_ESTIMATES.csv).
+This information is required to calculate the third component (*catch-based*) of the allocation criteria and can be downloaded from: [`cfg/HISTORICAL_CATCH_ESTIMATES.csv`](./HISTORICAL_CATCH_ESTIMATES.csv).
 
 Historical catches are available for all years from 1950 to 2021 stratified by year, fleet, gear, school type, species, and assigned area.
 
@@ -88,13 +88,15 @@ For the sake of calculating the catch-based allocation weight for each CPC, info
 
 -   the annual average across the entire time period
 
--   the average of the best 'n' years across the time period
+-   the average of the best "*n*" years across the time period
 
 In the latter case, the *best years* are considered to be those with the highest catches across the selected period (for a given fleet / species).
 
-# User Interface
+# User interface
 
-The simulation is presented through an interactive web application developed using R-Shiny, and accessible through [https://data.iotc.org/tcac/simulations/](dedicated%20web%20page) which is currently password-protected (credentials to be provided to the delegates participating to the TCAC).
+The simulation is presented through an interactive web application developed using R-Shiny, and accessible through [https://data.iotc.org/tcac/simulations/](dedicated%20web%20page), which is currently password-protected and whose access credentials will be provided to the delegates participating to the TCAC.
+
+![An overview of the web application user interface](assets/images/app_UI_all.png)
 
 The main screen presents two tabbed panels, one to display the reference data used by the simulation, and one to present users with all configuration parameters and the final simulation results.
 
@@ -103,8 +105,16 @@ The main screen presents two tabbed panels, one to display the reference data us
 This panel provides access to three main categories of configuration datasets:
 
 -   ***CPC summary***, with the basic details for each IOTC CPC and CNCP and information on the NJA they might have in the IOTC area of competence
+
+    ![CPC summary data panel](assets/images/app_ref_data_cpc_summary.png)
+
 -   ***Coastal states summary***, with details of all IOTC CPCs that are either explicitly considered as coastal states, or that have a NJA within the IOTC area of competence. These include two distinct sets of socio-economic indicators to be used in agreement with the simulation requirements
+
+    ![Coastal states summary data panel](assets/images/app_ref_data_coastal_states_summary.png)
+
 -   ***Historical catches***, with estimated catches for the five major IOTC species stratified by year, flag, fleet, type of fishery, type of school association, assigned area, and species
+
+    ![Historical catch data panel](assets/images/app_ref_data_historical_catches.png)
 
 All three datasets are presented as sortable, filterable tables and provide an interactive version of the configuration files included with the application.
 
@@ -114,21 +124,35 @@ This panel provides access to the configuration parameters for the simulation an
 
 ### *Configuration parameters*
 
--   The **species** subject to the simulation (affects the catch records to be used to calculate the *catch-based* allocation component)
+-   The ***Species*** subject to the simulation (affects the catch records to be used to calculate the *catch-based* allocation component)
 
--   The **target TAC** in tons (affects the estimated annual TACs for each CPC and year)
+-   The ***Target TAC*** in tons (affects the estimated annual catches for each CPC and year)
 
--   The **main component weights**, i.e.:
+    ![Species and TAC configuration controls](assets/images/app_config_species_tac.png)
 
-    1.  The **baseline weight** - that doesn't require any further configuration as it assign an equal portion of the quota to each CPC (see [IOTC-2024-TCAC13-REF02](https://iotc.org/sites/default/files/documents/2023/11/IOTC-2024-TCAC13-REF02E_TCAC_draft_Allocation_Regime_v7_clean.docx) para. 6.5)
+-   The ***Main component weights***, i.e.:
 
-    2.  The **coastal state weight** - that applies to all IOTC CPCs with a NJA in the IOTC area of competence (see [IOTC-2024-TCAC13-REF02](https://iotc.org/sites/default/files/documents/2023/11/IOTC-2024-TCAC13-REF02E_TCAC_draft_Allocation_Regime_v7_clean.docx) para. 6.6 (1)), and that is further broken down into:
+    ![Main component weights configuration controls](assets/images/app_config_main_components_wgt.png)
 
-        1.  **Equal weight** (see [IOTC-2024-TCAC13-REF02](https://iotc.org/sites/default/files/documents/2023/11/IOTC-2024-TCAC13-REF02E_TCAC_draft_Allocation_Regime_v7_clean.docx) para. 6.6(1)(a))
+    1.  The ***Baseline weight***, that doesn't require any further configuration as it assign an equal portion of the quota to each CPC (see [IOTC-2024-TCAC13-REF02](https://iotc.org/sites/default/files/documents/2023/11/IOTC-2024-TCAC13-REF02E_TCAC_draft_Allocation_Regime_v7_clean.docx) para. 6.5)
 
-        2.  **Socio-economic weight** (see [IOTC-2024-TCAC13-REF02](https://iotc.org/sites/default/files/documents/2023/11/IOTC-2024-TCAC13-REF02E_TCAC_draft_Allocation_Regime_v7_clean.docx) para. 6.6(1)(b))
+        ![Baseline weights configuration controls](assets/images/app_config_baseline_components_wgt.png)
 
-            -   **Option #1**: *vulnerability + priority sectors + disproportionate burden* (see [IOTC-2024-TCAC13-REF02](https://iotc.org/sites/default/files/documents/2023/11/IOTC-2024-TCAC13-REF02E_TCAC_draft_Allocation_Regime_v7_clean.docx) para. 6.6(1)(a)[OPTION 1]), which includes three distinct sub-weights to account for:
+    2.  The ***Coastal state weight***, that applies to all IOTC CPCs with a NJA in the IOTC area of competence (see [IOTC-2024-TCAC13-REF02](https://iotc.org/sites/default/files/documents/2023/11/IOTC-2024-TCAC13-REF02E_TCAC_draft_Allocation_Regime_v7_clean.docx) para. 6.6 (1)
+
+        ![Coastal state sub-component weights configuration controls](assets/images/app_config_coastal_state_components_wgt.png)
+
+        This component weight is further broken down into:
+
+        1.  ***Equal weight*** (see [IOTC-2024-TCAC13-REF02](https://iotc.org/sites/default/files/documents/2023/11/IOTC-2024-TCAC13-REF02E_TCAC_draft_Allocation_Regime_v7_clean.docx) para. 6.6(1)(a))
+
+        2.  ***Socio-economic weight*** (see [IOTC-2024-TCAC13-REF02](https://iotc.org/sites/default/files/documents/2023/11/IOTC-2024-TCAC13-REF02E_TCAC_draft_Allocation_Regime_v7_clean.docx) para. 6.6(1)(b))
+
+            -   **Option #1**: *vulnerability + priority sectors + disproportionate burden* (see [IOTC-2024-TCAC13-REF02](https://iotc.org/sites/default/files/documents/2023/11/IOTC-2024-TCAC13-REF02E_TCAC_draft_Allocation_Regime_v7_clean.docx) para. 6.6(1)(a)[OPTION 1])
+
+                ![Socio-economic sub-component weights configuration controls (Option #1)](assets/images/app_config_socio_economic_wgts_option1.png)
+
+                This option includes three distinct sub-component weights to account for:
 
                 1.  the **vulnerability** of the CPC (see [IOTC-2024-TCAC13-REF02](https://iotc.org/sites/default/files/documents/2023/11/IOTC-2024-TCAC13-REF02E_TCAC_draft_Allocation_Regime_v7_clean.docx) para. 6.6(1)(a)[OPTION 1 (i)], whose main components (equally weighted at 50% each) are:
                     -   the **per capita fish consumption**
@@ -140,7 +164,11 @@ This panel provides access to the configuration parameters for the simulation an
                     -   the **contribution of the whole fisheries sector to the GDP**
                     -   the **proportion of total export value made up of fisheries export**
 
-            -   **Option #2**: *HDI + GNI + SIDS* (see [IOTC-2024-TCAC13-REF02](https://iotc.org/sites/default/files/documents/2023/11/IOTC-2024-TCAC13-REF02E_TCAC_draft_Allocation_Regime_v7_clean.docx) para. 6.6(1)(a)[OPTION 2]), which includes three distinct sub-weights to account for:
+            -   **Option #2**: *HDI + GNI + SIDS* (see [IOTC-2024-TCAC13-REF02](https://iotc.org/sites/default/files/documents/2023/11/IOTC-2024-TCAC13-REF02E_TCAC_draft_Allocation_Regime_v7_clean.docx) para. 6.6(1)(a)[OPTION 2])
+
+                ![Socio-economic sub-component weights configuration controls (Option #2)](assets/images/app_config_socio_economic_wgts_option2.png)
+
+                This option includes three distinct sub-component weights to account for:
 
                 1.  The **Human Development Index** (HDI) status
 
@@ -148,21 +176,29 @@ This panel provides access to the configuration parameters for the simulation an
 
                 3.  The **Small Island Developing State** (SIDS) status
 
-        3.  **EEZ weight** (see [IOTC-2024-TCAC13-REF02](https://iotc.org/sites/default/files/documents/2023/11/IOTC-2024-TCAC13-REF02E_TCAC_draft_Allocation_Regime_v7_clean.docx) para. 6.6(1)(c)) to replace the lack of indicators based on spatial stock abundance.
+        3.  ***EEZ weight*** (see [IOTC-2024-TCAC13-REF02](https://iotc.org/sites/default/files/documents/2023/11/IOTC-2024-TCAC13-REF02E_TCAC_draft_Allocation_Regime_v7_clean.docx) para. 6.6(1)(c)) to replace the lack of indicators based on spatial stock abundance.
 
             > In this case, the size of the national jurisdiction area of a CPC within the IOTC area of competence is weighted according to its relative size compared to the latter.
 
-    3.  The **catch-based weight**, to reflect the requirement that CPCs shall be eligible to receive such allocation based on the historical catches of the CPC **for each stock**. The criteria with which the historical catches are considered to determine this weight are indicated in [IOTC-2024-TCAC13-REF02](https://iotc.org/sites/default/files/documents/2023/11/IOTC-2024-TCAC13-REF02E_TCAC_draft_Allocation_Regime_v7_clean.docx) para. 8, and the simulation tools allows to choose and configure:
+    3.  The ***Catch-based weight***, to reflect the requirement that CPCs shall be eligible to receive such allocation based on the historical catches of the CPC **for each stock**. The criteria with which the historical catches are considered to determine this weight are indicated in [IOTC-2024-TCAC13-REF02](https://iotc.org/sites/default/files/documents/2023/11/IOTC-2024-TCAC13-REF02E_TCAC_draft_Allocation_Regime_v7_clean.docx) para. 8, and the simulation tools allows to choose and configure:
 
-        1.  The **historical catch interval**, which affects the determination of the average catches (see [IOTC-2024-TCAC13-REF02](https://iotc.org/sites/default/files/documents/2023/11/IOTC-2024-TCAC13-REF02E_TCAC_draft_Allocation_Regime_v7_clean.docx) para. 6.8(1)(a))
+        1.  The ***Historical catch interval***, which affects the determination of the average catches (see [IOTC-2024-TCAC13-REF02](https://iotc.org/sites/default/files/documents/2023/11/IOTC-2024-TCAC13-REF02E_TCAC_draft_Allocation_Regime_v7_clean.docx) para. 6.8(1)(a))
 
-        2.  The type of **historical catch average** to be considered (see [IOTC-2024-TCAC13-REF02](https://iotc.org/sites/default/files/documents/2023/11/IOTC-2024-TCAC13-REF02E_TCAC_draft_Allocation_Regime_v7_clean.docx) para. 6.8(1)(a)), which shall be one among:
+            ![Historical catch interval configuration controls](assets/images/app_config_catch_based_config_period.png)
 
-            -   ***Selected period*** - to calculate the average catch by CPC across the entire historical catch interval
+        2.  The type of ***Historical catch average*** to be considered (see [IOTC-2024-TCAC13-REF02](https://iotc.org/sites/default/files/documents/2023/11/IOTC-2024-TCAC13-REF02E_TCAC_draft_Allocation_Regime_v7_clean.docx) para. 6.8(1)(a)), which shall be one among:
 
-            -   ***Best 'n' years*** - to calculate the average catch by CPC over the best 'n' years (in terms of catches) identified within the historical catch interval, with **number of years** as a selectable parameter
+            -   **Selected period** to calculate the average catch by CPC across the entire historical catch interval
+
+                ![Historical catch average configuration controls (selected period)](assets/images/app_config_catch_based_config_period_type_all.png)
+
+            -   **Best "n" years** to calculate the average catch by CPC over the best 'n' years (in terms of catches) identified within the historical catch interval, with ***Number of years*** as a selectable parameter
+
+                ![Historical catch average configuration controls (best 'n' years)](assets/images/app_config_catch_based_config_period_type_best.png)
 
         3.  A stepwise approach (see [IOTC-2024-TCAC13-REF02](https://iotc.org/sites/default/files/documents/2023/11/IOTC-2024-TCAC13-REF02E_TCAC_draft_Allocation_Regime_v7_clean.docx) para. 6.12) to implement the NJA attribution to coastal / flag states as per [IOTC-2024-TCAC13-REF02](https://iotc.org/sites/default/files/documents/2023/11/IOTC-2024-TCAC13-REF02E_TCAC_draft_Allocation_Regime_v7_clean.docx) para. 6.8(2) over the course of 6 or 10 years, which is presented as a species-independent set of 10 coefficients that determine the fraction of catches from a flag state that are estimated to have been taken into the NJA of a CPC, and that shall be therefore assigned to the coastal state owning the NJA
+
+            ![Historical catch transitional attribution controls](assets/images/app_config_catch_based_config_transition.png)
 
             > Each coefficient represent the percentage of said catches that shall be attributed for that year to the coastal state. In theory, these coefficients shall represent a progression from a starting value \< 100% to 100% (all catches are attributed to the coastal state) but nothing prevents users to introduce whatever sequence they want for these coefficients.
 
@@ -170,26 +206,44 @@ This panel provides access to the configuration parameters for the simulation an
 
 The outputs of the simulation are presented as a table that has CPCs as rows and allocation years as columns (from 1 to indicate the initial year, up to a maximum of 10).
 
-Each cell contains the quota assigned to the CPC for a specific year and depending on the choice of the **output unit** parameter it can be expressed either as a fraction (% of the TAC for a given species) or as an absolute value in tons.
+Each cell contains the quota assigned to the CPC for a specific year and depending on the choice of the ***Output unit*** parameter it can be expressed either as a fraction (% of the TAC for a given species) or as an absolute value in tons, which is computed from the output quotas (in %) and the TAC (in tons) set by the user.
+
+![](assets/images/app_output_unit.png)
 
 Each cell has by default a background color whose intensity is directly proportional to the value within the cell, as compared to other cells / values within the same year or globally across the entire table.
 
-The visual representation of the relative cell value can be changed via the **Heatmap style** parameter, which has two possible options:
+The visual representation of the relative cell value can be changed via the ***Heatmap style*** parameter.
 
--   **Background color** (default) to represent the (relative) cell value through the intensity of the background, or
+![](assets/images/app_output_heatmap_style.png)
 
--   **Bar** to represent the (relative) cell value through a horizontal bar.
+This presents two possible options:
 
-The context in which the relative cell value is calculated can also be changed via the **Heatmap type** parameter, which has two possible options:
+-   **Background color** (default) to represent the (relative) cell value through the intensity of the background
+
+    ![Output table using the 'background colour' heatmap option](assets/images/app_output_heatmap_bg.png)
+
+-   **Bar** to represent the (relative) cell value through a horizontal bar
+
+    ![Output table using the 'bar' heatmap option](assets/images/app_output_heatmap_bar.png)
+
+The context in which the relative cell value is calculated can also be changed via the ***Heatmap type*** parameter.
+
+![](assets/images/app_output_heatmap_type.png)
+
+This presents two possible options:
 
 -   **Global** (default), to calculate each cell's relative value with respect to all values in the table, or
 
 -   **By year** to calculate each cell's relative value with respect to all values estimated for the same year
 
-Finally, the simulation results can be downloaded as an Excel file through the **Download** button. The name of the file corresponds to the serialized date (including the time) at which the download request was issued (e.g., `TCAC13_simulation_2024_02_01_150856.xlsx`), while its content includes the following five worksheets:
+Finally, the simulation results can be downloaded as an Excel file through the ***Download*** button. The name of the file corresponds to the serialized date (including the time) at which the download request was issued (e.g., `TCAC13_simulation_2024_02_01_150856.xlsx`), while its content includes the following five worksheets:
 
-1.  `CPC_REFERENCES` containing the CPC configuration parameters as in [`CPC_CONFIGURATIONS.xlsx`](./CPC_CONFIGURATIONS.xlsx)
-2.  `COASTAL_STATE_REFERENCES` containing the coastal states configuration parameters as in [`CPC_CONFIGURATIONS.xlsx`](./CPC_CONFIGURATIONS.xlsx)
-3.  `HISTORICAL_CATCHES` containing the historical catches for the selected species as extracted from [`HISTORICAL_CATCH_ESTIMATES.csv`](./HISTORICAL_CATCH_ESTIMATES.csv).
+1.  `CPC_REFERENCES` containing the CPC configuration parameters as in [`cfg/CPC_CONFIGURATIONS.xlsx`](./CPC_CONFIGURATIONS.xlsx)
+
+2.  `COASTAL_STATE_REFERENCES` containing the coastal states configuration parameters as in [`cfg/CPC_CONFIGURATIONS.xlsx`](./CPC_CONFIGURATIONS.xlsx)
+
+3.  `HISTORICAL_CATCHES` containing the historical catches for the selected species as extracted from [`cfg/HISTORICAL_CATCH_ESTIMATES.csv`](./HISTORICAL_CATCH_ESTIMATES.csv)
+
 4.  `SIMULATION_CONFIGURATION` containing all the configuration parameters set by the users for the specific simulation round
+
 5.  `OUTPUT_QUOTAS` containing the outputs of the simulation expressed either as fraction of the annual TAC or as catches in tons by CPC and simulation year (depending on the chosen value of the **output unit** parameter)
