@@ -94,9 +94,11 @@ In the latter case, the *best years* are considered to be those with the highest
 
 # User interface
 
-The simulation is presented through an interactive web application developed using R-Shiny, and accessible through [https://data.iotc.org/tcac/simulations/](dedicated%20web%20page), which is currently password-protected and whose access credentials will be provided to the delegates participating to the TCAC.
+The simulation is presented through an interactive R-Shiny [web application](https://data.iotc.org/tcac/simulations/) which is currently password-protected and whose access credentials will be provided to participating delegates.
 
-![An overview of the web application user interface](assets/images/app_UI_all.png)
+![An overview of the web application user interface](assets/images/app_UI_all.png){style="padding-bottom: 1em;"}
+
+<br/>
 
 The main screen presents two tabbed panels, one to display the reference data used by the simulation, and one to present users with all configuration parameters and the final simulation results.
 
@@ -108,13 +110,19 @@ This panel provides access to three main categories of configuration datasets:
 
     ![CPC summary data panel](assets/images/app_ref_data_cpc_summary.png)
 
+    <br/>
+
 -   ***Coastal states summary***, with details of all IOTC CPCs that are either explicitly considered as coastal states, or that have a NJA within the IOTC area of competence. These include two distinct sets of socio-economic indicators to be used in agreement with the simulation requirements
 
     ![Coastal states summary data panel](assets/images/app_ref_data_coastal_states_summary.png)
 
+    <br/>
+
 -   ***Historical catches***, with estimated catches for the five major IOTC species stratified by year, flag, fleet, type of fishery, type of school association, assigned area, and species
 
-    ![Historical catch data panel](assets/images/app_ref_data_historical_catches.png)
+    ![Historical catch data panel](assets/images/app_ref_data_historical_catches.png){style="padding-bottom: 1em;"}
+
+    <br/>
 
 All three datasets are presented as sortable, filterable tables and provide an interactive version of the configuration files included with the application.
 
@@ -130,17 +138,25 @@ This panel provides access to the configuration parameters for the simulation an
 
     ![Species and TAC configuration controls](assets/images/app_config_species_tac.png)
 
+    <br/>
+
 -   The ***Main component weights***, i.e.:
 
     ![Main component weights configuration controls](assets/images/app_config_main_components_wgt.png)
+
+    <br/>
 
     1.  The ***Baseline weight***, that doesn't require any further configuration as it assign an equal portion of the quota to each CPC (see [IOTC-2024-TCAC13-REF02](https://iotc.org/sites/default/files/documents/2023/11/IOTC-2024-TCAC13-REF02E_TCAC_draft_Allocation_Regime_v7_clean.docx) para. 6.5)
 
         ![Baseline weights configuration controls](assets/images/app_config_baseline_components_wgt.png)
 
+        <br/>
+
     2.  The ***Coastal state weight***, that applies to all IOTC CPCs with a NJA in the IOTC area of competence (see [IOTC-2024-TCAC13-REF02](https://iotc.org/sites/default/files/documents/2023/11/IOTC-2024-TCAC13-REF02E_TCAC_draft_Allocation_Regime_v7_clean.docx) para. 6.6 (1)
 
         ![Coastal state sub-component weights configuration controls](assets/images/app_config_coastal_state_components_wgt.png)
+
+        <br/>
 
         This component weight is further broken down into:
 
@@ -148,9 +164,13 @@ This panel provides access to the configuration parameters for the simulation an
 
         2.  ***Socio-economic weight*** (see [IOTC-2024-TCAC13-REF02](https://iotc.org/sites/default/files/documents/2023/11/IOTC-2024-TCAC13-REF02E_TCAC_draft_Allocation_Regime_v7_clean.docx) para. 6.6(1)(b))
 
+            Its sub-components are selectable among two possible options that take in consideration different aspects of the social and economic environment and status of all IOTC CPCs:
+
             -   **Option #1**: *vulnerability + priority sectors + disproportionate burden* (see [IOTC-2024-TCAC13-REF02](https://iotc.org/sites/default/files/documents/2023/11/IOTC-2024-TCAC13-REF02E_TCAC_draft_Allocation_Regime_v7_clean.docx) para. 6.6(1)(a)[OPTION 1])
 
                 ![Socio-economic sub-component weights configuration controls (Option #1)](assets/images/app_config_socio_economic_wgts_option1.png)
+
+                <br/>
 
                 This option includes three distinct sub-component weights to account for:
 
@@ -164,9 +184,13 @@ This panel provides access to the configuration parameters for the simulation an
                     -   the **contribution of the whole fisheries sector to the GDP**
                     -   the **proportion of total export value made up of fisheries export**
 
+                <br/>
+
             -   **Option #2**: *HDI + GNI + SIDS* (see [IOTC-2024-TCAC13-REF02](https://iotc.org/sites/default/files/documents/2023/11/IOTC-2024-TCAC13-REF02E_TCAC_draft_Allocation_Regime_v7_clean.docx) para. 6.6(1)(a)[OPTION 2])
 
                 ![Socio-economic sub-component weights configuration controls (Option #2)](assets/images/app_config_socio_economic_wgts_option2.png)
+
+                <br/>
 
                 This option includes three distinct sub-component weights to account for:
 
@@ -186,19 +210,27 @@ This panel provides access to the configuration parameters for the simulation an
 
             ![Historical catch interval configuration controls](assets/images/app_config_catch_based_config_period.png)
 
+            <br/>
+
         2.  The type of ***Historical catch average*** to be considered (see [IOTC-2024-TCAC13-REF02](https://iotc.org/sites/default/files/documents/2023/11/IOTC-2024-TCAC13-REF02E_TCAC_draft_Allocation_Regime_v7_clean.docx) para. 6.8(1)(a)), which shall be one among:
 
             -   **Selected period** to calculate the average catch by CPC across the entire historical catch interval
 
                 ![Historical catch average configuration controls (selected period)](assets/images/app_config_catch_based_config_period_type_all.png)
 
+                <br/>
+
             -   **Best "n" years** to calculate the average catch by CPC over the best 'n' years (in terms of catches) identified within the historical catch interval, with ***Number of years*** as a selectable parameter
 
                 ![Historical catch average configuration controls (best 'n' years)](assets/images/app_config_catch_based_config_period_type_best.png)
 
+                <br/>
+
         3.  A stepwise approach (see [IOTC-2024-TCAC13-REF02](https://iotc.org/sites/default/files/documents/2023/11/IOTC-2024-TCAC13-REF02E_TCAC_draft_Allocation_Regime_v7_clean.docx) para. 6.12) to implement the NJA attribution to coastal / flag states as per [IOTC-2024-TCAC13-REF02](https://iotc.org/sites/default/files/documents/2023/11/IOTC-2024-TCAC13-REF02E_TCAC_draft_Allocation_Regime_v7_clean.docx) para. 6.8(2) over the course of 6 or 10 years, which is presented as a species-independent set of 10 coefficients that determine the fraction of catches from a flag state that are estimated to have been taken into the NJA of a CPC, and that shall be therefore assigned to the coastal state owning the NJA
 
             ![Historical catch transitional attribution controls](assets/images/app_config_catch_based_config_transition.png)
+
+            <br/>
 
             > Each coefficient represent the percentage of said catches that shall be attributed for that year to the coastal state. In theory, these coefficients shall represent a progression from a starting value \< 100% to 100% (all catches are attributed to the coastal state) but nothing prevents users to introduce whatever sequence they want for these coefficients.
 
@@ -220,11 +252,15 @@ This presents two possible options:
 
 -   **Background color** (default) to represent the (relative) cell value through the intensity of the background
 
-    ![Output table using the 'background colour' heatmap option](assets/images/app_output_heatmap_bg.png)
+    ![Output table using the 'background colour' heatmap option](assets/images/app_output_heatmap_bg.png){style="padding-bottom: 1em;"}
+
+    <br/>
 
 -   **Bar** to represent the (relative) cell value through a horizontal bar
 
-    ![Output table using the 'bar' heatmap option](assets/images/app_output_heatmap_bar.png)
+    ![Output table using the 'bar' heatmap option](assets/images/app_output_heatmap_bar.png){style="padding-bottom: 1em;"}
+
+    <br/>
 
 The context in which the relative cell value is calculated can also be changed via the ***Heatmap type*** parameter.
 
