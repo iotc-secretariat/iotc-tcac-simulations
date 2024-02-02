@@ -96,11 +96,11 @@ In the latter case, the *best years* are considered to be those with the highest
 
 The simulation is presented through an interactive R-Shiny [web application](https://data.iotc.org/tcac/simulations/) which is currently password-protected and whose access credentials will be provided to participating delegates.
 
+The main screen presents two tabbed panels, one to display the reference data used by the simulation, and one to present users with all configuration parameters and the final simulation results.
+
 ![An overview of the web application user interface](assets/images/app_UI_all.png){style="padding-bottom: 1em;"}
 
 <br/>
-
-The main screen presents two tabbed panels, one to display the reference data used by the simulation, and one to present users with all configuration parameters and the final simulation results.
 
 ## *Reference data* panel
 
@@ -124,7 +124,7 @@ This panel provides access to three main categories of configuration datasets:
 
     <br/>
 
-All three datasets are presented as sortable, filterable tables and provide an interactive version of the configuration files included with the application.
+> All three datasets are presented as sortable, filterable tables and provide an interactive version of the configuration files included with the application.
 
 ## *Simulation results* panel
 
@@ -136,25 +136,25 @@ This panel provides access to the configuration parameters for the simulation an
 
 -   The ***Target TAC*** in tons (affects the estimated annual catches for each CPC and year)
 
-    ![Species and TAC configuration controls](assets/images/app_config_species_tac.png)
+    ![Species and TAC configuration controls](assets/images/app_config_species_tac.png){style="border: 1px solid black;"}
 
     <br/>
 
 -   The ***Main component weights***, i.e.:
 
-    ![Main component weights configuration controls](assets/images/app_config_main_components_wgt.png)
+    ![Main component weights configuration controls](assets/images/app_config_main_components_wgt.png){style="border: 1px solid black;"}
 
     <br/>
 
     1.  The ***Baseline weight***, that doesn't require any further configuration as it assign an equal portion of the quota to each CPC (see [IOTC-2024-TCAC13-REF02](https://iotc.org/sites/default/files/documents/2023/11/IOTC-2024-TCAC13-REF02E_TCAC_draft_Allocation_Regime_v7_clean.docx) para. 6.5)
 
-        ![Baseline weights configuration controls](assets/images/app_config_baseline_components_wgt.png)
+        ![Baseline weights configuration controls](assets/images/app_config_baseline_components_wgt.png){style="border: 1px solid black;"}
 
         <br/>
 
     2.  The ***Coastal state weight***, that applies to all IOTC CPCs with a NJA in the IOTC area of competence (see [IOTC-2024-TCAC13-REF02](https://iotc.org/sites/default/files/documents/2023/11/IOTC-2024-TCAC13-REF02E_TCAC_draft_Allocation_Regime_v7_clean.docx) para. 6.6 (1)
 
-        ![Coastal state sub-component weights configuration controls](assets/images/app_config_coastal_state_components_wgt.png)
+        ![Coastal state sub-component weights configuration controls](assets/images/app_config_coastal_state_components_wgt.png){style="border: 1px solid black;"}
 
         <br/>
 
@@ -168,7 +168,9 @@ This panel provides access to the configuration parameters for the simulation an
 
             -   **Option #1**: *vulnerability + priority sectors + disproportionate burden* (see [IOTC-2024-TCAC13-REF02](https://iotc.org/sites/default/files/documents/2023/11/IOTC-2024-TCAC13-REF02E_TCAC_draft_Allocation_Regime_v7_clean.docx) para. 6.6(1)(a)[OPTION 1])
 
-                ![Socio-economic sub-component weights configuration controls (Option #1)](assets/images/app_config_socio_economic_wgts_option1.png)
+                <br/>
+
+                ![Socio-economic sub-component weights configuration controls (Option #1)](assets/images/app_config_socio_economic_wgts_option1.png){style="border: 1px solid black;"}
 
                 <br/>
 
@@ -188,7 +190,9 @@ This panel provides access to the configuration parameters for the simulation an
 
             -   **Option #2**: *HDI + GNI + SIDS* (see [IOTC-2024-TCAC13-REF02](https://iotc.org/sites/default/files/documents/2023/11/IOTC-2024-TCAC13-REF02E_TCAC_draft_Allocation_Regime_v7_clean.docx) para. 6.6(1)(a)[OPTION 2])
 
-                ![Socio-economic sub-component weights configuration controls (Option #2)](assets/images/app_config_socio_economic_wgts_option2.png)
+                <br/>
+
+                ![Socio-economic sub-component weights configuration controls (Option #2)](assets/images/app_config_socio_economic_wgts_option2.png){style="border: 1px solid black;"}
 
                 <br/>
 
@@ -208,7 +212,7 @@ This panel provides access to the configuration parameters for the simulation an
 
         1.  The ***Historical catch interval***, which affects the determination of the average catches (see [IOTC-2024-TCAC13-REF02](https://iotc.org/sites/default/files/documents/2023/11/IOTC-2024-TCAC13-REF02E_TCAC_draft_Allocation_Regime_v7_clean.docx) para. 6.8(1)(a))
 
-            ![Historical catch interval configuration controls](assets/images/app_config_catch_based_config_period.png)
+            ![Historical catch interval configuration controls](assets/images/app_config_catch_based_config_period.png){style="border: 1px solid black;"}
 
             <br/>
 
@@ -216,19 +220,19 @@ This panel provides access to the configuration parameters for the simulation an
 
             -   **Selected period** to calculate the average catch by CPC across the entire historical catch interval
 
-                ![Historical catch average configuration controls (selected period)](assets/images/app_config_catch_based_config_period_type_all.png)
+                ![Historical catch average configuration controls (selected period)](assets/images/app_config_catch_based_config_period_type_all.png){style="border: 1px solid black;"}
 
                 <br/>
 
             -   **Best "n" years** to calculate the average catch by CPC over the best 'n' years (in terms of catches) identified within the historical catch interval, with ***Number of years*** as a selectable parameter
 
-                ![Historical catch average configuration controls (best 'n' years)](assets/images/app_config_catch_based_config_period_type_best.png)
+                ![Historical catch average configuration controls (best 'n' years)](assets/images/app_config_catch_based_config_period_type_best.png){style="border: 1px solid black;"}
 
                 <br/>
 
         3.  A stepwise approach (see [IOTC-2024-TCAC13-REF02](https://iotc.org/sites/default/files/documents/2023/11/IOTC-2024-TCAC13-REF02E_TCAC_draft_Allocation_Regime_v7_clean.docx) para. 6.12) to implement the NJA attribution to coastal / flag states as per [IOTC-2024-TCAC13-REF02](https://iotc.org/sites/default/files/documents/2023/11/IOTC-2024-TCAC13-REF02E_TCAC_draft_Allocation_Regime_v7_clean.docx) para. 6.8(2) over the course of 6 or 10 years, which is presented as a species-independent set of 10 coefficients that determine the fraction of catches from a flag state that are estimated to have been taken into the NJA of a CPC, and that shall be therefore assigned to the coastal state owning the NJA
 
-            ![Historical catch transitional attribution controls](assets/images/app_config_catch_based_config_transition.png)
+            ![Historical catch transitional attribution controls](assets/images/app_config_catch_based_config_transition.png){style="border: 1px solid black;"}
 
             <br/>
 
