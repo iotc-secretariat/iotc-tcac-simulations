@@ -94,7 +94,7 @@ In the latter case, the *best years* are considered to be those with the highest
 
 # User interface
 
-The simulation is presented through an interactive R-Shiny [web application](https://data.iotc.org/tcac/simulations/) which is currently password-protected and whose access credentials will be provided to participating delegates.
+The simulation is presented through an interactive R-Shiny [web application](https://data.iotc.org/tcac13/simulations/) which is currently password-protected and whose access credentials will be provided to participating delegates.
 
 The main screen presents two tabbed panels, one to display the reference data used by the simulation, and one to present users with all configuration parameters and the final simulation results.
 
