@@ -7,9 +7,9 @@ output:
 
 # Purpose of this document
 
-This document provides an overview of the preliminary assumptions and final outputs produced by the simulation of the allocation criteria in [IOTC-2024-TCAC13-REF02](https://iotc.org/sites/default/files/documents/2023/11/IOTC-2024-TCAC13-REF02E_TCAC_draft_Allocation_Regime_v7_clean.docx) as developed by the [IOTC Secretariat](mailto:IOTC-Secretariat@fao.org).
+This document provides an overview of the [preliminary assumptions](#assumptions) and final outputs produced by the simulation of the allocation criteria in [IOTC-2024-TCAC13-REF02](https://iotc.org/sites/default/files/documents/2023/11/IOTC-2024-TCAC13-REF02E_TCAC_draft_Allocation_Regime_v7_clean.docx) as developed by the [IOTC Secretariat](mailto:IOTC-Secretariat@fao.org).
 
-It also describes the _user interface_ of the simulation tool, with additional details on the various configuration parameters for both the simulation process and the produced outputs.
+It also describes the [_user interface_](#ui) of the simulation tool, with additional details on the various configuration parameters for both the [simulation process](#inputConfig) and the [produced outputs](#outputs).
 
 # Process configuration
 
@@ -55,7 +55,7 @@ This includes two worksheets:
 
     -   The HDI (2021) and GNI indicators required by *Option 2* have been retrieved from the [UNDP](https://hdr.undp.org/data-center/human-development-index#/indicies/HDI) and [WorldBank](https://datahelpdesk.worldbank.org/knowledgebase/articles/906519-world-bank-country-and-lending-group) websites, respectively, with the HDI index for the EU averaged from [here](https://www.theglobaleconomy.com/rankings/human_development/European-union/).
 
-## Assumptions
+## Assumptions{#assumptions}
 
 ### CPC / coastal state configuration
 
@@ -101,17 +101,17 @@ For the sake of calculating the catch-based allocation weight for each CPC, info
 
 In the latter case, the *best years* are considered to be those with the highest catches across the selected period (for a given fleet / species).
 
-# User interface
+# User interface{#ui}
 
 The simulation is presented through an interactive R-Shiny [web application](https://data.iotc.org/tcac13/simulations/) which is currently password-protected and whose access credentials will be provided to participating delegates.
 
-The main screen presents two tabbed panels, one to display the reference data used by the simulation, and one to present users with all configuration parameters and the final simulation results.
+The main screen presents two tabbed panels, one to display the [reference data](#referenceData) used by the simulation, and [one](#simulationResults) to present users with all [configuration parameters](#inputConfig) and the [simulation outputs](#outputs).
 
 ![An overview of the web application user interface](assets/images/app_UI_all.png){style="padding-bottom: 1em;"}
 
 <br/>
 
-## *Reference data* panel
+## *Reference data* panel{#referenceData}
 
 This panel provides access to three main categories of configuration datasets:
 
@@ -135,11 +135,11 @@ This panel provides access to three main categories of configuration datasets:
 
 > All three datasets are presented as sortable, filterable tables and provide an interactive version of the configuration files included with the application.
 
-## *Simulation results* panel
+## *Simulation results* panel{#simulationResults}
 
-This panel provides access to the configuration parameters for the simulation and to the final outputs projected up to 10 years in the future (to take into account the transitional period in the allocation of catches from flag states to coastal states, when necessary).
+This panel provides access to the [configuration parameters](#inputConfig) and to the [simulation outputs](#outputs) projected up to 10 years in the future to take into account the transitional period in the allocation of catches from flag states to coastal states, when necessary.
 
-### *Configuration parameters*
+### *Configuration parameters*{#inputConfig}
 
 -   The ***Species*** subject to the simulation (affects the catch records to be used to calculate the *catch-based* allocation component)
 
@@ -247,7 +247,7 @@ This panel provides access to the configuration parameters for the simulation an
 
             > Each coefficient represent the percentage of said catches that shall be attributed for that year to the coastal state. In theory, these coefficients shall represent a progression from a starting value \< 100% to 100% (all catches are attributed to the coastal state) but nothing prevents users to introduce whatever sequence they want for these coefficients.
 
-### *Outputs*
+### *Outputs*{#outputs}
 
 The outputs of the simulation are presented as a table that has CPCs as rows and allocation years as columns (from 1 to indicate the initial year, up to a maximum of 10).
 
