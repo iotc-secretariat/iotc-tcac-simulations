@@ -20,33 +20,21 @@ This includes two worksheets:
 -   `CPC` - listing all current IOTC *contracting parties* (CPC) and *cooperating non-contracting parties* (CNCP) together with their:
 
     -   mnemonic code (generally, the ISO3 code of the country)
-
     -   official English name (as an IOTC CPC)
-
     -   CPC / CNCP status
-
     -   *small islands developing state* (SIDS) status
-
     -   *coastal state* status
-
     -   presence of a *national jurisdiction area* (NJA) within the [IOTC area of competence](https://iotc.org/about-iotc/competence)
-
     -   size of the NJA (in km<sup>2</sup>, calculated from the shapefiles available to the IOTC Secretariat and originally downloaded from the VLIZ / Marine Regions [*maritime boundaries* database](https://www.marineregions.org/eezsearch.php))
-
     -   relative size of the NJA with respect to the IOTC area of competence.
 
 -   `COASTAL_STATE_SOCIO_ECONOMIC` - listing all IOTC CPCs that are either a coastal state or have a NJA within the Indian Ocean, together with their development status (retrieved from [here](https://www.un.org/development/desa/dpad/wp-content/uploads/sites/45/WESP2020_Annex.pdf)), and a set of socio-economic indicators to address the requirements of both *Option 1* and *Option 2* in [IOTC-2024-TCAC13-REF02](https://iotc.org/sites/default/files/documents/2023/11/IOTC-2024-TCAC13-REF02E_TCAC_draft_Allocation_Regime_v7_clean.docx) para. 6.6(1)(b).
 
     -   The indicators required by *Option 1*, i.e.:
-
         -   per capita fish consumption (kg / person / year)
-
         -   *Commonwealth Universal Vulnerability index* (CUVI)
-
         -   proportion of fish workers employed in small-scale and artisanal fisheries (%)
-
         -   fisheries contribution to GDP (%)
-
         -   proportion of total export value made up of fisheries exports (%)
 
         are not yet available to the IOTC Secretariat and have therefore been replaced by dummy values.
@@ -65,21 +53,19 @@ The identification of a CPC as *being* or *not being* an IOTC coastal state is s
 
 For the sake of this simulation we assume the following:
 
--   That beside having an NJA in the Indian Ocean, `FRAT` (*France (OT)*) shall be *de facto* considered an IOTC coastal state (see [IOTC-2023-TCAC12-04](https://iotc.org/sites/default/files/documents/2023/09/IOTC-2023-TCAC12-04_E_-_Chairs_Explanatory_Note.pdf) *Chair's explanatory memorandum to TCAC12 participants*).
+-   That the attribution of a NJA in the Indian Ocean to a given CPC reflects the information available to the IOTC as of 31/12/2023
 
--   That `EUR` (*European Union / REIO*) has an NJA in the Indian Ocean (i.e., the NJA around Réunion and Mayotte) and that for this reason "(...) *should benefit from an allocation that relates to the size of the EEZ of its outermost territories in the IOTC area of competence.*" (see [IOTC-2023-TCAC12-04](https://iotc.org/sites/default/files/documents/2023/09/IOTC-2023-TCAC12-04_E_-_Chairs_Explanatory_Note.pdf) *Chair's explanatory memorandum to TCAC12 participants*).
+-   That beside having an NJA in the Indian Ocean, `FRAT` (*France (OT)*) shall be *de facto* considered an IOTC coastal state (see Appendix 4, para. 2 of [https://iotc.org/documents/TCAC/12/RE](https://iotc.org/sites/default/files/documents/2023/12/IOTC-2023-TCAC12-RE.pdf) *Report of the 12^th^ Technical Committee on Allocation Criteria*).
 
--   That `EUR` (*European Union / REIO*), notwithstanding the above, "(...) *would not be seeking the application of paragraph 6.6(1)(b) of the coastal state allocation criteria (...)*" (see [IOTC-2023-TCAC12-04](https://iotc.org/sites/default/files/documents/2023/09/IOTC-2023-TCAC12-04_E_-_Chairs_Explanatory_Note.pdf) *Chair's explanatory memorandum to TCAC12 participants*).
+-   That `EUR` (*European Union / REIO*) has an NJA in the Indian Ocean (i.e., the NJA around Réunion and Mayotte) and that for this reason "(...) *should benefit from an allocation that relates to the size of the EEZ of its outermost territories in the IOTC area of competence.*" (see Appendix 4, para. 2 of [https://iotc.org/documents/TCAC/12/RE](https://iotc.org/sites/default/files/documents/2023/12/IOTC-2023-TCAC12-RE.pdf) *Report of the 12^th^ Technical Committee on Allocation Criteria*).
 
--   That there are different views as whether `EUR` (*European Union / REIO*) "(...) *should benefit from the portion of the coastal state allocation criteria related to aspirations under paragraph 6.6(1)(a) (...)*" (see [IOTC-2023-TCAC12-04](https://iotc.org/sites/default/files/documents/2023/09/IOTC-2023-TCAC12-04_E_-_Chairs_Explanatory_Note.pdf) *Chair's explanatory memorandum to TCAC12 participants*).
+-   That `EUR` (*European Union / REIO*), notwithstanding the above, "(...) *would not be seeking the application of paragraph 6.6(1)(b) of the coastal state allocation criteria (...)*" (see Appendix 4, para. 2 of [https://iotc.org/documents/TCAC/12/RE](https://iotc.org/sites/default/files/documents/2023/12/IOTC-2023-TCAC12-RE.pdf) *Report of the 12^th^ Technical Committee on Allocation Criteria*).
+
+-   That there are different views as whether `EUR` (*European Union / REIO*) "(...) *should benefit from the portion of the coastal state allocation criteria related to aspirations under paragraph 6.6(1)(a) (...)*" (see Appendix 4, para. 2 of [https://iotc.org/documents/TCAC/12/RE](https://iotc.org/sites/default/files/documents/2023/12/IOTC-2023-TCAC12-RE.pdf) *Report of the 12^th^ Technical Committee on Allocation Criteria*).
 
 > In lack of other indications, the simulation considers `EUR` (*European Union / REIO*) as benefiting from the portion of allocation specified by paragraph 6.6(1)(a) of [IOTC-2024-TCAC13-REF02](https://iotc.org/sites/default/files/documents/2023/11/IOTC-2024-TCAC13-REF02E_TCAC_draft_Allocation_Regime_v7_clean.docx).
 
--   That clarity shall be made regarding the NJA sovereignty of the Chagos archipelago which is currently disputed between two IOTC CPCs (`MUS` and `GBR`) as this will have an impact not only on the attribution of the relative NJA area weight for the coastal state allocation criteria, but also on the status of `GBR` (*United Kingdom of Great Britain and Northern Ireland*) as a coastal state itself.
-
-> In lack of other indications, the simulation considers `GBR` (*United Kingdom of Great Britain and Northern Ireland*) as having NJA sovereignty over the Chagos archipelago for the purpose of the quota calculation, and that this assumption does not qualify the CPC as a coastal state.
-
-> Furthermore, `GBR` focal points have confirmed that they will request the application of paragraph 6.6(1)(a) and (c) of the coastal state allocation criteria, but not (b), and this has been properly reflected in the current implementation of the TCAC simulations made by the Secretariat.
+> `GBR` has requested the IOTC Secretariat to see paragraph 6.6(1)(a) and (c) of the coastal state allocation criteria applied to their case, but not (b), and this has been properly reflected in the current configuration of the TCAC simulations made by the Secretariat.
 
 ### Historical catches
 
@@ -96,7 +82,6 @@ For this reason, the historical catch series with full area breakdown is only av
 For the sake of calculating the catch-based allocation weight for each CPC, information on historical catches is averaged across a selectable timeframe with two possible approaches that require to compute:
 
 -   the annual average across the entire time period
-
 -   the average of the best "*n*" years across the time period
 
 In the latter case, the *best years* are considered to be those with the highest catches across the selected period (for a given fleet / species).
