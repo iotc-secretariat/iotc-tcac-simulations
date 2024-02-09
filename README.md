@@ -57,13 +57,13 @@ For the sake of this simulation we assume the following:
 
 -   That `EUR` (*European Union / REIO*) has an NJA in the Indian Ocean (i.e., the NJA around Réunion and Mayotte) and that for this reason "(...) *should benefit from an allocation that relates to the size of the EEZ of its outermost territories in the IOTC area of competence.*" (see Appendix 4, para. 2 of [https://iotc.org/documents/TCAC/12/RE](https://iotc.org/sites/default/files/documents/2023/12/IOTC-2023-TCAC12-RE.pdf) *Report of the 12^th^ Technical Committee on Allocation Criteria*).
 
--   That `EUR` (*European Union / REIO*), notwithstanding the above, "(...) *would not be seeking the application of paragraph 6.6(1)(b) of the coastal state allocation criteria (...)*" (see Appendix 4, para. 2 of [https://iotc.org/documents/TCAC/12/RE](https://iotc.org/sites/default/files/documents/2023/12/IOTC-2023-TCAC12-RE.pdf) *Report of the 12^th^ Technical Committee on Allocation Criteria*).
+-   That `EUR`, notwithstanding the above, "(...) *would not be seeking the application of paragraph 6.6(1)(b) of the coastal state allocation criteria (...)*" (see Appendix 4, para. 2 of [https://iotc.org/documents/TCAC/12/RE](https://iotc.org/sites/default/files/documents/2023/12/IOTC-2023-TCAC12-RE.pdf) *Report of the 12^th^ Technical Committee on Allocation Criteria*).
 
--   That there are different views as whether `EUR` (*European Union / REIO*) "(...) *should benefit from the portion of the coastal state allocation criteria related to aspirations under paragraph 6.6(1)(a) (...)*" (see Appendix 4, para. 2 of [https://iotc.org/documents/TCAC/12/RE](https://iotc.org/sites/default/files/documents/2023/12/IOTC-2023-TCAC12-RE.pdf) *Report of the 12^th^ Technical Committee on Allocation Criteria*).
+-   That there are different views as whether `EUR` "(...) *should benefit from the portion of the coastal state allocation criteria related to aspirations under paragraph 6.6(1)(a) (...)*" (see Appendix 4, para. 2 of [https://iotc.org/documents/TCAC/12/RE](https://iotc.org/sites/default/files/documents/2023/12/IOTC-2023-TCAC12-RE.pdf) *Report of the 12^th^ Technical Committee on Allocation Criteria*).
 
-> For simplicity's sake, the simulation temporarily considers `EUR` (*European Union / REIO*) as benefiting from the portion of allocation specified by paragraph 6.6(1)(a) of [IOTC-2024-TCAC13-REF02](https://iotc.org/sites/default/files/documents/2023/11/IOTC-2024-TCAC13-REF02E_TCAC_draft_Allocation_Regime_v7_clean.docx).
+> For simplicity's sake, the simulation temporarily considers `EUR` as benefiting from the portion of allocation specified by paragraph 6.6(1)(a) of [IOTC-2024-TCAC13-REF02](https://iotc.org/sites/default/files/documents/2023/11/IOTC-2024-TCAC13-REF02E_TCAC_draft_Allocation_Regime_v7_clean.docx).
 
-- That subsequent to TCAC12, in consultations between the IOTC Secretariat and GBR, GBR has noted to the Secretariat that para 6.6.(1)(b) would not apply to their case, but that 6.6.(1)(a) and (c) would, and this has been reflected in the current configuration of the TCAC simulations made by the Secretariat.
+- That subsequent to TCAC12, in consultations between the IOTC Secretariat and `GBR` (*United Kingdom of Great Britain and Northern Ireland*), `GBR` has noted to the Secretariat that para 6.6.(1)(b) would not apply to their case, but that 6.6.(1)(a) and (c) would, and this has been reflected in the current configuration of the TCAC simulations made by the Secretariat.
 
 ### Historical catches
 
