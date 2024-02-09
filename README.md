@@ -49,8 +49,6 @@ This includes two worksheets:
 
 The identification of a CPC as *being* or *not being* an IOTC coastal state is still a matter of debate for some IOTC members that have NJAs within the IOTC area of competence.
 
-> Having a NJA within the IOTC area of competence is a *necessary* (but *not sufficient*) condition for a CPC to be considered a coastal state.
-
 For the sake of this simulation we assume the following:
 
 -   That the attribution of a NJA in the Indian Ocean to a given CPC reflects the information available to the IOTC as of 31/12/2023
