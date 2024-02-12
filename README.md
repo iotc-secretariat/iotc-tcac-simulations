@@ -37,9 +37,9 @@ This includes two worksheets:
         -   fisheries contribution to GDP (%)
         -   proportion of total export value made up of fisheries exports (%)
 
-        are not yet available to the IOTC Secretariat and have therefore been replaced by dummy values.
+        **are not yet available to the IOTC Secretariat** and have therefore been replaced by **dummy values**.
 
-        > For this reason, caution should be made when assessing the results produced by the simulation through *Option 1*, and the IOTC Secretariat will update the required socio-economic indicators as soon as these will be provided by the proponents.
+        > For this reason, the results produced by the simulation through *Option 1* **should not be consider official by any means** until the original proponents provide the IOTC Secretariat with all required socio-economic indicators.
 
     -   The HDI (2021) and GNI indicators required by *Option 2* have been retrieved from the [UNDP](https://hdr.undp.org/data-center/human-development-index#/indicies/HDI) and [WorldBank](https://datahelpdesk.worldbank.org/knowledgebase/articles/906519-world-bank-country-and-lending-group) websites, respectively, with the HDI index for the EU averaged from [here](https://www.theglobaleconomy.com/rankings/human_development/European-union/).
 
