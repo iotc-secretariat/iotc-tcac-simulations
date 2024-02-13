@@ -9,7 +9,7 @@ output:
 
 This document provides an overview of the [preliminary assumptions](#assumptions) and final outputs produced by the simulation of the allocation criteria in [IOTC-2024-TCAC13-REF02](https://iotc.org/sites/default/files/documents/2023/11/IOTC-2024-TCAC13-REF02E_TCAC_draft_Allocation_Regime_v7_clean.docx) as developed by the [IOTC Secretariat](mailto:IOTC-Secretariat@fao.org).
 
-It also describes the [_user interface_](#ui) of the simulation tool, with additional details on the various configuration parameters for both the [simulation process](#inputConfig) and the [produced outputs](#outputs).
+It also describes the [*user interface*](#ui) of the simulation tool, with additional details on the various configuration parameters for both the [simulation process](#inputConfig) and the [produced outputs](#outputs).
 
 # Process configuration
 
@@ -31,15 +31,20 @@ This includes two worksheets:
 -   `COASTAL_STATE_SOCIO_ECONOMIC` - listing all IOTC CPCs that are either a coastal state or have a NJA within the Indian Ocean, together with their development status (retrieved from [here](https://www.un.org/development/desa/dpad/wp-content/uploads/sites/45/WESP2020_Annex.pdf)), and a set of socio-economic indicators to address the requirements of both *Option 1* and *Option 2* in [IOTC-2024-TCAC13-REF02](https://iotc.org/sites/default/files/documents/2023/11/IOTC-2024-TCAC13-REF02E_TCAC_draft_Allocation_Regime_v7_clean.docx) para. 6.6(1)(b).
 
     -   The indicators required by *Option 1*, i.e.:
+
         -   per capita fish consumption (kg / person / year)
+
         -   *Commonwealth Universal Vulnerability index* (CUVI)
+
         -   proportion of fish workers employed in small-scale and artisanal fisheries (%)
+
         -   fisheries contribution to GDP (%)
+
         -   proportion of total export value made up of fisheries exports (%)
 
         **are not yet available to the IOTC Secretariat** and have therefore been replaced by **dummy values**.
 
-        > For this reason, the results produced by the simulation through *Option 1* **should not be consider official by any means** until the original proponents provide the IOTC Secretariat with all required socio-economic indicators.
+        > For this reason, the results produced by the simulation through *Option 1* **should NOT be considered *official* by any means** until the original proponents provide the IOTC Secretariat with all required socio-economic indicators.
 
     -   The HDI (2021) and GNI indicators required by *Option 2* have been retrieved from the [UNDP](https://hdr.undp.org/data-center/human-development-index#/indicies/HDI) and [WorldBank](https://datahelpdesk.worldbank.org/knowledgebase/articles/906519-world-bank-country-and-lending-group) websites, respectively, with the HDI index for the EU averaged from [here](https://www.theglobaleconomy.com/rankings/human_development/European-union/).
 
@@ -63,7 +68,7 @@ For the sake of this simulation we assume the following:
 
 > For simplicity's sake, the simulation temporarily considers `EUR` as benefiting from the portion of allocation specified by paragraph 6.6(1)(a) of [IOTC-2024-TCAC13-REF02](https://iotc.org/sites/default/files/documents/2023/11/IOTC-2024-TCAC13-REF02E_TCAC_draft_Allocation_Regime_v7_clean.docx).
 
-- That subsequent to TCAC12, in consultations between the IOTC Secretariat and `GBR` (*United Kingdom of Great Britain and Northern Ireland*), `GBR` has noted to the Secretariat that para 6.6.(1)(b) would not apply to their case, but that 6.6.(1)(a) and (c) would, and this has been reflected in the current configuration of the TCAC simulations made by the Secretariat.
+-   That subsequent to TCAC12, in consultations between the IOTC Secretariat and `GBR` (*United Kingdom of Great Britain and Northern Ireland*), `GBR` has noted to the Secretariat that para 6.6.(1)(b) would not apply to their case, but that 6.6.(1)(a) and (c) would, and this has been reflected in the current configuration of the TCAC simulations made by the Secretariat.
 
 ### Historical catches
 
