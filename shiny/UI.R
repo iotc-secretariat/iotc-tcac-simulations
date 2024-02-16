@@ -152,7 +152,7 @@ ui = function() {
                                   span(class="triple",
                                        sliderInput("cs_se_o2_weights", "Option #2 - Socio-economic sub-component weights (%)",
                                                    width = "100%",
-                                                   min = 0, max = 100, value = c(30, 70), step = .5, sep = "", animate = FALSE
+                                                   min = 0, max = 100, value = c(30, 60), step = .5, sep = "", animate = FALSE
                                        )
                                   ),
                                   

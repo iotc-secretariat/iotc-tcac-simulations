@@ -28,7 +28,7 @@ server = function(input, output, session) {
         class = "stripe cell-border",
         rownames = FALSE,
         escape = FALSE,
-        colnames = c("Code", "Is&nbsp;coastal?", "Has&nbsp;AUNJ&nbsp;area?", 
+        colnames = c("Code", "Is&nbsp;coastal?", "Has&nbsp;NJA&nbsp;area?", 
                      "Development&nbsp;status", "Pro&nbsp;capita&nbsp;fish&nbsp;consumption", "CUV&nbsp;index", "%&nbsp;workers&nbsp;employed&nbsp;SSF", "%&nbsp;fisheries&nbsp;contrib.&nbsp;to&nbsp;GDP", "%&nbsp;fisheries&nbsp;contrib.&nbsp;total&nbsp;export", 
                      "HDI", "HDI&nbsp;tier", "HDI&nbsp;tier&nbsp;weight", "GNI", "GNI&nbsp;weight", "SIDS&nbsp;status", "SIDS&nbsp;status&nbsp;weight"),
         options = 
