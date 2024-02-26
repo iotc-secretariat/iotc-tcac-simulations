@@ -52,3 +52,27 @@ CPC_COASTAL_MAP =
         panel.background = element_rect(fill = "white"))
 
 save_plot("../outputs/maps/CPC_COASTAL_MAP.png", CPC_COASTAL_MAP, 8, 6)
+
+# HAS_NJA_IO
+CPC_HAS_NJA_IO_MAP = 
+  ggplot() + 
+  geom_sf(data = CPC_SF, aes(fill = HAS_NJA_IO), size = .5) + 
+  labs(x = "", y = "") +
+  theme(legend.position = "none", legend.title = element_blank()) +
+  theme(panel.grid.major = element_line(color = gray(.5), linetype = "dashed", linewidth = 0.3), 
+        panel.background = element_rect(fill = "white"))
+
+save_plot("../outputs/maps/CPC_HAS_NJA_IO_MAP.png", CPC_HAS_NJA_IO_MAP, 8, 6)
+
+# NJA_SIZE
+CPC_NJA_SIZE_MAP = 
+  ggplot() + 
+  geom_sf(data = CPC_SF, aes(fill = NJA_SIZE), size = .5) + 
+  labs(x = "", y = "") +
+  #theme(legend.position = "none", legend.title = element_blank()) + 
+  theme(panel.grid.major = element_line(color = gray(.5), linetype = "dashed", linewidth = 0.3), 
+        panel.background = element_rect(fill = "white"))
+
+save_plot("../outputs/maps/CPC_NJA_SIZE_MAP.png", CPC_NJA_SIZE_MAP, 8, 6)
+
+
