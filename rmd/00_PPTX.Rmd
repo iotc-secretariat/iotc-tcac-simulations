@@ -1,0 +1,481 @@
+---
+title: "Review of the statistical data available for tropical tuna species (1950-2022)"
+subtitle: "25^th^ IOTC Working Party on Tropical Tunas, 30 October-4 November 2023"
+author: "[IOTC Secretariat](mailto:IOTC-Secretariat@fao.org)"
+---
+  
+```{r general_options, echo = FALSE}
+knitr::opts_chunk$set(echo = FALSE, tidy.opts = list(width.cutoff = 60), tidy = TRUE, size = "small", fig.width = 12, fig.height = 6.75)
+#knit_hooks$set(inline = function(x) {prettyNum(x, big.mark = ",")})
+```
+
+```{r echo = FALSE}
+LAST_YEAR = ly(NC_ALL_EST$YEAR)
+ 
+last_all_IOTC = sum(NC_ALL_EST[YEAR == LAST_YEAR]$CATCH)
+last_all_trop = sum(NC_TROP_EST[YEAR == LAST_YEAR]$CATCH)
+
+last_all_trop_perc = r_to(last_all_trop * 100 / last_all_IOTC, 1)
+
+last_bet = sum(NC_SP[SPECIES_CODE == "BET" & YEAR == LAST_YEAR]$CATCH)
+last_skj = sum(NC_SP[SPECIES_CODE == "SKJ" & YEAR == LAST_YEAR]$CATCH)
+last_yft = sum(NC_SP[SPECIES_CODE == "YFT" & YEAR == LAST_YEAR]$CATCH)
+
+last_bet_perc = r_to(last_bet * 100 / last_all_trop, 1)
+last_skj_perc = r_to(last_skj * 100 / last_all_trop, 1)
+last_yft_perc = r_to(last_yft * 100 / last_all_trop, 1)
+
+quality_all  = QUALITY_SCORES_TROP[, .(CATCH = sum(CATCH, na.rm = TRUE)), keyby = .(YEAR)]
+quality_nc_good = QUALITY_SCORES_TROP[NC %in% c(0, 2), .(GOOD = sum(CATCH, na.rm = TRUE)), keyby = .(YEAR)]
+quality_ce_good = QUALITY_SCORES_TROP[CE %in% c(0, 2), .(GOOD = sum(CATCH, na.rm = TRUE)), keyby = .(YEAR)]
+quality_sf_good = QUALITY_SCORES_TROP[SF %in% c(0, 2), .(GOOD = sum(CATCH, na.rm = TRUE)), keyby = .(YEAR)]
+
+quality_nc = merge(quality_all, quality_nc_good)[, GOOD_PERC := round(GOOD * 100 / CATCH, 0)]
+quality_ce = merge(quality_all, quality_ce_good)[, GOOD_PERC := round(GOOD * 100 / CATCH, 0)]
+quality_sf = merge(quality_all, quality_sf_good)[, GOOD_PERC := round(GOOD * 100 / CATCH, 0)]
+
+```
+
+# Purpose
+
+To provide participants at the 25^th^ Session of the IOTC Working Party on Tropical Tunas (WPTT25) with a review of the status of the information on the three tropical species for the years 1950-`r LAST_YEAR` available to the IOTC Secretariat as of October 2022.
+
+# Context (statistical year `r LAST_YEAR`)
+
+- 16 IOTC species: ~`r pn(r_to(last_all_IOTC, 1e4))` t
+- 3 tropical tuna species: ~`r pn(r_to(last_all_trop, 1e4))` t (~`r last_all_trop_perc`% of all IOTC species)
+
+- [**Bigeye tuna**](https://www.iotc.org/sites/default/files/documents/science/species_summaries/english/2_Bigeye2021E.pdf): ~`r pn(r_to(last_bet, 1e3))` t (~`r last_bet_perc`% of all tropical species)
+    + Stock **not overfished** but [**subject to overfishing**]{.underline}
+- [**Skipjack tuna**](https://www.iotc.org/sites/default/files/documents/science/species_summaries/english/3_Skipjack2021E.pdf) : ~`r pn(r_to(last_skj, 1e4))` t (~`r last_skj_perc`%)
+    + Stock **not overfished** and **not subject to overfishing**
+- [**Yellowfin tuna**](https://www.iotc.org/sites/default/files/documents/science/species_summaries/english/4_Yellowfin2021E.pdf): ~`r pn(r_to(last_yft, 1e4))` t (~`r last_yft_perc`%)
+    + Stock [**overfished**]{.underline} and [**subject to overfishing**]{.underline}
+
+---
+
+# Materials
+
+- **[Retained catch data](`r NC_DATA_URL`)**: annual catch in live weight that is landed or transshipped, excluding all discards at sea;
+- **[Catch and effort data](`r CE_A_DATA_URL`)**: monthly catch (in weight or number) and fishing effort (in gear-specific units) by spatial grid (unraised / raised to nominal catches, depending on the gears);
+- **Size-frequency data**: individual body lengths or weights stratified by fleet, year, gear, type of school, month, and spatial grid;
+
+---
+
+# Materials (continued)
+
+- **Discard data**: annual non-retained catch in live weight or numbers, including individuals released alive or discarded dead. _Should be raised to total discards_;
+
+- **Observer data**: operational level data on fishing activities, vessel positions, catch estimates (level and composition), and gear configuration and fishing effort.
+
+---
+
+# Data processing
+
+1.  **Controls and checks**: applied at reception of the data to ensure consistency with [IOTC reporting guidelines](https://iotc.org/sites/default/files/documents/data/Guidelines%20Data%20Reporting%20IOTC.pdf);
+2.  **_Best scientific estimates_**: re-estimation of species and / or gear composition for catch aggregates as well as for those fleets and fisheries characterized by well-known, outstanding issues in terms of data quality;
+3.  **Raising of catch-effort geo-referenced data**: performed only for the five major IOTC species (ALB / BET / SKJ / SWO / YFT);
+4.  **Filtering and conversion of size data**: data harmonized to EFL (LJFL for billfish) for all IOTC and major shark species.
+
+---
+
+# Definitions
+
+IOTC data requirements vary with the size of the fishing vessels and their area of operation.
+
+- **AFV** (_Authorized Fishing Vessels_): vessels of LoA > 24m or operating outside the EEZ of their flag state, authorised to fish for tuna and tuna-like species in the IOTC area
+- **_Industrial_** fisheries: all fisheries operated by AFVs 
+- **_Longline_** fisheries: industrial fisheries using longline gears
+- **_Surface_** fisheries: industrial fisheries using gears other than longline
+- **_Coastal_** fisheries: all fisheries operated by vessels other than AFVs, commonly referred to as **_Artisanal_** fisheries
+
+---
+
+# Overall trends - all IOTC species
+
+```{r fig.cap = "Annual time series of cumulative nominal absolute (a) and relative (b) catches by species category"} 
+include_graphics("../../outputs/charts/NC/ALL/species_category/IOTC_BARPLOT_COMBINED.png")
+```
+
+---
+
+# Overall trends - all IOTC species
+  
+```{r fig.cap = "Annual time series of cumulative nominal absolute (a) and relative (b) catches by fishery group"}
+include_graphics("../../outputs/charts/NC/ALL/fishery_group/IOTC_BARPLOT_COMBINED.png")
+```
+
+---
+
+# Overall trends - all IOTC species
+
+  
+```{r fig.cap = "Annual time series of cumulative nominal absolute (a) and relative (b) catches by type of fishery"}
+include_graphics("../../outputs/charts/NC/ALL/fishery_type/IOTC_BARPLOT_COMBINED.png")
+```
+
+---
+
+# Overall trends - tropical tuna species
+
+- Trends across t-RFMOs
+- Trends in the Indian Ocean, by:
+    + Fishery group
+    + Fishery
+    + Fishery type
+    + Tropical tuna species
+    + Catches on FOB-associated schools
+
+---
+
+# Trends across t-RFMOs
+
+```{r fig.cap = "Annual time series of cumulative nominal absolute (a) and relative (b) catches by RFMO"}
+include_graphics("../../outputs/charts/GTA/TROP_BARPLOT_RFMO_COMBINED.png")
+```
+
+---
+
+# Trends in the Indian Ocean - by fishery group
+
+```{r fig.cap = "Annual time series of nominal catches by fishery group"}
+include_graphics('../../outputs/charts/NC/TROP/fishery_group/TROP_LINECHART.png')
+```
+
+---
+
+# Trends in the Indian Ocean - by fishery
+
+```{r fig.cap = "Annual time series of cumulative nominal absolute (a) and relative (b) catches by fishery group"}
+include_graphics("../../outputs/charts/NC/TROP/fishery/TROP_BARPLOT_COMBINED.png")
+```
+
+---
+
+# Trends in the Indian Ocean - by fishery type
+
+```{r fig.cap = "Annual time series of cumulative nominal absolute (a) and relative (b) catches by type of fishery"}
+include_graphics("../../outputs/charts/NC/TROP/fishery_type/TROP_BARPLOT_COMBINED.png")
+```
+
+---
+
+# Trends in the Indian Ocean - by species
+
+```{r fig.cap = "Annual time series of cumulative nominal absolute (a) and relative (b) catches by species"}
+include_graphics("../../outputs/charts/NC/TROP/species/TROP_BARPLOT_COMBINED.png")
+```
+
+---
+
+# Trends in catches on FOB-associated schools
+
+```{r fig.cap = "Annual percentages of FOB-associated catches by purse seine fleet"}
+include_graphics("../../outputs/charts/NC/TROP/fishery/LINECHART_PROPORTION_PS_FS_LS.png")
+```
+
+---
+
+# Recent fishery features (`r paste0(Y1, "-", YL)`)
+
+- Trends by:
+    + Fleet and fishery
+    + Fishery group
+    + Fishery group and fleet
+    + Purse seine fishing mode
+- Summary by fishery group
+
+---
+
+# Trends by fleet and fishery
+
+```{r fig.cap = "Average annual catches by fleet and fishery"}
+include_graphics('../../outputs/charts/NC/TROP/fleet/TROP_PARETO_FISHERY_RP.png')
+```
+
+---
+
+# Trends by fishery group
+
+```{r fig.cap = "Annual catch trends by fishery group"}
+include_graphics("../../outputs/charts/NC/TROP/fishery_group/BARCHART_TRENDS_ALL.png")
+```
+
+---
+
+# Trends by fishery group and fleet
+
+```{r fig.cap = "Annual catch trends by fishery group and fleet"}
+include_graphics("../../outputs/charts/NC/TROP/fishery_group/BARCHART_TRENDS_wide.png")
+```
+
+---
+
+# Trends by purse seine fishing mode
+
+```{r fig.cap = "Annual trends of catches by purse seine fleet and fishing mode: (a) free swimming, (b) FOB-associated schools"}
+include_graphics("../../outputs/charts/NC/TROP/fishery/BARCHART_TRENDS_PS.png")
+```
+
+---
+
+# Summary of fishery trends by fishery group
+
+### Industrial purse seines
+
+  + Marked increases in catches for all major fleets in 2021, particularly **IDN** and **EU,France**
+  + Catches on free-swimming schools fluctuate consistently 
+  + Catches on FOB-associated schools show a generally increasing recent trend with the exception of **EU,Spain** in 2021
+  
+### Industrial longlines
+
+  - Decreasing or stable trends after an increase in catches in 2020 that brought totals almost back to 2016 levels (**TWN**, **SYC**)
+
+---
+
+# Summary of fishery trends by fishery group
+
+### Gillnet fisheries
+  
+  - Marked increases detected for **IRN** in 2021
+  - All other fleets either stable (**LKA**, **IDN**) or in a decreasing trend (**PAK**)
+
+### Pole-and-line fisheries
+
+  - Increasing trend detected for **MDV**
+  - All other main fleets (**IND**, **IDN**) stable
+  
+### Artisanal line fisheries
+
+  - Generally stable (**LKA**) or decreasing trends (**IDN**, **IND**)
+  - Minor increases detected for **OMN**, that reached peak levels in 2021
+
+---
+
+# Uncertainties in nominal catch data
+
+- Reporting quality
+- Summary of reporting quality
+- Potential species composition bias and trends (PS catches on FOBs)
+
+---
+
+# Reporting quality - NC
+
+```{r fig.cap = "Annual nominal catches by quality score (barplot) and percentage of nominal catch fully/partially reported to the IOTC Secretariat for all fisheries (a) and by type of fishery (b)"}
+include_graphics('../../outputs/charts/NC/TROP/quality/COMBINED.png')
+```
+
+---
+
+# Summary of reporting quality - NC
+
+- _Generally_ increasing trend in quality levels from 2010 (`r quality_nc[YEAR == 2010]$GOOD_PERC`%) to 2021 (`r quality_nc[YEAR == 2018]$GOOD_PERC`%), with a slight decrease from 2020 (`r quality_nc[YEAR == 2020]$GOOD_PERC`%, CoViD effect?)
+- Reporting issues for several **coastal fisheries** 
+    + **MDG**, **MOZ**, **TZA**, **IDN**: estimated by the Secretariat in recent years
+    + **SOM**, **YEM**, **ERI**: complete lack of reporting
+-	**PS** fishery of **EU,Spain** 
+    + **changes in methodology** used to estimate species composition for 2018
+    + Final figures **largely contrasting** with other segments of the same fleet 
+    + Official updates from the EU **still pending**
+    + Species composition for 2018 **re-estimated by the Secretariat**
+- **PS** fishery of **Seychelles**: similar issues potentially detected for 2021
+
+---
+
+# Species composition (PS fleets, on FOBs)
+
+```{r fig.cap = "Relative species composition in the major FOB-associated purse seine fleets"}
+magick::image_append(
+  c(as_raster(EU_LS_CA_PIVOTED_FT %>% add_header_lines(values = "a. European Union")), 
+    as_raster(OT_LS_CA_PIVOTED_FT %>% add_header_lines(values = "b. Assimilated fleets"))
+  )
+)
+```
+
+---
+
+# Species composition (PS fleets, on FOBs)
+
+```{r fig.cap = "Relative species composition in the European Union FOB-associated purse seine fleets"}
+magick::image_append(
+  c(as_raster(EU_ESP_LS_CA_PIVOTED_FT %>% add_header_lines(values = "a. EU,Spain")),  
+    as_raster(EU_FRA_LS_CA_PIVOTED_FT %>% add_header_lines(values = "b. EU,France"))
+  )
+)
+```
+
+---
+
+# Species composition (PS fleets, on FOBs)
+
+```{r fig.cap = "Relative species composition in other FOB-associated purse seine fleets (EU assimilated)"}
+magick::image_append(
+   c(as_raster(OT_SYC_LS_CA_PIVOTED_FT %>% add_header_lines(values = "a. Seychelles")), 
+     as_raster(OT_MUS_LS_CA_PIVOTED_FT %>% add_header_lines(values = "b. Mauritius"))
+   )
+)
+```
+
+---
+
+# Recent trends (PS fleets, catches on FOBs)
+
+```{r fig.cap = paste0("Recent trends in species composition for the major industrial purse seine fleets (2010-", LAST_YEAR, ")")}
+include_graphics("../../outputs/charts/NC/TROP/fishery/TERNARY_TREND_PS_LS_TROP_FACETED_wide.png")
+```
+
+---
+
+# Georeferenced catch-and-effort data
+
+- By decade (1950-2009)
+- By last years (`r paste0(Y1, "-", YL)`) and decade
+
+---
+
+# By decade (1950-2009)
+
+```{r fig.cap = "Average annual catches by decade, 5x5 grid and fishery (1950-2009)"}
+include_graphics("../../outputs/charts/CA/TROP/fishery/RAISED_PIEMAP_DECADES_wide.png")
+```
+
+---
+
+# Last years (`r paste0(Y1, "-", YL)`) and decade
+
+```{r fig.cap = paste0("Annual catches by last years (", Y1, "-", YL, ") and decade (annual average 2010-2019), 5x5 grid and fishery ")}
+include_graphics("../../outputs/charts/CA/TROP/fishery/RAISED_PIEMAP_YEARS_wide.png")
+```
+
+---
+
+# Uncertainties in catch-and-effort data
+
+- Reporting quality
+- Summary of reporting quality
+- Potential species composition bias (PS catches on FOBs)
+
+---
+
+# Reporting quality - CE
+
+```{r fig.cap = "Annual nominal catches estimated by quality score (barplot) of the georeferenced catches fully/partially reported to the IOTC Secretariat (lines with dots) for all fisheries (a) and by type of fishery (b)"}
+include_graphics('../../outputs/charts/CA/TROP/quality/COMBINED.png')
+```
+
+---
+
+# Summary of reporting quality - CE
+
+- _Generally_ increasing trend in quality levels from 2010 (`r quality_ce[YEAR == 2010]$GOOD_PERC`%) to 2019 (`r quality_ce[YEAR == 2019]$GOOD_PERC`%), with a slight decrease in 2020 (`r quality_ce[YEAR == 2020]$GOOD_PERC`%, CoViD effect?)
+- Marked differences in quality levels between _industrial_ and _artisanal_ fisheries
+- Recent improvements in reporting from **IRN** and **IDN**, although coverage still not satisfactory
+- Information is missing for several important artisanal fisheries, as well as for some industrial ones (purse seines from **EU,Italy**)
+- Inconsistencies in reported effort units
+  
+---
+
+# Potential bias (PS fleets, catches on FOBs)
+
+- Temporal trends in species composition
+- Species distribution (BET / YFT)
+
+---
+
+# EU,Spain, species composition by year
+
+```{r fig.cap = paste0("Relative species compositions of catches on FOB-associated schools by year (", Y1, "-", YL, ") and grid")}
+include_graphics("../../outputs/charts/CA/TROP/fishery/TERNARY_EUESP_PS_LS_TROP_FACETED_WIDE.png")
+```
+
+---
+
+# EU,Spain, species distribution (BET / YFT)
+
+```{r fig.cap = paste0("Relative proportions of bigeye vs. yellowfin tuna caught on FOB-associated schools (", Y1, "-", YL, ")")}
+include_graphics("../../outputs/charts/CA/TROP/fishery/HEATMAP_EUESP_PS_LS_BET_YFT_FACETED_WIDE.png")
+```
+
+---
+
+# EU,France, species composition by year
+
+```{r fig.cap = paste0("Relative species compositions of catches on FOB-associated schools by year (", Y1, "-", YL, ") and grid")}
+include_graphics("../../outputs/charts/CA/TROP/fishery/TERNARY_EUFRA_PS_LS_TROP_FACETED_WIDE.png")
+```
+
+---
+
+# EU,France, species distribution (BET / YFT)
+
+```{r fig.cap = paste0("Relative proportions of bigeye vs. yellowfin tuna caught on FOB-associated schools (", Y1, "-", YL, ")")}
+include_graphics("../../outputs/charts/CA/TROP/fishery/HEATMAP_EUESP_PS_LS_BET_YFT_FACETED_WIDE.png")
+```
+
+---
+
+# Seychelles, species composition by year
+
+```{r fig.cap = paste0("Relative species compositions of catches on FOB-associated schools by year (", Y1, "-", YL, ") and grid")}
+include_graphics("../../outputs/charts/CA/TROP/fishery/TERNARY_SYC_PS_LS_TROP_FACETED_WIDE.png")
+```
+
+---
+
+# Seychelles, species distribution (BET / YFT)
+
+```{r fig.cap = paste0("Relative proportions of bigeye vs. yellowfin tuna caught on FOB-associated schools (", Y1, "-", YL, ")")}
+include_graphics("../../outputs/charts/CA/TROP/fishery/HEATMAP_SYC_PS_LS_BET_YFT_FACETED_WIDE.png")
+```
+
+---
+
+# Mauritius, species composition by year
+
+```{r fig.cap = paste0("Relative species compositions of catches on FOB-associated schools by year (", Y1, "-", YL, ") and grid")}
+include_graphics("../../outputs/charts/CA/TROP/fishery/TERNARY_MUS_PS_LS_TROP_FACETED_WIDE.png")
+```
+
+---
+
+# Mauritius, species distribution (BET / YFT)
+
+```{r fig.cap = paste0("Relative proportions of bigeye vs. yellowfin tuna caught on FOB-associated schools (", Y1, "-", YL, ")")}
+include_graphics("../../outputs/charts/CA/TROP/fishery/HEATMAP_MUS_PS_LS_BET_YFT_FACETED_WIDE.png")
+```
+
+---
+
+# Georeferenced size-frequency data
+
+- Uncertainties in size-frequency data
+
+---
+
+# Uncertainties in size-frequency data
+
+- Reporting quality
+- Summary of reporting quality
+
+---
+
+# Reporting quality - SF
+
+```{r fig.cap = "Annual nominal catches estimated by quality score (barplot) of the georeferenced size-frequency data fully/partially reported to the IOTC Secretariat (lines with dots) for all fisheries (a) and by type of fishery (b)"}
+include_graphics('../../outputs/charts/SF/TROP/quality/COMBINED.png')
+```
+
+---
+
+# Summary of reporting quality - SF
+
+- Lowest levels among the three main datasets
+- _Generally_ increasing trend in quality levels from 2010 (`r quality_sf[YEAR == 2010]$GOOD_PERC`%) to 2021 (`r quality_ce[YEAR == 2021]$GOOD_PERC`%), with a marked decrease in 2020 (`r quality_sf[YEAR == 2020]$GOOD_PERC`%, CoViD effect?)
+- Marked differences in quality levels between _industrial_ and _artisanal_ fisheries
+- Mix of _raw_ and _raised_ samples for some industrial PS fleets
+- Minimum sampling criteria (1 fish / t) not always met
+- Information is missing for several important artisanal fisheries, as well as for some industrial ones (longlines from **EU,Spain**)
+- Generalized lack of consistency in reporting 
+
+---
