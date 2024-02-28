@@ -130,7 +130,7 @@ read_catch_data = function(file = "../cfg/HISTORICAL_CATCH_ESTIMATES.csv", CPC_d
       )
     )
 
-  # For the time being we consider the Chagos archipelago to still be under sovereignity of GBR
+  # For the time being we consider the Chagos archipelago to still be under sovereignty of GBR
   POSTPROCESSED_CATCH_DATA[ASSIGNED_AREA == "NJA_CHAGOS", ASSIGNED_AREA := "NJA_GBR"]
   
   # We need to decide if we want to keep only catches from current CPCs for the catch-based allocation part

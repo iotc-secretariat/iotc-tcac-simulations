@@ -1,7 +1,7 @@
 l_info("Mapping the areas of national jurisdiction")
 
 # Load countries
-WORLD_BORDERS_SF = ne_countries(returnclass = "sf")
+#WORLD_BORDERS_SF = ne_countries(returnclass = "sf")
 
 # Load NJAs
 IO_NJA = 
@@ -26,19 +26,24 @@ IOTC_NJA = merge(unique(RC[ASSIGNED_AREA != "HIGH_SEAS", .(ASSIGNED_AREA, AREA_C
 
 IOTC_NJA_SF = st_as_sf(IOTC_NJA, wkt = "WKT_GEOM", crs = st_crs(4326))
 
+COL_FILL_NJA = iotc.core.utils.aes::unique_colors(25)
+COL_OUTLINE_NJA = darken(COL_FILL_NJA, 0.3)
+
 # Visualising the NJAs
 IOTC_NJA_MAP = 
   ggplot() + 
-  geom_sf(data = WORLD_BORDERS_SF, size = .2, fill = "darkgrey", col = "black") + 
+  geom_sf(data = CPC_SF, fill = grey(0.95), color = "darkgrey") + 
   geom_sf(data = IOTC_NJA_SF, aes(fill = NAME_EN), size = .5) + 
-  scale_x_continuous(limits = c(20, 149)) +
-  scale_y_continuous(limits = c(-60, 30)) +
+  scale_x_continuous(limits = c(-17, 149)) + 
+  scale_y_continuous(limits = c(-52, 69)) + 
+  scale_fill_manual(values = COL_FILL_NJA) + 
+  scale_color_manual(values = COL_OUTLINE_NJA) + 
   labs(x = "", y = "") +
   theme(legend.position = "none", legend.title = element_blank()) +
   theme(panel.grid.major = element_line(color = gray(.5), linetype = "dashed", linewidth = 0.3), 
         panel.background = element_rect(fill = "white"))
 
-save_plot("../outputs/maps/IOTC_NJA_MAP.png", IOTC_NJA_MAP, 8, 6)
+save_plot("../outputs/maps/IOTC_NJA_MAP.png", IOTC_NJA_MAP, 2.2, 2.1)
 
 l_info("Areas of national jurisdiction mapped!")
 

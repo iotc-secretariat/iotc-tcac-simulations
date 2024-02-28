@@ -36,11 +36,33 @@ CB_ALLOCATION2 = catch_based_allocation(catch_data = subset_and_postprocess_catc
 QUOTAS = 
   allocate_TAC(TAC = 500000, 
                baseline_allocation      = BA_ALLOCATION, baseline_allocation_weight      = .1, # 10% from baseline allocation
-               coastal_state_allocation = CS_ALLOCATION, coastal_state_allocation_weight = .6, # 60% from coastal state allocation
-               catch_based_allocation   = CB_ALLOCATION, catch_based_allocation_weight   = .3) # 30% from catch-based allocation
+               coastal_state_allocation = CS_ALLOCATION, coastal_state_allocation_weight = .2, # 20% from coastal state allocation
+               catch_based_allocation   = CB_ALLOCATION, catch_based_allocation_weight   = .7) # 70% from catch-based allocation
 
 QUOTAS2 = 
   allocate_TAC(TAC = 500000, 
                baseline_allocation      = BA_ALLOCATION,  baseline_allocation_weight      = .1, # 10% from baseline allocation
                coastal_state_allocation = CS_ALLOCATION,  coastal_state_allocation_weight = .6, # 60% from coastal state allocation
                catch_based_allocation   = CB_ALLOCATION2, catch_based_allocation_weight   = .3) # 30% from catch-based allocation
+
+
+# Example ####
+TAC_EXAMPLE = 500000
+FLEET_CODE = "IDN"
+
+# Display information on IDN
+CPC_DATA_IDN   = CPC_data[CODE == "IDN"]
+CS_SE_DATA_IDN = CS_SE_data[CODE == "IDN"]
+
+## Baseline allocation
+BA_ALLOCATION[CPC_CODE == "IDN"]
+BA_ALLOCATION[CPC_CODE == "IDN", BASELINE_ALLOCATION] * TAC_EXAMPLE * 0.1
+
+## Coastal state allocation
+CS_ALLOCATION[CPC_CODE == "IDN"]
+CS_ALLOCATION[CPC_CODE == "IDN", COASTAL_STATE_ALLOCATION] * TAC_EXAMPLE * 0.2
+
+## Catch-based allocation
+CB_ALLOCATION[CPC_CODE == "IDN"]
+CB_ALLOCATION[CPC_CODE == "IDN", CATCH_BASED_ALLOCATION_YEAR_1] * TAC_EXAMPLE * 0.7
+

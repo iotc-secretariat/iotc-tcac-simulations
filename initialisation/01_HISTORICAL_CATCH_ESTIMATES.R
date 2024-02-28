@@ -1,8 +1,10 @@
 l_info("Describing the historical catch estimates...")
 
 # READING THE DATA ####
-RC = fread("../cfg/HISTORICAL_CATCH_ESTIMATES.csv")
-RC[ASSIGNED_AREA == "HIGH_SEAS", AREA_CATEGORY := "Areas beyond national jurisdication (ABNJ)"]
+RC = read_catch_data()
+
+# Add area category
+RC[ASSIGNED_AREA == "HIGH_SEAS", AREA_CATEGORY := "Areas beyond national jurisdiction (ABNJ)"]
 RC[ASSIGNED_AREA != "HIGH_SEAS", AREA_CATEGORY := "National jurisdiction areas (NJA)"]
 
 # PLOTTING THE DATA ####
