@@ -229,6 +229,8 @@ best_years_average_catch_data = function(weighted_catch_data,
   )
 }
 
+
+## BASELINE ALLOCATION FUNCTION ####
 # Performs the baseline allocation, by attributing the same relative weight to all CPCs
 baseline_allocation = function(CPC_data = read_configuration()$CPC_CONFIG) {
   component_allocation_table = CPC_data[STATUS == "CPC", .(CPC_CODE = CODE)]
@@ -240,6 +242,8 @@ baseline_allocation = function(CPC_data = read_configuration()$CPC_CONFIG) {
     component_allocation_table
   )
 }
+
+## COASTAL STATE ALLOCATION ####
 
 # Performs the coastal state allocation, considering different options for the socio-economic part, with different socio-economic sub-weights to be provided
 # Can be improved by removing the need for the explicit provision of the 'socio_economic_option' parameter
@@ -368,17 +372,30 @@ coastal_state_allocation = function(CPC_data,
   }
 
   if(socio_economic_option == "O2") { # Second option
-    component_allocation_table = 
-      component_allocation_table[, COASTAL_STATE_ALLOCATION := ((equal_portion_weight * EQUAL_ALLOCATION) + 
+    component_allocation_table_final = 
+      component_allocation_table[, .(EQUAL_PORTION_WEIGHT  = equal_portion_weight, 
+                                     EQUAL_ALLOCATION, 
+                                     CSA_EQUAL_ALLOCATION  = equal_portion_weight * EQUAL_ALLOCATION, 
+                                     SOCIO_ECONOMIC_WEIGHT = socio_economic_weight, 
+                                     SEW_HDI               = socio_economic_option_subweights$HDI_wgt, 
+                                     HDI_ALLOCATION, 
+                                     CSA_HDI_ALLOCATION    = socio_economic_weight * socio_economic_option_subweights$HDI_wgt  * HDI_ALLOCATION, 
+                                     SEW_GNI               = socio_economic_option_subweights$GNI_wgt, 
+                                     GNI_ALLOCATION, 
+                                     CSA_GNI_ALLOCATION    = socio_economic_weight * socio_economic_option_subweights$GNI_wgt  * GNI_ALLOCATION, 
+                                     CSA_SIDS_ALLOCATION   = socio_economic_weight * socio_economic_option_subweights$SIDS_wgt * SIDS_ALLOCATION, 
+                                     CSA_NJA_ALLOCATION    = NJA_weight * NJA_ALLOCATION, 
+                                     COASTAL_STATE_ALLOCATION = ((equal_portion_weight * EQUAL_ALLOCATION) + 
                                                                   (socio_economic_weight * (socio_economic_option_subweights$HDI_wgt  * HDI_ALLOCATION) ) + 
                                                                   (socio_economic_weight * (socio_economic_option_subweights$GNI_wgt  * GNI_ALLOCATION) ) + 
                                                                   (socio_economic_weight * (socio_economic_option_subweights$SIDS_wgt * SIDS_ALLOCATION)) + 
-                                                                  (NJA_weight * NJA_ALLOCATION))][, .(CPC_CODE = CODE, COASTAL_STATE_ALLOCATION)]
+                                                                  (NJA_weight * NJA_ALLOCATION))), .(CPC_CODE = CODE)]
   }
   
-  return(component_allocation_table)
+  return(component_allocation_table_final)
 }
 
+## CATCH-BASED ALLOCATION FUNCTION ####
 catch_based_allocation = function(CPC_data,   # Unused
                                   CS_SE_data, # Unused
                                   catch_data,

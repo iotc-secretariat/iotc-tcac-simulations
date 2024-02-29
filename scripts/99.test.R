@@ -14,9 +14,9 @@ CS_ALLOCATION = coastal_state_allocation(CPC_data = CPC_data, CS_SE_data = CS_SE
                                           socio_economic_option     = "O2",
                                           socio_economic_option_subweights = 
                                            list(
-                                             HDI_wgt  = 0.3,
-                                             GNI_wgt  = 0.3,
-                                             SIDS_wgt = 0.4
+                                             HDI_wgt  = 0.35,
+                                             GNI_wgt  = 0.475,
+                                             SIDS_wgt = 0.175
                                            ),
                                          NJA_weight                 = 0.175)
 
