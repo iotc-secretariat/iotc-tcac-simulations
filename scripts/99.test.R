@@ -45,10 +45,11 @@ QUOTAS2 =
                coastal_state_allocation = CS_ALLOCATION,  coastal_state_allocation_weight = .6, # 60% from coastal state allocation
                catch_based_allocation   = CB_ALLOCATION2, catch_based_allocation_weight   = .3) # 30% from catch-based allocation
 
-
 # Example ####
-TAC_EXAMPLE = 500000
+SPECIES_SELECTED  = "YFT"
+TAC_EXAMPLE       = 500000
 CPC_CODE_SELECTED = "IDN"
+CATCH_PERIOD      = 2000:2016
 
 # Display information on IDN
 CPC_DATA_IDN   = CPC_data[CODE == CPC_CODE_SELECTED]
@@ -63,6 +64,15 @@ CS_ALLOCATION[CPC_CODE == CPC_CODE_SELECTED]
 CS_ALLOCATION[CPC_CODE == CPC_CODE_SELECTED, COASTAL_STATE_ALLOCATION] * TAC_EXAMPLE * 0.2
 
 ## Catch-based allocation
-CB_ALLOCATION[CPC_CODE == CPC_CODE_SELECTED, .(PERIOD = "2000-2016", PERCENT_ALLOCATED = CATCH_BASED_ALLOCATION_YEAR_1*100), .(CPC_CODE, )]
-CB_ALLOCATION[CPC_CODE == CPC_CODE_SELECTED, CATCH_BASED_ALLOCATION_YEAR_1] * TAC_EXAMPLE * 0.7
+# NB. ABNJ_CATCH_MT indicates catches from the CPC in other NJAs (through agreements)
+IDN_CATCH_FOREIGN_NJAs = catch_data[!ASSIGNED_AREA %in% c("NJA_IDN", "HIGH_SEAS") & FLEET_CODE == "IDN" & YEAR %in% 2000:2016 & SPECIES_CODE == "YFT"][, .(CATCH = round(sum(CATCH_MT/length(2000:2016)), 1)), keyby = .(ASSIGNED_AREA)][order(-CATCH)]
+
+FOREIGN_CPCS_CATCH_IDN_NJA = catch_data[ASSIGNED_AREA %in% c("NJA_IDN") & FLEET_CODE != "IDN" & YEAR %in% 2000:2016 & SPECIES_CODE == "YFT"][, .(CATCH = round(sum(CATCH_MT/length(2000:2016)), 1)), keyby = .(FLEET_CODE)][order(-CATCH)]
+
+subset_and_postprocess_catch_data(catch_data, SPECIES_SELECTED, CATCH_PERIOD)[CPC_CODE == CPC_CODE_SELECTED][, .(NJA_CATCH_MT = sum(NJA_CATCH_MT/length(CATCH_PERIOD)), HS_CATCH_MT = sum(HS_CATCH_MT/length(CATCH_PERIOD)), ABNJ_CATCH_MT = sum(ABNJ_CATCH_MT/length(CATCH_PERIOD)), FOREIGN_CATCH_MT = sum(FOREIGN_CATCH_MT/length(CATCH_PERIOD))), keyby = .(CPC_CODE)]
+
+subset_and_postprocess_catch_data(catch_data, SPECIES_SELECTED, CATCH_PERIOD)[, .(NJA_CATCH_MT = sum(NJA_CATCH_MT/length(CATCH_PERIOD)), HS_CATCH_MT = sum(HS_CATCH_MT/length(CATCH_PERIOD)), ABNJ_CATCH_MT = sum(ABNJ_CATCH_MT/length(CATCH_PERIOD)), FOREIGN_CATCH_MT = sum(FOREIGN_CATCH_MT/length(CATCH_PERIOD)))]
+
+CB_ALLOCATION[CPC_CODE == CPC_CODE_SELECTED, .(PERIOD = "2000-2016", PERCENT_ALLOCATED = CATCH_BASED_ALLOCATION_YEAR_10*100), .(CPC_CODE)]
+CB_ALLOCATION[CPC_CODE == CPC_CODE_SELECTED, CATCH_BASED_ALLOCATION_YEAR_10] * TAC_EXAMPLE * 0.7
 

@@ -216,7 +216,7 @@ period_average_catch_data = function(weighted_catch_data) {
   )
 }
 
-# Calculates the average catch data for the 'best' n-years in a gvien entire timeframe, where 'best' means 'with higher catches recorded'
+# Calculates the average catch data for the 'best' n-years in a given entire timeframe, where 'best' means 'with higher catches recorded'
 # In doing so, it uses the weighted catch data (see the 'weight_catch_data' function) that take into account the ABNJ / foreign flag catch attribution
 best_years_average_catch_data = function(weighted_catch_data,
                                          max_num_years) {
@@ -383,6 +383,7 @@ coastal_state_allocation = function(CPC_data,
                                      SEW_GNI               = socio_economic_option_subweights$GNI_wgt, 
                                      GNI_ALLOCATION, 
                                      CSA_GNI_ALLOCATION    = socio_economic_weight * socio_economic_option_subweights$GNI_wgt  * GNI_ALLOCATION, 
+                                     SIDS_ALLOCATION,  
                                      CSA_SIDS_ALLOCATION   = socio_economic_weight * socio_economic_option_subweights$SIDS_wgt * SIDS_ALLOCATION, 
                                      CSA_NJA_ALLOCATION    = NJA_weight * NJA_ALLOCATION, 
                                      COASTAL_STATE_ALLOCATION = ((equal_portion_weight * EQUAL_ALLOCATION) + 
