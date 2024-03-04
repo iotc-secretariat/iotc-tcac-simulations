@@ -1,11 +1,14 @@
 l_info("Describing the historical catch estimates...")
 
 # READING THE DATA ####
+
+## Raw data ####
 RC_RAW = fread("../cfg/HISTORICAL_CATCH_ESTIMATES.csv")
 
+# Change CHAGOS to GBR for the time being
+RC_RAW[ASSIGNED_AREA == "NJA_CHAGOS", ASSIGNED_AREA := "NJA_GBR"]
 
-RC_RAW[YEAR %in% 2000:2016 & SPECIES_CODE == "YFT" & !FLEET_CODE %in% c("OTH", "NEI")) & !ASSIGNED_AREA %in% c("NJA_ARE", "NJA_BHR", "NJA_DJI", "NJA_EGY", "NJA_ERI", "NJA_ISR", "NJA_KWT", "NJA_MMR", "NJA_QAT", "NJA_SAU", "NJA_TLS"), .(CATCH = sum(CATCH_MT/length(2000:2016)))]
-
+## Pre-processed data ####
 RC = read_catch_data()
 
 # Add area category

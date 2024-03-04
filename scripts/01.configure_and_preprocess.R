@@ -385,6 +385,8 @@ coastal_state_allocation = function(CPC_data,
                                      CSA_GNI_ALLOCATION    = socio_economic_weight * socio_economic_option_subweights$GNI_wgt  * GNI_ALLOCATION, 
                                      SIDS_ALLOCATION,  
                                      CSA_SIDS_ALLOCATION   = socio_economic_weight * socio_economic_option_subweights$SIDS_wgt * SIDS_ALLOCATION, 
+                                     NJA_WEIGHT            = NJA_weight, 
+                                     NJA_ALLOCATION, 
                                      CSA_NJA_ALLOCATION    = NJA_weight * NJA_ALLOCATION, 
                                      COASTAL_STATE_ALLOCATION = ((equal_portion_weight * EQUAL_ALLOCATION) + 
                                                                   (socio_economic_weight * (socio_economic_option_subweights$HDI_wgt  * HDI_ALLOCATION) ) + 

@@ -11,3 +11,11 @@ The informal TCAC meeting held on February, the 27^th^, 2024, identified some ch
     -   **Catch-based allocation**: 45-90%
 
 -   Add Taiwan,China as an entity as stated in the document
+
+# Technical changes
+
+## HISTORICAL_CATCH_ESTIMATES.csv
+
+- The term CPC actually regroups Members (CPs) and CNPCs, so the STATUS should not read "CPC" in the CPC dataset but MEMBER
+- Separate TWN from China
+- Add the code of the CPC/Observer (field CPC_OBS_CODE_SELECTED) for each fleet code
