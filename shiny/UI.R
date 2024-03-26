@@ -71,11 +71,17 @@ ui = function() {
                     )
                   ),
                   
-                  span(class="triple",
-                    sliderInput("weights", label = "Main component weights (%)",
+                  span(class = "triple",
+                    sliderInput("ba_weight", label = "Baseline weight (%)",
                                 width = "100%",
-                                min = 0, max = 100, value = c(10, 70), step = .5, sep = "", animate = FALSE
-                    )
+                                min = 5, max = 10, value = 5, step = .1, animate = FALSE
+                    ), 
+                  ), 
+
+                  span(sliderInput("cs_weight", label = "Coastal state weight (%)",
+                                     width = "100%",
+                                     min = 5, max = 45, value = 5, step = .5, animate = FALSE
+                         ),
                   ),
                   
                   br(),              

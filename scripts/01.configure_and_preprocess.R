@@ -443,9 +443,9 @@ allocate_TAC = function(TAC,
                         catch_based_allocation,   catch_based_allocation_weight) {
   
   all_weights = baseline_allocation_weight + coastal_state_allocation_weight + catch_based_allocation_weight
-  
-  if(all_weights != 1)
-    stop(paste0("The weights provided for the various allocation components should sum up to 100% (now:", all_weights * 100, " %)"))
+
+  if(round(all_weights * 100, 1) != 100)
+    stop(paste0("The weights provided for the various allocation components should sum up to 100% (now:", all_weights * 100, "%)"))
 
   print(paste0("Allocate TAC parameters: [ TAC = ", TAC, 
                                         ", BA_wgt = ", baseline_allocation_weight, 

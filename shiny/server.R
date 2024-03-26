@@ -72,19 +72,19 @@ server = function(input, output, session) {
   # Baseline weight
   
   output$ba_wgt = renderText({
-    paste0(format(as.numeric(input$weights[1]), nsmall = 1), "%")
+    paste0(format(as.numeric(input$ba_weight), nsmall = 1), "%")
   })
 
   # Coastal states weight
   
   output$cs_wgt = renderText({
-    paste0(format(as.numeric((input$weights[2] - input$weights[1])), nsmall = 1), "%")
+    paste0(format(as.numeric(input$cs_weight), nsmall = 1), "%")
   })
 
   # Catch-based weight
   
   output$cb_wgt = renderText({
-    paste0(format(as.numeric((100 - input$weights[2])), nsmall = 1), "%")
+    paste0(format(as.numeric((100 - input$ba_weight - input$cs_weight)), nsmall = 1), "%")
   })
   
   # Coastal states / equal weight
@@ -144,9 +144,9 @@ server = function(input, output, session) {
   prepare_output = function(input) {
     unit = input$out_unit
     
-    ba_wgt = (input$weights[1]) * 0.01
-    cs_wgt = (input$weights[2] - input$weights[1]) * 0.01
-    cb_wgt = (100 - input$weights[2] ) * 0.01
+    ba_wgt = (input$ba_weight) * 0.01
+    cs_wgt = (input$cs_weight) * 0.01
+    cb_wgt = (1 - ba_wgt -  cs_wgt)
     
     cs_eq_wgt = (input$cs_weights[1]) * 0.01
     cs_se_wgt = (input$cs_weights[2] - input$cs_weights[1]) * 0.01
