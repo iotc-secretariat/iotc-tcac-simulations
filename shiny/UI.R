@@ -71,17 +71,18 @@ ui = function() {
                     )
                   ),
                   
-                  span(class = "triple",
+                  span(
                     sliderInput("ba_weight", label = "Baseline weight (%)",
                                 width = "100%",
                                 min = 5, max = 10, value = 5, step = .1, animate = FALSE
-                    ), 
+                    ) 
                   ), 
 
-                  span(sliderInput("cs_weight", label = "Coastal state weight (%)",
-                                     width = "100%",
-                                     min = 5, max = 45, value = 5, step = .5, animate = FALSE
-                         ),
+                  span(
+                    sliderInput("cs_weight", label = "Coastal state weight (%)",
+                                width = "100%",
+                                min = 5, max = 45, value = 5, step = .5, animate = FALSE
+                    )
                   ),
                   
                   br(),              
