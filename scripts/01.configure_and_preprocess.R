@@ -135,7 +135,7 @@ read_catch_data = function(file = "../cfg/HISTORICAL_CATCH_ESTIMATES.csv", CPC_d
   
   # We need to decide if we want to keep only catches from current CPCs for the catch-based allocation part
   # In that case:
-  POSTPROCESSED_CATCH_DATA = POSTPROCESSED_CATCH_DATA[FLEET_CODE %in% CPC_data[STATUS == "CPC"]$CODE]
+  POSTPROCESSED_CATCH_DATA = POSTPROCESSED_CATCH_DATA[FLEET_CODE %in% CPC_data[STATUS == "CP"]$CODE]
 
   # We need to decide if we want to consider only catches in the high seas or within CPC NJAs
   # In that case:
