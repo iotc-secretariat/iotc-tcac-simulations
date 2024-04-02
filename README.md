@@ -17,58 +17,58 @@ The definition of all relevant parameters characterising each CPC with respect t
 
 This includes two worksheets:
 
--   `CPC` - listing all current IOTC *contracting parties* (CPC) and *cooperating non-contracting parties* (CNCP) together with their:
+-   `CPC` - listing all current IOTC *Contracting Parties* (CP) and *Cooperating Non-Contracting Parties* (CNCP) together with their:
 
     -   mnemonic code (generally, the ISO3 code of the country)
     -   official English name (as an IOTC CPC)
-    -   CPC / CNCP status
+    -   CP / CNCP status
     -   *small islands developing state* (SIDS) status
     -   *coastal state* status
     -   presence of a *national jurisdiction area* (NJA) within the [IOTC area of competence](https://iotc.org/about-iotc/competence)
     -   size of the NJA (in km<sup>2</sup>, calculated from the shapefiles available to the IOTC Secretariat and originally downloaded from the VLIZ / Marine Regions [*maritime boundaries* database](https://www.marineregions.org/eezsearch.php))
-    -   relative size of the NJA with respect to the IOTC area of competence.
+    -   relative size of the NJA with respect to the IOTC area of competence.  
 
 -   `COASTAL_STATE_SOCIO_ECONOMIC` - listing all IOTC CPCs that are either a coastal state or have a NJA within the Indian Ocean, together with their development status (retrieved from [here](https://www.un.org/development/desa/dpad/wp-content/uploads/sites/45/WESP2020_Annex.pdf)), and a set of socio-economic indicators to address the requirements of both *Option 1* and *Option 2* in [IOTC-2024-TCAC13-REF02](https://iotc.org/sites/default/files/documents/2023/11/IOTC-2024-TCAC13-REF02E_TCAC_draft_Allocation_Regime_v7_clean.docx) para. 6.6(1)(b).
 
-    -   The indicators required by *Option 1*, i.e.:
+    -   The indicators required by *Option 1*:
 
         -   per capita fish consumption (kg / person / year)
 
         -   *Commonwealth Universal Vulnerability index* (CUVI)
 
-        -   proportion of fish workers employed in small-scale and artisanal fisheries (%)
+        -   contribution (%) of fish workers employed in small-scale and artisanal fisheries
 
-        -   fisheries contribution to GDP (%)
+        -   contribution (%) of fisheries to GDP
 
-        -   proportion of total export value made up of fisheries exports (%)
+        -   contribution (%) of fisheries exports to total export value
 
         **are not yet available to the IOTC Secretariat** and have therefore been replaced by **dummy values**.
 
-        > For this reason, the results produced by the simulation through *Option 1* **should NOT be considered *official* by any means** until the original proponents provide the IOTC Secretariat with all required socio-economic indicators.
+        > For this reason, the results produced by the simulation through *Option 1* **should NOT be considered *official* by any means** until the original proponents provide the IOTC Secretariat with all required values of those socio-economic indicators.
 
     -   The HDI (2021) and GNI indicators required by *Option 2* have been retrieved from the [UNDP](https://hdr.undp.org/data-center/human-development-index#/indicies/HDI) and [WorldBank](https://datahelpdesk.worldbank.org/knowledgebase/articles/906519-world-bank-country-and-lending-group) websites, respectively, with the HDI index for the EU averaged from [here](https://www.theglobaleconomy.com/rankings/human_development/European-union/).
 
 ## Assumptions {#assumptions}
 
-### CPC / coastal state configuration
+### CPC and coastal state configuration
 
 The identification of a CPC as *being* or *not being* an IOTC coastal state is still a matter of debate for some IOTC members that have NJAs within the IOTC area of competence.
 
-For the sake of this simulation we assume the following:
+For the sake of this simulation, it was assumed that:
 
--   That the attribution of a NJA in the Indian Ocean to a given CPC reflects the information available to the IOTC as of 31/12/2023
+-   the attribution of a NJA in the Indian Ocean to a given CPC reflects the information available to the IOTC as of 31/12/2023
 
--   That beside having an NJA in the Indian Ocean, `FRAT` (*France (OT)*) shall be *de facto* considered an IOTC coastal state (see Appendix 4, para. 2 of [https://iotc.org/documents/TCAC/12/RE](https://iotc.org/sites/default/files/documents/2023/12/IOTC-2023-TCAC12-RE.pdf) *Report of the 12^th^ Technical Committee on Allocation Criteria*).
+-   beside having an NJA in the Indian Ocean, `FRAT` (*France (OT)*) shall be *de facto* considered as an IOTC coastal state (see Appendix 4, para. 2 of [https://iotc.org/documents/TCAC/12/RE](https://iotc.org/sites/default/files/documents/2023/12/IOTC-2023-TCAC12-RE.pdf) *Report of the 12^th^ Technical Committee on Allocation Criteria*).
 
--   That `EUR` (*European Union / REIO*) has an NJA in the Indian Ocean (i.e., the NJA around Réunion and Mayotte) and that for this reason "(...) *should benefit from an allocation that relates to the size of the EEZ of its outermost territories in the IOTC area of competence.*" (see Appendix 4, para. 2 of [https://iotc.org/documents/TCAC/12/RE](https://iotc.org/sites/default/files/documents/2023/12/IOTC-2023-TCAC12-RE.pdf) *Report of the 12^th^ Technical Committee on Allocation Criteria*).
+-   `EUR` (*European Union / REIO*) has an NJA in the Indian Ocean (i.e., the NJA around Réunion and Mayotte) and that for this reason "(...) *should benefit from an allocation that relates to the size of the EEZ of its outermost territories in the IOTC area of competence.*" (see Appendix 4, para. 2 of [https://iotc.org/documents/TCAC/12/RE](https://iotc.org/sites/default/files/documents/2023/12/IOTC-2023-TCAC12-RE.pdf) *Report of the 12^th^ Technical Committee on Allocation Criteria*).
 
--   That `EUR`, notwithstanding the above, "(...) *would not be seeking the application of paragraph 6.6(1)(b) of the coastal state allocation criteria (...)*" (see Appendix 4, para. 2 of [https://iotc.org/documents/TCAC/12/RE](https://iotc.org/sites/default/files/documents/2023/12/IOTC-2023-TCAC12-RE.pdf) *Report of the 12^th^ Technical Committee on Allocation Criteria*).
+-   `EUR`, notwithstanding the above, "(...) *would not be seeking the application of paragraph 6.6(1)(b) of the coastal state allocation criteria (...)*" (see Appendix 4, para. 2 of [https://iotc.org/documents/TCAC/12/RE](https://iotc.org/sites/default/files/documents/2023/12/IOTC-2023-TCAC12-RE.pdf) *Report of the 12^th^ Technical Committee on Allocation Criteria*).
 
--   That there are different views as whether `EUR` "(...) *should benefit from the portion of the coastal state allocation criteria related to aspirations under paragraph 6.6(1)(a) (...)*" (see Appendix 4, para. 2 of [https://iotc.org/documents/TCAC/12/RE](https://iotc.org/sites/default/files/documents/2023/12/IOTC-2023-TCAC12-RE.pdf) *Report of the 12^th^ Technical Committee on Allocation Criteria*).
+-   there are different views as whether `EUR` "(...) *should benefit from the portion of the coastal state allocation criteria related to aspirations under paragraph 6.6(1)(a) (...)*" (see Appendix 4, para. 2 of [https://iotc.org/documents/TCAC/12/RE](https://iotc.org/sites/default/files/documents/2023/12/IOTC-2023-TCAC12-RE.pdf) *Report of the 12^th^ Technical Committee on Allocation Criteria*).
 
-> For simplicity's sake, the simulation temporarily considers `EUR` as benefiting from the portion of allocation specified by paragraph 6.6(1)(a) of [IOTC-2024-TCAC13-REF02](https://iotc.org/sites/default/files/documents/2023/11/IOTC-2024-TCAC13-REF02E_TCAC_draft_Allocation_Regime_v7_clean.docx).
+> For simplicity's sake, the simulation temporarily considered `EUR` as benefiting from the portion of allocation specified by paragraph 6.6(1)(a) of [IOTC-2024-TCAC13-REF02](https://iotc.org/sites/default/files/documents/2023/11/IOTC-2024-TCAC13-REF02E_TCAC_draft_Allocation_Regime_v7_clean.docx).
 
--   That subsequent to TCAC12, in consultations between the IOTC Secretariat and `GBR` (*United Kingdom of Great Britain and Northern Ireland*), `GBR` has noted to the Secretariat that para 6.6.(1)(b) would not apply to their case, but that 6.6.(1)(a) and (c) would, and this has been reflected in the current configuration of the TCAC simulations made by the Secretariat.
+-   subsequent to TCAC12, in consultations between the IOTC Secretariat and `GBR` (*United Kingdom of Great Britain and Northern Ireland*), `GBR` has noted to the Secretariat that para 6.6.(1)(b) would not apply to their case, but that 6.6.(1)(a) and (c) would, and this has been reflected in the current configuration of the TCAC simulations made by the Secretariat.
 
 ### Historical catches
 
@@ -251,7 +251,7 @@ The visual representation of the relative cell value can be changed via the ***H
 
 This presents two possible options:
 
--   **Background color** (default) to represent the (relative) cell value through the intensity of the background
+-   **Background colour** (default) to represent the (relative) cell value through the intensity of the background
 
     ![Output table using the 'background colour' heatmap option](assets/images/app_output_heatmap_bg.png){style="padding-bottom: 1em;"}
 
