@@ -76,13 +76,13 @@ This information is required to calculate the third component (*catch-based*) of
 
 Historical catches are available for all years from 1950 to 2021 stratified by year, fleet, gear, school type, species, and assigned area.
 
-It has to be noted how the need of apportioning historical catches by flag or fleet according to the area of operation (high seas vs. the NJA of any given coastal state) requires the IOTC Secretariat to estimate this information through a process that has been presented at the last TCAC meeting in October 2023, and agreed by the meeting participants.
+It has to be noted how the need of apportioning historical catches by flag or fleet according to the area of operation (high seas vs. the NJA of any given coastal state) requires the IOTC Secretariat to estimate this information through a process that has been presented at the last TCAC meeting in October 2023, and agreed by the meeting participants (see [IOTC-2023-TCAC12-INF02](https://iotc.org/documents/TCAC/12/INF02)).
 
-For this reason, the historical catch series with full area breakdown is only available for the five major IOTC species (albacore, bigeye, skipjack, swordfish, and yellowfin tuna) and has been estimated using the regular grid vs. NJA overlapping area fraction as a way of assigning catches estimated for the former to the area that falls within a given NJA.
+For this reason, the historical catch series with full area breakdown is only available for the five major IOTC species (albacore, bigeye tuna, skipjack tuna, swordfish, and yellowfin tuna) and has been estimated using the regular grid vs. NJA overlapping area fraction as a way of assigning catches estimated for the former to the area that falls within a given NJA.
 
 > At this stage of the process, there is no additional information from CPCs that might confirm whether their catches in a given grid shall only be attribute to the flag state or not. For this reason, the simulation uses the information in the `ASSIGNED_AREA` column of the historical catch series to calculate the anual catches for a given coastal state / flag state (when required).
 
-For the sake of calculating the catch-based allocation weight for each CPC, information on historical catches is averaged across a selectable timeframe with two possible approaches that require to compute:
+For the sake of calculating the catch-based allocation weight for each CPC, information on historical catches is averaged across a selectable time frame with two possible approaches that require to compute:
 
 -   the annual average across the entire time period
 -   the average of the best "*n*" years across the time period
@@ -137,7 +137,7 @@ This panel provides access to the [configuration parameters](#inputConfig) and t
 
     <br/>
 
--   The ***Main component weights***, i.e.:
+-   The ***Main component weights***:
 
     ![Main component weights configuration controls](assets/images/app_config_main_components_wgt.png){style="border: 1px solid black;"}
 
