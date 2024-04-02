@@ -1,0 +1,130 @@
+---
+author: "Author: [IOTC Secretariat](mailto:IOTC-Secretariat@fao.org)" 
+output:
+  officedown::rdocx_document:
+    reference_docx: "../templates/rdoc_template.docx"
+reference_num: TRUE
+fig_caption: TRUE
+---
+
+```{r title, echo = FALSE}
+REPORT_TITLE = paste0("Daily buoy position data available at the IOTC Secretariat for the purse seine fishery of ", CPC_LIST[CPC_CODE == CPC_SELECTED, CPC], " between ", format(START_DATE, format = '%B %Y'), " and ", format(END_DATE, format = '%B %Y'))
+```
+
+---
+title: `r REPORT_TITLE`
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE, 
+                      tab.cap.pre = "Tab. ", 
+                      tab.cap.sep = ". ", 
+                      tab.cap.style = "Table Caption", 
+                      tab.cap.fp_text = officer::fp_text_lite(italic = FALSE, bold = TRUE), 
+                      fig.cap = TRUE, 
+                      fig.cap.pre = "Fig. ", 
+                      fig.cap.sep = ". ", 
+                      fig.cap.style = "Caption label",
+                      dpi = 300
+)
+```
+
+```{r Headers, echo = FALSE}
+logo.file = file.path("../templates/FAO_IOTC_LOGOS.png")
+
+bl_header_no_logo = function(txt, position) {
+  block_list(
+    fpar(values = txt, fp_p = fp_par(text.align = position, border.bottom = fp_border()), fp_t = fp_text_lite(color = "black", bold = FALSE, font.size = 12))
+  )
+}
+
+bl_header_with_logo = function(txt, position) {
+  block_list(
+    fpar(external_img(src = logo.file, height = 0.71, width = 7.19, unit = "in"), 
+    ftext = txt, 
+         fp_p = fp_par(text.align = position, border.bottom = fp_border()), 
+         fp_t = fp_text_lite(color = "black", bold = FALSE, font.size = 12)))
+}
+
+sec_pr = prop_section(
+  header_first = bl_header_with_logo("IOTC Resolution 19/02", "right"),
+  header_default = bl_header_no_logo("IOTC Resolution 19/02", "right")
+)
+```
+
+```{r TextStyles, echo = FALSE}
+fp = fp_par(
+  text.align = "center", 
+  padding.bottom = 20, padding.top = 120, 
+  border.bottom = fp_border())
+
+alert = fp_text(shading.color = "transparent", bold = TRUE, color = "red")
+underline = fp_text(underlined = TRUE)
+```
+
+```{r, echo = FALSE, eval = TRUE}
+block_section(sec_pr)
+```
+
+```{r FleetsToDisplay}
+display_EUESP = "EUESP" %in% FLEETS_SELECTED
+display_EUFRA = "EUFRA" %in% FLEETS_SELECTED
+display_EUITA = "EUITA" %in% FLEETS_SELECTED
+display_JPN = "JPN" %in% FLEETS_SELECTED
+display_KOR = "KOR" %in% FLEETS_SELECTED
+display_MUS = "MUS" %in% FLEETS_SELECTED
+display_OMN = "OMN" %in% FLEETS_SELECTED
+display_SYC = "SYC" %in% FLEETS_SELECTED
+display_TZA = "TZA" %in% FLEETS_SELECTED
+```
+
+```{r child = "01_BUOYS_OVERVIEW.Rmd"}
+```
+
+\pagebreak
+
+```{r child = "02_BUOYS_NUMBERS_ALL.Rmd"}
+```
+
+\pagebreak
+
+```{r child = "03_BUOYS_NUMBERS_EUESP.Rmd", eval = display_EUESP}
+```
+
+```{r child = "03_BUOYS_NUMBERS_EUFRA.Rmd", eval = display_EUFRA}
+```
+
+```{r child = "03_BUOYS_NUMBERS_EUITA.Rmd", eval = display_EUITA}
+```
+
+```{r child = "03_BUOYS_NUMBERS_JPN.Rmd", eval = display_JPN}
+```
+
+```{r child = "03_BUOYS_NUMBERS_KOR.Rmd", eval = display_KOR}
+```
+
+```{r child = "03_BUOYS_NUMBERS_MUS.Rmd", eval = display_MUS}
+```
+
+```{r child = "03_BUOYS_NUMBERS_OMN.Rmd", eval = display_OMN}
+```
+
+```{r child = "03_BUOYS_NUMBERS_SYC.Rmd", eval = display_SYC}
+```
+
+```{r child = "03_BUOYS_NUMBERS_TZA.Rmd", eval = display_TZA}
+```
+
+```{r child = "04_BUOYS_DISTRIBUTION.Rmd", eval = FALSE}
+```
+
+```{r child = "05_TRAJECTORIES_CHARACTERISTICS.Rmd", eval = FALSE}
+```
+
+```{r child = "06_COMPLIANCE_ASPECTS", eval = FALSE}
+```
+
+\pagebreak
+
+```{r child = "07_SUPP_PS_LIST.Rmd"}
+```
