@@ -67,7 +67,7 @@ ui = function() {
                       selectInput("species", "Species", width = "100%", choices = AVAILABLE_SPECIES, selected = "YFT")
                     ),
                     column(width = 6,
-                      numericInput("tac", "Target TAC (t)", value = 500000, min = 10000, step = 10000),
+                      numericInput("tac", "Target TAC (t)", value = 300000, min = 10000, step = 10000),
                     )
                   ),
                   

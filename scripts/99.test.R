@@ -34,7 +34,7 @@ CB_ALLOCATION2 = catch_based_allocation(catch_data = subset_and_postprocess_catc
                                         coastal_weights = seq(.1, 1, .1))
 
 QUOTAS = 
-  allocate_TAC(TAC = 500000, 
+  allocate_TAC(TAC = 300000, 
                baseline_allocation      = BA_ALLOCATION, baseline_allocation_weight      = .1, # 10% from baseline allocation
                coastal_state_allocation = CS_ALLOCATION, coastal_state_allocation_weight = .2, # 20% from coastal state allocation
                catch_based_allocation   = CB_ALLOCATION, catch_based_allocation_weight   = .7) # 70% from catch-based allocation
@@ -47,7 +47,7 @@ QUOTAS2 =
 
 # Example ####
 SPECIES_SELECTED  = "YFT"
-TAC_EXAMPLE       = 500000
+TAC_EXAMPLE       = 300000
 CPC_CODE_SELECTED = "IDN"
 CATCH_PERIOD      = 2000:2016
 
