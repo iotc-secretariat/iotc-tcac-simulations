@@ -2,7 +2,7 @@
 
 The informal TCAC meeting held on February, the 27^th^, 2024, identified some changes to be made to the [TCAC Shiny app](https://data.iotc.org/tcac13/simulations/):
 
--   Default values of Total Allowable Catches (TAC): 80,000 t for bigeye tuna, 630,000 t for skipjack tuna, 300,000 t for yellowfin tuna ([IOTC-2023-SC26-YFT]()), 45,000 t for albacore (), and 30,000 t for swordfish
+-   Default values of Total Allowable Catches (TAC): 80,000 t for bigeye tuna ([IOTC-2022-WPM13-10_Rev1](https://iotc.org/documents/WPM/13/10)), 630,000 t for skipjack tuna ([IOTC–2023–SC26–R](https://iotc.org/documents/SC/26/RE)), 300,000 t for yellowfin tuna ([IOTC-2023-SC26-ES04](https://iotc.org/documents/SC/26/ES04E)), 45,000 t for albacore ([IOTC-2023-SC26-ES01_rev1](https://iotc.org/documents/SC/26/ES01E)), and 30,000 t for swordfish [IOTC-2023-SC26-ES16_rev1](https://iotc.org/documents/SC/26/ES16E)
 
 -   Limit the size ranges according to revised version of the simulation parameters ([IOTC-2024-TCAC13-REF03_Rev1](https://iotc.org/documents/TCAC/13/Ref03)):
 
@@ -12,10 +12,12 @@ The informal TCAC meeting held on February, the 27^th^, 2024, identified some ch
 
 -   Add Taiwan,China as an entity as stated in the document
 
-# Technical changes
+<!-- # Technical changes -->
 
-## HISTORICAL_CATCH_ESTIMATES.csv
+<!-- ## HISTORICAL_CATCH_ESTIMATES.csv -->
 
-- The term CPC actually regroups Members (CPs) and CNPCs, so the STATUS should not read "CPC" in the CPC dataset but MEMBER
-- Separate TWN from China
-- Add the code of the CPC/Observer (field CPC_OBS_CODE_SELECTED) for each fleet code
+<!-- -   The term CPC actually regroups Members (CPs) and CNPCs, so the STATUS should not read "CPC" in the CPC dataset but MEMBER -->
+
+<!-- -   Separate TWN from China -->
+
+<!-- -   Add the code of the CPC/Observer (field CPC_OBS_CODE_SELECTED) for each fleet code -->
