@@ -1,15 +1,21 @@
+# Define date range for charts
+START_DATE = as.Date("2023-01-01")
+END_DATE   = as.Date("2023-12-31")
+
+# Define CPC of interest (code)
+CPC_SELECTED = "KOR"
+if(CPC_SELECTED == "EU"){FLEETS_SELECTED = c("EUESP", "EUFRA", "EUITA")} else {FLEETS_SELECTED = CPC_SELECTED}
+
 # Source the R codes
-setwd("initialization")
+setwd("initialisation")
 source("00_CORE.R")
 setwd("..")
 
-WP_IDENTIFIER = "IOTC-2024-TCAC-WG"
-PAPER_NUMBER_VERSION = "01"
+# CPC names
+CPC_LIST = data.table(CPC_CODE = c("EU", "JPN", "KOR", "MUS", "OMN", "SYC", "TZA"), CPC = c("European Union", "Japan", "Korea", "Mauritius", "Oman", "Seychelles", "Tanzania"))
 
-### PPTX
-render("./00_PPTX.Rmd", 
-       output_format = powerpoint_presentation(reference_doc = "../../templates/ppt_template.potx", slide_level = 2),
-       output_dir    = "outputs/ppt/", 
-       output_file   = paste0(TITLE, ".pptx")
-)
+REPORT_OUTPUT_NAME = paste0(CPC_SELECTED, "_3BU_", START_DATE, "_", END_DATE)
+
+# DOCX
+render("rmd/00_DOCX_HTML.Rmd", output_dir = "outputs/cpc_submission_factsheets/", output_file = paste0(REPORT_OUTPUT_NAME, ".docx"))
 
