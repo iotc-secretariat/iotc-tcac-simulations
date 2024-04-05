@@ -135,7 +135,7 @@ read_catch_data = function(file = "../cfg/HISTORICAL_CATCH_ESTIMATES.csv", CPC_d
   
   # We need to decide if we want to keep only catches from current CPCs for the catch-based allocation part
   # In that case:
-  POSTPROCESSED_CATCH_DATA = POSTPROCESSED_CATCH_DATA[FLEET_CODE %in% CPC_data[STATUS == "CP"]$CODE]
+  POSTPROCESSED_CATCH_DATA = POSTPROCESSED_CATCH_DATA[FLEET_CODE %in% CPC_data[STATUS %in% c("CP", "OBS")]$CODE]
 
   # We need to decide if we want to consider only catches in the high seas or within CPC NJAs
   # In that case:
@@ -233,7 +233,7 @@ best_years_average_catch_data = function(weighted_catch_data,
 ## BASELINE ALLOCATION FUNCTION ####
 # Performs the baseline allocation, by attributing the same relative weight to all CPCs
 baseline_allocation = function(CPC_data = read_configuration()$CPC_CONFIG) {
-  component_allocation_table = CPC_data[STATUS == "CP", .(CPC_CODE = CODE)]
+  component_allocation_table = CPC_data[STATUS %in% c("CP", "OBS"), .(CPC_CODE = CODE)]
   
   # Baseline allocation - para. 6.5
   component_allocation_table[, BASELINE_ALLOCATION := 1.00 / nrow(component_allocation_table)] 
@@ -490,3 +490,4 @@ allocate_TAC = function(TAC,
     final_allocation_table
   )
 }
+
