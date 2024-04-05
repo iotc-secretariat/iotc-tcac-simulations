@@ -5,19 +5,20 @@ if(!file.exists("../inputs/shapes/COUNTRY_AREAS_1.0.0_SHP.zip"))
 
 
 unzip("../inputs/shapes/COUNTRY_AREAS_1.0.0_SHP.zip", overwrite = TRUE, exdir = "../inputs/shapes/")
+
 COUNTRIES = st_read("../inputs/shapes/", layer = "COUNTRY_AREAS_1.0.0")
 COUNTRIES = COUNTRIES %>% mutate(CODE = gsub("COU_", "", CODE)) %>% select(c("CODE", "NAME_EN", "NAME_FR", "geometry"))
 #COUNTRIES = COUNTRIES %>% mutate(CODE = ifelse(CODE %in% c("FRA"), "FRAT", CODE))
 
 # Filter on IOTC countries
-COUNTRIES_WITHOUT_REIO = COUNTRIES %>% mutate(STATUS = ifelse(CODE %in% CPC_data[STATUS == "CPC", CODE], "CPC", ifelse(CODE == "LBR", "CNPC", NA))) %>% filter(!CODE %in% c("AUT", "BEL", "BGR", "HRV", "CYP", "CZE", "DNK", "EST", "FIN", "FRA", "DEU", "GRC", "HUN", "IRL", "ITA", "LVA", "LTU", "LUX", "MLT", "NLD", "POL", "PRT", "ROU", "SVK", "SVN", "ESP", "SWE", "MYT", "REU"))
+COUNTRIES_WITHOUT_REIO = COUNTRIES %>% mutate(STATUS = ifelse(CODE %in% CPC_data[STATUS %in% c("CP", "OBS"), CODE], "CP", ifelse(CODE == "LBR", "CNPC", NA))) %>% filter(!CODE %in% c("AUT", "BEL", "BGR", "HRV", "CYP", "CZE", "DNK", "EST", "FIN", "FRA", "DEU", "GRC", "HUN", "IRL", "ITA", "LVA", "LTU", "LUX", "MLT", "NLD", "POL", "PRT", "ROU", "SVK", "SVN", "ESP", "SWE", "MYT", "REU"))
 
 #COUNTRIES_IOTC = COUNTRIES %>% filter(CODE %in% CPC_data$CODE) %>% st_make_valid()
 
 # Create REIO shape
 REIO_GEOMS = COUNTRIES %>% filter(CODE %in% c("AUT", "BEL", "BGR", "HRV", "CYP", "CZE", "DNK", "EST", "FIN", "FRA", "DEU", "GRC", "HUN", "IRL", "ITA", "LVA", "LTU", "LUX", "MLT", "NLD", "POL", "PRT", "ROU", "SVK", "SVN", "ESP", "SWE", "MYT", "REU")) %>% select(c("geometry"))
 
-REIO = REIO_GEOMS %>% dplyr::summarise() %>% mutate(CODE = "EUR", NAME_EN = "European Union - land area", NAME_FR = "Union européenne - zone terrestre", STATUS = "CPC") %>% relocate(geometry, .after = STATUS) %>% st_make_valid()
+REIO = REIO_GEOMS %>% dplyr::summarise() %>% mutate(CODE = "EUR", NAME_EN = "European Union - land area", NAME_FR = "Union européenne - zone terrestre", STATUS = "CP") %>% relocate(geometry, .after = STATUS) %>% st_make_valid()
 
 CPC_SF = bind_rows(COUNTRIES_WITHOUT_REIO, REIO) %>% left_join(CPC_data[, -c("NAME_EN", "SIDS", "STATUS")], by = "CODE") %>% left_join(CS_SE_data[, -c("COASTAL", "HAS_NJA_IO", "PER_CAPITA_FISH_CONSUMPTION_KG", "CUV_INDEX", "PROP_WORKERS_EMPLOYED_SSF", "PROP_FISHERIES_CONTRIBUTION_GDP", "PROP_EXPORT_VALUE_FISHERY")], by = "CODE")
 

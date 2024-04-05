@@ -22,5 +22,3 @@ pacman::p_load(
 )
 
 theme_set(theme_bw())
-
-#detach("package:ggtern", unload = TRUE) # To fix conflicts with ggplot

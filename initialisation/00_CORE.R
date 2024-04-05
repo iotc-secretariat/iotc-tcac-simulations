@@ -9,9 +9,16 @@ source("91_LIBS_EXTERNAL.R")
 source("92_LIBS_IOTC.R")
 source("93_FUNCTIONS.R")
 
-# Source the scripts
+# Source the functions
 source("../scripts/01.configure_and_preprocess.R")
+
+# Extract the data
+CPC_data   = read_configuration()$CPC_CONFIG
+CS_SE_data = read_configuration()$CS_SE_CONFIG
+catch_data = read_catch_data()
+
+# Source the scripts for data description
 source("01_HISTORICAL_CATCH_ESTIMATES.R")
 source("02_SOCIO_ECONOMIC_INDICATORS.R")
-#source("03_CPC_FEATURES_MAPS.R")
-#source("04_NATIONAL_JURISDICTION_MAPS.R")
+source("03_CPC_FEATURES_MAPS.R")
+source("04_NATIONAL_JURISDICTION_MAPS.R")

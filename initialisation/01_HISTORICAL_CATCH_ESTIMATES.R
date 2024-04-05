@@ -2,20 +2,14 @@ l_info("Describing the historical catch estimates...")
 
 # READING THE DATA ####
 
-## Raw data ####
-RC_RAW = fread("../cfg/HISTORICAL_CATCH_ESTIMATES.csv")
-
-# Change CHAGOS to GBR for the time being
-RC_RAW[ASSIGNED_AREA == "NJA_CHAGOS", ASSIGNED_AREA := "NJA_GBR"]
-
 ## Pre-processed data ####
-RC = read_catch_data()
+RC = copy(catch_data)
 
 # Add area category
 RC[ASSIGNED_AREA == "HIGH_SEAS", AREA_CATEGORY := "Areas beyond national jurisdiction (ABNJ)"]
 RC[ASSIGNED_AREA != "HIGH_SEAS", AREA_CATEGORY := "National jurisdiction areas (NJA)"]
 
-# PLOTTING THE DATA ####
+# PLOTTING THE GENERAL DATA ####
 
 ## Annual time series by category of area ####
 COL_AREA_CATEGORY = rbindlist(lapply(c("Q1", "Q2"), FUN = colors_for_quarter))
@@ -77,4 +71,8 @@ RC_YFT_FLEET_BARPLOT =
   value_bar(data = RC[SPECIES_CODE == "YFT"], value = "CATCH_MT", time = "YEAR", fill_by = "FLEET_CODE", colors = RC_YFT_FLEET_COLORS, x_axis_label = "", y_axis_label = "Total catch (x1,000 t)", scale = 1000, num_legend_rows = 3) + theme(legend.position = "bottom")
 
 save_plot("../outputs/charts/RC_YFT_FLEET_BARPLOT.png", RC_YFT_FLEET_BARPLOT, 8, 4.5)
+
+# PLOTTING THE FLEET-SPECIFIC DATA ####
+
+
 

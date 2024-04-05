@@ -10,11 +10,11 @@ read_configuration = function(file = "../cfg/CPC_CONFIGURATIONS.xlsx") {
   
   CPC_CONFIG   = as.data.table(read.xlsx(xlsxFile = file, rowNames = FALSE, sheet = "CPC"))[, 1:8] # Removes unnecessary cols
   
-  CPC_CONFIG$CODE       = as.factor (CPC_CONFIG$CODE)
-  CPC_CONFIG$STATUS     = as.factor (CPC_CONFIG$STATUS)
-  CPC_CONFIG$COASTAL    = as.logical(CPC_CONFIG$COASTAL)
-  CPC_CONFIG$HAS_NJA_IO = as.logical(CPC_CONFIG$HAS_NJA_IO)
-  CPC_CONFIG$SIDS       = as.logical(CPC_CONFIG$SIDS)
+  CPC_CONFIG[, CODE       := as.factor(CODE)]
+  CPC_CONFIG[, STATUS     := as.factor(STATUS)]
+  CPC_CONFIG[, COASTAL    := as.logical(COASTAL)]
+  CPC_CONFIG[, HAS_NJA_IO := as.logical(HAS_NJA_IO)]
+  CPC_CONFIG[, SIDS       := as.logical(SIDS)]
   
   # See para. 6.6(c) of IOTC-2024-TCAC13-REF02 "Draft allocation regime v7", under Coastal State Allocation
   CPC_CONFIG[, NJA_SIZE_WEIGHTING := ifelse(NJA_IOTC_RELATIVE_SIZE == 0, 0, floor(NJA_IOTC_RELATIVE_SIZE * 100) + 1)]
@@ -25,15 +25,15 @@ read_configuration = function(file = "../cfg/CPC_CONFIGURATIONS.xlsx") {
   CS_SE_CONFIG = as.data.table(read.xlsx(xlsxFile = file, rowNames = FALSE, sheet = "COASTAL_STATE_SOCIO_ECONOMIC", na.strings = ""))[1:25] # Removes unnecessary rows 
   CS_SE_CONFIG = CS_SE_CONFIG[order(CODE)]
   
-  CS_SE_CONFIG$CODE                            = as.factor (CS_SE_CONFIG$CODE)
-  CS_SE_CONFIG$DEVELOPMENT_STATUS              = as.factor (CS_SE_CONFIG$DEVELOPMENT_STATUS)
-  CS_SE_CONFIG$PER_CAPITA_FISH_CONSUMPTION_KG  = round(as.numeric(CS_SE_CONFIG$PER_CAPITA_FISH_CONSUMPTION_KG), 2)
-  CS_SE_CONFIG$CUV_INDEX                       = round(as.numeric(CS_SE_CONFIG$CUV_INDEX), 2)
-  CS_SE_CONFIG$PROP_WORKERS_EMPLOYED_SSF       = round(as.numeric(CS_SE_CONFIG$PROP_WORKERS_EMPLOYED_SSF), 4)
-  CS_SE_CONFIG$PROP_FISHERIES_CONTRIBUTION_GDP = round(as.numeric(CS_SE_CONFIG$PROP_FISHERIES_CONTRIBUTION_GDP), 4)
-  CS_SE_CONFIG$PROP_EXPORT_VALUE_FISHERY       = round(as.numeric(CS_SE_CONFIG$PROP_EXPORT_VALUE_FISHERY), 4)
-  CS_SE_CONFIG$HDI_STATUS                      = as.numeric(CS_SE_CONFIG$HDI_STATUS)
-  CS_SE_CONFIG$GNI_STATUS                      = as.factor (CS_SE_CONFIG$GNI_STATUS)
+  CS_SE_CONFIG[, CODE                            := as.factor(CODE)]
+  CS_SE_CONFIG[, DEVELOPMENT_STATUS              := as.factor(DEVELOPMENT_STATUS)]
+  CS_SE_CONFIG[, PER_CAPITA_FISH_CONSUMPTION_KG  := round(as.numeric(PER_CAPITA_FISH_CONSUMPTION_KG), 2)]
+  CS_SE_CONFIG[, CUV_INDEX                       := round(as.numeric(CUV_INDEX), 2)]
+  CS_SE_CONFIG[, PROP_WORKERS_EMPLOYED_SSF       := round(as.numeric(PROP_WORKERS_EMPLOYED_SSF), 4)]
+  CS_SE_CONFIG[, PROP_FISHERIES_CONTRIBUTION_GDP := round(as.numeric(PROP_FISHERIES_CONTRIBUTION_GDP), 4)]
+  CS_SE_CONFIG[, PROP_EXPORT_VALUE_FISHERY       := round(as.numeric(PROP_EXPORT_VALUE_FISHERY), 4)]
+  CS_SE_CONFIG[is.na(HDI_STATUS), HDI_STATUS           := as.numeric(HDI_STATUS)]   # Missing value for SOM
+  CS_SE_CONFIG[, GNI_STATUS                      := as.factor (GNI_STATUS)]
 
   CS_SE_CONFIG$GNI_STATUS = 
     factor(
@@ -52,10 +52,10 @@ read_configuration = function(file = "../cfg/CPC_CONFIGURATIONS.xlsx") {
   # See para. 6.6(b) Option 2.i
   CS_SE_CONFIG[CODE == "SOM", HDI_STATUS := min(CS_SE_CONFIG$HDI_STATUS, na.rm = TRUE)] # There's no HDI available for SOM... We assume it's the same as the lowest scored CPC
   
-  CS_SE_CONFIG[HDI_STATUS  < 0.55,                     `:=`(HDI_TIER = "LO", HDI_TIER_WEIGHT =  1.00)]
-  CS_SE_CONFIG[HDI_STATUS >= 0.55 & HDI_STATUS < 0.70, `:=`(HDI_TIER = "ME", HDI_TIER_WEIGHT =  0.75)]
-  CS_SE_CONFIG[HDI_STATUS >= 0.70 & HDI_STATUS < 0.79, `:=`(HDI_TIER = "HI", HDI_TIER_WEIGHT =  0.50)]
-  CS_SE_CONFIG[HDI_STATUS >= 0.80,                     `:=`(HDI_TIER = "VH", HDI_TIER_WEIGHT =    NA)] # Should be NA as no developing or least-developed CS exists with this HDI tier
+  CS_SE_CONFIG[HDI_STATUS  < 0.55,                     `:=` (HDI_TIER = "LO", HDI_TIER_WEIGHT =  1.00)]
+  CS_SE_CONFIG[HDI_STATUS >= 0.55 & HDI_STATUS < 0.70, `:=` (HDI_TIER = "ME", HDI_TIER_WEIGHT =  0.75)]
+  CS_SE_CONFIG[HDI_STATUS >= 0.70 & HDI_STATUS < 0.79, `:=` (HDI_TIER = "HI", HDI_TIER_WEIGHT =  0.50)]
+  CS_SE_CONFIG[HDI_STATUS >= 0.80,                     `:=` (HDI_TIER = "VH", HDI_TIER_WEIGHT =    NA)] # Should be NA as no developing or least-developed CS exists with this HDI tier
   
   CS_SE_CONFIG$HDI_TIER = 
     factor(
