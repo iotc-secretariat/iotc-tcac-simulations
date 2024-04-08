@@ -63,8 +63,11 @@ underline = fp_text(underlined = TRUE)
 block_section(sec_pr)
 ```
 
-```{r ReduceUKLabel}
+```{r ReduceLabelsForTables}
 CPC_data[CODE == "GBR", NAME_EN := "United Kingdom"]
+CPC_data[CODE == "IRN", NAME_EN := "I.R. Iran"]
+CPC_data[CODE == "TZA", NAME_EN := "Tanzania"]
+CPC_data[CODE == "TWN", NAME_EN := "Taiwan,China"]
 ```
 
 ```{r child = "01_SCENARIO_CONFIGURATION.Rmd"}

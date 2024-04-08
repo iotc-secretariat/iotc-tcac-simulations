@@ -125,7 +125,7 @@ kable(CB_ALLOCATION_TABLE_FORMATTED, align = c("l", "l", "l", "r", "r"), format.
 
 \newpage
 
-# Final allocation table
+<!-- # Final allocation table -->
 
 ```{r AllocationTable}
 # Combine BA and CS allocation tables
@@ -142,7 +142,7 @@ ALLOCATION_TABLE = merge(ALLOCATION_TABLE,
 ```{r QuotaTable}
 QUOTA_TABLE_FORMATTED = ALLOCATION_TABLE[, .(`Entity code` = CPC_CODE, `Entity name` = NAME_EN, Status = STATUS, `Baseline (%)` = round(BS_ALLOCATION*100, 3), `Coastal States (%)` = round(CS_ALLOCATION*100, 3), `Catch-based (%)`= round(CB_ALLOCATION*100, 3), `Total (%)` = round(BS_ALLOCATION + CS_ALLOCATION + CB_ALLOCATION, 3))]
 
-kable(QUOTA_TABLE_FORMATTED, align = c("l", "l", "l", "r", "r"))
+kable(QUOTA_TABLE_FORMATTED, align = c("l", "l", "l", "r", "r", "r", "r"))
 ```
 
 \newpage
@@ -152,5 +152,5 @@ kable(QUOTA_TABLE_FORMATTED, align = c("l", "l", "l", "r", "r"))
 ```{r TACTable}
 TAC_TABLE_FORMATTED = ALLOCATION_TABLE[, .(`Entity code` = CPC_CODE, `Entity name` = NAME_EN, Status = STATUS, `Baseline (t)` = round(TARGET_TAC_T*BS_ALLOCATION, 1), `Coastal States (t)` = round(TARGET_TAC_T*CS_ALLOCATION, 1), `Catch-based (t)`= round(TARGET_TAC_T*CB_ALLOCATION, 1), `Total (t)` = round(TARGET_TAC_T*(BS_ALLOCATION + CS_ALLOCATION + CB_ALLOCATION), 1))]
 
-kable(TAC_TABLE_FORMATTED, align = c("l", "l", "l", "r", "r"))
+kable(TAC_TABLE_FORMATTED, align = c("l", "l", "l", "r", "r", "r", "r"), format.args = list(big.mark = ","))
 ```

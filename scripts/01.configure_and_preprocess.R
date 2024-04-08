@@ -237,9 +237,11 @@ baseline_allocation = function(CPC_data = read_configuration()$CPC_CONFIG) {
   
   # Baseline allocation - para. 6.5
   component_allocation_table[, BASELINE_ALLOCATION := 1.00 / nrow(component_allocation_table)] 
+  # Add TWN
+  component_allocation_table = rbindlist(list(component_allocation_table, data.table(CPC_CODE = "TWN", BASELINE_ALLOCATION = 0)))
   
   return(
-    component_allocation_table
+    component_allocation_table[order(CPC_CODE)]
   )
 }
 
