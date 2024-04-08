@@ -2,19 +2,19 @@
 author: "Author: [IOTC Secretariat](mailto:IOTC-Secretariat@fao.org)" 
 output:
   officedown::rdocx_document:
-    reference_docx: "../templates/rdoc_template.docx"
+  reference_docx: "../templates/rdoc_template.docx"
 reference_num: TRUE
 fig_caption: TRUE
 ---
-
+  
 ```{r title, echo = FALSE}
-REPORT_TITLE = "Simulation scenarios"
+REPORT_TITLE = ""
 ```
 
 ---
 title: `r REPORT_TITLE`
 ---
-
+  
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(echo = FALSE, 
                       tab.cap.pre = "Tab. ", 
@@ -41,14 +41,14 @@ bl_header_no_logo = function(txt, position) {
 bl_header_with_logo = function(txt, position) {
   block_list(
     fpar(external_img(src = logo.file, height = 0.71, width = 7.19, unit = "in"), 
-    ftext = txt, 
+         ftext = txt, 
          fp_p = fp_par(text.align = position, border.bottom = fp_border()), 
          fp_t = fp_text_lite(color = "black", bold = FALSE, font.size = 12)))
 }
 
 sec_pr = prop_section(
-  header_first = bl_header_with_logo("IOTC Resolution 19/02", "right"),
-  header_default = bl_header_no_logo("IOTC Resolution 19/02", "right")
+  header_first = bl_header_with_logo("IOTC-2024-TCAC-13", "right"),
+  header_default = bl_header_no_logo("IOTC-2024-TCAC-13", "right")
 )
 ```
 
@@ -66,12 +66,6 @@ underline = fp_text(underlined = TRUE)
 block_section(sec_pr)
 ```
 
+
 ```{r child = "01_SCENARIO_CONFIGURATION.Rmd"}
 ```
-
-```{r child = "02_GENERAL_ALLOCATION.Rmd"}
-```
-
-```{r child = "03_FLEET_SPECIFIC_ALLOCATION.Rmd", eval = FALSE}
-```
-

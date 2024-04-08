@@ -233,7 +233,7 @@ best_years_average_catch_data = function(weighted_catch_data,
 ## BASELINE ALLOCATION FUNCTION ####
 # Performs the baseline allocation, by attributing the same relative weight to all CPCs
 baseline_allocation = function(CPC_data = read_configuration()$CPC_CONFIG) {
-  component_allocation_table = CPC_data[STATUS %in% c("CP", "OBS"), .(CPC_CODE = CODE)]
+  component_allocation_table = CPC_data[STATUS %in% c("CP"), .(CPC_CODE = CODE)]
   
   # Baseline allocation - para. 6.5
   component_allocation_table[, BASELINE_ALLOCATION := 1.00 / nrow(component_allocation_table)] 

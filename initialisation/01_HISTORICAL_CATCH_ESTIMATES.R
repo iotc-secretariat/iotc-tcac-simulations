@@ -12,7 +12,7 @@ RC[ASSIGNED_AREA != "HIGH_SEAS", AREA_CATEGORY := "National jurisdiction areas (
 # PLOTTING THE GENERAL DATA ####
 
 ## Annual time series by category of area ####
-COL_AREA_CATEGORY = rbindlist(lapply(c("Q1", "Q2"), FUN = colors_for_quarter))
+COL_AREA_CATEGORY = color_table(colors = brewer.pal(3, "Set1"))
 
 RC_AREA_CATEGORY_BARPLOT = 
   value_bar(data = RC, value = "CATCH_MT", time = "YEAR", fill_by = "AREA_CATEGORY", colors = COL_AREA_CATEGORY, x_axis_label = "", y_axis_label = "Total catch (x1,000 t)", scale = 1000, num_legend_rows = 1, trim_labels = FALSE) + theme(legend.position = "bottom")
@@ -74,5 +74,32 @@ save_plot("../outputs/charts/RC_YFT_FLEET_BARPLOT.png", RC_YFT_FLEET_BARPLOT, 8,
 
 # PLOTTING THE FLEET-SPECIFIC DATA ####
 
+## Flag-specific catches in high seas and any NJA
+for (j in CPC_data[STATUS %in% c("CP", "OBS"), CODE]){
+  
+  RC_CPC = RC[FLEET_CODE == j]
+  
+  if(nrow(RC_CPC)>0)
+  {
+  RC_CPC_AREA_CATEGORY_BARPLOT = 
+  value_bar(data = RC_CPC, value = "CATCH_MT", time = "YEAR", fill_by = "AREA_CATEGORY", colors = COL_AREA_CATEGORY, x_axis_label = "", y_axis_label = "Total catch (x1,000 t)", scale = 1000, num_legend_rows = 1, trim_labels = FALSE) + theme(legend.position = "bottom")
+    save_plot(paste0("../outputs/charts/CPCS/Category/", j, "_RC_AREA_CATEGORY_BARPLOT.png"), RC_CPC_AREA_CATEGORY_BARPLOT, 8, 4.5)
+  }
+}
 
+## Catches in the NJA of each CP from all flags
+COL_CATCH_ORIGIN = color_table(colors = brewer.pal(3, "Set3"))
 
+for (j in CS_SE_data$CODE){
+
+RC_NJA = RC[gsub("NJA_", "", ASSIGNED_AREA) == j]
+RC_NJA[FLEET_CODE == j, ORIGIN := "National"]
+RC_NJA[FLEET_CODE != j, ORIGIN := "Foreign"]
+
+if(nrow(RC_NJA)>0)
+{
+  RC_NJA_CATCH_ORIGIN_BARPLOT = 
+    value_bar(data = RC_NJA, value = "CATCH_MT", time = "YEAR", fill_by = "ORIGIN", colors = COL_CATCH_ORIGIN, x_axis_label = "", y_axis_label = "Total catch (x1,000 t)", scale = 1000, num_legend_rows = 1, trim_labels = FALSE) + theme(legend.position = "bottom")
+  save_plot(paste0("../outputs/charts/CPCS/Origin/", j, "_RC_NJA_CATCH_ORIGIN_BARPLOT.png"), RC_NJA_CATCH_ORIGIN_BARPLOT, 8, 4.5)
+}
+}

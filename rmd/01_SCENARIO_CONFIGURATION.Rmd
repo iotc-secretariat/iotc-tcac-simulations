@@ -2,9 +2,8 @@
 
 ||| 
 | :-------------------------------------------------- | ------: |
-| **Stock of interest**
 | Species | `r SPECIES_SELECTED` |
-| Total allowable catch | `r prettyNum(TAC_VALUE, big.mark = ",")` t | 
+| Total allowable catch | `r prettyNum(TARGET_TAC_T, big.mark = ",")` t | 
 |  **Main allocation components** ||
 | 1 - Baseline weight          | `r BASELINE_WEIGHT*100`% |
 | 2 - Coastal state weight | `r COASTAL_STATE_WEIGHT*100`% |
@@ -31,4 +30,4 @@
 | Part of foreign catch taken in NJA re-attributed to coastal states (Year 9) | `r CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_09*100`% |
 | Part of foreign catch taken in NJA re-attributed to coastal states (Year 10) | `r CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_10*100`% |
 
-\pagebreak
+\newpage

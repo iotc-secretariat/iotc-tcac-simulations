@@ -25,7 +25,7 @@ CB_ALLOCATION = catch_based_allocation(CPC_data = CPC_data, CS_SE_data = CS_SE_d
                                        coastal_weights = ALLOCATION_TRANSITION)
 
 # COMPUTE QUOTA ALLOCATION THROUGHOUT TRANSITION PERIOD ####
-QUOTAS = allocate_TAC(TAC = TAC_VALUE, 
+QUOTAS = allocate_TAC(TAC = TARGET_TAC_T, 
                baseline_allocation      = BA_ALLOCATION, baseline_allocation_weight      = BASELINE_WEIGHT, 
                coastal_state_allocation = CS_ALLOCATION, coastal_state_allocation_weight = COASTAL_STATE_WEIGHT, 
                catch_based_allocation   = CB_ALLOCATION, catch_based_allocation_weight   = CATCH_BASED_WEIGHT)
