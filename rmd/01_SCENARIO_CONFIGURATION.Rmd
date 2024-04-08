@@ -1,0 +1,34 @@
+# General scenario configuration
+
+||| 
+| :-------------------------------------------------- | ------: |
+| **Stock of interest**
+| Species | `r SPECIES_SELECTED` |
+| Total allowable catch | `r prettyNum(TAC_VALUE, big.mark = ",")` t | 
+|  **Main allocation components** ||
+| 1 - Baseline weight          | `r BASELINE_WEIGHT*100`% |
+| 2 - Coastal state weight | `r COASTAL_STATE_WEIGHT*100`% |
+| 3 - Catch-based weight   | `r CATCH_BASED_WEIGHT*100`% | 
+| **Coastal State components (item 2)** |||
+| 2.1 - Equal share weight    | `r CS_EQUAL_WEIGHT*100`% |
+| 2.2 - Socio-economic weight |  `r CS_SOCIO_ECONOMIC_WEIGHT*100`% |
+| 2.3 - National jurisdiction area surface weight | `r CS_NJA_WEIGHT*100`% |
+| **Socio-economic weight components (item 2.2)** |
+| 2.2.1 - Human Development Index status weight   | `r SE_HDI_WEIGHT*100`% |
+| 2.2.2 - Gross national income status weight     | `r SE_GNI_WEIGHT*100`% |
+| 2.2.3 - Small Islands Development status weight | `r SE_SID_WEIGHT*100`% |
+| **Catch-based configuration parameters** ||
+| Reference years | `r paste(HISTORICAL_CATCH_INTERVAL_START, HISTORICAL_CATCH_INTERVAL_END, sep = "-")` |
+| Reference method | `r HISTORICAL_CATCH_METHOD` |
+| Part of foreign catch taken in NJA re-attributed to coastal states (Year 1) | `r CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_01*100`% |
+| Part of foreign catch taken in NJA re-attributed to coastal states (Year 2) | `r CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_02*100`% |
+| Part of foreign catch taken in NJA re-attributed to coastal states (Year 3) | `r CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_03*100`% |
+| Part of foreign catch taken in NJA re-attributed to coastal states (Year 4) | `r CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_04*100`% |
+| Part of foreign catch taken in NJA re-attributed to coastal states (Year 5) | `r CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_05*100`% |
+| Part of foreign catch taken in NJA re-attributed to coastal states (Year 6) | `r CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_06*100`% |
+| Part of foreign catch taken in NJA re-attributed to coastal states (Year 7) | `r CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_07*100`% |
+| Part of foreign catch taken in NJA re-attributed to coastal states (Year 8) | `r CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_08*100`% |
+| Part of foreign catch taken in NJA re-attributed to coastal states (Year 9) | `r CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_09*100`% |
+| Part of foreign catch taken in NJA re-attributed to coastal states (Year 10) | `r CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_10*100`% |
+
+\pagebreak

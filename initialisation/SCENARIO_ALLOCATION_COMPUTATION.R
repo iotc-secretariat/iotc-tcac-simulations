@@ -19,9 +19,9 @@ CS_ALLOCATION = coastal_state_allocation(CPC_data = CPC_data, CS_SE_data = CS_SE
 # COMPUTE CATCH-BASED ALLOCATION ####
 CB_ALLOCATION = catch_based_allocation(CPC_data = CPC_data, CS_SE_data = CS_SE_data,
                                        catch_data = subset_and_postprocess_catch_data(catch_data = catch_data,
-                                                                                      species_code = SPECIES_SELECTED,
-                                                                                      years        = REFERENCE_YEARS),
-                                       average_catch_function = REFERENCE_METHOD,
+                                                                                      species_code = SPECIES_CODE_SELECTED,
+                                                                                      years        = HISTORICAL_CATCH_INTERVAL_START:HISTORICAL_CATCH_INTERVAL_END),
+                                       average_catch_function = HISTORICAL_CATCH_AVERAGE,
                                        coastal_weights = ALLOCATION_TRANSITION)
 
 # COMPUTE QUOTA ALLOCATION THROUGHOUT TRANSITION PERIOD ####

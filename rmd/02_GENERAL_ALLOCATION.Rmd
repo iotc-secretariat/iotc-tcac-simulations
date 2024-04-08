@@ -1,0 +1,16 @@
+
+## Baseline allocation
+
+```{r BaselineAllocationTable, echo = FALSE, tab.cap = paste0("Baseline allocation (%) of the Total Allowable Catch (TAC) for ", tolower(SPECIES_SELECTED))}
+BA_ALLOCATION_TABLE = merge(BA_ALLOCATION, CPC_data[, .(CODE, STATUS, NAME_EN)], by.x = "CPC_CODE", by.y = "CODE")
+
+TableFormat(BA_ALLOCATION_TABLE[, .(`Entity code` = CPC_CODE, `Entity name` = NAME_EN, Status = STATUS, `Baseline allocation (%)` = BASELINE_ALLOCATION*100)])
+```
+
+```{r CoastalStateAllocationTable, echo = FALSE, include = FALSE, results = "hide", eval = FALSE}
+
+```
+
+```{r CatchBasedAllocation, echo = FALSE, eval = FALSE}
+
+```

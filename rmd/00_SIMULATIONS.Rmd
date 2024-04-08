@@ -72,6 +72,6 @@ block_section(sec_pr)
 ```{r child = "02_GENERAL_ALLOCATION.Rmd"}
 ```
 
-```{r child = "03_FLEET_SPECIFIC_ALLOCATION.Rmd"}
+```{r child = "03_FLEET_SPECIFIC_ALLOCATION.Rmd", eval = FALSE}
 ```
 

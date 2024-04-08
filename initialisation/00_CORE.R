@@ -8,6 +8,7 @@ options(scipen = 99999)
 source("91_LIBS_EXTERNAL.R")
 source("92_LIBS_IOTC.R")
 source("93_FUNCTIONS.R")
+source("94_TABLEFORMAT_FUNCTION.R")
 
 # Source the functions
 source("../scripts/01.configure_and_preprocess.R")
@@ -16,6 +17,12 @@ source("../scripts/01.configure_and_preprocess.R")
 CPC_data   = read_configuration()$CPC_CONFIG
 CS_SE_data = read_configuration()$CS_SE_CONFIG
 catch_data = read_catch_data()
+
+# Species table
+SPECIES_TABLE = data.table(SPECIES_CODE = c("ALB", "BET", "SKJ", "SWO", "YFT"), 
+                           SPECIES = c("Albacore", "Bigeye tuna", "Skipjack tuna", "Swordfish", "Yellowfin tuna"), 
+                           SPECIES_SCIENTIFIC = c("Thunnus alalunga", "Thunnus obesus", "Katsuwonus pelamis", "Xiphias gladius", "Thunnus albacares")
+)
 
 # Source the scripts for data description
 source("01_HISTORICAL_CATCH_ESTIMATES.R")
