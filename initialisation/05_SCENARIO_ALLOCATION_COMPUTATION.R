@@ -1,4 +1,4 @@
-l_info("Computing coastal state and catch-based allocations...")
+l_info("Computing allocations for one given scenario...")
 
 # COMPUTE BASELINE ALLOCATION ####
 BA_ALLOCATION = baseline_allocation()
@@ -29,3 +29,5 @@ QUOTAS = allocate_TAC(TAC = TARGET_TAC_T,
                baseline_allocation      = BA_ALLOCATION, baseline_allocation_weight      = BASELINE_WEIGHT, 
                coastal_state_allocation = CS_ALLOCATION, coastal_state_allocation_weight = COASTAL_STATE_WEIGHT, 
                catch_based_allocation   = CB_ALLOCATION, catch_based_allocation_weight   = CATCH_BASED_WEIGHT)
+
+l_info("Allocations computed for one given scenario!")

@@ -1,5 +1,5 @@
 # Source the scripts for loading and plotting the data
-setwd("../initialisation/")
+setwd("./initialisation/")
 source("./00_CORE.R")
 setwd("..")
 
@@ -37,7 +37,10 @@ CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_09 = ALLOCATION_TRANSITION[9]
 CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_10 = ALLOCATION_TRANSITION[10]
 
 # Source the R allocation scripts
-source("../initialisation/SCENARIO_ALLOCATION_COMPUTATION.R")
+setwd("./initialisation/")
+source("./05_SCENARIO_ALLOCATION_COMPUTATION.R")
+source("./06_SCENARIO_ALLOCATION_TABLES.R")
+setwd("../rmd")
 
 # General report: All CPCs
 render("00_SIMULATIONS_ALL_CPCS.Rmd", 

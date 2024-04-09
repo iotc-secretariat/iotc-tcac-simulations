@@ -1,12 +1,22 @@
+# Quota (%) table after transition period (Year 10)
+
+```{r FinalQuotaAllocationTable}
+kable(QUOTA_TABLE_FORMATTED, align = c("l", "l", "l", "r", "r", "r", "r"))
+```
+
+\newpage
+
+# TAC (metric tonnes; t) table after transition period (Year 10)
+
+```{r FinalTACAllocationTable}
+kable(TAC_TABLE_FORMATTED, format.args = list(big.mark = ","))
+```
+
+\newpage
+
 # Baseline allocation for Contracting Parties
 
 ```{r BaselineAllocationTable}
-BA_ALLOCATION_TABLE = merge(BA_ALLOCATION, CPC_data[, .(CODE, STATUS, NAME_EN)], by.x = "CPC_CODE", by.y = "CODE")
-
-BA_ALLOCATION_TABLE[, TAC := TARGET_TAC_T*BASELINE_ALLOCATION*BASELINE_WEIGHT]
-
-BA_ALLOCATION_TABLE_FORMATTED = BA_ALLOCATION_TABLE[, .(`Entity code` = CPC_CODE, `Entity name` = NAME_EN, Status = STATUS, `Allocation (%)` = round(BASELINE_ALLOCATION*100, 2), `TAC (t)` = round(TAC, 1))]
-
 kable(BA_ALLOCATION_TABLE_FORMATTED, align = c("l", "l", "l", "r", "r"), format.args = list(big.mark = ","))
 ```
 
@@ -17,15 +27,6 @@ kable(BA_ALLOCATION_TABLE_FORMATTED, align = c("l", "l", "l", "r", "r"), format.
 ## Equal allocation
 
 ```{r CoastalStateAllocationEqualTable}
-CS_EQUAL_ALLOCATION_TABLE = merge(CS_ALLOCATION[, .(CPC_CODE, CSA_EQUAL_ALLOCATION)], CPC_data[STATUS %in% c("CP", "OBS"), .(CODE, STATUS, NAME_EN)], by.x = "CPC_CODE", by.y = "CODE", all.y = TRUE)
-
-CS_EQUAL_ALLOCATION_TABLE[is.na(CSA_EQUAL_ALLOCATION), CSA_EQUAL_ALLOCATION := 0]
-CS_EQUAL_ALLOCATION_TABLE = CS_EQUAL_ALLOCATION_TABLE[order(as.character(CPC_CODE))]
-
-CS_EQUAL_ALLOCATION_TABLE[, TAC := TARGET_TAC_T*COASTAL_STATE_WEIGHT*CSA_EQUAL_ALLOCATION]
-
-CS_EQUAL_ALLOCATION_TABLE_FORMATTED = CS_EQUAL_ALLOCATION_TABLE[, .(`Entity code` = CPC_CODE, `Entity name` = NAME_EN, Status = STATUS, `Allocation (%)` = round(COASTAL_STATE_WEIGHT*CSA_EQUAL_ALLOCATION*100, 2), `TAC (t)` = round(TAC, 1))]
-
 kable(CS_EQUAL_ALLOCATION_TABLE_FORMATTED, align = c("l", "l", "l", "r", "r"), format.args = list(big.mark = ","))
 ```
 
@@ -36,17 +37,6 @@ kable(CS_EQUAL_ALLOCATION_TABLE_FORMATTED, align = c("l", "l", "l", "r", "r"), f
 ### Human Development Index status allocation
 
 ```{r CoastalStateAllocationSEHDITable}
-CS_SE_HDI_ALLOCATION_TABLE = merge(CS_ALLOCATION[, .(CPC_CODE, CSA_HDI_ALLOCATION)], CPC_data[STATUS %in% c("CP", "OBS"), .(CODE, STATUS, NAME_EN)], by.x = "CPC_CODE", by.y = "CODE", all.y = TRUE)
-
-CS_SE_HDI_ALLOCATION_TABLE = merge(CS_SE_HDI_ALLOCATION_TABLE, CS_SE_data[, .(CODE, HDI_TIER)], by.x = "CPC_CODE", by.y = "CODE", all.x = TRUE)
-
-CS_SE_HDI_ALLOCATION_TABLE[is.na(CSA_HDI_ALLOCATION), HDI_TIER := "-"]
-CS_SE_HDI_ALLOCATION_TABLE[is.na(CSA_HDI_ALLOCATION), CSA_HDI_ALLOCATION := 0]
-CS_SE_HDI_ALLOCATION_TABLE = CS_SE_HDI_ALLOCATION_TABLE[order(as.character(CPC_CODE))]
-CS_SE_HDI_ALLOCATION_TABLE[, TAC := TARGET_TAC_T*COASTAL_STATE_WEIGHT*CSA_HDI_ALLOCATION]
-
-CS_SE_HDI_ALLOCATION_TABLE_FORMATTED = CS_SE_HDI_ALLOCATION_TABLE[, .(`Entity code` = CPC_CODE, `Entity name` = NAME_EN, Status = STATUS, HDI = HDI_TIER, `Allocation (%)` = round(COASTAL_STATE_WEIGHT*CSA_HDI_ALLOCATION*100, 2), `TAC (t)` = round(TAC, 1))]
-
 kable(CS_SE_HDI_ALLOCATION_TABLE_FORMATTED, align = c("l", "l", "l", "l", "r", "r"), format.args = list(big.mark = ","))
 ```
 
@@ -55,17 +45,6 @@ kable(CS_SE_HDI_ALLOCATION_TABLE_FORMATTED, align = c("l", "l", "l", "l", "r", "
 ### Gross national income status allocation
 
 ```{r CoastalStateAllocationSEGNITable}
-CS_SE_GNI_ALLOCATION_TABLE = merge(CS_ALLOCATION[, .(CPC_CODE, CSA_GNI_ALLOCATION)], CPC_data[STATUS %in% c("CP", "OBS"), .(CODE, STATUS, NAME_EN)], by.x = "CPC_CODE", by.y = "CODE", all.y = TRUE)
-
-CS_SE_GNI_ALLOCATION_TABLE = merge(CS_SE_GNI_ALLOCATION_TABLE, CS_SE_data[, .(CODE, GNI_STATUS)], by.x = "CPC_CODE", by.y = "CODE", all.x = TRUE)
-
-CS_SE_GNI_ALLOCATION_TABLE[is.na(GNI_STATUS), CSA_GNI_ALLOCATION := 0]
-CS_SE_GNI_ALLOCATION_TABLE[is.na(GNI_STATUS), GNI_STATUS := "-"]
-CS_SE_GNI_ALLOCATION_TABLE = CS_SE_GNI_ALLOCATION_TABLE[order(as.character(CPC_CODE))]
-CS_SE_GNI_ALLOCATION_TABLE[, TAC := TARGET_TAC_T*COASTAL_STATE_WEIGHT*CSA_GNI_ALLOCATION]
-
-CS_SE_GNI_ALLOCATION_TABLE_FORMATTED = CS_SE_GNI_ALLOCATION_TABLE[, .(`Entity code` = CPC_CODE, `Entity name` = NAME_EN, Status = STATUS, GNI = GNI_STATUS, `Allocation (%)` = round(COASTAL_STATE_WEIGHT*CSA_GNI_ALLOCATION*100, 2), `TAC (t)` = round(TAC, 1))]
-  
 kable(CS_SE_GNI_ALLOCATION_TABLE_FORMATTED, align = c("l", "l", "l", "l", "r", "r"), format.args = list(big.mark = ","))
 ```
 
@@ -74,14 +53,6 @@ kable(CS_SE_GNI_ALLOCATION_TABLE_FORMATTED, align = c("l", "l", "l", "l", "r", "
 ### Small Islands Development status allocation
 
 ```{r CoastalStateAllocationSESIDSTable}
-CS_SE_SIDS_ALLOCATION_TABLE = merge(CS_ALLOCATION[, .(CPC_CODE, CSA_SIDS_ALLOCATION)], CPC_data[STATUS %in% c("CP", "OBS"), .(CODE, STATUS, NAME_EN)], by.x = "CPC_CODE", by.y = "CODE", all.y = TRUE)
-
-CS_SE_SIDS_ALLOCATION_TABLE[is.na(CSA_SIDS_ALLOCATION), CSA_SIDS_ALLOCATION := 0]
-CS_SE_SIDS_ALLOCATION_TABLE = CS_SE_SIDS_ALLOCATION_TABLE[order(as.character(CPC_CODE))]
-CS_SE_SIDS_ALLOCATION_TABLE[, TAC := TARGET_TAC_T*COASTAL_STATE_WEIGHT*CSA_SIDS_ALLOCATION]
-
-CS_SE_SIDS_ALLOCATION_TABLE_FORMATTED = CS_SE_SIDS_ALLOCATION_TABLE[, .(`Entity code` = CPC_CODE, `Entity name` = NAME_EN, Status = STATUS, `Allocation (%)` = round(COASTAL_STATE_WEIGHT*CSA_SIDS_ALLOCATION*100, 2), `TAC (t)` = round(TAC, 1))]
-
 kable(CS_SE_SIDS_ALLOCATION_TABLE_FORMATTED, align = c("l", "l", "l", "r", "r"), format.args = list(big.mark = ","))
 ```
 
@@ -90,67 +61,25 @@ kable(CS_SE_SIDS_ALLOCATION_TABLE_FORMATTED, align = c("l", "l", "l", "r", "r"),
 ## National Jurisdiction Area allocation
 
 ```{r CoastalStateAllocationNJATable}
-CS_NJA_ALLOCATION_TABLE = merge(CS_ALLOCATION[, .(CPC_CODE, CSA_NJA_ALLOCATION)], CPC_data[STATUS %in% c("CP", "OBS"), .(CODE, STATUS, NAME_EN, NJA_SIZE)], by.x = "CPC_CODE", by.y = "CODE", all.y = TRUE)
-
-CS_NJA_ALLOCATION_TABLE[NJA_SIZE == 0, CSA_NJA_ALLOCATION := 0]
-CS_NJA_ALLOCATION_TABLE[NJA_SIZE == 0, NJA_SIZE := NA]
-CS_NJA_ALLOCATION_TABLE = CS_NJA_ALLOCATION_TABLE[order(as.character(CPC_CODE))]
-CS_NJA_ALLOCATION_TABLE[, TAC := TARGET_TAC_T*COASTAL_STATE_WEIGHT*CSA_NJA_ALLOCATION]
-
-CS_NJA_ALLOCATION_TABLE_FORMATTED = CS_NJA_ALLOCATION_TABLE[, .(`Entity code` = CPC_CODE, `Entity name` = NAME_EN, Status = STATUS, `NJA size (km2)` = pn(NJA_SIZE), `Allocation (%)` = round(COASTAL_STATE_WEIGHT*CSA_NJA_ALLOCATION*100, 2), `TAC (t)` = round(TAC, 1))]
-
 kable(CS_NJA_ALLOCATION_TABLE_FORMATTED, align = c("l", "l", "l", "r", "r", "r"), format.args = list(big.mark = ","))
 ```
 
 \newpage
 
-```{r CoastalStateAllocationFinalTable}
-CS_ALLOCATION_TABLE = merge(CS_ALLOCATION[, .(CPC_CODE, COASTAL_STATE_ALLOCATION)], CPC_data[STATUS %in% c("CP", "OBS"), .(CODE, STATUS, NAME_EN)], by.x = "CPC_CODE", by.y = "CODE", all.y = TRUE)
+<!---BLOCK_LANDSCAPE_START--->
 
-CS_ALLOCATION_TABLE[, TAC := TARGET_TAC_T*COASTAL_STATE_WEIGHT*COASTAL_STATE_ALLOCATION]
-CS_ALLOCATION_TABLE[is.na(COASTAL_STATE_ALLOCATION), COASTAL_STATE_ALLOCATION := 0]
-```
+# Catch-based allocation (%)
 
-# Catch-based allocation following the transition period
-
-```{r CatchBasedAllocationTable}
-CB_ALLOCATION_TABLE = merge(CB_ALLOCATION[, .(CPC_CODE, CATCH_BASED_ALLOCATION_YEAR_10)], CPC_data[, .(CODE, STATUS, NAME_EN)], by.x = "CPC_CODE", by.y = "CODE")
-
-CB_ALLOCATION_TABLE[, TAC_10 := TARGET_TAC_T*CATCH_BASED_WEIGHT*CATCH_BASED_ALLOCATION_YEAR_10]
-
-CB_ALLOCATION_TABLE_FORMATTED = CB_ALLOCATION_TABLE[, .(`Entity code` = CPC_CODE, `Entity name` = NAME_EN, Status = STATUS, `Allocation (%)` = round(CATCH_BASED_WEIGHT*CATCH_BASED_ALLOCATION_YEAR_10*100, 2), `TAC (t)` = round(TAC_10, 1))]
-
-kable(CB_ALLOCATION_TABLE_FORMATTED, align = c("l", "l", "l", "r", "r"), format.args = list(big.mark = ","))
+```{r CatchBasedQuotaAllocationTable}
+kable(CB_ALLOCATION_QUOTAS_ALL_YEARS_TABLE_FORMATTED)
 ```
 
 \newpage
 
-<!-- # Final allocation table -->
+# Catch-based allocation (metric tonnes)
 
-```{r AllocationTable}
-# Combine BA and CS allocation tables
-ALLOCATION_TABLE = merge(BA_ALLOCATION_TABLE[, .(CPC_CODE, NAME_EN, STATUS, BS_ALLOCATION = BASELINE_WEIGHT*BASELINE_ALLOCATION, TAC_BS = TAC)], 
-                         CS_ALLOCATION_TABLE[, .(CPC_CODE, CS_ALLOCATION = COASTAL_STATE_WEIGHT*COASTAL_STATE_ALLOCATION, TAC_CS = TAC)], by = "CPC_CODE")
-
-# Add CB allocation table
-ALLOCATION_TABLE = merge(ALLOCATION_TABLE, 
-                         CB_ALLOCATION_TABLE[, .(CPC_CODE, CB_ALLOCATION = CATCH_BASED_WEIGHT*CATCH_BASED_ALLOCATION_YEAR_10, TAC_CB = TAC_10)], by = "CPC_CODE")
+```{r CatchBasedTACAllocationTable}
+kable(CB_ALLOCATION_TACS_ALL_YEARS_TABLE_FORMATTED)
 ```
 
-## Quota table after transition period
-
-```{r QuotaTable}
-QUOTA_TABLE_FORMATTED = ALLOCATION_TABLE[, .(`Entity code` = CPC_CODE, `Entity name` = NAME_EN, Status = STATUS, `Baseline (%)` = round(BS_ALLOCATION*100, 3), `Coastal States (%)` = round(CS_ALLOCATION*100, 3), `Catch-based (%)`= round(CB_ALLOCATION*100, 3), `Total (%)` = round(BS_ALLOCATION + CS_ALLOCATION + CB_ALLOCATION, 3))]
-
-kable(QUOTA_TABLE_FORMATTED, align = c("l", "l", "l", "r", "r", "r", "r"))
-```
-
-\newpage
-
-## TAC table after transition period
-
-```{r TACTable}
-TAC_TABLE_FORMATTED = ALLOCATION_TABLE[, .(`Entity code` = CPC_CODE, `Entity name` = NAME_EN, Status = STATUS, `Baseline (t)` = round(TARGET_TAC_T*BS_ALLOCATION, 1), `Coastal States (t)` = round(TARGET_TAC_T*CS_ALLOCATION, 1), `Catch-based (t)`= round(TARGET_TAC_T*CB_ALLOCATION, 1), `Total (t)` = round(TARGET_TAC_T*(BS_ALLOCATION + CS_ALLOCATION + CB_ALLOCATION), 1))]
-
-kable(TAC_TABLE_FORMATTED, align = c("l", "l", "l", "r", "r", "r", "r"), format.args = list(big.mark = ","))
-```
+<!---BLOCK_LANDSCAPE_STOP--->
