@@ -26,7 +26,7 @@ kable(BA_ALLOCATION_TABLE_FORMATTED, align = c("l", "l", "l", "r", "r"), format.
 
 ## Equal allocation
 
-```{r CoastalStateAllocationEqualTable}
+```{r CoastalStateAllocationEqualTable, ft.align = "center"}
 kable(CS_EQUAL_ALLOCATION_TABLE_FORMATTED, align = c("l", "l", "l", "r", "r"), format.args = list(big.mark = ","))
 ```
 
@@ -79,7 +79,23 @@ kable(CB_ALLOCATION_QUOTAS_ALL_YEARS_TABLE_FORMATTED)
 # Catch-based allocation (metric tonnes)
 
 ```{r CatchBasedTACAllocationTable}
-kable(CB_ALLOCATION_TACS_ALL_YEARS_TABLE_FORMATTED)
+kable(CB_ALLOCATION_TACS_ALL_YEARS_TABLE_FORMATTED, format.args = list(big.mark = ","))
 ```
 
+\newpage
+
+# Total allocation (%)
+
+```{r TotalQuotaAllocationTable}
+kable(ALLOCATION_QUOTAS_ALL_YEARS_TABLE_FORMATTED, format.args = list(big.mark = ","))
+```
+\newpage
+
+# Total allocation (metric tonnes)
+
+```{r TotalTACAllocationTable}
+kable(ALLOCATION_TACS_ALL_YEARS_TABLE_FORMATTED, format.args = list(big.mark = ","))
+```
 <!---BLOCK_LANDSCAPE_STOP--->
+
+</div>

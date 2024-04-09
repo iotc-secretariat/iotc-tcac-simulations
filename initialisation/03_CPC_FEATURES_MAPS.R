@@ -66,8 +66,6 @@ CPC_HAS_NJA_IO_MAP =
 save_plot("../outputs/maps/CPC_HAS_NJA_IO_MAP.png", CPC_HAS_NJA_IO_MAP, 2.2, 2.1)
 
 # MAP FOR EACH CPC/OBSERVER ####
-
-
 for (i in 1:nrow(CPC_data)){
   
   CPC_SF = COUNTRIES_SF %>% filter(CODE == CPC_data[i, CODE])

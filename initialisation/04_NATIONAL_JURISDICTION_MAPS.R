@@ -18,7 +18,7 @@ WHERE CODE LIKE 'NJA%'
   )
 
 # Rename Chagos and ATF NJAs
-IO_NJA[CODE == "NJA_IOT", CODE := "NJA_CHAGOS"]
+IO_NJA[CODE == "NJA_IOT", CODE := "NJA_GBR"]
 IO_NJA[CODE == "NJA_ATF", CODE := "NJA_FRAT"]
 
 # Merge with NJAs recorded in catch data set
@@ -45,5 +45,23 @@ IOTC_NJA_MAP =
 
 save_plot("../outputs/maps/IOTC_NJA_MAP.png", IOTC_NJA_MAP, 2.2, 2.1)
 
-l_info("Areas of national jurisdiction mapped!")
+# MAP FOR EACH CPC/OBSERVER ####
+for (i in 1:nrow(CS_SE_data)){
+  
+  CS_NJA_SF = IOTC_NJA_SF %>% filter(gsub("NJA_", "", ASSIGNED_AREA) == CS_SE_data[i, CODE])
+  
+  CS_NJA_MAP = 
+    ggplot() + 
+    geom_sf(data = CS_NJA_SF, color = "darkgrey") + 
+    labs(x = "", y = "") + 
+    scale_fill_brewer(palette = "Set3", na.value = grey(0.95)) +  
+    theme(legend.position = "none", legend.title = element_blank()) +
+    theme(panel.grid.major = element_line(color = gray(.5), linetype = "dashed", linewidth = 0.3), 
+          panel.background = element_rect(fill = "white"))
+  
+  save_plot(paste0("../outputs/maps/NJAS/MAP_", CS_SE_data[i, CODE], ".png"), CS_NJA_MAP, 8, 4.5)
+  
+  
+}
 
+l_info("Areas of national jurisdiction mapped!")

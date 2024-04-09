@@ -4,8 +4,8 @@ source("./00_CORE.R")
 setwd("..")
 
 # CONFIGURE ONE SCENARIO ####
-BASELINE_WEIGHT      = 0.1 
-COASTAL_STATE_WEIGHT = 0.2
+BASELINE_WEIGHT      = 0.05 
+COASTAL_STATE_WEIGHT = 0.05
 CATCH_BASED_WEIGHT   = 1 - (BASELINE_WEIGHT + COASTAL_STATE_WEIGHT)
 
 # COASTAL STATE COMPONENT (species-independent)
@@ -19,7 +19,7 @@ CS_NJA_WEIGHT            = 1 - (CS_EQUAL_WEIGHT + CS_SOCIO_ECONOMIC_WEIGHT)
 # CATCH-BASED COMPONENT
 SPECIES_CODE_SELECTED           = "YFT"
 SPECIES_SELECTED                = SPECIES_TABLE[SPECIES_CODE == SPECIES_CODE_SELECTED, SPECIES]
-TARGET_TAC_T                    = 500000
+TARGET_TAC_T                    = 300000
 HISTORICAL_CATCH_INTERVAL_START = 2000
 HISTORICAL_CATCH_INTERVAL_END   = 2016
 HISTORICAL_CATCH_AVERAGE        = period_average_catch_data    # or best_years_average_catch_data
@@ -45,7 +45,12 @@ setwd("../rmd")
 # General report: All CPCs
 render("00_SIMULATIONS_ALL_CPCS.Rmd", 
        output_dir = "../outputs/", 
-       output_file = "TAC_SIMULATION_SCENARIO_ALL_CPCS.docx")
+       output_file = "TAC_SIMULATION_SCENARIO_ALL_CPCS_EXAMPLE.docx")
+
+
+
+
+
 
 # Individual report: By CP
 for (j in CPC_data[STATUS %in% c("CP", "OBS"), CODE]){

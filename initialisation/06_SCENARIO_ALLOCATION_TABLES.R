@@ -145,14 +145,64 @@ ALLOCATION_TABLE = merge(BA_ALLOCATION_TABLE[, .(CPC_CODE, NAME_EN, STATUS, BS_A
 
 # Add CB allocation table
 ALLOCATION_TABLE = merge(ALLOCATION_TABLE, 
-                         CB_ALLOCATION_TABLE[, .(CPC_CODE, CB_ALLOCATION_1, CB_ALLOCATION_2, CB_ALLOCATION_3, CB_ALLOCATION_4, CB_ALLOCATION_5, CB_ALLOCATION_6, CB_ALLOCATION_7, CB_ALLOCATION_8, CB_ALLOCATION_9, CB_ALLOCATION_10, TAC_1, TAC_2, TAC_3, TAC_4, TAC_5, TAC_6, TAC_7, TAC_8, TAC_9, TAC_10)], by = "CPC_CODE")
+                         CB_ALLOCATION_TABLE[, .(CPC_CODE, CB_ALLOCATION_1, CB_ALLOCATION_2, CB_ALLOCATION_3, CB_ALLOCATION_4, CB_ALLOCATION_5, CB_ALLOCATION_6, CB_ALLOCATION_7, CB_ALLOCATION_8, CB_ALLOCATION_9, CB_ALLOCATION_10, CB_TAC_1 = TAC_1, CB_TAC_2 = TAC_2, CB_TAC_3 = TAC_3, CB_TAC_4 = TAC_4, CB_TAC_5 = TAC_5, CB_TAC_6 = TAC_6, CB_TAC_7 = TAC_7, CB_TAC_8 = TAC_8, CB_TAC_9 = TAC_9, CB_TAC_10 = TAC_10)], by = "CPC_CODE")
+
+# Compute sum of quotas
+ALLOCATION_TABLE[, QUOTA_1 := BS_ALLOCATION + CS_ALLOCATION + CB_ALLOCATION_1]
+ALLOCATION_TABLE[, QUOTA_2 := BS_ALLOCATION + CS_ALLOCATION + CB_ALLOCATION_2]
+ALLOCATION_TABLE[, QUOTA_3 := BS_ALLOCATION + CS_ALLOCATION + CB_ALLOCATION_3]
+ALLOCATION_TABLE[, QUOTA_4 := BS_ALLOCATION + CS_ALLOCATION + CB_ALLOCATION_4]
+ALLOCATION_TABLE[, QUOTA_5 := BS_ALLOCATION + CS_ALLOCATION + CB_ALLOCATION_5]
+ALLOCATION_TABLE[, QUOTA_6 := BS_ALLOCATION + CS_ALLOCATION + CB_ALLOCATION_6]
+ALLOCATION_TABLE[, QUOTA_7 := BS_ALLOCATION + CS_ALLOCATION + CB_ALLOCATION_7]
+ALLOCATION_TABLE[, QUOTA_8 := BS_ALLOCATION + CS_ALLOCATION + CB_ALLOCATION_8]
+ALLOCATION_TABLE[, QUOTA_9 := BS_ALLOCATION + CS_ALLOCATION + CB_ALLOCATION_9]
+ALLOCATION_TABLE[, QUOTA_10 := BS_ALLOCATION + CS_ALLOCATION + CB_ALLOCATION_10]
+
+# Compute sum of TACs
+ALLOCATION_TABLE[, TAC_1 := TARGET_TAC_T*QUOTA_1]
+ALLOCATION_TABLE[, TAC_2 := TARGET_TAC_T*QUOTA_2]
+ALLOCATION_TABLE[, TAC_3 := TARGET_TAC_T*QUOTA_3]
+ALLOCATION_TABLE[, TAC_4 := TARGET_TAC_T*QUOTA_4]
+ALLOCATION_TABLE[, TAC_5 := TARGET_TAC_T*QUOTA_5]
+ALLOCATION_TABLE[, TAC_6 := TARGET_TAC_T*QUOTA_6]
+ALLOCATION_TABLE[, TAC_7 := TARGET_TAC_T*QUOTA_7]
+ALLOCATION_TABLE[, TAC_8 := TARGET_TAC_T*QUOTA_8]
+ALLOCATION_TABLE[, TAC_9 := TARGET_TAC_T*QUOTA_9]
+ALLOCATION_TABLE[, TAC_10 := TARGET_TAC_T*QUOTA_10]
 
 ## QUOTA ALLOCATION TABLE ####
+
+### ALL YEARS ####
+ALLOCATION_QUOTAS_ALL_YEARS_TABLE_FORMATTED = ALLOCATION_TABLE[, .(`Entity code` = CPC_CODE, `Entity name` = NAME_EN, Status = STATUS, 
+                                                                      Y1 = round(QUOTA_1*100, 2), 
+                                                                      Y2 = round(QUOTA_2*100, 2), 
+                                                                      Y3 = round(QUOTA_3*100, 2), 
+                                                                      Y4 = round(QUOTA_4*100, 2), 
+                                                                      Y5 = round(QUOTA_5*100, 2), 
+                                                                      Y6 = round(QUOTA_6*100, 2), 
+                                                                      Y7 = round(QUOTA_7*100, 2), 
+                                                                      Y8 = round(QUOTA_8*100, 2), 
+                                                                      Y9 = round(QUOTA_9*100, 2), 
+                                                                      Y10 = round(QUOTA_10*100, 2))]
+# TACS
+ALLOCATION_TACS_ALL_YEARS_TABLE_FORMATTED = ALLOCATION_TABLE[, .(`Entity code` = CPC_CODE, `Entity name` = NAME_EN, Status = STATUS, 
+                                                                 Y1 = round(TAC_1, 1), 
+                                                                 Y2 = round(TAC_2, 1), 
+                                                                 Y3 = round(TAC_3, 1), 
+                                                                 Y4 = round(TAC_4, 1), 
+                                                                 Y5 = round(TAC_5, 1), 
+                                                                 Y6 = round(TAC_6, 1), 
+                                                                 Y7 = round(TAC_7, 1), 
+                                                                 Y8 = round(TAC_8, 1), 
+                                                                 Y9 = round(TAC_9, 1), 
+                                                                 Y10 = round(TAC_10, 1))]
+                                                                 
 
 ### FINAL YEAR ONLY ####
 QUOTA_TABLE_FORMATTED = ALLOCATION_TABLE[, .(`Entity code` = CPC_CODE, `Entity name` = NAME_EN, Status = STATUS, `Baseline` = round(BS_ALLOCATION*100, 3), `Coastal States` = round(CS_ALLOCATION*100, 3), `Catch-based`= round(CB_ALLOCATION_10*100, 3), `Total` = round(BS_ALLOCATION*100 + CS_ALLOCATION*100 + CB_ALLOCATION_10*100, 3))]
 
 ### FINAL YEAR ONLY ####
-TAC_TABLE_FORMATTED = ALLOCATION_TABLE[, .(`Entity code` = CPC_CODE, `Entity name` = NAME_EN, Status = STATUS, `Baseline (t)` = round(TARGET_TAC_T*BS_ALLOCATION, 1), `Coastal States` = round(TARGET_TAC_T*CS_ALLOCATION, 1), `Catch-based`= round(TAC_10, 1), `Total` = round(TARGET_TAC_T*(BS_ALLOCATION + CS_ALLOCATION + CB_ALLOCATION_10), 2))]
+TAC_TABLE_FORMATTED = ALLOCATION_TABLE[, .(`Entity code` = CPC_CODE, `Entity name` = NAME_EN, Status = STATUS, `Baseline (t)` = round(TARGET_TAC_T*BS_ALLOCATION, 1), `Coastal States` = round(TARGET_TAC_T*CS_ALLOCATION, 1), `Catch-based`= round(CB_TAC_10, 1), `Total` = round(TAC_10, 1))]
 
 l_info("Allocation tables computed for a given scenario!")
