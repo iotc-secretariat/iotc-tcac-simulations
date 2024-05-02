@@ -1,0 +1,98 @@
+---
+author: "Author: [IOTC Secretariat](mailto:IOTC-Secretariat@fao.org)" 
+title: "Description of simulation scenarios and results for the Technical Committee on Allocation Criteria"
+output:
+  officedown::rdocx_document:
+    reference_docx: "../templates/rdoc_template.docx"
+reference_num: TRUE
+fig_caption: TRUE
+---
+
+```{r title, echo = FALSE}
+REPORT_TITLE = ""
+```
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE, 
+                      tab.cap.pre = "Tab. ", 
+                      tab.cap.sep = ". ", 
+                      tab.cap.style = "Table Caption", 
+                      tab.cap.fp_text = officer::fp_text_lite(italic = FALSE, bold = TRUE), 
+                      fig.cap = TRUE, 
+                      fig.cap.pre = "Fig. ", 
+                      fig.cap.sep = ". ", 
+                      fig.cap.style = "Caption label",
+                      dpi = 300
+)
+```
+
+```{r Headers, echo = FALSE}
+logo.file = file.path("../templates/FAO_IOTC_LOGOS.png")
+
+bl_header_no_logo = function(txt, position) {
+  block_list(
+    fpar(values = txt, fp_p = fp_par(text.align = position, border.bottom = fp_border()), fp_t = fp_text_lite(color = "black", bold = FALSE, font.size = 12))
+  )
+}
+
+bl_header_with_logo = function(txt, position) {
+  block_list(
+    fpar(external_img(src = logo.file, height = 0.71, width = 7.19, unit = "in"), 
+    ftext = txt, 
+         fp_p = fp_par(text.align = position, border.bottom = fp_border()), 
+         fp_t = fp_text_lite(color = "black", bold = FALSE, font.size = 12)))
+}
+
+sec_pr = prop_section(
+  header_first = bl_header_with_logo("IOTC-2024-TCAC-13-Simulations Readme", "right"),
+  header_default = bl_header_no_logo("IOTC-2024-TCAC-13-Simulations Readme", "right")
+)
+```
+
+```{r TextStyles, echo = FALSE}
+fp = fp_par(
+  text.align = "center", 
+  padding.bottom = 20, padding.top = 120, 
+  border.bottom = fp_border())
+
+alert = fp_text(shading.color = "transparent", bold = TRUE, color = "red")
+underline = fp_text(underlined = TRUE)
+```
+
+```{r}
+block_section(sec_pr)
+```
+
+# Background
+
+Following the informal TCAC meeting held on February, 27, 2024, the following changes were made to the [TCAC simulation Shiny App](https://data.iotc.org/tcac13/simulations/): (i) the range of some input simulation parameters was restricted according to [IOTC-2024-TCAC13-REF03_Rev1](https://iotc.org/documents/TCAC/13/Ref03) and (ii) Taiwan,China was added as a specific entity in the simulations.
+
+# Set of scenarios
+
+To offer comprehensive insights into the outcomes of simulations possible with the Shiny App, we examined three distinct scenarios for each of the five species: albacore, bigeye tuna, skipjack tuna, swordfish, and yellowfin tuna, resulting in a total of 15 scenarios. These scenarios primarily focused on three key components of the allocation regime: baseline, coastal state, and catch-based  allocations. The objective was to cover a wide spectrum of potential results, drawing from the mean annual catch data for each CPC spanning the period 2000-2016 and projecting a 10-year transition period for the resolution's implementation.
+
+For each species, the following scenarios were conducted:
+
+a. 5%, 5%, and 90% for baseline, coastal State, and catch-based weights, respectively
+b. 7.5%, 25%, and 67.5% for baseline, coastal State, and catch-based weights, respectively
+c. 10%, 45%, and 45% for baseline, coastal State, and catch-based weights, respectively.
+
+Default values of Total Allowable Catches (TAC) were set to: 
+
+- 45,000 t for albacore ([IOTC-2023-SC26-ES01_rev1](https://iotc.org/documents/SC/26/ES01E))
+- 80,000 t for bigeye tuna ([IOTC-2022-WPM13-10_Rev1](https://iotc.org/documents/WPM/13/10))
+- 630,000 t for skipjack tuna ([IOTC–2023–SC26–R](https://iotc.org/documents/SC/26/RE))
+- 30,000 t for swordfish [IOTC-2023-SC26-ES16_rev1](https://iotc.org/documents/SC/26/ES16E)
+- 300,000 t for yellowfin tuna ([IOTC-2023-SC26-ES04](https://iotc.org/documents/SC/26/ES04E)).
+
+Default values for the other parameters were derived from [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E) and set to:
+
+- **Coastal State components**: values of 35%, 47.5%, and 17.5% for the equal share, socio-economic, and national jurisdiction area surface weights, respectively;
+- **Socio-economic components**: selection of Option 2 for the socio-economic indicators and values of 30%, 30%, and 40% for the Human Development Index status, Gross National Income status, and Small Islands Development status weights, respectively.
+
+\pagebreak
+
+# Output tables
+
+For each simulation scenario, a dedicated document is provided, detailing all parameter values via a comprehensive general scenario configuration table. Additionally, several tables within the document present the outcomes of allocation (expressed as percentages) and total allowable catch (measured in metric tonnes) for each component and sub-component of the allocation regime. These results cover all IOTC Contracting Parties, with Taiwan, China, considered as a distinct entity.
+

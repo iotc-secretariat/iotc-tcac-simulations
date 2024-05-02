@@ -203,6 +203,6 @@ ALLOCATION_TACS_ALL_YEARS_TABLE_FORMATTED = ALLOCATION_TABLE[, .(`Entity code` =
 QUOTA_TABLE_FORMATTED = ALLOCATION_TABLE[, .(`Entity code` = CPC_CODE, `Entity name` = NAME_EN, Status = STATUS, `Baseline` = round(BS_ALLOCATION*100, 3), `Coastal States` = round(CS_ALLOCATION*100, 3), `Catch-based`= round(CB_ALLOCATION_10*100, 3), `Total` = round(BS_ALLOCATION*100 + CS_ALLOCATION*100 + CB_ALLOCATION_10*100, 3))]
 
 ### FINAL YEAR ONLY ####
-TAC_TABLE_FORMATTED = ALLOCATION_TABLE[, .(`Entity code` = CPC_CODE, `Entity name` = NAME_EN, Status = STATUS, `Baseline (t)` = round(TARGET_TAC_T*BS_ALLOCATION, 1), `Coastal States` = round(TARGET_TAC_T*CS_ALLOCATION, 1), `Catch-based`= round(CB_TAC_10, 1), `Total` = round(TAC_10, 1))]
+TAC_TABLE_FORMATTED = ALLOCATION_TABLE[, .(`Entity code` = CPC_CODE, `Entity name` = NAME_EN, Status = STATUS, `Baseline` = round(TARGET_TAC_T*BS_ALLOCATION, 1), `Coastal States` = round(TARGET_TAC_T*CS_ALLOCATION, 1), `Catch-based`= round(CB_TAC_10, 1), `Total` = round(TAC_10, 1))]
 
 l_info("Allocation tables computed for a given scenario!")

@@ -68,6 +68,9 @@ setwd("..")
 }
 
 # Generate ReadMe file
+render("./rmd/05_README_SIMULATIONS.Rmd", 
+       output_dir = "./outputs/scenarios/", 
+       output_file = "README_TAC_SIMULATION_SCENARIO_RESULTS.docx")
 
 
 

@@ -12,9 +12,9 @@
 | 2.1 - Equal share weight    | `r CS_EQUAL_WEIGHT*100`% |
 | 2.2 - Socio-economic weight |  `r CS_SOCIO_ECONOMIC_WEIGHT*100`% |
 | 2.3 - National jurisdiction area surface weight | `r CS_NJA_WEIGHT*100`% |
-| **Socio-economic weight components (item 2.2)** |
+| **Socio-economic components (item 2.2)** |
 | 2.2.1 - Human Development Index status weight   | `r SE_HDI_WEIGHT*100`% |
-| 2.2.2 - Gross national income status weight     | `r SE_GNI_WEIGHT*100`% |
+| 2.2.2 - Gross National Income status weight     | `r SE_GNI_WEIGHT*100`% |
 | 2.2.3 - Small Islands Development status weight | `r SE_SID_WEIGHT*100`% |
 | **Catch-based configuration parameters** ||
 | Reference years | `r paste(HISTORICAL_CATCH_INTERVAL_START, HISTORICAL_CATCH_INTERVAL_END, sep = "-")` |

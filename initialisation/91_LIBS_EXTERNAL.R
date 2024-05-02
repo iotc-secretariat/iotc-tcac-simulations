@@ -18,7 +18,8 @@ pacman::p_load(
   "tidyverse", 
   "rnaturalearth", 
   "rnaturalearthdata", 
-  "sf"
+  "sf", 
+  "RDCOMClient"
 )
 
 theme_set(theme_bw())
