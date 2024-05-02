@@ -43,8 +43,8 @@ source("./06_SCENARIO_ALLOCATION_TABLES.R")
 setwd("../rmd")
 
 # General report: All CPCs
-render("00_SIMULATIONS_ALL_CPCS.Rmd", 
-       output_dir = "../outputs/", 
+render("00_A_SINGLE_SIMULATION_ALL_CPCS.Rmd", 
+       output_dir = "../outputs/scenarios/", 
        output_file = "TAC_SIMULATION_SCENARIO_ALL_CPCS_EXAMPLE.docx")
 
 
@@ -52,11 +52,11 @@ render("00_SIMULATIONS_ALL_CPCS.Rmd",
 
 
 
-# Individual report: By CP
-for (j in CPC_data[STATUS %in% c("CP", "OBS"), CODE]){
-  
-  REPORT_OUTPUT_NAME = "TAC_SIMULATION_SCENARIO_"
-  }
+# # Individual report: By CP
+# for (j in CPC_data[STATUS %in% c("CP", "OBS"), CODE]){
+#   
+#   REPORT_OUTPUT_NAME = "TAC_SIMULATION_SCENARIO_"
+#   }
 
 
 

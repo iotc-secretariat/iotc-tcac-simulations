@@ -24,8 +24,8 @@ SPECIES_TABLE = data.table(SPECIES_CODE = c("ALB", "BET", "SKJ", "SWO", "YFT"),
                            SPECIES_SCIENTIFIC = c("Thunnus alalunga", "Thunnus obesus", "Katsuwonus pelamis", "Xiphias gladius", "Thunnus albacares")
 )
 
-# Source the scripts for data description
-source("01_HISTORICAL_CATCH_ESTIMATES.R")
-source("02_SOCIO_ECONOMIC_INDICATORS.R")
-source("03_CPC_FEATURES_MAPS.R")
-source("04_NATIONAL_JURISDICTION_MAPS.R")
+# Source the scripts for data description (once)
+#source("01_HISTORICAL_CATCH_ESTIMATES.R")
+#source("02_SOCIO_ECONOMIC_INDICATORS.R")
+#source("03_CPC_FEATURES_MAPS.R")
+#source("04_NATIONAL_JURISDICTION_MAPS.R")

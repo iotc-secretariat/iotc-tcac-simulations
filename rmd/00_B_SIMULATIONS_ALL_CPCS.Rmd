@@ -1,6 +1,8 @@
 ---
-title: "TCAC simulation scenario results"
 author: "Author: [IOTC Secretariat](mailto:IOTC-Secretariat@fao.org)" 
+params:
+    dynamictitle: "mytitledefinedintheparamslistofrender"
+title: "`r params$dynamictitle`"
 output:
   officedown::rdocx_document:
     reference_docx: "../templates/rdoc_template.docx"

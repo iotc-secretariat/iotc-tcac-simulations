@@ -64,7 +64,7 @@ kable(CS_SE_SIDS_ALLOCATION_TABLE_FORMATTED, align = c("l", "l", "l", "r", "r"),
 kable(CS_NJA_ALLOCATION_TABLE_FORMATTED, align = c("l", "l", "l", "r", "r", "r"), format.args = list(big.mark = ","))
 ```
 
-\newpage
+<!-- \newpage -->
 
 <!---BLOCK_LANDSCAPE_START--->
 
@@ -89,6 +89,7 @@ kable(CB_ALLOCATION_TACS_ALL_YEARS_TABLE_FORMATTED, format.args = list(big.mark 
 ```{r TotalQuotaAllocationTable}
 kable(ALLOCATION_QUOTAS_ALL_YEARS_TABLE_FORMATTED, format.args = list(big.mark = ","))
 ```
+
 \newpage
 
 # Total allocation (metric tonnes)
@@ -96,6 +97,7 @@ kable(ALLOCATION_QUOTAS_ALL_YEARS_TABLE_FORMATTED, format.args = list(big.mark =
 ```{r TotalTACAllocationTable}
 kable(ALLOCATION_TACS_ALL_YEARS_TABLE_FORMATTED, format.args = list(big.mark = ","))
 ```
+
 <!---BLOCK_LANDSCAPE_STOP--->
 
-</div>
+<!-- </div> -->
