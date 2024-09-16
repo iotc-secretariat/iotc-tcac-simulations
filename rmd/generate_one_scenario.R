@@ -47,18 +47,3 @@ render("00_A_SINGLE_SIMULATION_ALL_CPCS.Rmd",
        output_dir = "../outputs/scenarios/", 
        output_file = "TAC_SIMULATION_SCENARIO_ALL_CPCS_EXAMPLE.docx")
 
-
-
-
-
-
-# # Individual report: By CP
-# for (j in CPC_data[STATUS %in% c("CP", "OBS"), CODE]){
-#   
-#   REPORT_OUTPUT_NAME = "TAC_SIMULATION_SCENARIO_"
-#   }
-
-
-
-
-

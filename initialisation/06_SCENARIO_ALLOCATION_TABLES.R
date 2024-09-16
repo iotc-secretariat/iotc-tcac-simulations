@@ -1,4 +1,4 @@
-l_info("Computing allocation tables for a given scenario...")
+print("Computing allocation tables for a given scenario...")
 
 # Reduce the labels of some CPCs
 CPC_data[CODE == "GBR", NAME_EN := "United Kingdom"]
@@ -205,4 +205,4 @@ QUOTA_TABLE_FORMATTED = ALLOCATION_TABLE[, .(`Entity code` = CPC_CODE, `Entity n
 ### FINAL YEAR ONLY ####
 TAC_TABLE_FORMATTED = ALLOCATION_TABLE[, .(`Entity code` = CPC_CODE, `Entity name` = NAME_EN, Status = STATUS, `Baseline` = round(TARGET_TAC_T*BS_ALLOCATION, 1), `Coastal States` = round(TARGET_TAC_T*CS_ALLOCATION, 1), `Catch-based`= round(CB_TAC_10, 1), `Total` = round(TAC_10, 1))]
 
-l_info("Allocation tables computed for a given scenario!")
+print("Allocation tables computed for a given scenario!")
