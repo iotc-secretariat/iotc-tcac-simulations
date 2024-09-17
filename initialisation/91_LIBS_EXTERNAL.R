@@ -19,7 +19,9 @@ pacman::p_load(
   "rnaturalearth", 
   "rnaturalearthdata", 
   "sf", 
-  "RDCOMClient"
+  "RDCOMClient", 
+  "data.table", 
+  "DT"
 )
 
 theme_set(theme_bw())
