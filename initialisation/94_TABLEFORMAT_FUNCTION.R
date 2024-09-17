@@ -1,4 +1,4 @@
-l_info("Loading some TableFormat function")
+print("Loading some TableFormat function")
 
 TableFormat = function(DataTable){
   
@@ -19,4 +19,4 @@ TableFormat = function(DataTable){
   return(DataTableFT)
   }
 
-l_info("TableFormat function loaded!")
+print("TableFormat function loaded!")
