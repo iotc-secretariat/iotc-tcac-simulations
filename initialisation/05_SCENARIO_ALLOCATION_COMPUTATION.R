@@ -14,19 +14,20 @@ CS_ALLOCATION = coastal_state_allocation(CPC_data = CPC_data, CS_SE_data = CS_SE
                                              GNI_wgt  = SE_GNI_WEIGHT,
                                              SIDS_wgt = SE_SID_WEIGHT
                                            ),
-                                         NJA_weight                 = CS_NJA_WEIGHT)
+                                         NJA_weight = CS_NJA_WEIGHT)
 
 # COMPUTE CATCH-BASED ALLOCATION ####
 CB_ALLOCATION = catch_based_allocation(CPC_data = CPC_data, CS_SE_data = CS_SE_data,
                                        catch_data = subset_and_postprocess_catch_data(catch_data = catch_data,
                                                                                       species_code = SPECIES_CODE_SELECTED,
-                                                                                      years        = HISTORICAL_CATCH_INTERVAL_START:HISTORICAL_CATCH_INTERVAL_END),
+                                                                                      years = HISTORICAL_CATCH_INTERVAL_START:HISTORICAL_CATCH_INTERVAL_END, 
+                                                                                      onlyHS = TRUE),
                                        average_catch_function = HISTORICAL_CATCH_AVERAGE,
                                        coastal_weights = ALLOCATION_TRANSITION)
 
 # COMPUTE QUOTA ALLOCATION THROUGHOUT TRANSITION PERIOD ####
 QUOTAS = allocate_TAC(TAC = TARGET_TAC_T, 
-               baseline_allocation      = BA_ALLOCATION, baseline_allocation_weight      = BASELINE_WEIGHT, 
+                      baseline_allocation = BA_ALLOCATION, baseline_allocation_weight = BASELINE_WEIGHT, 
                coastal_state_allocation = CS_ALLOCATION, coastal_state_allocation_weight = COASTAL_STATE_WEIGHT, 
                catch_based_allocation   = CB_ALLOCATION, catch_based_allocation_weight   = CATCH_BASED_WEIGHT)
 

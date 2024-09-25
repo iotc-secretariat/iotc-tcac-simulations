@@ -1,7 +1,9 @@
+<!---BLOCK_LANDSCAPE_START--->
+
 # Quota (%) table after transition period (Year 10)
 
 ```{r FinalQuotaAllocationTable}
-kable(QUOTA_TABLE_FORMATTED, align = c("l", "l", "l", "r", "r", "r", "r"))
+kable(QUOTA_TABLE_FORMATTED, align = c("l", "l", "l", "c", "r", "r", "r", "r"))
 ```
 
 \newpage
@@ -9,7 +11,7 @@ kable(QUOTA_TABLE_FORMATTED, align = c("l", "l", "l", "r", "r", "r", "r"))
 # TAC (metric tonnes; t) table after transition period (Year 10)
 
 ```{r FinalTACAllocationTable}
-kable(TAC_TABLE_FORMATTED, format.args = list(big.mark = ","))
+kable(TAC_TABLE_FORMATTED, align = c("l", "l", "l", "c", "r", "r", "r", "r"), format.args = list(big.mark = ","))
 ```
 
 \newpage
@@ -17,7 +19,7 @@ kable(TAC_TABLE_FORMATTED, format.args = list(big.mark = ","))
 # Baseline allocation for Contracting Parties
 
 ```{r BaselineAllocationTable}
-kable(BA_ALLOCATION_TABLE_FORMATTED, align = c("l", "l", "l", "r", "r"), format.args = list(big.mark = ","))
+kable(BA_ALLOCATION_TABLE_FORMATTED, align = c("l", "l", "l", "c", "r", "r"), format.args = list(big.mark = ","))
 ```
 
 \newpage
@@ -27,7 +29,7 @@ kable(BA_ALLOCATION_TABLE_FORMATTED, align = c("l", "l", "l", "r", "r"), format.
 ## Equal allocation
 
 ```{r CoastalStateAllocationEqualTable, ft.align = "center"}
-kable(CS_EQUAL_ALLOCATION_TABLE_FORMATTED, align = c("l", "l", "l", "r", "r"), format.args = list(big.mark = ","))
+kable(CS_EQUAL_ALLOCATION_TABLE_FORMATTED, align = c("l", "l", "l", "c", "r", "r"), format.args = list(big.mark = ","))
 ```
 
 \newpage
@@ -37,7 +39,7 @@ kable(CS_EQUAL_ALLOCATION_TABLE_FORMATTED, align = c("l", "l", "l", "r", "r"), f
 ### Human Development Index status allocation
 
 ```{r CoastalStateAllocationSEHDITable}
-kable(CS_SE_HDI_ALLOCATION_TABLE_FORMATTED, align = c("l", "l", "l", "l", "r", "r"), format.args = list(big.mark = ","))
+kable(CS_SE_HDI_ALLOCATION_TABLE_FORMATTED, align = c("l", "l", "l", "c", "c", "r", "r"), format.args = list(big.mark = ","))
 ```
 
 \newpage
@@ -45,7 +47,7 @@ kable(CS_SE_HDI_ALLOCATION_TABLE_FORMATTED, align = c("l", "l", "l", "l", "r", "
 ### Gross national income status allocation
 
 ```{r CoastalStateAllocationSEGNITable}
-kable(CS_SE_GNI_ALLOCATION_TABLE_FORMATTED, align = c("l", "l", "l", "l", "r", "r"), format.args = list(big.mark = ","))
+kable(CS_SE_GNI_ALLOCATION_TABLE_FORMATTED, align = c("l", "l", "l", "c", "c", "r", "r"), format.args = list(big.mark = ","))
 ```
 
 \newpage
@@ -53,7 +55,7 @@ kable(CS_SE_GNI_ALLOCATION_TABLE_FORMATTED, align = c("l", "l", "l", "l", "r", "
 ### Small Islands Development status allocation
 
 ```{r CoastalStateAllocationSESIDSTable}
-kable(CS_SE_SIDS_ALLOCATION_TABLE_FORMATTED, align = c("l", "l", "l", "r", "r"), format.args = list(big.mark = ","))
+kable(CS_SE_SIDS_ALLOCATION_TABLE_FORMATTED, align = c("l", "l", "l", "c", "r", "r"), format.args = list(big.mark = ","))
 ```
 
 \newpage
@@ -61,17 +63,15 @@ kable(CS_SE_SIDS_ALLOCATION_TABLE_FORMATTED, align = c("l", "l", "l", "r", "r"),
 ## National Jurisdiction Area allocation
 
 ```{r CoastalStateAllocationNJATable}
-kable(CS_NJA_ALLOCATION_TABLE_FORMATTED, align = c("l", "l", "l", "r", "r", "r"), format.args = list(big.mark = ","))
+kable(CS_NJA_ALLOCATION_TABLE_FORMATTED, align = c("l", "l", "l", "c", "r", "r", "r"), format.args = list(big.mark = ","))
 ```
 
-<!-- \newpage -->
-
-<!---BLOCK_LANDSCAPE_START--->
+\newpage
 
 # Catch-based allocation (%)
 
 ```{r CatchBasedQuotaAllocationTable}
-kable(CB_ALLOCATION_QUOTAS_ALL_YEARS_TABLE_FORMATTED)
+kable(CB_ALLOCATION_QUOTAS_ALL_YEARS_TABLE_FORMATTED, align = c("l", "l", "l", "c", rep("r", 10)))
 ```
 
 \newpage
@@ -79,7 +79,7 @@ kable(CB_ALLOCATION_QUOTAS_ALL_YEARS_TABLE_FORMATTED)
 # Catch-based allocation (metric tonnes)
 
 ```{r CatchBasedTACAllocationTable}
-kable(CB_ALLOCATION_TACS_ALL_YEARS_TABLE_FORMATTED, format.args = list(big.mark = ","))
+kable(CB_ALLOCATION_TACS_ALL_YEARS_TABLE_FORMATTED, align = c("l", "l", "l", "c", rep("r", 10)), format.args = list(big.mark = ","))
 ```
 
 \newpage
@@ -87,7 +87,7 @@ kable(CB_ALLOCATION_TACS_ALL_YEARS_TABLE_FORMATTED, format.args = list(big.mark 
 # Total allocation (%)
 
 ```{r TotalQuotaAllocationTable}
-kable(ALLOCATION_QUOTAS_ALL_YEARS_TABLE_FORMATTED, format.args = list(big.mark = ","))
+kable(ALLOCATION_QUOTAS_ALL_YEARS_TABLE_FORMATTED, align = c("l", "l", "l", "c", rep("r", 10)), format.args = list(big.mark = ","))
 ```
 
 \newpage
@@ -95,9 +95,7 @@ kable(ALLOCATION_QUOTAS_ALL_YEARS_TABLE_FORMATTED, format.args = list(big.mark =
 # Total allocation (metric tonnes)
 
 ```{r TotalTACAllocationTable}
-kable(ALLOCATION_TACS_ALL_YEARS_TABLE_FORMATTED, format.args = list(big.mark = ","))
+kable(ALLOCATION_TACS_ALL_YEARS_TABLE_FORMATTED, align = c("l", "l", "l", "c", rep("r", 10)), format.args = list(big.mark = ","))
 ```
 
 <!---BLOCK_LANDSCAPE_STOP--->
-
-<!-- </div> -->
