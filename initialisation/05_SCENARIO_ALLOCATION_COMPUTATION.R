@@ -21,7 +21,7 @@ CB_ALLOCATION = catch_based_allocation(CPC_data = CPC_data, CS_SE_data = CS_SE_d
                                        catch_data = subset_and_postprocess_catch_data(catch_data = catch_data,
                                                                                       species_code = SPECIES_CODE_SELECTED,
                                                                                       years = HISTORICAL_CATCH_INTERVAL_START:HISTORICAL_CATCH_INTERVAL_END, 
-                                                                                      onlyHS = TRUE),
+                                                                                      onlyHS = OnlyHS),
                                        average_catch_function = HISTORICAL_CATCH_AVERAGE,
                                        coastal_weights = ALLOCATION_TRANSITION)
 
