@@ -6,7 +6,7 @@ server = function(input, output, session) {
         class = "stripe cell-border",
         rownames = FALSE,
         escape = FALSE,
-        colnames = c("Code", "Name", "Status", "Is SIDS?", "Is coastal?", "Has NJA in the IO?", "NJA size", "NJA vs. IOTC size", "NJA size weighting"),
+        colnames = c("Code", "Name (English)", "Name (French)", "Status code", "Status", "Is SIDS?", "Is coastal?", "Has NJA in the IO?", "NJA size", "NJA vs. IOTC size", "NJA size weighting"),
         options = 
           list(
             pageLength= 15,
@@ -28,7 +28,7 @@ server = function(input, output, session) {
         class = "stripe cell-border",
         rownames = FALSE,
         escape = FALSE,
-        colnames = c("Code", "Is&nbsp;coastal?", "Has&nbsp;NJA&nbsp;area?", 
+        colnames = c("Code", "Name (English)", "Name (French)", "Is&nbsp;coastal?", "Has&nbsp;NJA&nbsp;area?", 
                      "Development&nbsp;status", "Pro&nbsp;capita&nbsp;fish&nbsp;consumption", "CUV&nbsp;index", "%&nbsp;workers&nbsp;employed&nbsp;SSF", "%&nbsp;fisheries&nbsp;contrib.&nbsp;to&nbsp;GDP", "%&nbsp;fisheries&nbsp;contrib.&nbsp;total&nbsp;export", 
                      "HDI", "HDI&nbsp;tier", "HDI&nbsp;tier&nbsp;weight", "GNI", "GNI&nbsp;weight", "SIDS&nbsp;status", "SIDS&nbsp;status&nbsp;weight"),
         options = 
@@ -72,73 +72,73 @@ server = function(input, output, session) {
   # Baseline weight
   
   output$ba_wgt = renderText({
-    paste0(format(as.numeric(input$ba_weight), nsmall = 1), "%")
+    formatToPercent(input$ba_weight)
   })
-
+  
   # Coastal states weight
   
   output$cs_wgt = renderText({
-    paste0(format(as.numeric(input$cs_weight), nsmall = 1), "%")
+    formatToPercent(input$cs_weight)
   })
-
+  
   # Catch-based weight
   
   output$cb_wgt = renderText({
-    paste0(format(as.numeric((100 - input$ba_weight - input$cs_weight)), nsmall = 1), "%")
+    formatToPercent(100 - input$ba_weight - input$cs_weight)
   })
   
   # Coastal states / equal weight
   
   output$cs_eq_wgt = renderText({
-    paste0(format(as.numeric(input$cs_weights[1]), nsmall = 1), "%")
+    formatToPercent(input$cs_weights[1])
   })
   
   # Coastal states / socio-economic weight
   
   output$cs_se_wgt = renderText({
-    paste0(format(as.numeric((input$cs_weights[2] - input$cs_weights[1])), nsmall = 1), "%")
+    formatToPercent(input$cs_weights[2] - input$cs_weights[1])
   })
   
   # Coastal states / NJA weight
   
   output$cs_ez_wgt = renderText({
-    paste0(format(as.numeric((100 - input$cs_weights[2])), nsmall = 1), "%")
+    formatToPercent(100 - input$cs_weights[2])
   })
-
+  
   # Coastal states / socio-economic weight / option #1 / vulnerability
   
   output$cs_se_vul_wgt = renderText({
-    paste0(format(as.numeric(input$cs_se_o1_weights[1]), nsmall = 1), "%")
+    formatToPercent(input$cs_se_o1_weights[1])
   })
   
   # Coastal states / socio-economic weight / option #1 / priority sectors
   
   output$cs_se_pri_sec_wgt = renderText({
-    paste0(format(as.numeric((input$cs_se_o1_weights[2] - input$cs_se_o1_weights[1])), nsmall = 1), "%")
+    formatToPercent(input$cs_se_o1_weights[2] - input$cs_se_o1_weights[1])
   })
   
   # Coastal states / socio-economic weight / option #1 / disproportionate burden
   
   output$cs_se_dis_bur_wgt = renderText({
-    paste0(format(as.numeric((100 - input$cs_se_o1_weights[2])), nsmall = 1), "%")
+    formatToPercent(100 - input$cs_se_o1_weights[2])
   })
-    
+  
   # Coastal states / socio-economic weight / option #2 / HDI
   
   output$cs_se_HDI_wgt = renderText({
-    paste0(format(as.numeric(input$cs_se_o2_weights[1]), nsmall = 1), "%")
+    formatToPercent(input$cs_se_o2_weights[1])
   })
   
   # Coastal states / socio-economic weight / option #2 / GNI
   
   output$cs_se_GNI_wgt = renderText({
-    paste0(format(as.numeric((input$cs_se_o2_weights[2] - input$cs_se_o2_weights[1])), nsmall = 1), "%")
+    formatToPercent(input$cs_se_o2_weights[2] - input$cs_se_o2_weights[1])
   })
   
   # Coastal states / socio-economic weight / option #2 / SIDS
   
   output$cs_se_SIDS_wgt = renderText({
-    paste0(format(as.numeric((100 - input$cs_se_o2_weights[2])), nsmall = 1), "%")
+    formatToPercent(100 - input$cs_se_o2_weights[2])
   })
   
   prepare_output = function(input) {
@@ -208,7 +208,7 @@ server = function(input, output, session) {
                    baseline_allocation      = BA_ALLOCATION, baseline_allocation_weight      = ba_wgt, #input$ba_wgt * 0.01,
                    coastal_state_allocation = CS_ALLOCATION, coastal_state_allocation_weight = cs_wgt, #input$cs_wgt * 0.01,
                    catch_based_allocation   = CB_ALLOCATION, catch_based_allocation_weight   = cb_wgt) #input$cb_wgt * 0.01)
- 
+    
     return(
       QUOTAS
     )
@@ -241,7 +241,7 @@ server = function(input, output, session) {
       QUOTAS_DT = QUOTAS_DT %>% DT::formatPercentage(2:ncol(QUOTAS), digits = 2)
     else
       QUOTAS_DT = QUOTAS_DT %>% DT::formatCurrency(2:ncol(QUOTAS), digits = 2, currency = "&nbsp;t", before = FALSE)
-
+    
     QUOTAS_NORM = QUOTAS[, 2:ncol(QUOTAS)]
     
     if(input$out_heat_style == "color") {
@@ -286,40 +286,42 @@ server = function(input, output, session) {
     )
   })
   
+  #download table as EXCEL
   output$download_data = downloadHandler(
     filename = function() {
       paste("TCAC13_simulation_", format(Sys.time(), "%Y_%m_%d_%H%M%S"), ".xlsx", sep = "")
     },
     content = function(file) {
+      
       config = data.table(PARAMETER = character(), VALUE = character())
       
       config = rbind(config, as.list(c("SPECIES",      input$species)))
       config = rbind(config, as.list(c("TARGET_TAC_T", input$tac)))
       
-      config = rbind(config, as.list(c("BASELINE_WEIGHT",      paste0(format(as.numeric(input$weights[1]), nsmall = 1), "%"))))
-      config = rbind(config, as.list(c("COASTAL_STATE_WEIGHT", paste0(format(as.numeric((input$weights[2] - input$weights[1])), nsmall = 1), "%"))))
-
-      config = rbind(config, as.list(c("COASTAL_STATE_EQUAL_WEIGHT",          paste0(format(as.numeric(input$cs_weights[1]), nsmall = 1), "%"))))
-      config = rbind(config, as.list(c("COASTAL_STATE_SOCIO_ECONOMIC_WEIGHT", paste0(format(as.numeric((input$cs_weights[2] - input$cs_weights[1])), nsmall = 1), "%"))))
+      config = rbind(config, as.list(c("BASELINE_WEIGHT",      formatToPercent(input$ba_weight))))
+      config = rbind(config, as.list(c("COASTAL_STATE_WEIGHT", formatToPercent(input$cs_weight))))
+      
+      config = rbind(config, as.list(c("COASTAL_STATE_EQUAL_WEIGHT",          formatToPercent(input$cs_weights[1]))))
+      config = rbind(config, as.list(c("COASTAL_STATE_SOCIO_ECONOMIC_WEIGHT", formatToPercent(input$cs_weights[2] - input$cs_weights[1]))))
       
       if(input$se_option == "O1") {
         config = rbind(config, as.list(c("COASTAL_STATE_SOCIO_ECONOMIC_OPTION", "Option #1")))
-  
-        config = rbind(config, as.list(c("COASTAL_STATE_SOCIO_ECONOMIC_OPTION_1_VULNERABILITY_WEIGHT",           paste0(format(as.numeric(input$cs_se_o1_weights[1]), nsmall = 1), "%"))))
-        config = rbind(config, as.list(c("COASTAL_STATE_SOCIO_ECONOMIC_OPTION_1_PRIORITY_SECTOR_WEIGHT",         paste0(format(as.numeric((input$cs_se_o1_weights[2] - input$cs_se_o1_weights[1])), nsmall = 1), "%"))))
-        config = rbind(config, as.list(c("COASTAL_STATE_SOCIO_ECONOMIC_OPTION_1_DISPROPORTIONATE_BURDEN_WEIGHT", paste0(format(as.numeric((100 - input$cs_se_o1_weights[2])), nsmall = 1), "%"))))
+        
+        config = rbind(config, as.list(c("COASTAL_STATE_SOCIO_ECONOMIC_OPTION_1_VULNERABILITY_WEIGHT",           formatToPercent(input$cs_se_o1_weights[1]))))
+        config = rbind(config, as.list(c("COASTAL_STATE_SOCIO_ECONOMIC_OPTION_1_PRIORITY_SECTOR_WEIGHT",         formatToPercent(input$cs_se_o1_weights[2] - input$cs_se_o1_weights[1]))))
+        config = rbind(config, as.list(c("COASTAL_STATE_SOCIO_ECONOMIC_OPTION_1_DISPROPORTIONATE_BURDEN_WEIGHT", formatToPercent(100 - input$cs_se_o1_weights[2]))))
       } else if(input$se_option == "O2") { 
         config = rbind(config, as.list(c("COASTAL_STATE_SOCIO_ECONOMIC_OPTION", "Option #2")))
         
-        config = rbind(config, as.list(c("COASTAL_STATE_SOCIO_ECONOMIC_OPTION_2_HDI_WEIGHT",  paste0(format(as.numeric(input$cs_se_o2_weights[1]), nsmall = 1), "%"))))
-        config = rbind(config, as.list(c("COASTAL_STATE_SOCIO_ECONOMIC_OPTION_2_GNI_WEIGHT",  paste0(format(as.numeric((input$cs_se_o2_weights[2] - input$cs_se_o2_weights[1])), nsmall = 1), "%"))))
-        config = rbind(config, as.list(c("COASTAL_STATE_SOCIO_ECONOMIC_OPTION_2_SIDS_WEIGHT", paste0(format(as.numeric((100 - input$cs_se_o2_weights[2])), nsmall = 1), "%"))))
+        config = rbind(config, as.list(c("COASTAL_STATE_SOCIO_ECONOMIC_OPTION_2_HDI_WEIGHT",  formatToPercent(input$cs_se_o2_weights[1]))))
+        config = rbind(config, as.list(c("COASTAL_STATE_SOCIO_ECONOMIC_OPTION_2_GNI_WEIGHT",  formatToPercent(input$cs_se_o2_weights[2] - input$cs_se_o2_weights[1]))))
+        config = rbind(config, as.list(c("COASTAL_STATE_SOCIO_ECONOMIC_OPTION_2_SIDS_WEIGHT", formatToPercent(100 - input$cs_se_o2_weights[2]))))
       }
-
-      config = rbind(config, as.list(c("COASTAL_STATE_NJA_WEIGHT",            paste0(format(as.numeric((100 - input$cs_weights[2])), nsmall = 1), "%"))))
       
-      config = rbind(config, as.list(c("CATCH_BASED_WEIGHT",                  paste0(format(as.numeric((100 - input$weights[2])), nsmall = 1), "%"))))
-
+      config = rbind(config, as.list(c("COASTAL_STATE_NJA_WEIGHT",            formatToPercent(100 - input$cs_weights[2]))))
+      
+      config = rbind(config, as.list(c("CATCH_BASED_WEIGHT",                  formatToPercent(100 - input$ba_weight - input$cs_weight))))
+      
       config = rbind(config, as.list(c("HISTORICAL_CATCH_INTERVAL_START", input$period[1])))
       config = rbind(config, as.list(c("HISTORICAL_CATCH_INTERVAL_END",   input$period[2])))
       
@@ -328,31 +330,31 @@ server = function(input, output, session) {
       if(input$avg_period == "best")
         config = rbind(config, as.list(c("NUMBER_OF_YEARS", input$num_years)))
       
-      config = rbind(config, as.list(c("CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_01", paste0(format(input$cb_year01_wgt, nsmall = 1), "%"))))
-      config = rbind(config, as.list(c("CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_02", paste0(format(input$cb_year02_wgt, nsmall = 1), "%"))))
-      config = rbind(config, as.list(c("CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_03", paste0(format(input$cb_year03_wgt, nsmall = 1), "%"))))
-      config = rbind(config, as.list(c("CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_04", paste0(format(input$cb_year04_wgt, nsmall = 1), "%"))))
-      config = rbind(config, as.list(c("CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_05", paste0(format(input$cb_year05_wgt, nsmall = 1), "%"))))
-      config = rbind(config, as.list(c("CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_06", paste0(format(input$cb_year06_wgt, nsmall = 1), "%"))))
-      config = rbind(config, as.list(c("CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_07", paste0(format(input$cb_year07_wgt, nsmall = 1), "%"))))
-      config = rbind(config, as.list(c("CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_08", paste0(format(input$cb_year08_wgt, nsmall = 1), "%"))))
-      config = rbind(config, as.list(c("CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_09", paste0(format(input$cb_year09_wgt, nsmall = 1), "%"))))
-      config = rbind(config, as.list(c("CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_10", paste0(format(input$cb_year10_wgt, nsmall = 1), "%"))))
+      config = rbind(config, as.list(c("CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_01", formatToPercent(input$cb_year01_wgt))))
+      config = rbind(config, as.list(c("CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_02", formatToPercent(input$cb_year02_wgt))))
+      config = rbind(config, as.list(c("CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_03", formatToPercent(input$cb_year03_wgt))))
+      config = rbind(config, as.list(c("CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_04", formatToPercent(input$cb_year04_wgt))))
+      config = rbind(config, as.list(c("CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_05", formatToPercent(input$cb_year05_wgt))))
+      config = rbind(config, as.list(c("CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_06", formatToPercent(input$cb_year06_wgt))))
+      config = rbind(config, as.list(c("CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_07", formatToPercent(input$cb_year07_wgt))))
+      config = rbind(config, as.list(c("CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_08", formatToPercent(input$cb_year08_wgt))))
+      config = rbind(config, as.list(c("CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_09", formatToPercent(input$cb_year09_wgt))))
+      config = rbind(config, as.list(c("CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_10", formatToPercent(input$cb_year10_wgt))))
       
       config = rbind(config, as.list(c("OUTPUT_UNIT", input$out_unit)))
-            
+      
       quotas = prepare_output(input)
       
       if(input$out_unit == "quota") {
         quotas = 
           quotas %>% 
-            dplyr::mutate_if(startsWith(names(.), "QUOTA_"), scales::percent, accuracy = 0.01)
+          dplyr::mutate_if(startsWith(names(.), "QUOTA_"), scales::percent, accuracy = 0.01)
       } else {
         quotas = 
           quotas %>% 
-            dplyr::mutate_if(startsWith(names(.), "QUOTA_"), function(x) paste0(format(round(as.numeric(x), 1), nsmall = 1, big.mark = ","), " t"))
+          dplyr::mutate_if(startsWith(names(.), "QUOTA_"), function(x) paste0(format(round(as.numeric(x), 1), nsmall = 1, big.mark = ","), " t"))
       }
- 
+      
       WB = createWorkbook()
       
       addWorksheet(WB, "CPC_REFERENCES")
@@ -366,7 +368,7 @@ server = function(input, output, session) {
       writeData(WB, sheet = 3, ALL_CATCH_DATA[SPECIES_CODE == input$species], rowNames = FALSE)
       writeData(WB, sheet = 4, config, rowNames = FALSE)
       writeData(WB, sheet = 5, quotas, rowNames = FALSE)
-
+      
       # Column widths are taken directly from Excel once all cols have been expanded to their maximum
       
       setColWidths(WB, 1, 1:9,  widths = c(5.14, 48.71, 6.86, 5.43, 8.29, 11.29, 8.29, 23, 19.86))
@@ -374,10 +376,67 @@ server = function(input, output, session) {
       setColWidths(WB, 3, 1:9,  widths = c(4.71, 10.57, 11, 12.57, 13.29, 18.71, 15, 13.14, 9.86)) 
       setColWidths(WB, 4, 1   , widths = 56.43)
       setColWidths(WB, 5, 2:11, widths = 15.71)
-
+      
       activeSheet(WB) <- 5
       
       saveWorkbook(WB, file = file, overwrite = TRUE)
     }
   )
+  
+  #download report as PDF
+  output$report_full = downloadHandler(
+    filename = function() {
+      paste("TCAC13_simulation_", format(Sys.time(), "%Y_%m_%d_%H%M%S"), ".pdf", sep = "")
+    },
+    content = function(file) {
+      
+      BASELINE_WEIGHT = as.numeric(input$ba_weight)/100
+      COASTAL_STATE_WEIGHT = as.numeric(input$cs_weight)/100
+      CATCH_BASED_WEIGHT = as.numeric((100 - input$ba_weight - input$cs_weight))/100
+      CS_EQUAL_WEIGHT = as.numeric(input$cs_weights[1])/100
+      CS_SOCIO_ECONOMIC_WEIGHT = as.numeric((input$cs_weights[2] - input$cs_weights[1]))/100
+      SE_HDI_WEIGHT = as.numeric(input$cs_se_o2_weights[1])/100
+      SE_GNI_WEIGHT = as.numeric((input$cs_se_o2_weights[2] - input$cs_se_o2_weights[1]))/100
+      SE_SID_WEIGHT = as.numeric((100 - input$cs_se_o2_weights[2]))/100
+      CS_NJA_WEIGHT = as.numeric((100 - input$cs_weights[2]))/100
+      SPECIES_CODE_SELECTED = input$species
+      SPECIES_SELECTED = SPECIES_TABLE[SPECIES_CODE == SPECIES_CODE_SELECTED, SPECIES]
+      TARGET_TAC_T = input$tac
+      HISTORICAL_CATCH_INTERVAL_START = input$period[1]
+      HISTORICAL_CATCH_INTERVAL_END = input$period[2]
+      HISTORICAL_CATCH_AVERAGE = period_average_catch_data
+      HISTORICAL_CATCH_METHOD = ifelse(sum(nchar(deparse(HISTORICAL_CATCH_AVERAGE)))>200, "Best \"n\" years", "Selected period")
+      CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_01 = input$cb_year01_wgt/100
+      CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_02 = input$cb_year02_wgt/100
+      CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_03 = input$cb_year03_wgt/100
+      CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_04 = input$cb_year04_wgt/100
+      CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_05 = input$cb_year05_wgt/100
+      CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_06 = input$cb_year06_wgt/100
+      CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_07 = input$cb_year07_wgt/100
+      CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_08 = input$cb_year08_wgt/100
+      CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_09 = input$cb_year09_wgt/100
+      CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_10 = input$cb_year10_wgt/100
+      ALLOCATION_TRANSITION = sapply(1:10, function(x){ eval(parse(text = paste0("CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_", sprintf("%02d",x)))) })
+      OnlyHS = FALSE
+      
+      # Source the R allocation scripts
+      source("../initialisation/05_SCENARIO_ALLOCATION_COMPUTATION.R", local = TRUE)
+      source("../initialisation/06_SCENARIO_ALLOCATION_TABLES.R", local = TRUE)
+      
+      # General report (DOCX format)
+      out_file = paste0(unlist(strsplit(file, "\\."))[1], ".docx")
+      outputfile = rmarkdown::render(
+        "../rmd/00_A_SINGLE_SIMULATION_ALL_CPCS.Rmd",
+        output_file = out_file
+      )
+      
+      # Convert report to PDF
+      wordApp = COMCreate("Word.Application") #creates COM object
+      wordApp[["Documents"]]$Open(Filename = out_file) #opens your docx in wordApp
+      wordApp[["ActiveDocument"]]$SaveAs(file, FileFormat = 17) #saves as PDF
+      wordApp[["ActiveDocument"]]$Close(SaveChanges = TRUE) #Closes the docx
+      wordApp$Quit() #quits the COM Word application
+      rm(list = "wordApp")
+      
+    })
 }

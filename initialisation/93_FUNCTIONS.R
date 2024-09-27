@@ -223,4 +223,10 @@ r_to = function(number, base) {
   return(round(number / base) * base) 
 }
 
+#formatToPercent
+formatToPercent = function(x, nsmall = 1){
+  if(!is.numeric(x)) x = as.numeric(x)
+  paste0(format(x, nsmall = nsmall), "%")
+}
+
 print("Common functions initialised!")

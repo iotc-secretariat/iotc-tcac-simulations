@@ -5,14 +5,12 @@ rm(list = ls())
 options(scipen = 99999)
 
 # Includes defaults and helper functions
-source("91_LIBS_EXTERNAL.R")
-source("93_FUNCTIONS.R")
-source("94_TABLEFORMAT_FUNCTION.R")
+source("../initialisation/91_LIBS_EXTERNAL.R")
+source("../initialisation/93_FUNCTIONS.R")
+source("../initialisation/94_TABLEFORMAT_FUNCTION.R")
 
 # Source the functions
-setwd("../scripts/")
-source("./00.core.R")
-setwd("../initialisation/")
+source("../scripts/00.core.R")
 
 # Extract the data
 CPC_data   = read_configuration()$CPC_CONFIG
