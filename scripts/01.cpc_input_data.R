@@ -5,7 +5,7 @@ read_configuration = function(file = "../cfg/CPC_CONFIGURATIONS.xlsx") {
   
   CPC_CONFIG[, CODE        := as.factor(CODE)]
   CPC_CONFIG[, STATUS_CODE := as.factor(STATUS_CODE)]
-  CPC_CONFIG[, STATUS      := as.logical(STATUS)]
+  CPC_CONFIG[, STATUS      := as.factor(STATUS)]
   CPC_CONFIG[, IS_COASTAL  := as.logical(IS_COASTAL)]
   CPC_CONFIG[, IS_SIDS     := as.logical(IS_SIDS)]
   CPC_CONFIG[, HAS_NJA_IO  := as.logical(HAS_NJA_IO)]
