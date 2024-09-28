@@ -185,7 +185,8 @@ server = function(input, output, session) {
     
     filtered_catch_data = subset_and_postprocess_catch_data(catch_data   = ALL_CATCH_DATA,
                                                             species_code = input$species,
-                                                            years        = input$period[1]:input$period[2])
+                                                            years        = input$period[1]:input$period[2],
+                                                            onlyHS = input$onlyHS)
     average_catch_function = period_average_catch_data
     
     if(input$avg_period == "best") {
@@ -417,7 +418,7 @@ server = function(input, output, session) {
       CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_09 = input$cb_year09_wgt/100
       CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_10 = input$cb_year10_wgt/100
       ALLOCATION_TRANSITION = sapply(1:10, function(x){ eval(parse(text = paste0("CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_", sprintf("%02d",x)))) })
-      OnlyHS = FALSE
+      OnlyHS = input$onlyHS
       
       # Source the R allocation scripts
       source("../initialisation/05_SCENARIO_ALLOCATION_COMPUTATION.R", local = TRUE)

@@ -239,7 +239,20 @@ ui = function() {
                                  column(width = 2,
                                         numericInput("cb_year10_wgt", "Year #10", value = 100, min = 0, max = 100, step = 5)
                                  )
-                               )
+                               ),
+                               
+                               hr(class = "thin"),
+                               
+                               strong("Fishing agreements"),
+                               
+                               hr(),
+                               
+                               fluidRow(
+                                column(
+                                  width = 12,
+                                  checkboxInput("onlyHS", "Exclude catches under fishing agreements (catches in foreign NJAs, foreign catches in NJA)", FALSE)
+                                )
+                               ) 
                            )
                          )
                        )
