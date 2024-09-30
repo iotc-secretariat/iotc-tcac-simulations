@@ -295,7 +295,11 @@ ui = function() {
                            "Reports",
                            fluidRow(
                              column(width = 12,
-                                    downloadButton("report_full","Download full Report",icon=icon("download"))       
+                                    h3("Full report (All CPCs)"),
+                                    downloadButton("report_full","Download full report",icon=icon("download")),br(),
+                                    h3("Report by entity"),
+                                    uiOutput("report_by_entity_selector"),
+                                    downloadButton("report_by_entity", "Download entity report",icon=icon("download"))
                              )
                            )
                          )

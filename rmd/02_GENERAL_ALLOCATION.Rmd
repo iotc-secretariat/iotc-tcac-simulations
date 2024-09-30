@@ -1,3 +1,4 @@
+
 <!---BLOCK_LANDSCAPE_START--->
 
 # Quota (%) table after transition period (Year 10)
@@ -6,7 +7,9 @@
 kable(QUOTA_TABLE_FORMATTED, align = c("l", "l", "l", "c", "r", "r", "r", "r"))
 ```
 
-\newpage
+```{r, results='asis',message=FALSE, warning=FALSE, comment=FALSE,echo=FALSE}
+if(is.null(REPORTING_ENTITY)) pagebreak()
+```
 
 # TAC (metric tonnes; t) table after transition period (Year 10)
 
@@ -14,7 +17,9 @@ kable(QUOTA_TABLE_FORMATTED, align = c("l", "l", "l", "c", "r", "r", "r", "r"))
 kable(TAC_TABLE_FORMATTED, align = c("l", "l", "l", "c", "r", "r", "r", "r"), format.args = list(big.mark = ","))
 ```
 
-\newpage
+```{r, results='asis',message=FALSE, warning=FALSE, comment=FALSE,echo=FALSE}
+if(is.null(REPORTING_ENTITY)) pagebreak()
+```
 
 # Baseline allocation for Contracting Parties
 
@@ -22,7 +27,9 @@ kable(TAC_TABLE_FORMATTED, align = c("l", "l", "l", "c", "r", "r", "r", "r"), fo
 kable(BA_ALLOCATION_TABLE_FORMATTED, align = c("l", "l", "l", "c", "r", "r"), format.args = list(big.mark = ","))
 ```
 
-\newpage
+```{r, results='asis',message=FALSE, warning=FALSE, comment=FALSE,echo=FALSE}
+if(is.null(REPORTING_ENTITY)) pagebreak()
+```
 
 # Coastal state allocation
 
@@ -32,7 +39,9 @@ kable(BA_ALLOCATION_TABLE_FORMATTED, align = c("l", "l", "l", "c", "r", "r"), fo
 kable(CS_EQUAL_ALLOCATION_TABLE_FORMATTED, align = c("l", "l", "l", "c", "r", "r"), format.args = list(big.mark = ","))
 ```
 
-\newpage
+```{r, results='asis',message=FALSE, warning=FALSE, comment=FALSE,echo=FALSE}
+if(is.null(REPORTING_ENTITY)) pagebreak()
+```
 
 ## Socio-economic allocation
 
@@ -42,7 +51,9 @@ kable(CS_EQUAL_ALLOCATION_TABLE_FORMATTED, align = c("l", "l", "l", "c", "r", "r
 kable(CS_SE_HDI_ALLOCATION_TABLE_FORMATTED, align = c("l", "l", "l", "c", "c", "r", "r"), format.args = list(big.mark = ","))
 ```
 
-\newpage
+```{r, results='asis',message=FALSE, warning=FALSE, comment=FALSE,echo=FALSE}
+if(is.null(REPORTING_ENTITY)) pagebreak()
+```
 
 ### Gross national income status allocation
 
@@ -50,7 +61,9 @@ kable(CS_SE_HDI_ALLOCATION_TABLE_FORMATTED, align = c("l", "l", "l", "c", "c", "
 kable(CS_SE_GNI_ALLOCATION_TABLE_FORMATTED, align = c("l", "l", "l", "c", "c", "r", "r"), format.args = list(big.mark = ","))
 ```
 
-\newpage
+```{r, results='asis',message=FALSE, warning=FALSE, comment=FALSE,echo=FALSE}
+if(is.null(REPORTING_ENTITY)) pagebreak()
+```
 
 ### Small Islands Development status allocation
 
@@ -58,7 +71,9 @@ kable(CS_SE_GNI_ALLOCATION_TABLE_FORMATTED, align = c("l", "l", "l", "c", "c", "
 kable(CS_SE_SIDS_ALLOCATION_TABLE_FORMATTED, align = c("l", "l", "l", "c", "r", "r"), format.args = list(big.mark = ","))
 ```
 
-\newpage
+```{r, results='asis',message=FALSE, warning=FALSE, comment=FALSE,echo=FALSE}
+if(is.null(REPORTING_ENTITY)) pagebreak()
+```
 
 ## National Jurisdiction Area allocation
 
@@ -66,7 +81,9 @@ kable(CS_SE_SIDS_ALLOCATION_TABLE_FORMATTED, align = c("l", "l", "l", "c", "r", 
 kable(CS_NJA_ALLOCATION_TABLE_FORMATTED, align = c("l", "l", "l", "c", "r", "r", "r"), format.args = list(big.mark = ","))
 ```
 
-\newpage
+```{r, results='asis',message=FALSE, warning=FALSE, comment=FALSE,echo=FALSE}
+if(is.null(REPORTING_ENTITY)) pagebreak()
+```
 
 # Catch-based allocation (%)
 
@@ -74,7 +91,9 @@ kable(CS_NJA_ALLOCATION_TABLE_FORMATTED, align = c("l", "l", "l", "c", "r", "r",
 kable(CB_ALLOCATION_QUOTAS_ALL_YEARS_TABLE_FORMATTED, align = c("l", "l", "l", "c", rep("r", 10)))
 ```
 
-\newpage
+```{r, results='asis',message=FALSE, warning=FALSE, comment=FALSE,echo=FALSE}
+if(is.null(REPORTING_ENTITY)) pagebreak()
+```
 
 # Catch-based allocation (metric tonnes)
 
@@ -82,7 +101,9 @@ kable(CB_ALLOCATION_QUOTAS_ALL_YEARS_TABLE_FORMATTED, align = c("l", "l", "l", "
 kable(CB_ALLOCATION_TACS_ALL_YEARS_TABLE_FORMATTED, align = c("l", "l", "l", "c", rep("r", 10)), format.args = list(big.mark = ","))
 ```
 
-\newpage
+```{r, results='asis',message=FALSE, warning=FALSE, comment=FALSE,echo=FALSE}
+if(is.null(REPORTING_ENTITY)) pagebreak()
+```
 
 # Total allocation (%)
 
@@ -90,7 +111,9 @@ kable(CB_ALLOCATION_TACS_ALL_YEARS_TABLE_FORMATTED, align = c("l", "l", "l", "c"
 kable(ALLOCATION_QUOTAS_ALL_YEARS_TABLE_FORMATTED, align = c("l", "l", "l", "c", rep("r", 10)), format.args = list(big.mark = ","))
 ```
 
-\newpage
+```{r, results='asis',message=FALSE, warning=FALSE, comment=FALSE,echo=FALSE}
+if(is.null(REPORTING_ENTITY)) pagebreak()
+```
 
 # Total allocation (metric tonnes)
 

@@ -1,6 +1,6 @@
 ---
 author: "Author: [IOTC Secretariat](mailto:IOTC-Secretariat@fao.org)" 
-title: "Example of TCAC simulation results"
+title: "TCAC simulation results"
 output:
   officedown::rdocx_document:
     reference_docx: "../templates/rdoc_template.docx"
@@ -24,6 +24,11 @@ knitr::opts_chunk$set(echo = FALSE,
                       fig.cap.style = "Caption label",
                       dpi = 300
 )
+
+pagebreak <- function() {
+  cat("\\newpage")
+}
+
 ```
 
 ```{r Headers, echo = FALSE}

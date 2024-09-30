@@ -31,4 +31,11 @@ QUOTAS = allocate_TAC(TAC = TARGET_TAC_T,
                coastal_state_allocation = CS_ALLOCATION, coastal_state_allocation_weight = COASTAL_STATE_WEIGHT, 
                catch_based_allocation   = CB_ALLOCATION, catch_based_allocation_weight   = CATCH_BASED_WEIGHT)
 
+
+if(!is.null(REPORTING_ENTITY)){
+ CS_ALLOCATION = CS_ALLOCATION[CS_ALLOCATION$CPC_CODE == REPORTING_ENTITY,] 
+ CB_ALLOCATION = CB_ALLOCATION[CB_ALLOCATION$CPC_CODE == REPORTING_ENTITY,]
+ QUOTAS = QUOTAS[QUOTAS$CPC_CODE == REPORTING_ENTITY,]
+}
+
 print("Allocations computed for one given scenario!")

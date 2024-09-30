@@ -391,6 +391,8 @@ server = function(input, output, session) {
     },
     content = function(file) {
       
+      REPORTING_ENTITY = NULL
+      
       BASELINE_WEIGHT = as.numeric(input$ba_weight)/100
       COASTAL_STATE_WEIGHT = as.numeric(input$cs_weight)/100
       CATCH_BASED_WEIGHT = as.numeric((100 - input$ba_weight - input$cs_weight))/100
@@ -406,6 +408,89 @@ server = function(input, output, session) {
       HISTORICAL_CATCH_INTERVAL_START = input$period[1]
       HISTORICAL_CATCH_INTERVAL_END = input$period[2]
       HISTORICAL_CATCH_AVERAGE = period_average_catch_data
+      HISTORICAL_CATCH_METHOD = ifelse(sum(nchar(deparse(HISTORICAL_CATCH_AVERAGE)))>200, "Best \"n\" years", "Selected period")
+      CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_01 = input$cb_year01_wgt/100
+      CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_02 = input$cb_year02_wgt/100
+      CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_03 = input$cb_year03_wgt/100
+      CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_04 = input$cb_year04_wgt/100
+      CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_05 = input$cb_year05_wgt/100
+      CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_06 = input$cb_year06_wgt/100
+      CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_07 = input$cb_year07_wgt/100
+      CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_08 = input$cb_year08_wgt/100
+      CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_09 = input$cb_year09_wgt/100
+      CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_10 = input$cb_year10_wgt/100
+      ALLOCATION_TRANSITION = sapply(1:10, function(x){ eval(parse(text = paste0("CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_", sprintf("%02d",x)))) })
+      OnlyHS = input$onlyHS
+      
+      # Source the R allocation scripts
+      source("../initialisation/05_SCENARIO_ALLOCATION_COMPUTATION.R", local = TRUE)
+      source("../initialisation/06_SCENARIO_ALLOCATION_TABLES.R", local = TRUE)
+      
+      # General report (DOCX format)
+      out_file = paste0(unlist(strsplit(file, "\\."))[1], ".docx")
+      outputfile = rmarkdown::render(
+        "../rmd/00_A_SINGLE_SIMULATION_ALL_CPCS.Rmd",
+        output_file = out_file
+      )
+      
+      # Convert report to PDF
+      wordApp = COMCreate("Word.Application") #creates COM object
+      wordApp[["Documents"]]$Open(Filename = out_file) #opens your docx in wordApp
+      wordApp[["ActiveDocument"]]$SaveAs(file, FileFormat = 17) #saves as PDF
+      wordApp[["ActiveDocument"]]$Close(SaveChanges = TRUE) #Closes the docx
+      wordApp$Quit() #quits the COM Word application
+      rm(list = "wordApp")
+      
+    })
+  
+  #report by entity
+  output$report_by_entity_selector = renderUI({
+    selectizeInput("reporting_entity", label = NULL, selected = NULL, multiple = FALSE, 
+                   choices = {
+                     entity_choices <- CPC_data$CODE
+                     setNames(entity_choices, CPC_data$NAME_EN)
+                   },options = list( 
+                     render = I("{
+                      item: function(item, escape) {
+                        var icon_href = 'https://raw.githubusercontent.com/fdiwg/flags/main/'+item.value.toLowerCase()+'.gif';
+                        return '<div><img src=\"'+icon_href+'\" height=16 width=32/> ' + item.label + '</div>'; 
+                      },
+                      option: function(item, escape) { 
+                        var icon_href = 'https://raw.githubusercontent.com/fdiwg/flags/main/'+item.value.toLowerCase()+'.gif';
+                        return '<div><img src=\"'+icon_href+'\" height=16 width=32/> ' + item.label + '</div>'; 
+                      }
+                    }"
+                     ),
+                     placeholder = "Please select a reporting entity",
+                     onInitialize = I('function() { this.setValue(""); }')
+                   )
+    )
+  })
+  #download report as PDF
+  output$report_by_entity = downloadHandler(
+    filename = function() {
+      paste("TCAC13_simulation_", input$reporting_entity, "_", format(Sys.time(), "%Y_%m_%d_%H%M%S"), ".pdf", sep = "")
+    },
+    content = function(file) {
+      
+      REPORTING_ENTITY = input$reporting_entity
+      
+      BASELINE_WEIGHT = as.numeric(input$ba_weight)/100
+      COASTAL_STATE_WEIGHT = as.numeric(input$cs_weight)/100
+      CATCH_BASED_WEIGHT = as.numeric((100 - input$ba_weight - input$cs_weight))/100
+      CS_EQUAL_WEIGHT = as.numeric(input$cs_weights[1])/100
+      CS_SOCIO_ECONOMIC_WEIGHT = as.numeric((input$cs_weights[2] - input$cs_weights[1]))/100
+      SE_HDI_WEIGHT = as.numeric(input$cs_se_o2_weights[1])/100
+      SE_GNI_WEIGHT = as.numeric((input$cs_se_o2_weights[2] - input$cs_se_o2_weights[1]))/100
+      SE_SID_WEIGHT = as.numeric((100 - input$cs_se_o2_weights[2]))/100
+      CS_NJA_WEIGHT = as.numeric((100 - input$cs_weights[2]))/100
+      SPECIES_CODE_SELECTED = input$species
+      SPECIES_SELECTED = SPECIES_TABLE[SPECIES_CODE == SPECIES_CODE_SELECTED, SPECIES]
+      TARGET_TAC_T = input$tac
+      HISTORICAL_CATCH_INTERVAL_START = input$period[1]
+      HISTORICAL_CATCH_INTERVAL_END = input$period[2]
+      HISTORICAL_CATCH_AVERAGE = period_average_catch_data
+      print(period_average_catch_data)
       HISTORICAL_CATCH_METHOD = ifelse(sum(nchar(deparse(HISTORICAL_CATCH_AVERAGE)))>200, "Best \"n\" years", "Selected period")
       CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_01 = input$cb_year01_wgt/100
       CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_02 = input$cb_year02_wgt/100

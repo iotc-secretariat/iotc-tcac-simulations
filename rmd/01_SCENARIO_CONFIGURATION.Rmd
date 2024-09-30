@@ -1,3 +1,16 @@
+
+```{r, results='asis',message=FALSE, warning=FALSE, comment=FALSE,echo=FALSE}
+if(!is.null(REPORTING_ENTITY)) cat("# Entity
+
+* Name (English): ", CPC_data[CPC_data$CODE == REPORTING_ENTITY,]$NAME_EN,"
+* Name (Français): ", CPC_data[CPC_data$CODE == REPORTING_ENTITY,]$NAME_FR,"
+* Status: ", as.character(CPC_data[CPC_data$CODE == REPORTING_ENTITY,]$STATUS),"
+* Is SIDS? ",if(CPC_data[CPC_data$CODE == REPORTING_ENTITY,]$IS_SIDS) "**Yes**" else "**No**","
+* Is coastal? ",if(CPC_data[CPC_data$CODE == REPORTING_ENTITY,]$IS_COASTAL) "**Yes**" else "**No**","
+
+")
+```
+
 # General scenario configuration
 
 ||| 
