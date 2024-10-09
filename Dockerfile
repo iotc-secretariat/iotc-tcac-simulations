@@ -20,6 +20,7 @@ RUN apt-get update && apt-get install -y \
     
 # Installs all required R packages (and their dependencies)
 RUN install2.r --error --skipinstalled \
+    pacman \
     remotes \
     stringr \
     scales \
