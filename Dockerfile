@@ -6,9 +6,21 @@ ENV _R_SHLIB_STRIP_=true
 
 WORKDIR /
 
+# system libraries for LaTeX reporting & keyring
+RUN apt-get update && apt-get install -y \
+    sudo \
+    pandoc \
+    pandoc-citeproc \
+    texlive-xetex \
+    texlive-latex-base \
+    texlive-latex-recommended \
+    texlive-fonts-recommended \
+    texlive-fonts-extra \
+    texlive-formats-extra
+    
 # Installs all required R packages (and their dependencies)
-
 RUN install2.r --error --skipinstalled \
+    remotes \
     stringr \
     scales \
     data.table \
@@ -18,7 +30,14 @@ RUN install2.r --error --skipinstalled \
     shinyjs \ 
     shinyWidgets \
     shinycssloaders \ 
-    DT
+    DT \
+    officer \
+    officedown \
+    kableExtra \
+    knitr \
+    rmarkdown
+
+RUN R -e "remotes::install_github('omegahat/RDCOMClient')"
 
 # Copies the configuration, the initialization scripts and the Shiny app sources in the proper container folders
 
@@ -30,7 +49,12 @@ COPY ./shiny/conf/shiny-server.conf /etc/shiny-server
 RUN mkdir /srv/shiny-server/cfg
 RUN mkdir /srv/shiny-server/scripts
 
-COPY ./scripts/01.configure_and_preprocess.R /srv/shiny-server/scripts
+COPY ./scripts/00.core.R /srv/shiny-server/scripts
+COPY ./scripts/01.cpc_input_data.R /srv/shiny-server/scripts
+COPY ./scripts/02.catch_input_data.R /srv/shiny-server/scripts
+COPY ./scripts/03.catch_computation_functions.R /srv/shiny-server/scripts
+COPY ./scripts/04.allocation_computation.R /srv/shiny-server/scripts
+COPY ./scripts/90.libraries.R /srv/shiny-server/scripts
 
 COPY ./cfg/CPC_CONFIGURATIONS.xlsx /srv/shiny-server/cfg
 COPY ./cfg/HISTORICAL_CATCH_ESTIMATES.csv /srv/shiny-server/cfg
