@@ -37,7 +37,7 @@ RUN install2.r --error --skipinstalled \
     knitr \
     rmarkdown
 
-RUN R -e "remotes::install_github('omegahat/RDCOMClient')"
+#RUN R -e "remotes::install_github('omegahat/RDCOMClient')"
 
 # Copies the configuration, the initialization scripts and the Shiny app sources in the proper container folders
 

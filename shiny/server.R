@@ -387,7 +387,7 @@ server = function(input, output, session) {
   #download report as PDF
   output$report_full = downloadHandler(
     filename = function() {
-      paste("TCAC13_simulation_", format(Sys.time(), "%Y_%m_%d_%H%M%S"), ".pdf", sep = "")
+      paste("TCAC13_simulation_", format(Sys.time(), "%Y_%m_%d_%H%M%S"), ".docx", sep = "")
     },
     content = function(file) {
       
@@ -427,19 +427,19 @@ server = function(input, output, session) {
       source("../initialisation/06_SCENARIO_ALLOCATION_TABLES.R", local = TRUE)
       
       # General report (DOCX format)
-      out_file = paste0(unlist(strsplit(file, "\\."))[1], ".docx")
-      outputfile = rmarkdown::render(
+      #out_file = paste0(unlist(strsplit(file, "\\."))[1], ".docx")
+      rmarkdown::render(
         "../rmd/00_A_SINGLE_SIMULATION_ALL_CPCS.Rmd",
-        output_file = out_file
+        output_file = file
       )
       
       # Convert report to PDF
-      wordApp = COMCreate("Word.Application") #creates COM object
-      wordApp[["Documents"]]$Open(Filename = out_file) #opens your docx in wordApp
-      wordApp[["ActiveDocument"]]$SaveAs(file, FileFormat = 17) #saves as PDF
-      wordApp[["ActiveDocument"]]$Close(SaveChanges = TRUE) #Closes the docx
-      wordApp$Quit() #quits the COM Word application
-      rm(list = "wordApp")
+      # wordApp = COMCreate("Word.Application") #creates COM object
+      # wordApp[["Documents"]]$Open(Filename = out_file) #opens your docx in wordApp
+      # wordApp[["ActiveDocument"]]$SaveAs(file, FileFormat = 17) #saves as PDF
+      # wordApp[["ActiveDocument"]]$Close(SaveChanges = TRUE) #Closes the docx
+      # wordApp$Quit() #quits the COM Word application
+      # rm(list = "wordApp")
       
     })
   
@@ -469,7 +469,7 @@ server = function(input, output, session) {
   #download report as PDF
   output$report_by_entity = downloadHandler(
     filename = function() {
-      paste("TCAC13_simulation_", input$reporting_entity, "_", format(Sys.time(), "%Y_%m_%d_%H%M%S"), ".pdf", sep = "")
+      paste("TCAC13_simulation_", input$reporting_entity, "_", format(Sys.time(), "%Y_%m_%d_%H%M%S"), ".docx", sep = "")
     },
     content = function(file) {
       
@@ -510,19 +510,19 @@ server = function(input, output, session) {
       source("../initialisation/06_SCENARIO_ALLOCATION_TABLES.R", local = TRUE)
       
       # General report (DOCX format)
-      out_file = paste0(unlist(strsplit(file, "\\."))[1], ".docx")
-      outputfile = rmarkdown::render(
+      #out_file = paste0(unlist(strsplit(file, "\\."))[1], ".docx")
+      rmarkdown::render(
         "../rmd/00_A_SINGLE_SIMULATION_ALL_CPCS.Rmd",
-        output_file = out_file
+        output_file = file
       )
       
       # Convert report to PDF
-      wordApp = COMCreate("Word.Application") #creates COM object
-      wordApp[["Documents"]]$Open(Filename = out_file) #opens your docx in wordApp
-      wordApp[["ActiveDocument"]]$SaveAs(file, FileFormat = 17) #saves as PDF
-      wordApp[["ActiveDocument"]]$Close(SaveChanges = TRUE) #Closes the docx
-      wordApp$Quit() #quits the COM Word application
-      rm(list = "wordApp")
+      # wordApp = COMCreate("Word.Application") #creates COM object
+      # wordApp[["Documents"]]$Open(Filename = out_file) #opens your docx in wordApp
+      # wordApp[["ActiveDocument"]]$SaveAs(file, FileFormat = 17) #saves as PDF
+      # wordApp[["ActiveDocument"]]$Close(SaveChanges = TRUE) #Closes the docx
+      # wordApp$Quit() #quits the COM Word application
+      # rm(list = "wordApp")
       
     })
 }
