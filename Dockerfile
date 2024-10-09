@@ -12,11 +12,13 @@ RUN apt-get update && apt-get install -y \
     pandoc \
     pandoc-citeproc \
     texlive-xetex \
+    texlive-base \
     texlive-latex-base \
     texlive-latex-recommended \
     texlive-fonts-recommended \
     texlive-fonts-extra \
-    texlive-formats-extra
+    texlive-formats-extra \
+    ghostscript
     
 # Installs all required R packages (and their dependencies)
 RUN install2.r --error --skipinstalled \
