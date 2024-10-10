@@ -9,6 +9,7 @@ WORKDIR /
 # system libraries for LaTeX reporting & keyring
 RUN apt-get update && apt-get install -y \
     sudo \
+    vim \
     pandoc \
     pandoc-citeproc \
     texlive-xetex \
