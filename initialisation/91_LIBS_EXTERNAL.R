@@ -21,7 +21,8 @@ pacman::p_load(
   "sf", 
   "RDCOMClient", 
   "data.table", 
-  "DT"
+  "DT", 
+  "shinyWidgets"
 )
 
 theme_set(theme_bw())
