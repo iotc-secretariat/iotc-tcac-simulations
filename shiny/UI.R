@@ -281,7 +281,7 @@ ui = function() {
                                width = 3,
                                div(
                                  class="button-padded",
-                                 downloadButton("download_data", "Download", icon=icon("table-list"))
+                                 downloadButton("download_data", "Download", icon=icon("table"))
                                )
                              )
                            ),

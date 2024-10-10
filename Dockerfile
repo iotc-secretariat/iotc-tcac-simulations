@@ -1,4 +1,4 @@
-FROM rocker/shiny:4.3.0
+FROM rocker/shiny:4.1.2
 
 # Environment variables
 
@@ -19,7 +19,7 @@ RUN apt-get update && apt-get install -y \
     texlive-fonts-recommended \
     texlive-fonts-extra \
     texlive-formats-extra \
-    ghostscript
+    ghostscript 
     
 # Installs all required R packages (and their dependencies)
 RUN install2.r --error --skipinstalled \
