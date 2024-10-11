@@ -20,28 +20,11 @@ RUN apt-get update && apt-get install -y \
     texlive-formats-extra \
     ghostscript 
     
-# Installs all required R packages (and their dependencies)
-RUN install2.r --error --skipinstalled \
-    pacman \
-    remotes \
-    stringr \
-    scales \
-    data.table \
-    openxlsx \
-    dplyr \
-    shiny \
-    shinyjs \ 
-    shinyWidgets \
-    shinycssloaders \ 
-    DT \
-    officer \
-    officedown \
-    kableExtra \
-    knitr \
-    rmarkdown
+# install R core package dependencies
+RUN install2.r --error --skipinstalled --ncpus -1 httpuv
+RUN R -e "install.packages(c('remotes','jsonlite','yaml'), repos='https://cran.r-project.org/')"
 
-# Copies the configuration, the initialization scripts and the Shiny app sources in the proper container folders
-
+# Cleaning shiny-server dir
 RUN rm -rf /srv/shiny-server/*
 
 #copy shiny-server configuration
@@ -49,6 +32,9 @@ COPY ./conf/shiny-server.conf /etc/shiny-server
 
 #copy shiny app
 COPY . /srv/shiny-server/tcac_simulations
+
+# install R app package dependencies
+RUN R -e "source('.srv/shiny-server/tcac_simulations/install.R')"
 
 # To be able to download these files they need to be copied under the 'www' folder
 COPY ./README.html /srv/shiny-server/tcac_simulations/www       
