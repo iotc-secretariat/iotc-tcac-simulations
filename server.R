@@ -428,11 +428,9 @@ server = function(input, output, session) {
       
       # General report (DOCX format)
       #out_file = paste0(unlist(strsplit(file, "\\."))[1], ".docx")
-      report_path = tempfile(fileext = ".Rmd")
-      file.copy("./rmd/00_A_SINGLE_SIMULATION_ALL_CPCS.Rmd", report_path, overwrite = TRUE)
-      file.copy("./templates", tempdir(), recursive = TRUE, overwrite = TRUE)
+      file.copy("./rmd", tempdir(), recursive = TRUE, overwrite = TRUE)
       rmarkdown::render(
-        report_path,
+        file.path(tempdir(), "rmd", "00_A_SINGLE_SIMULATION_ALL_CPCS.Rmd"),
         output_file = file
       )
       
@@ -514,11 +512,9 @@ server = function(input, output, session) {
       
       # General report (DOCX format)
       #out_file = paste0(unlist(strsplit(file, "\\."))[1], ".docx")
-      report_path = tempfile(fileext = ".Rmd")
-      file.copy("./rmd/00_A_SINGLE_SIMULATION_ALL_CPCS.Rmd", report_path, overwrite = TRUE)
-      file.copy("./templates", tempdir(), recursive = TRUE, overwrite = TRUE)
+      file.copy("./rmd", tempdir(), recursive = TRUE, overwrite = TRUE)
       rmarkdown::render(
-        report_path,
+        file.path(tempdir(), "rmd", "00_A_SINGLE_SIMULATION_ALL_CPCS.Rmd"),
         output_file = file
       )
       

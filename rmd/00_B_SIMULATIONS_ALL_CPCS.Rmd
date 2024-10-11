@@ -5,7 +5,7 @@ params:
 title: "`r params$dynamictitle`"
 output:
   officedown::rdocx_document:
-    reference_docx: "../templates/rdoc_template.docx"
+    reference_docx: "./templates/rdoc_template.docx"
 reference_num: TRUE
 fig_caption: TRUE
 ---
@@ -29,7 +29,7 @@ knitr::opts_chunk$set(echo = FALSE,
 ```
 
 ```{r Headers, echo = FALSE}
-logo.file = file.path("../templates/FAO_IOTC_LOGOS.png")
+logo.file = file.path("./templates/FAO_IOTC_LOGOS.png")
 
 bl_header_no_logo = function(txt, position) {
   block_list(
@@ -65,9 +65,9 @@ underline = fp_text(underlined = TRUE)
 block_section(sec_pr)
 ```
 
-```{r child = "01_SCENARIO_CONFIGURATION.Rmd"}
+```{r child = "./01_SCENARIO_CONFIGURATION.Rmd"}
 ```
 
-```{r child = "02_GENERAL_ALLOCATION.Rmd"}
+```{r child = "./02_GENERAL_ALLOCATION.Rmd"}
 ```
 
