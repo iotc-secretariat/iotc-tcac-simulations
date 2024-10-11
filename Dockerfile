@@ -1,4 +1,4 @@
-FROM rocker/shiny:4.1.2
+FROM rocker/shiny:4.3.0
 
 # Environment variables
 ENV _R_SHLIB_STRIP_=true
