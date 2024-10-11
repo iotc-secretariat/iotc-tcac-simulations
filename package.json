@@ -17,6 +17,6 @@
     {"package": "kableExtra", "version": "1.4.0", "repos": "https://cran.r-project.org"},
     {"package": "knitr", "version": "1.46", "repos": "https://cran.r-project.org"},
     {"package": "rmarkdown", "version": "2.26", "repos": "https://cran.r-project.org"},
-    {"package": "officer", "version": "0.6.6", "repos": "https://cran.r-project.org"}
+    {"package": "officer", "version": "0.6.2", "repos": "https://cran.r-project.org"}
   ]
 }
