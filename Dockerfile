@@ -34,7 +34,7 @@ COPY ./conf/shiny-server.conf /etc/shiny-server
 COPY . /srv/shiny-server/tcac_simulations
 
 # install R app package dependencies
-RUN R -e "source('.srv/shiny-server/tcac_simulations/install.R')"
+RUN R -e "source('./srv/shiny-server/tcac_simulations/install.R')"
 
 # To be able to download these files they need to be copied under the 'www' folder
 COPY ./README.html /srv/shiny-server/tcac_simulations/www       
