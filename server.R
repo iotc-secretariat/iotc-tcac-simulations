@@ -423,13 +423,13 @@ server = function(input, output, session) {
       OnlyHS = input$onlyHS
       
       # Source the R allocation scripts
-      source("../initialisation/05_SCENARIO_ALLOCATION_COMPUTATION.R", local = TRUE)
-      source("../initialisation/06_SCENARIO_ALLOCATION_TABLES.R", local = TRUE)
+      source("./initialisation/05_SCENARIO_ALLOCATION_COMPUTATION.R", local = TRUE)
+      source("./initialisation/06_SCENARIO_ALLOCATION_TABLES.R", local = TRUE)
       
       # General report (DOCX format)
       #out_file = paste0(unlist(strsplit(file, "\\."))[1], ".docx")
       rmarkdown::render(
-        "../rmd/00_A_SINGLE_SIMULATION_ALL_CPCS.Rmd",
+        "./rmd/00_A_SINGLE_SIMULATION_ALL_CPCS.Rmd",
         output_file = file
       )
       
@@ -506,13 +506,13 @@ server = function(input, output, session) {
       OnlyHS = input$onlyHS
       
       # Source the R allocation scripts
-      source("../initialisation/05_SCENARIO_ALLOCATION_COMPUTATION.R", local = TRUE)
-      source("../initialisation/06_SCENARIO_ALLOCATION_TABLES.R", local = TRUE)
+      source("./initialisation/05_SCENARIO_ALLOCATION_COMPUTATION.R", local = TRUE)
+      source("./initialisation/06_SCENARIO_ALLOCATION_TABLES.R", local = TRUE)
       
       # General report (DOCX format)
       #out_file = paste0(unlist(strsplit(file, "\\."))[1], ".docx")
       rmarkdown::render(
-        "../rmd/00_A_SINGLE_SIMULATION_ALL_CPCS.Rmd",
+        "./rmd/00_A_SINGLE_SIMULATION_ALL_CPCS.Rmd",
         output_file = file
       )
       

@@ -2,7 +2,7 @@
 author: "Author: [IOTC Secretariat](mailto:IOTC-Secretariat@fao.org)" 
 output:
   officedown::rdocx_document:
-  reference_docx: "../templates/rdoc_template.docx"
+  reference_docx: "./templates/rdoc_template.docx"
 reference_num: TRUE
 fig_caption: TRUE
 ---

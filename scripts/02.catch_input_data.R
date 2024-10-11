@@ -1,4 +1,4 @@
-read_raw_catch_data = function(file = "../cfg/IOTC-2023-TCAC12-DATA01 - Historical catch estimates.xlsx") {
+read_raw_catch_data = function(file = "./cfg/IOTC-2023-TCAC12-DATA01 - Historical catch estimates.xlsx") {
   return(
     as.data.table(
       read.xlsx(
@@ -10,7 +10,7 @@ read_raw_catch_data = function(file = "../cfg/IOTC-2023-TCAC12-DATA01 - Historic
   )
 }
 
-read_catch_data = function(file = "../cfg/HISTORICAL_CATCH_ESTIMATES.csv", CPC_data = read_configuration()$CPC_CONFIG) { 
+read_catch_data = function(file = "./cfg/HISTORICAL_CATCH_ESTIMATES.csv", CPC_data = read_configuration()$CPC_CONFIG) { 
   # These are the ones used for the TCAC12 interactive app, and represent the output of
   # the initialization process for https://bitbucket.org/iotc-ws/iotc-tcac/src/master/
   

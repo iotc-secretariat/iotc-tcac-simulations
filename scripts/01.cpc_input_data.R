@@ -1,4 +1,4 @@
-read_configuration = function(file = "../cfg/CPC_CONFIGURATIONS.xlsx") {
+read_configuration = function(file = "./cfg/CPC_CONFIGURATIONS.xlsx") {
   print("Reading configuration...")
   
   CPC_CONFIG   = as.data.table(read.xlsx(xlsxFile = file, rowNames = FALSE, sheet = "CPC"))[, 1:10] # Removes unnecessary cols

@@ -1,7 +1,6 @@
 FROM rocker/shiny:4.1.2
 
 # Environment variables
-
 ENV _R_SHLIB_STRIP_=true
 
 WORKDIR /
@@ -41,30 +40,15 @@ RUN install2.r --error --skipinstalled \
     knitr \
     rmarkdown
 
-#RUN R -e "remotes::install_github('omegahat/RDCOMClient')"
-
 # Copies the configuration, the initialization scripts and the Shiny app sources in the proper container folders
 
 RUN rm -rf /srv/shiny-server/*
 
-COPY ./initialisation /srv/shiny-server/initialisation
-COPY ./rmd /srv/shiny-server/rmd
-COPY ./templates /srv/shiny-server/templates
-COPY ./shiny /srv/shiny-server/tcac_simulations
-COPY ./shiny/conf/shiny-server.conf /etc/shiny-server
+#copy shiny-server configuration
+COPY ./conf/shiny-server.conf /etc/shiny-server
 
-RUN mkdir /srv/shiny-server/cfg
-RUN mkdir /srv/shiny-server/scripts
-
-COPY ./scripts/00.core.R /srv/shiny-server/scripts
-COPY ./scripts/01.cpc_input_data.R /srv/shiny-server/scripts
-COPY ./scripts/02.catch_input_data.R /srv/shiny-server/scripts
-COPY ./scripts/03.catch_computation_functions.R /srv/shiny-server/scripts
-COPY ./scripts/04.allocation_computation.R /srv/shiny-server/scripts
-COPY ./scripts/90.libraries.R /srv/shiny-server/scripts
-
-COPY ./cfg/CPC_CONFIGURATIONS.xlsx /srv/shiny-server/cfg
-COPY ./cfg/HISTORICAL_CATCH_ESTIMATES.csv /srv/shiny-server/cfg
+#copy shiny app
+COPY . /srv/shiny-server/tcac_simulations
 
 # To be able to download these files they need to be copied under the 'www' folder
 COPY ./README.html /srv/shiny-server/tcac_simulations/www       

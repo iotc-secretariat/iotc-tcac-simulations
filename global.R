@@ -11,18 +11,20 @@ library(data.table)
 library(DT)
 library(officer)
 library(officedown)
-#library(RDCOMClient)
 library(kableExtra)
 library(knitr)
 library(rmarkdown)
 
+#options
+options(scipen = 9999)
+
 #scripts
-source("../initialisation/00_CORE.R")
+source("./initialisation/00_CORE.R")
 
 #variables
-CONFIG = read_configuration("../cfg/CPC_CONFIGURATIONS.xlsx")
+CONFIG = read_configuration("./cfg/CPC_CONFIGURATIONS.xlsx")
 
-ALL_CATCH_DATA = read_catch_data("../cfg/HISTORICAL_CATCH_ESTIMATES.csv", CPC_data = CONFIG$CPC_CONFIG)[CATCH_MT > 0]
+ALL_CATCH_DATA = read_catch_data("./cfg/HISTORICAL_CATCH_ESTIMATES.csv", CPC_data = CONFIG$CPC_CONFIG)[CATCH_MT > 0]
 
 AVAILABLE_YEARS = list(MIN = min(ALL_CATCH_DATA$YEAR), 
                        MAX = max(ALL_CATCH_DATA$YEAR))
@@ -61,4 +63,4 @@ CS_SE_DATA = CONFIG$CS_SE_CONFIG
 #shiny scripts
 print(list.files())
 source("./server.R")
-source("./UI.R")
+source("./ui.R")
