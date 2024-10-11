@@ -1,4 +1,4 @@
-FROM rocker/shiny:4.2.2
+FROM rocker/shiny:4.1.2
 
 # Environment variables
 ENV _R_SHLIB_STRIP_=true
@@ -39,6 +39,8 @@ RUN install2.r --error --skipinstalled \
     kableExtra \
     knitr \
     rmarkdown
+    
+RUN R -e "remotes::install_version('officer', version = '0.6.6')"
 
 # Copies the configuration, the initialization scripts and the Shiny app sources in the proper container folders
 
