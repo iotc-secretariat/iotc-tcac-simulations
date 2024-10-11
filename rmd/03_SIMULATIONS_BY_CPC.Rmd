@@ -66,9 +66,9 @@ underline = fp_text(underlined = TRUE)
 block_section(sec_pr)
 ```
 
-```{r child = "./01_SCENARIO_CONFIGURATION.Rmd"}
+```{r child = "01_SCENARIO_CONFIGURATION.Rmd"}
 ```
 
-```{r child = "./04_CPC_ALLOCATION.Rmd"}
+```{r child = "04_CPC_ALLOCATION.Rmd"}
 ```
 
