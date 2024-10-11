@@ -49,6 +49,7 @@ RUN rm -rf /srv/shiny-server/*
 
 COPY ./initialisation /srv/shiny-server/initialisation
 COPY ./rmd /srv/shiny-server/rmd
+COPY ./templates /srv/shiny-server/templates
 COPY ./shiny /srv/shiny-server/tcac_simulations
 COPY ./shiny/conf/shiny-server.conf /etc/shiny-server
 
