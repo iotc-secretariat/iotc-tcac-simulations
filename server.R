@@ -430,7 +430,7 @@ server = function(input, output, session) {
       #out_file = paste0(unlist(strsplit(file, "\\."))[1], ".docx")
       rmarkdown::render(
         "./rmd/00_A_SINGLE_SIMULATION_ALL_CPCS.Rmd",
-        output_file = file
+        output_file = file.path(tempdir(), file)
       )
       
       # Convert report to PDF
@@ -513,7 +513,7 @@ server = function(input, output, session) {
       #out_file = paste0(unlist(strsplit(file, "\\."))[1], ".docx")
       rmarkdown::render(
         "./rmd/00_A_SINGLE_SIMULATION_ALL_CPCS.Rmd",
-        output_file = file
+        output_file = file.path(tempdir(), file)
       )
       
       # Convert report to PDF
