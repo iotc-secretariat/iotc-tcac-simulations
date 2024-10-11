@@ -20,6 +20,37 @@ RUN apt-get update && apt-get install -y \
     texlive-formats-extra \
     ghostscript 
     
+# general system libraries
+RUN apt-get update && apt-get install -y \
+    cmake \
+    curl \
+    default-jdk \
+    fonts-roboto \
+    hugo \
+    less \
+    libbz2-dev \
+    libglpk-dev \
+    libgmp3-dev \
+    libfribidi-dev \
+    libharfbuzz-dev \
+    libhunspell-dev \
+    libicu-dev \
+    liblzma-dev \
+    libmagick++-dev \
+    libopenmpi-dev \
+    libpcre2-dev \
+    libssl-dev \
+    libv8-dev \
+    libxml2-dev \
+    libxslt1-dev \
+    libzmq3-dev \
+    lsb-release \
+    qpdf \
+    texinfo \
+    software-properties-common \
+    vim \
+    wget
+    
 # install R core package dependencies
 RUN install2.r --error --skipinstalled --ncpus -1 httpuv
 RUN R -e "install.packages(c('remotes','jsonlite','yaml'), repos='https://cran.r-project.org/')"
