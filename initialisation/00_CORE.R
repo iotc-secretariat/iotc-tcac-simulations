@@ -1,16 +1,13 @@
 # Clears the environment
 rm(list = ls())
 
-# Prevents formatting of numbers using scientific notation (e.g., in heatmap legends)
-options(scipen = 99999)
+# Source the functions
+source("./scripts/00.core.R")
 
 # Includes defaults and helper functions
-source("../initialisation/91_LIBS_EXTERNAL.R")
-source("../initialisation/93_FUNCTIONS.R")
-source("../initialisation/94_TABLEFORMAT_FUNCTION.R")
-
-# Source the functions
-source("../scripts/00.core.R")
+#source("./initialisation/91_LIBS_EXTERNAL.R")
+source("./initialisation/93_FUNCTIONS.R")
+source("./initialisation/94_TABLEFORMAT_FUNCTION.R")
 
 # Extract the data
 CPC_data   = read_configuration()$CPC_CONFIG

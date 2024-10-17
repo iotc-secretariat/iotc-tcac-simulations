@@ -1,39 +1,71 @@
-FROM rocker/shiny:4.1.2
+FROM rocker/shiny:4.3.0
 
 # Environment variables
-
 ENV _R_SHLIB_STRIP_=true
 
 WORKDIR /
 
-# Installs all required R packages (and their dependencies)
+# system libraries for LaTeX reporting & keyring
+RUN apt-get update && apt-get install -y \
+    sudo \
+    vim \
+    pandoc \
+    pandoc-citeproc \
+    texlive-xetex \
+    texlive-base \
+    texlive-latex-base \
+    texlive-latex-recommended \
+    texlive-fonts-recommended \
+    texlive-fonts-extra \
+    texlive-formats-extra \
+    ghostscript 
+    
+# general system libraries
+RUN apt-get update && apt-get install -y \
+    cmake \
+    curl \
+    default-jdk \
+    fonts-roboto \
+    hugo \
+    less \
+    libbz2-dev \
+    libglpk-dev \
+    libgmp3-dev \
+    libfribidi-dev \
+    libharfbuzz-dev \
+    libhunspell-dev \
+    libicu-dev \
+    liblzma-dev \
+    libmagick++-dev \
+    libopenmpi-dev \
+    libpcre2-dev \
+    libssl-dev \
+    libv8-dev \
+    libxml2-dev \
+    libxslt1-dev \
+    libzmq3-dev \
+    lsb-release \
+    qpdf \
+    texinfo \
+    software-properties-common \
+    vim \
+    wget
+    
+# install R core package dependencies
+RUN install2.r --error --skipinstalled --ncpus -1 httpuv
+RUN R -e "install.packages(c('remotes','jsonlite','yaml'), repos='https://cran.r-project.org/')"
 
-RUN install2.r --error --skipinstalled \
-    stringr \
-    scales \
-    data.table \
-    openxlsx \
-    dplyr \
-    shiny \
-    shinyjs \ 
-    shinyWidgets \
-    shinycssloaders \ 
-    DT
-
-# Copies the configuration, the initialization scripts and the Shiny app sources in the proper container folders
-
+# Cleaning shiny-server dir
 RUN rm -rf /srv/shiny-server/*
 
-COPY ./shiny /srv/shiny-server/tcac_simulations
-COPY ./shiny/conf/shiny-server.conf /etc/shiny-server
+#copy shiny-server configuration
+COPY ./conf/shiny-server.conf /etc/shiny-server
 
-RUN mkdir /srv/shiny-server/cfg
-RUN mkdir /srv/shiny-server/scripts
+#copy shiny app
+COPY . /srv/shiny-server/tcac_simulations
 
-COPY ./scripts/01.configure_and_preprocess.R /srv/shiny-server/scripts
-
-COPY ./cfg/CPC_CONFIGURATIONS.xlsx /srv/shiny-server/cfg
-COPY ./cfg/HISTORICAL_CATCH_ESTIMATES.csv /srv/shiny-server/cfg
+# install R app package dependencies
+RUN R -e "source('./srv/shiny-server/tcac_simulations/install.R')"
 
 # To be able to download these files they need to be copied under the 'www' folder
 COPY ./README.html /srv/shiny-server/tcac_simulations/www       

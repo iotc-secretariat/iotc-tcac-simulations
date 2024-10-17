@@ -22,7 +22,8 @@ pacman::p_load(
   "RDCOMClient", 
   "data.table", 
   "DT", 
-  "kableExtra"
+  "kableExtra", 
+  "shinyWidgets"
 )
 
 theme_set(theme_bw())
