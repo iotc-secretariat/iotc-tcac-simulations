@@ -21,7 +21,8 @@ pacman::p_load(
   "sf", 
   "RDCOMClient", 
   "data.table", 
-  "DT"
+  "DT", 
+  "kableExtra"
 )
 
 theme_set(theme_bw())
