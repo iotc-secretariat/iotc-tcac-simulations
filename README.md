@@ -1,9 +1,11 @@
 ---
 title: "IOTC TCAC 13 - Allocation simulations"
 output:
+  officedown::rdocx_document:
+    reference_docx: ./rmd/templates/rdoc_template.docx
+  word_document: default
   html_document:
     fig_caption: yes
-  pdf_document: default
 ---
 
 # Purpose
