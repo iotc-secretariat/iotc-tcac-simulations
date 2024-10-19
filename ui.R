@@ -1,7 +1,7 @@
 ui = function() {
   return(
     fluidPage(
-      title = "IOTC TCAC simulation tool v1.0",
+      title = "IOTC TCAC simulation tool v1.1",
       tags$head(
         tags$link(rel = "stylesheet", type = "text/css", href = "custom.css")
       ),
@@ -243,14 +243,14 @@ ui = function() {
                                
                                hr(class = "thin"),
                                
-                               strong("Fishing agreements"),
+                               strong("High-Seas only catches"),
                                
                                hr(),
                                
                                fluidRow(
                                 column(
                                   width = 12,
-                                  checkboxInput("onlyHS", "Exclude catches under fishing agreements (catches in foreign NJAs, foreign catches in NJA)", FALSE)
+                                  checkboxInput("onlyHS", "Focus exclusively on catches estimated to have been taken in Areas Beyond National Jurisdiction (High Seas; HS)", FALSE)
                                 )
                                ) 
                            )

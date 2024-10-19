@@ -297,7 +297,7 @@ The simulation results can be downloaded as an Excel file through the ***Downloa
 
 5.  `OUTPUT_QUOTAS` containing the outputs of the simulation expressed either as fraction of the annual TAC or as catches in tons by CPC and simulation year (depending on the chosen value of the **output unit** parameter)
 
-### *Reports* {#reports}
+### Reports {#reports}
 
 The **Reports** tab provides access to reports that include the configuration parameters and output tables for all components (baseline, coastal State, and catch-based) and their sub-components. These reports downloadable either for all CPCs (Full report) or for a selected entity.
 

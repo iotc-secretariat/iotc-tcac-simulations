@@ -80,7 +80,7 @@ subset_and_postprocess_catch_data = function(catch_data,
   catch_data_all[is.na(ABNJ_CATCH_MT),    ABNJ_CATCH_MT    := 0]
   catch_data_all[is.na(FOREIGN_CATCH_MT), FOREIGN_CATCH_MT := 0]
   
-  if(onlyHS == TRUE) catch_data_all[, `:=` (ABNJ_CATCH_MT = 0, FOREIGN_CATCH_MT = 0)]
+  if(onlyHS == TRUE) catch_data_all[, `:=` (NJA_CATCH_MT = 0, ABNJ_CATCH_MT = 0, FOREIGN_CATCH_MT = 0)]
   
   
   return(catch_data_all)
