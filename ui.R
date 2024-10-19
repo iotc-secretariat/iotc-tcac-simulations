@@ -19,7 +19,7 @@ ui = function() {
               width = 8,
               h4(
                 img(src = "iotc-logo.png", height = "48px"), 
-                span("IOTC TCAC simulation tool v1.0 [ "),
+                span("IOTC TCAC simulation tool v1.1 [ "),
                 a("source code", href = "https://bitbucket.org/iotc-ws/iotc-tcac-simulations/src/master/", target = "_BLANK"),
                 span(" | "),
                 a("readme", href = "./README.html", target = "_BLANK"),
