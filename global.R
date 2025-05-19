@@ -23,9 +23,11 @@ options(scipen = 9999)
 source("./initialisation/00_CORE.R")
 
 #users
+library(config)
+conn_args = config::get("dataconnection")
 user_base <- dplyr::tibble(
-  user = Sys.getenv("IOTC_TCAC_USER"),
-  password = Sys.getenv("IOTC_TCAC_PASSWORD")
+  user = conn_args$user,
+  password = conn_args$password
 )
 
 #variables
