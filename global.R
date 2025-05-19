@@ -22,6 +22,12 @@ options(scipen = 9999)
 #scripts
 source("./initialisation/00_CORE.R")
 
+#users
+user_base <- dplyr::tibble(
+  user = Sys.getenv("IOTC_TCAC_USER"),
+  password = Sys.getenv("IOTC_TCAC_PASSWORD")
+)
+
 #variables
 CONFIG = read_configuration("./cfg/CPC_CONFIGURATIONS.xlsx")
 
