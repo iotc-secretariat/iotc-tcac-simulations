@@ -61,7 +61,7 @@ coastal_state_allocation = function(CPC_data,
   component_allocation_table = CS_SE_data[HAS_NJA_IO == TRUE]
   
   component_allocation_table = 
-    merge(
+    base::merge(
       component_allocation_table, CPC_data[, .(CODE, NJA_SIZE_WEIGHTING)],
       by = "CODE", all.x = TRUE
     )
@@ -194,7 +194,7 @@ catch_based_allocation = function(CPC_data,   # Unused
     
     colnames(current_data)[2] = paste0("CATCH_BASED_ALLOCATION_YEAR_", year)
     
-    catch_allocation_table = merge(catch_allocation_table, current_data,
+    catch_allocation_table = base::merge(catch_allocation_table, current_data,
                                    by = "CPC_CODE", all.x = TRUE)
     
     year = year + 1
@@ -232,7 +232,7 @@ allocate_TAC = function(TAC,
   catch_based_allocation  [, 2:ncol(catch_based_allocation) := lapply(.SD, function(x) { x * TAC * catch_based_allocation_weight }), .SDcols = 2:ncol(catch_based_allocation)]
   
   # This can definitely be implemented better...
-  constant_allocation = merge(baseline_allocation, coastal_state_allocation,  
+  constant_allocation = base::merge(baseline_allocation, coastal_state_allocation,  
                               by = "CPC_CODE", 
                               all.x = TRUE)
   
@@ -243,7 +243,7 @@ allocate_TAC = function(TAC,
   constant_allocation = constant_allocation[, CONSTANT_ALLOCATION := BASELINE_ALLOCATION + COASTAL_STATE_ALLOCATION][, .(CPC_CODE, CONSTANT_ALLOCATION)]
   
   # This also can definitely be implemented better...
-  final_allocation_table = merge(baseline_allocation[, .(CPC_CODE)], catch_based_allocation,
+  final_allocation_table = base::merge(baseline_allocation[, .(CPC_CODE)], catch_based_allocation,
                                  by = "CPC_CODE", 
                                  all.x = TRUE) # Ensures all CPCs are kept, regardless of whether they had catches in the considered timeframe or not
   

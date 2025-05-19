@@ -56,7 +56,7 @@ RC_RAW = catch_data
 RC_YFT_2000_2016 = RC_RAW[SPECIES_CODE == SPECIES_CODE_SELECTED & YEAR %in% CATCH_PERIOD, .(CATCH = sum(CATCH_MT/length(2000:2016))), keyby = (CPC_CODE = FLEET_CODE)]
 
 # Mean annual catch of YFT in 2000-2016 for the CPCs
-RC_YFT_2000_2016_CPCS = merge(RC_YFT_2000_2016[!CPC_CODE %in% c("NEI", "OTH")], CPC_data[, .(CODE, NAME_EN)], by.x = "CPC_CODE", by.y = "CODE", all = TRUE)
+RC_YFT_2000_2016_CPCS = base::merge(RC_YFT_2000_2016[!CPC_CODE %in% c("NEI", "OTH")], CPC_data[, .(CODE, NAME_EN)], by.x = "CPC_CODE", by.y = "CODE", all = TRUE)
 
 RC_YFT_2000_2016_CPCS[is.na(CATCH), CATCH := 0]
 
