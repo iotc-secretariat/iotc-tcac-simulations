@@ -36,7 +36,7 @@ server = function(input, output, session) {
               span("IOTC TCAC simulation tool v1.1 [ "),
               a("source code", href = "https://github.com/iotc-secretariat/iotc-tcac-simulations", target = "_BLANK"),
               span(" | "),
-              a("readme", href = "./README.html", target = "_BLANK"),
+              a("readme", href = "README.html", target = "_BLANK"),
               span(" ]")
             )
           )
