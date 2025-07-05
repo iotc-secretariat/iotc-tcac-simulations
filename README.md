@@ -1,9 +1,4 @@
----
-title: "Simulation Tool for IOTC Catch Allocation Criteria"
-author: "Author: [IOTC Secretariat](mailto:IOTC-Secretariat@fao.org)" 
----
-
-# Process Configuration {#configuration}
+# Configuration
 
 The definitions of all relevant parameters characterising each CPC in relation to the allocation criteria are provided in the [`cfg/CPC_CONFIGURATIONS.xlsx`](./CPC_CONFIGURATIONS.xlsx) file which includes two worksheets:
 
@@ -17,7 +12,7 @@ The definitions of all relevant parameters characterising each CPC in relation t
     -   IS_SIDS: Small Island Developing States (SIDS) status
     -   IS_COASTAL: Coastal State status
     -   HAS_NJA_IO: Presence of a National Jurisdiction Area (NJA) within the [IOTC Area of Competence](https://iotc.org/about-iotc/competence)
-    -   NJA_SIZE: Size of the NJA (km^2^)
+    -   NJA_SIZE: Size of the NJA (km2)
     -   NJA_IOTC_RELATIVE_SIZE: Relative size of the NJA (percentage; %) with respect to the IOTC Area of Competence.
     
 </p>
@@ -38,7 +33,7 @@ The definitions of all relevant parameters characterising each CPC in relation t
 
 The HDI and GNI indicators required for *Option 2* have been sourced from the [UNDP](https://hdr.undp.org/data-center/human-development-index#/indicies/HDI) and [World Bank](https://datahelpdesk.worldbank.org/knowledgebase/articles/906519-world-bank-country-and-lending-group) websites, respectively. The HDI for the EU was averaged using data from this [source](https://www.theglobaleconomy.com/rankings/human_development/European-union/). In absence of HDI data for Somalia, the lowest value in the dataset, 0.446 (reported for Mozambique), was used.
 
-## Assumptions {#assumptions}
+## Assumptions
 
 ### CPC and Coastal State Configuration
 
@@ -52,17 +47,17 @@ For the purposes of the simulations, the following assumptions were made:
 
 -   For historical reasons, the waters of the Chagos Archipelago were considered to be under the sovereignty of the United Kingdom of Great Britain and Northern Ireland (`GBR`)
 
--   In addition to having an NJA in the Indian Ocean, France (OT) (`FRAT`) shall be considered de facto as an IOTC Coastal State (see Appendix 4, para. 2 of the [Report of the 12^th^ Technical Committee on Allocation Criteria](https://iotc.org/documents/TCAC/12/RE))
+-   In addition to having an NJA in the Indian Ocean, France (OT) (`FRAT`) shall be considered de facto as an IOTC Coastal State (see Appendix 4, para. 2 of the [Report of the 12th Technical Committee on Allocation Criteria](https://iotc.org/documents/TCAC/12/RE))
 
--   The European Union / REIO (`EUR`) has an NJA in the Indian Ocean (i.e., the NJA around Réunion and Mayotte) and, for this reason, "*should benefit from an allocation that relates to the size of the EEZ of its outermost territories in the IOTC Area of Competence.*" (see Appendix 4, para. 2 of the [Report of the 12^th^ Technical Committee on Allocation Criteria](https://iotc.org/documents/TCAC/12/RE))
+-   The European Union / REIO (`EUR`) has an NJA in the Indian Ocean (i.e., the NJA around Réunion and Mayotte) and, for this reason, "*should benefit from an allocation that relates to the size of the EEZ of its outermost territories in the IOTC Area of Competence.*" (see Appendix 4, para. 2 of the [Report of the 12th Technical Committee on Allocation Criteria](https://iotc.org/documents/TCAC/12/RE))
 
--   Despite the above, `EUR` "(...) *would not be seeking the application of paragraph 6.6(1)(b) of the coastal state allocation criteria (...)*" (see Appendix 4, para. 2 of [Report of the 12^th^ Technical Committee on Allocation Criteria](https://iotc.org/documents/TCAC/12/RE))
+-   Despite the above, `EUR` "(...) *would not be seeking the application of paragraph 6.6(1)(b) of the coastal state allocation criteria (...)*" (see Appendix 4, para. 2 of [Report of the 12th Technical Committee on Allocation Criteria](https://iotc.org/documents/TCAC/12/RE))
 
--   There are different views as whether `EUR` "(...) *should benefit from the portion of the coastal state allocation criteria related to aspirations under paragraph 6.6(1)(a) (...)*" (see Appendix 4, para. 2 of the [Report of the 12^th^ Technical Committee on Allocation Criteria](https://iotc.org/documents/TCAC/12/RE)). In their current configurations, the simulations considered `EUR` as benefiting from the portion of allocation specified by paragraph 6.6(1)(a) of [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E)
+-   There are different views as whether `EUR` "(...) *should benefit from the portion of the coastal state allocation criteria related to aspirations under paragraph 6.6(1)(a) (...)*" (see Appendix 4, para. 2 of the [Report of the 12th Technical Committee on Allocation Criteria](https://iotc.org/documents/TCAC/12/RE)). In their current configurations, the simulations considered `EUR` as benefiting from the portion of allocation specified by paragraph 6.6(1)(a) of [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E)
 
 -   Following TCAC12, in consultations between the IOTC Secretariat and the United Kingdom of Great Britain and Northern Ireland (`GBR`), `GBR` informed the Secretariat that para 6.6.(1)(b) would not apply to their case, but that paragraph 6.6.(1)(a) and (c) would. This understanding has been incorporated into the current configuration of the TCAC simulations conducted by the Secretariat.
 
-### Historical Catches {#historicalCatch}
+### Historical Catches
 
 This information is essential for calculating the third component (*catch-based*) of the allocation criteria and can be downloaded from [`cfg/HISTORICAL_CATCH_ESTIMATES.csv`](./HISTORICAL_CATCH_ESTIMATES.csv). The file can be opened as a spreadsheet using MS Excel, LibreOffice Calc, Google Sheets, or any text editor.
 
@@ -93,9 +88,9 @@ To calculate the catch-based allocation weight for each CPC, information on hist
 
 In the latter case, the *best years* are defined as those with the highest catches during the selected period for a given fleet and species.
 
-# User Interface {#ui}
+# User Interface
 
-The simulation is presented through an interactive R Shiny [web application](https://data.iotc.org/tcac13/simulations/) that is currently password-protected. Access credentials will be provided to participating delegates.
+The simulation is presented through an interactive R Shiny [web application](https://data.iotc.org/tcac13/simulations/) that is password-protected.
 
 The main screen features two tabbed panels: one to display the [reference data](#referenceData) used by the simulation, and [another](#simulationResults) to present users with the [configuration parameters](#inputConfig) and the [simulation outputs](#outputs).
 
@@ -103,7 +98,7 @@ The main screen features two tabbed panels: one to display the [reference data](
 
 <br/>
 
-## Reference Data Panel {#referenceData}
+## Reference Data Panel
 
 This panel provides access to three main categories of configuration datasets which are presented as sortable, filterable tables, and provide an interactive version of the tabular configuration files included with the application:
 
@@ -123,21 +118,21 @@ This panel provides access to three main categories of configuration datasets wh
 
     ![Historical catch data panel](assets/images/app_ref_data_historical_catches_rev.png){style="padding-bottom: 1em;"}
 
-## Simulation Panel {#simulationResults}
+## Simulation Panel
 
 This panel provides access to the configuration [parameters](#inputConfig) (left panel) and the simulation [results](#outputs) (right panel), projecting up to 10 years into the future to account for the transitional period in the allocation of catches from flag States to Coastal States, where applicable.
 
-### Configuration Parameters {#inputConfig}
+### Configuration Parameters
 
 -   The ***Species*** subject to the simulation, which affects the catch records to be used to calculate the *catch-based* allocation component
 
--   The ***Target TAC*** in tonnes (t), which affects the estimated annual catches for each CPC and year
+-   The ***Target TAC*** in metric tonnes (t), which affects the estimated annual catches for each CPC and year
 
     ![Species and TAC configuration controls](assets/images/app_config_species_tac_rev.png){style="border: 1px solid black;"}
 
     <br/>
 
--   The main component weights sum up to 100% and have been restricted to 5-10% and 5-45% for the ***Baseline weight*** and the ***Coastal State Weight***, respectively, following [IOTC-2024-TCAC13-REF03_Rev1	](https://iotc.org/documents/TCAC/13/Ref03)
+-   The main component weights
 
     ![Main component weights configuration controls](assets/images/app_config_main_components_wgt_rev.png){style="border: 1px solid black;"}
 
@@ -157,9 +152,9 @@ This panel provides access to the configuration [parameters](#inputConfig) (left
 
         This component weight is further broken down into:
 
-        1.  ***Equal weight*** (see para. 6.6(1)(a) of  [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E))
+        1.  ***Equal weight*** (see para. 6.6(1)(a) of [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E))
 
-        2.  ***Socio-economic weight*** (see para. 6.6(1)(b) of  [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E))
+        2.  ***Socio-economic weight*** (see para. 6.6(1)(b) of [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E))
 
             Its sub-components can be selected from two possible options, which consider different aspects of the social and economic environment and status of all IOTC CPCs:
 
@@ -236,7 +231,7 @@ This panel provides access to the configuration [parameters](#inputConfig) (left
             ![Simulating high seas-only catches](assets/images/app_config_high_seas_only.png){style="border: 1px solid black;"}
 
 
-### Outputs {#outputs}
+### Outputs
 
 The outputs of the simulation are presented with two tabs: (i) Tables and (ii) Reports.
 
@@ -288,7 +283,7 @@ The simulation results can be downloaded as an Excel file through the ***Downloa
 
 5.  `OUTPUT_QUOTAS` containing the outputs of the simulation expressed either as fraction of the annual TAC or as catches in tons by CPC and simulation year (depending on the chosen value of the **output unit** parameter)
 
-### Reports {#reports}
+### Reports
 
 The **Reports** tab provides access to reports that include the configuration parameters and output tables for all components (baseline, coastal State, and catch-based) and their sub-components. These reports downloadable either for all CPCs (Full report) or for a selected entity.
 
