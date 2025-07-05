@@ -1,16 +1,7 @@
 ---
-title: "IOTC TCAC 13 - Allocation simulations"
-output:
-  officedown::rdocx_document:
-    reference_docx: ./rmd/templates/rdoc_template.docx
-  word_document: default
-  html_document:
-    fig_caption: yes
+title: "Simulation Tool for IOTC Catch Allocation Criteria"
+author: "Author: [IOTC Secretariat](mailto:IOTC-Secretariat@fao.org)" 
 ---
-
-# Purpose
-
-This document provides an overview of the [assumptions](#assumptions) and the final outputs produced by simulating the allocation criteria outlined in [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E). It also provides a description of the [*user interface*](#ui) of the simulation tool, with additional details on the various configuration parameters for both the [simulation process](#inputConfig) and the [generated outputs](#outputs).
 
 # Process Configuration {#configuration}
 
