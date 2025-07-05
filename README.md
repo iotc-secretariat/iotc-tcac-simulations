@@ -1,5 +1,5 @@
 ---
-title: "IOTC TCAC 15 - Allocation simulations"
+title: "IOTC TCAC 13 - Allocation simulations"
 output:
   officedown::rdocx_document:
     reference_docx: ./rmd/templates/rdoc_template.docx
