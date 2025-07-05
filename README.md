@@ -1,3 +1,7 @@
+# Overview
+
+This repository hosts a Shiny App developed by the IOTC Secretariat to simulate and explore how different allocation scenarios affect the distribution of total catch among IOTC Contracting Parties and Cooperating Non-Contracting Parties (CPCs). The tool allows users to adjust parameters reflecting various allocation criteria, including each CPC's status (e.g. Coastal State, Small Island Developing State), historical catch levels, and catches taken within National Jurisdiction Areas (NJAs) by foreign fleets. It is designed to support transparent discussions and informed decision-making under the framework of the Technical Committee on Allocation Criteria.
+
 # Configuration
 
 The definitions of all relevant parameters characterising each CPC in relation to the allocation criteria are provided in the [`cfg/CPC_CONFIGURATIONS.xlsx`](./CPC_CONFIGURATIONS.xlsx) file which includes two worksheets:
@@ -37,13 +41,9 @@ The HDI and GNI indicators required for *Option 2* have been sourced from the [U
 
 ### CPC and Coastal State Configuration
 
-The identification of a CPC as *being* or *not being* an IOTC Coastal State remains a subject of debate for some IOTC members with NJAs within the IOTC Area of Competence.
-
 For the purposes of the simulations, the following assumptions were made:
 
--   The NJAs of the IOTC CPCs were sourced from the Flanders Marine Institute [*maritime boundaries* geodatabase](https://doi.org/10.14284/628). They are available for download from the [IOTC Data Reference Catalogue](https://data.iotc.org/reference/latest/domain/admin/shapefiles/IO_NJA_AREAS_1.0.0_SHP.zip).
-
--   The attribution of a NJA in the Indian Ocean to a given CPC reflects the information available to the IOTC as of 31/12/2023
+-   The NJAs of the IOTC CPCs were sourced from the Flanders Marine Institute [*maritime boundaries* geodatabase](https://doi.org/10.14284/628). They are available for download from the [IOTC Reference Data Catalogue](https://data.iotc.org/reference/latest/domain/admin/shapefiles/IO_NJA_AREAS_1.0.0_SHP.zip)
 
 -   For historical reasons, the waters of the Chagos Archipelago were considered to be under the sovereignty of the United Kingdom of Great Britain and Northern Ireland (`GBR`)
 
@@ -75,11 +75,9 @@ The fields included in the catch dataset include:
 
 Historical catch data are available for all years from 1950 to 2021 stratified by year, fleet, gear, school type, species, and assigned area.
 
-It is important to note that the need to apportion historical catches by flag or fleet according to the area of operation (high seas versus the NJA of any given coastal state) requires the IOTC Secretariat to estimate this information. This estimation process was presented at the last TCAC meeting in October 2023 and was agreed upon by the meeting participants (see [IOTC-2023-TCAC12-INF02](https://iotc.org/documents/TCAC/12/INF02)).
+It is important to note that the need to apportion historical catches by flag or fleet according to the area of operation (high seas versus the NJA of any given coastal state) requires the IOTC Secretariat to estimate this information. This estimation process was presented at the last TCAC meeting in October 2023 and was endorsed by the meeting participants (see [IOTC-2023-TCAC12-INF02](https://iotc.org/documents/TCAC/12/INF02)).
 
 For this reason, the historical catch series with a full area breakdown is only available for the five major IOTC species (albacore, bigeye tuna, skipjack tuna, swordfish, and yellowfin tuna). These data have been estimated using the regular grid versus the NJA overlapping area fraction to assign catches estimated for the former to the area that falls within a given NJA.
-
-[//]: # (> At this stage of the process, there is no additional information from CPCs to confirm whether their catches in a given grid should be attributed solely to the flag State. Therefore, the simulation uses the information in the `ASSIGNED_AREA` column of the historical catch series to calculate the annual catches for a given Coastal State or flag State (when required).)
 
 To calculate the catch-based allocation weight for each CPC, information on historical catches is averaged across a selectable time frame using two possible approaches that require computation:
 
@@ -94,7 +92,7 @@ The simulation is presented through an interactive R Shiny [web application](htt
 
 The main screen features two tabbed panels: one to display the [reference data](#referenceData) used by the simulation, and [another](#simulationResults) to present users with the [configuration parameters](#inputConfig) and the [simulation outputs](#outputs).
 
-![An overview of the web application user interface](assets/images/app_UI_all_rev.png){style="padding-bottom: 1em;"}
+![An overview of the web application user interface](assets/images/app_UI_all_rev.png)
 
 <br/>
 
@@ -116,7 +114,7 @@ This panel provides access to three main categories of configuration datasets wh
 
 -   ***Historical catches***, with estimated catches for the five major IOTC species stratified by year, fleet, gear, school type, species, and assigned area (see fields described in the Section [Historical Catches](#historicalCatch))
 
-    ![Historical catch data panel](assets/images/app_ref_data_historical_catches_rev.png){style="padding-bottom: 1em;"}
+    ![Historical catch data panel](assets/images/app_ref_data_historical_catches_rev.png)
 
 ## Simulation Panel
 
@@ -128,25 +126,25 @@ This panel provides access to the configuration [parameters](#inputConfig) (left
 
 -   The ***Target TAC*** in metric tonnes (t), which affects the estimated annual catches for each CPC and year
 
-    ![Species and TAC configuration controls](assets/images/app_config_species_tac_rev.png){style="border: 1px solid black;"}
+    ![Species and TAC configuration controls](assets/images/app_config_species_tac_rev.png)
 
     <br/>
 
 -   The main component weights
 
-    ![Main component weights configuration controls](assets/images/app_config_main_components_wgt_rev.png){style="border: 1px solid black;"}
+    ![Main component weights configuration controls](assets/images/app_config_main_components_wgt_rev.png)
 
     <br/>
 
     1.  The ***Baseline weight*** does not require any additional configuration, as it assigns an equal portion of the quota to each CPC (see para. 6.5 of [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E))
 
-        ![Baseline weights configuration controls](assets/images/app_config_baseline_components_wgt_rev.png){style="border: 1px solid black;"}
+        ![Baseline weights configuration controls](assets/images/app_config_baseline_components_wgt_rev.png)
 
         <br/>
 
     2.  The ***Coastal state weight*** applies to all IOTC CPCs with a NJA in the IOTC Area of Competence (see para. 6.6(1) of [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E))
 
-        ![Coastal state sub-component weights configuration controls](assets/images/app_config_coastal_state_components_wgt_rev.png){style="border: 1px solid black;"}
+        ![Coastal state sub-component weights configuration controls](assets/images/app_config_coastal_state_components_wgt_rev.png)
 
         <br/>
 
@@ -162,7 +160,7 @@ This panel provides access to the configuration [parameters](#inputConfig) (left
 
                 <br/>
 
-                ![Socio-economic sub-component weights configuration controls (Option #1)](assets/images/app_config_socio_economic_wgts_option1_rev.png){style="border: 1px solid black;"}
+                ![Socio-economic sub-component weights configuration controls (Option #1)](assets/images/app_config_socio_economic_wgts_option1_rev.png)
 
                 <br/>
 
@@ -184,7 +182,7 @@ This panel provides access to the configuration [parameters](#inputConfig) (left
 
                 <br/>
 
-                ![Socio-economic sub-component weights configuration controls (Option #2)](assets/images/app_config_socio_economic_wgts_option2_rev.png){style="border: 1px solid black;"}
+                ![Socio-economic sub-component weights configuration controls (Option #2)](assets/images/app_config_socio_economic_wgts_option2_rev.png)
 
                 <br/>
 
@@ -202,7 +200,7 @@ This panel provides access to the configuration [parameters](#inputConfig) (left
 
         1.  The ***Historical catch interval*** influences the calculation of average catches (see para. 6.8(1)(a) of [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E))
 
-            ![Historical catch interval configuration controls](assets/images/app_config_catch_based_config_period_rev.png){style="border: 1px solid black;"}
+            ![Historical catch interval configuration controls](assets/images/app_config_catch_based_config_period_rev.png)
 
             <br/>
 
@@ -210,13 +208,13 @@ This panel provides access to the configuration [parameters](#inputConfig) (left
 
             -   **Selected period** for calculating the average catch by CPC across the entire historical catch interval
 
-                ![Historical catch average configuration controls (selected period)](assets/images/app_config_catch_based_config_period_type_all_rev.png){style="border: 1px solid black;"}
+                ![Historical catch average configuration controls (selected period)](assets/images/app_config_catch_based_config_period_type_all_rev.png)
 
                 <br/>
 
             -   **Best "n" years** for calculating the average catch by CPC over the top 'n' years (based on catches) identified within the historical catch interval, with ***Number of years*** as a selectable parameter
 
-                ![Historical catch average configuration controls (best 'n' years)](assets/images/app_config_catch_based_config_period_type_best_rev.png){style="border: 1px solid black;"}
+                ![Historical catch average configuration controls (best 'n' years)](assets/images/app_config_catch_based_config_period_type_best_rev.png)
 
             <br/>
 
@@ -228,7 +226,7 @@ This panel provides access to the configuration [parameters](#inputConfig) (left
 
         4.  The ***High-seas only catches*** parameter of the simulation tool aims to facilitate the exploration of simulations for high seas-only catches, as the high seas are less affected by data limitations, do not require any assumptions on catch attribution (i.e., existence of fishing agreements), and exclude artisanal fisheries that occur solely within waters under national jurisdiction.
 
-            ![Simulating high seas-only catches](assets/images/app_config_high_seas_only.png){style="border: 1px solid black;"}
+            ![Simulating high seas-only catches](assets/images/app_config_high_seas_only.png)
 
 
 ### Outputs
@@ -237,7 +235,7 @@ The outputs of the simulation are presented with two tabs: (i) Tables and (ii) R
 
 ![](assets/images/app_results.png)
 
-The tab **Tables** provides the final allocation table with CPCs as rows and allocation years as columns (from 1 to indicate the initial year, up to a maximum of 10). Each cell contains the quota assigned to the CPC for a specific year. Depending on the choice of the ***Output unit*** parameter, this quota can be expressed either as a fraction (% of the TAC for a given species) or as an absolute value in tonnes. The absolute value is computed from the output quotas (in %) and the TAC (in tonnes) set by the user.
+The tab **Tables** provides the final allocation table with CPCs as rows and allocation years as columns (from 1 to indicate the initial year, up to a maximum of 10). Each cell contains the quota assigned to the CPC for a specific year. Depending on the choice of the ***Output unit*** parameter, this quota can be expressed either as a fraction (% of the TAC for a given species) or as an absolute value in tonnes. The absolute value is computed from the output quotas (in %) and the TAC (in metric tonnes) set by the user.
 
 ![](assets/images/app_output_unit.png)
 
@@ -251,13 +249,13 @@ This presents two options:
 
 -   **Background colour** (default) to represent the (relative) cell value through the intensity of the background
 
-    ![Output table using the 'background colour' heatmap option](assets/images/app_output_heatmap_bg.png){style="padding-bottom: 1em;"}
+    ![Output table using the 'background colour' heatmap option](assets/images/app_output_heatmap_bg.png)
 
     <br/>
 
 -   **Bar** to represent the (relative) cell value through a horizontal bar
 
-    ![Output table using the 'bar' heatmap option](assets/images/app_output_heatmap_bar.png){style="padding-bottom: 1em;"}
+    ![Output table using the 'bar' heatmap option](assets/images/app_output_heatmap_bar.png)
 
     <br/>
 
