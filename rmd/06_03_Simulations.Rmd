@@ -1,0 +1,13 @@
+## Simulations {#simulations}
+
+For the purpose of the simulations and following the 12^th^ Technical Committee on Allocation Criteria [TCAC12](https://iotc.org/meetings/12th-meeting-technical-committee-allocation-criteria-tcac), the following points was considered in the simulations:
+
+- For historical reasons, the waters of the Chagos Archipelago were considered to be under the sovereignty of the United Kingdom of Great Britain and Northern Ireland (`GBR`)
+
+-   The European Union / REIO (`EUR`) has an NJA in the Indian Ocean (i.e., the NJA around Réunion and Mayotte) and, for this reason, "*should benefit from an allocation that relates to the size of the EEZ of its outermost territories in the IOTC Area of Competence.*" (see Appendix 4, para. 2 of the [Report of the 12^th^ Technical Committee on Allocation Criteria](https://iotc.org/documents/TCAC/12/RE))
+
+-   Despite the above, `EUR` "(...) *would not be seeking the application of paragraph 6.6(1)(b) of the coastal state allocation criteria (...)*" (see Appendix 4, para. 2 of [Report of the 12^th^ Technical Committee on Allocation Criteria](https://iotc.org/documents/TCAC/12/RE))
+
+-   In their current configurations, the simulations considered `EUR` as benefiting from the portion of allocation specified by paragraph 6.6(1)(a) of [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E)
+
+-   In consultations between the IOTC Secretariat and the United Kingdom of Great Britain and Northern Ireland (`GBR`), `GBR` informed the Secretariat that para 6.6.(1)(b) would not apply to their case, but that paragraph 6.6.(1)(a) and (c) would.

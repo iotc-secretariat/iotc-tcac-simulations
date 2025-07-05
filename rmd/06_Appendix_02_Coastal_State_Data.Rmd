@@ -1,0 +1,17 @@
+Appendix B
+
+The COASTAL_STATE_SOCIO_ECONOMIC worksheet lists all IOTC CPCs identified as Coastal States, along with their development status and a set of socio-economic indicators aligned with the requirements of Option 1 and Option 2 under paragraph 6.6(1)(b) of IOTC-2024-TCAC13-REF02.
+
+-   CODE: Mnemonic code (generally, the ISO3 code of the country)
+-   NAME_EN: Official English name
+-   NAME_FR: Official French name
+-   DEVELOPMENT_STATUS: Least developed (LD), developing (DG), developed (DE)
+-   PER_CAPITA_FISH_CONSUMPTION_KG: Per capita fish consumption (kg / person / year) [*Option 1*]
+-   CUV_INDEX: Commonwealth Universal Vulnerability index [*Option 1*]
+-   PROP_WORKERS_EMPLOYED_SSF: Contribution (%) of fish workers employed in small-scale and artisanal fisheries [*Option 1*]
+-   PROP_FISHERIES_CONTRIBUTION_GDP: Contribution (%) of fisheries to GDP [*Option 1*]
+-   PROP_EXPORT_VALUE_FISHERY: Contribution (%) of fisheries exports to total export value [*Option 1*]
+-   HDI_STATUS: Human Development Index status [*Option 2*]
+-   GNI_STATUS: Gross National Income Status [*Option 2*]
+
+The HDI and GNI indicators required for *Option 2* have been sourced from the [UNDP](https://hdr.undp.org/data-center/human-development-index#/indicies/HDI) and [World Bank](https://datahelpdesk.worldbank.org/knowledgebase/articles/906519-world-bank-country-and-lending-group) websites, respectively. The HDI for the EU was averaged using data from this [source](https://www.theglobaleconomy.com/rankings/human_development/European-union/). In absence of HDI data for Somalia, the lowest value in the dataset, 0.446 (reported for Mozambique), was used.
