@@ -1,13 +1,13 @@
-### Simulation Results {#simulationResults}
+## Simulation Results {#simulationResults}
 
-The simulation results can be downloaded as an Excel file through the ***Download*** button. The name of the file corresponds to the serialised date (including the time) at which the download request was issued (e.g., `TCAC13_simulation_2024_02_01_150856.xlsx`), while its content includes the following five worksheets:
+The simulation results can be downloaded as an Excel file through the **Download** button. The name of the file corresponds to the serialised date (including the time) at which the download request was issued (e.g., TCAC13_simulation_2024_02_01_150856.xlsx), while its content includes the following five worksheets:
 
-1.  `CPC_REFERENCES` containing the CPC configuration parameters as in [`cfg/CPC_CONFIGURATIONS.xlsx`](./CPC_CONFIGURATIONS.xlsx)
+1. 'CPC_REFERENCES' containing the CPC configuration parameters as in [CPC_CONFIGURATIONS.xlsx](./CPC_CONFIGURATIONS.xlsx)
 
-2.  `COASTAL_STATE_REFERENCES` containing the coastal states configuration parameters as in [`cfg/CPC_CONFIGURATIONS.xlsx`](./CPC_CONFIGURATIONS.xlsx)
+2. 'COASTAL_STATE_REFERENCES' containing the coastal states configuration parameters as in [CPC_CONFIGURATIONS.xlsx](./CPC_CONFIGURATIONS.xlsx)
 
-3.  `HISTORICAL_CATCHES` containing the historical catches for the selected species as extracted from [`cfg/HISTORICAL_CATCH_ESTIMATES.csv`](./HISTORICAL_CATCH_ESTIMATES.csv)
+3. 'HISTORICAL_CATCHES' containing the historical catches for the selected species as extracted from [HISTORICAL_CATCH_ESTIMATES.csv](./HISTORICAL_CATCH_ESTIMATES.csv)
 
-4.  `SIMULATION_CONFIGURATION` containing all the configuration parameters set by the users for the specific simulation round
+4. 'SIMULATION_CONFIGURATION' containing all the configuration parameters set by the users for the specific simulation round
 
-5.  `OUTPUT_QUOTAS` containing the outputs of the simulation expressed either as fraction of the annual TAC or as catches in tons by CPC and simulation year (depending on the chosen value of the **output unit** parameter)
+5. 'OUTPUT_QUOTAS' containing the outputs of the simulation expressed either as fraction of the annual TAC or as catches in metric tonnes by CPC and simulation year (depending on the chosen value of the 'output unit' parameter).

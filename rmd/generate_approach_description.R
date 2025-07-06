@@ -3,6 +3,8 @@ library(officer)
 library(officedown)
 library(knitr)
 library(rmarkdown)
+library(openxlsx)
+library(flextable)
 
 # General report describing data, assumptions, and results
 render("06_00_Simulation_Tool_Description.Rmd", 

@@ -1,6 +1,4 @@
-# Appendix C: Catch data
-
-This information is essential for calculating the third component (*catch-based*) of the allocation criteria and can be downloaded from [`cfg/HISTORICAL_CATCH_ESTIMATES.csv`](./HISTORICAL_CATCH_ESTIMATES.csv). The file can be opened as a spreadsheet using MS Excel, LibreOffice Calc, Google Sheets, or any text editor.
+# Appendix 3: Description of the Historical Catch Dataset {#catchFields}
 
 The fields included in the catch dataset include:  
 
