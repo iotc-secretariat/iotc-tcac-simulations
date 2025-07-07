@@ -49,8 +49,8 @@ bl_header_with_logo = function(txt, position) {
 }
 
 sec_pr = prop_section(
-  header_first = bl_header_with_logo("IOTC-2024-TCAC-13", "right"),
-  header_default = bl_header_no_logo("IOTC-2024-TCAC-13", "right")
+  header_first = bl_header_with_logo("IOTC-2025-TCAC-15", "right"),
+  header_default = bl_header_no_logo("IOTC-2025-TCAC-15", "right")
 )
 ```
 
