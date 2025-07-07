@@ -30,6 +30,9 @@ user_base <- dplyr::tibble(
   password = conn_args$password
 )
 
+#scenarios
+SCENARIO_PARAMETERS = fread("./inputs/IOTC-2024-TCAC13-REF03_Rev1_-_INPUT_PARAMETERS.csv")
+
 #variables
 CONFIG = read_configuration("./cfg/CPC_CONFIGURATIONS.xlsx")
 

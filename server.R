@@ -84,7 +84,7 @@ server = function(input, output, session) {
                               selectInput("species", "Species", width = "100%", choices = AVAILABLE_SPECIES, selected = "YFT")
                        ),
                        column(width = 6,
-                              numericInput("tac", "Target TAC (t)", value = 300000, min = 10000, step = 10000),
+                              numericInput("tac", "Target TAC (t)", value = 421000, min = 10000, step = 10000),
                        )
                      ),
                      
@@ -854,5 +854,13 @@ server = function(input, output, session) {
       # wordApp$Quit() #quits the COM Word application
       # rm(list = "wordApp")
       
+    })
+  
+    #observe species for TAC selection
+    observeEvent(input$species,{
+      updateNumericInput(
+        inputId = "tac",
+        value = SCENARIO_PARAMETERS[SCENARIO_PARAMETERS$SPECIES_CODE_SELECTED == input$species,][1,]$TARGET_TAC_T
+      )
     })
 }
