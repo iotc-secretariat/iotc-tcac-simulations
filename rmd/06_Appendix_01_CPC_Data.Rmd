@@ -1,0 +1,26 @@
+# Annex 1: Description of the CPC dataset {#cpcFields}
+
+
+```{r}
+block_caption("Description of the fields included in the CPC worksheet of the configuration file", 
+              style = "Table Caption", 
+              autonum = run_autonum(seq_id = 'tab', 
+                                    bkm = "App2", 
+                                    start_at = 1, 
+                                    pre_label = "Tab. A", 
+                                    prop = fp_text_lite(bold = TRUE))
+)
+
+cpc_metadata = read.xlsx("../inputs/metadata_configuration_file.xlsx", sheet = "CPC", sep.names = " ")
+
+cpc_metadata %>% 
+  flextable() %>% 
+  flextable::font(part = "all", fontname = "Calibri") %>% 
+  flextable::fontsize(part = "all", size = 9) %>% 
+  flextable::align(part = "header", align = "center") %>% 
+  flextable::bold(part = "header") %>% 
+  flextable::bg(part = "header", bg = "gray") %>% 
+  flextable::border_inner(border = fp_border()) %>%
+  flextable::border_outer(border = fp_border(width = 2)) %>% 
+  flextable::width(width = c(2.2, 3, 1.4))
+```

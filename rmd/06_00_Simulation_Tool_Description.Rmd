@@ -74,17 +74,17 @@ block_section(sec_pr)
 
 \pagebreak
 
-```{r child = "06_Appendix_01_CPC_Data.Rmd", eval = FALSE}
+```{r child = "06_Appendix_01_CPC_Data.Rmd"}
 ```
 
-
+\pagebreak
 
 ```{r child = "06_Appendix_02_Coastal_State_Data.Rmd"}
 ```
 
 \pagebreak
 
-```{r child = "06_Appendix_03_Catch_Data", eval = FALSE}
+```{r child = "06_Appendix_03_Catch_Data.Rmd"}
 ```
 
 ```{r, echo = F}

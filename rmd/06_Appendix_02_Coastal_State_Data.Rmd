@@ -2,18 +2,6 @@
 
 The 'COASTAL_STATE_SOCIO_ECONOMIC' worksheet lists all IOTC CPCs identified as Coastal States, along with their development status and a set of socio-economic indicators aligned with the requirements of Option 1 and Option 2 under paragraph 6.6(1)(b) of [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E). The data are also available under the 'Coastal States Summary' tab in the [TCAC Simulation App](https://foodandagricultureorganization.shinyapps.io/iotc-tcac-simulations/).
 
-- The Development Status was sourced from the [United Nations](https://www.un.org/development/desa/dpad/wp-content/uploads/sites/45/WESP2020_Annex.pdf) website
-
-- The Commonwealth Universal Vulnerability Index (CUVI) is a multidimensional metric that captures a country’s vulnerability across four dimensions: economic, climate-related, socio-political, and structural, as well as its policy resilience. The CUVI values used (method #1), which refer to the year 2018, were sourced from the [2021 CUVI report](https://sdgs.un.org/sites/default/files/2021-09/The%20Commonwealth%20Universal%20Vulnerability%20Index.pdf). Countries are classified into four categories based on their CUVI score: (i) Extremely Vulnerable (CUVI > 1.5), Highly Vulnerable (1< CUVI $\le$ 1.5), Vulnerable (0.5 < CUVI $\le$ 1), and Resilient (CUVI $\le$ 0.5). The index is not available for Australia, the European Union, and France (Overseas Territories), and the United Kingdom
-
-- The Small Island Developing States (SIDS) status was sourced from the [United Nations](https://www.un.org/ohrlls/content/list-sids) website
-
-- The Human Development Index (HDI) was sourced from the [UNDP](https://hdr.undp.org/data-center/human-development-index#/indicies/HDI) website. The HDI for the EU was calculated as an average based on data from [The Global Economy](https://www.theglobaleconomy.com/rankings/human_development/European-union/). As no HDI value is available for Somalia, the lowest observed value in the dataset (0.446, from Mozambique) was used
-
-- The Gross National Income (GNI) indicator was sourced from the [World Bank](https://datahelpdesk.worldbank.org/knowledgebase/articles/906519-world-bank-country-and-lending-group) website
-
-- Information on the other socio-economic indicators — including per capita fish consumption, the proportion of fish workers employed in small-scale and artisanal fisheries, the contribution of fisheries to Gross Domestic Product, and the share of fisheries in total export value — is not yet available in a standardised format suitable for inclusion in the simulations. As a result, 'Option 1' cannot currently be considered.
-
 ```{r}
 block_caption("Description of the fields included in the COASTAL_STATE_SOCIO_ECONOMIC worksheet of the configuration file. These fields define the development status and socio-economic indicators of IOTC CPCs identified as Coastal States, supporting the application of the allocation criteria specified in paragraph 6.6(1)(b) of IOTC-2024-TCAC13-REF02", 
               style = "Table Caption", 
@@ -38,3 +26,17 @@ coastal_state_metadata %>%
   flextable::border_outer(border = fp_border(width = 2)) %>% 
   flextable::width(width = c(2.2, 3, 1.4))
 ```
+
+<br>
+
+- The Development Status was sourced from the [United Nations](https://www.un.org/development/desa/dpad/wp-content/uploads/sites/45/WESP2020_Annex.pdf) website
+
+- The Commonwealth Universal Vulnerability Index (CUVI) is a multidimensional metric that captures a country’s vulnerability across four dimensions: economic, climate-related, socio-political, and structural, as well as its policy resilience. The CUVI values used (method #1), which refer to the year 2018, were sourced from the [2021 CUVI report](https://sdgs.un.org/sites/default/files/2021-09/The%20Commonwealth%20Universal%20Vulnerability%20Index.pdf). Countries are classified into four categories based on their CUVI score: (i) Extremely Vulnerable (CUVI > 1.5), Highly Vulnerable (1< CUVI $\le$ 1.5), Vulnerable (0.5 < CUVI $\le$ 1), and Resilient (CUVI $\le$ 0.5). The index is not available for Australia, the European Union, and France (Overseas Territories), and the United Kingdom
+
+- The Small Island Developing States (SIDS) status was sourced from the [United Nations](https://www.un.org/ohrlls/content/list-sids) website
+
+- The Human Development Index (HDI) was sourced from the [UNDP](https://hdr.undp.org/data-center/human-development-index#/indicies/HDI) website. The HDI for the EU was calculated as an average based on data from [The Global Economy](https://www.theglobaleconomy.com/rankings/human_development/European-union/). As no HDI value is available for Somalia, the lowest observed value in the dataset (0.446, from Mozambique) was used
+
+- The Gross National Income (GNI) indicator was sourced from the [World Bank](https://datahelpdesk.worldbank.org/knowledgebase/articles/906519-world-bank-country-and-lending-group) website
+
+- Information on the other socio-economic indicators — including per capita fish consumption, the proportion of fish workers employed in small-scale and artisanal fisheries, the contribution of fisheries to Gross Domestic Product, and the share of fisheries in total export value — is not yet available in a standardised format suitable for inclusion in the simulations. As a result, 'Option 1' cannot currently be considered.
