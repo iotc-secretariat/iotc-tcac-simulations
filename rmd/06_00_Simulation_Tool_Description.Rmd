@@ -68,7 +68,7 @@ block_section(sec_pr)
 ```{r child = "06_03_Simulations.Rmd"}
 ```
 
-```{r child = "06_04_User_Interface.Rmd"}
+```{r child = "06_04_Shiny_Application.Rmd"}
 ```
 
 ```{r child = "06_05_Simulation_Results.Rmd"}
