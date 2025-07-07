@@ -618,7 +618,7 @@ server = function(input, output, session) {
   #download table as EXCEL
   output$download_data = downloadHandler(
     filename = function() {
-      paste("TCAC13_simulation_", format(Sys.time(), "%Y_%m_%d_%H%M%S"), ".xlsx", sep = "")
+      paste("TCAC_simulation_", format(Sys.time(), "%Y_%m_%d_%H%M%S"), ".xlsx", sep = "")
     },
     content = function(file) {
       
@@ -715,7 +715,7 @@ server = function(input, output, session) {
   #download report as PDF
   output$report_full = downloadHandler(
     filename = function() {
-      paste("TCAC13_simulation_", format(Sys.time(), "%Y_%m_%d_%H%M%S"), ".docx", sep = "")
+      paste("TCAC_simulation_", format(Sys.time(), "%Y_%m_%d_%H%M%S"), ".docx", sep = "")
     },
     content = function(file) {
       
@@ -798,7 +798,7 @@ server = function(input, output, session) {
   #download report as PDF
   output$report_by_entity = downloadHandler(
     filename = function() {
-      paste("TCAC13_simulation_", input$reporting_entity, "_", format(Sys.time(), "%Y_%m_%d_%H%M%S"), ".docx", sep = "")
+      paste("TCAC_simulation_", input$reporting_entity, "_", format(Sys.time(), "%Y_%m_%d_%H%M%S"), ".docx", sep = "")
     },
     content = function(file) {
       
