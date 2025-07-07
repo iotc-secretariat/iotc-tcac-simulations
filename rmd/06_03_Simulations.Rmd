@@ -1,26 +1,42 @@
 ## Simulations {#simulations}
 
-### Baseline Weight
+The Secretariat has developed an interactive simulation tool to facilitate the exploration of various configuration options for the components of catch allocation outlined in the Draft Allocation Regime (v7), presented at the 13^th^ session of the TCAC ([IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E)). The tool is an interactive R Shiny web application, available at [https://foodandagricultureorganization.shinyapps.io/iotc-tcac-simulations/](https://foodandagricultureorganization.shinyapps.io/iotc-tcac-simulations/), and is password-protected. Access credentials will be provided to participating delegates.
 
+### Total Allowable Catch Values
 
+The App allows users to set the TAC values, which are pre-filled by default in accordance with the most recent IOTC resolutions for bigeye and skipjack tunas, and with the MSY values derived from stock assessments for albacore, swordfish, and yellowfin tuna:
 
-### Coastal State Weight
+- Albacore: 45,000 t  ([IOTC-2024-SC27-ES01](https://iotc.org/documents/albacore-tuna-0))
 
-For the purpose of the simulations and following the 12^th^ Technical Committee on Allocation Criteria [TCAC12](https://iotc.org/meetings/12th-meeting-technical-committee-allocation-criteria-tcac), the following points was considered in the simulations:
+- Bigeye tuna: 92,670 t ([IOTC Res. 25/04](https://iotc.org/cmm/resolution-2504-establishing-catch-limits-bigeye-tuna-iotc-area-competence)
 
-- The European Union / REIO (EUR) has an NJA in the Indian Ocean (i.e., the NJA around Réunion and Mayotte) and, for this reason, "*should benefit from an allocation that relates to the size of the EEZ of its outermost territories in the IOTC Area of Competence.*" (see Appendix 4, para. 2 of the [Report of the 12^th^ Technical Committee on Allocation Criteria](https://iotc.org/documents/TCAC/12/RE))
+- Skipjack tuna: 628,606 t ([IOTC Res. 25/03](https://iotc.org/cmm/resolution-2503-establishing-catch-limits-skipjack-tuna-iotc-area-competence))
 
-- Despite the above, EUR "(...) _would not be seeking the application of paragraph 6.6(1)(b) of the coastal state allocation criteria (...)_" (see Appendix 4, para. 2 of [Report of the 12^th^ Technical Committee on Allocation Criteria](https://iotc.org/documents/TCAC/12/RE))
+- Swordfish: 30,000 t  [IOTC-2024-SC27-ES16](https://iotc.org/documents/swordfish-1)
 
-- In their current configurations, the simulations considered EUR as benefiting from the portion of allocation specified by paragraph 6.6(1)(a) of [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E)
+- Yellowfin tuna: 421,000 t  ([IOTC-2024-SC27-ES04](https://iotc.org/documents/yellowfin-tuna-1))
 
-- In consultations between the IOTC Secretariat and the United Kingdom of Great Britain and Northern Ireland (GBR), GBR informed the Secretariat that para 6.6.(1)(b) would not apply to their case, but that paragraph 6.6.(1)(a) and (c) would.
+### Baseline Allocation
 
-### Catch-Based Weight
+The baseline allocation refers to a percentage of the TAC for a given stock that is distributed equally among all current CPCs. In the App, users can adjust the baseline weight percentage, within a range of 0–100%, using an interactive slider in the application interface.
 
-To calculate the catch-based allocation weight for each CPC, information on historical catches is averaged across a selectable time frame using two possible approaches that require computation:
+### Coastal State Allocation
+
+Similarly to the baseline allocation, the total weight assigned to the coastal State allocation can be adjusted by users using an interactive slider in the application interface. This allocation component consists of three sub-components: (i) the equal weight, (ii) the socio-economic weight, and (iii) the Exclusive Economic Zone (EEZ) weight. The contribution of each sub-component can be adjusted using interactive sliders in the App.
+
+While two options for the socio-economic component were defined at the 13^th^ session of the TCAC ([IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E)), the indicators required for Option 1 are not yet fully available; therefore, only Option 2 is currently operational in the App (see [Appendix 2](#csFields) for details on the indicators).
+
+The relative contributions of the three components of Option 2 -- the Human Development Index, Gross National Income, and Small Island Developing States (SIDS) status -- can be defined using interactive sliders, with their combined total summing to 100%.
+
+### Catch-Based Allocation
+
+The weight assigned to the catch-based allocation corresponds to the remaining percentage once the baseline and coastal State weights have been specified. To calculate the catch-based allocation weight for each CPC, historical catch data are averaged over a user-defined time frame using one of two computational approaches:
   
-- the annual average across the entire time period
-- the average of the best "n" years across the time period
+- the annual average across the selected time period; or
+- the average of the best _n_ years across the selected time period.
 
-In the latter case, the 'best years' are defined as those with the highest catches during the selected period for a given fleet and species.
+In the latter case, the ‘best years’ are defined as those with the highest catches, within the selected period, for a given fleet and species over _n_ years.
+
+### Transition Period for Implementation
+
+The TCAC proposed a stepwise approach for implementing the catch allocation scheme over a period of 6 to 10 years for each stock, through annual increments during this transition period. The App follows the schedule proposed in [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E) whereby each annual percentage value defines the proportion of the catch taken by foreign fleets in the NJAs that is allocated to the quota.

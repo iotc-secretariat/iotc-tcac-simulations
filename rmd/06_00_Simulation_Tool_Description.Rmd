@@ -43,6 +43,7 @@ sec_pr = prop_section(
   header_first = bl_header_with_logo("IOTC-2025-TCAC15-INF02", "right"),
   header_default = bl_header_no_logo("IOTC-2025-TCAC15-INF02", "right")
 )
+
 ```
 
 ```{r TextStyles, echo = FALSE, eval = TRUE}
@@ -68,10 +69,7 @@ block_section(sec_pr)
 ```{r child = "06_03_Simulations.Rmd"}
 ```
 
-```{r child = "06_04_Shiny_Application.Rmd"}
-```
-
-```{r child = "06_05_Simulation_Results.Rmd"}
+```{r child = "06_04_Results.Rmd"}
 ```
 
 \pagebreak
@@ -89,3 +87,6 @@ block_section(sec_pr)
 ```{r child = "06_Appendix_03_Catch_Data", eval = FALSE}
 ```
 
+```{r, echo = F}
+block_section(sec_pr)
+```

@@ -1,6 +1,6 @@
 ## Appendix 2: Description of the Coastal State Dataset {#csFields}
 
-The `COASTAL_STATE_SOCIO_ECONOMIC` worksheet lists all IOTC CPCs identified as Coastal States, along with their development status and a set of socio-economic indicators aligned with the requirements of Option 1 and Option 2 under paragraph 6.6(1)(b) of [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E). The data are also available under the 'Coastal States Summary' tab in the [TCAC Simulation App](https://foodandagricultureorganization.shinyapps.io/iotc-tcac-simulations/).
+The 'COASTAL_STATE_SOCIO_ECONOMIC' worksheet lists all IOTC CPCs identified as Coastal States, along with their development status and a set of socio-economic indicators aligned with the requirements of Option 1 and Option 2 under paragraph 6.6(1)(b) of [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E). The data are also available under the 'Coastal States Summary' tab in the [TCAC Simulation App](https://foodandagricultureorganization.shinyapps.io/iotc-tcac-simulations/).
 
 - The Development Status was sourced from the [United Nations](https://www.un.org/development/desa/dpad/wp-content/uploads/sites/45/WESP2020_Annex.pdf) website
 

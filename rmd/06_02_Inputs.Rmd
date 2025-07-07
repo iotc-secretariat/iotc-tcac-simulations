@@ -2,7 +2,7 @@
 
 ## CPC Status and Characteristics
 
-The definitions of all parameters characterising each CPC in relation to the allocation criteria are provided in the Excel spreadsheet  [CPC_CONFIGURATIONS.xlsx](./CPC_CONFIGURATIONS.xlsx) file. This file contains two worksheets:
+The definitions of all parameters characterising each Contracting Party and Cooperating Non-Contracting Party (CPC) in relation to the allocation criteria are provided in the Excel spreadsheet  [CPC_CONFIGURATIONS.xlsx](./CPC_CONFIGURATIONS.xlsx) file. This file contains two worksheets:
   
 - The 'CPC' worksheet lists all current IOTC Contracting Parties (CPs), Liberia as a Cooperating Non-Contracting Party (CNCP), and Taiwan,China as a Fishing Entity (FE). It includes information on CPC status, classification as a Coastal State or Small Island Developing State (SIDS), and the presence and size of National Jurisdiction Areas (NJAs) within the IOTC Area of Competence
 
