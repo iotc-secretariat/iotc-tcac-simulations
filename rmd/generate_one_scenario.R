@@ -1,6 +1,6 @@
 # Source the scripts for loading and plotting the data
-setwd("./initialisation/")
-source("./00_CORE.R")
+setwd("..")
+source("./initialisation/00_CORE.R")
 
 # CONFIGURE ONE SCENARIO ####
 BASELINE_WEIGHT      = 0.1
@@ -40,14 +40,17 @@ CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_10 = ALLOCATION_TRANSITION[10]
 # Parameter to define inclusion/exclusion of catches in foreign NJAs
 OnlyHS = FALSE
 
-source("./05_SCENARIO_ALLOCATION_COMPUTATION.R")
-source("./06_SCENARIO_ALLOCATION_TABLES.R")
 
-setwd("../rmd")
+REPORTING_ENTITY = "AUS"
+
+source("./initialisation/05_SCENARIO_ALLOCATION_COMPUTATION.R")
+source("./initialisation/06_SCENARIO_ALLOCATION_TABLES.R")
+
+setwd("./rmd")
 
 # General report: All CPCs
 render("00_A_SINGLE_SIMULATION_ALL_CPCS.Rmd", 
        output_dir = "../outputs/scenarios/", 
-       output_file = "TAC_SIMULATION_SCENARIO_ALL_CPCS_EXAMPLE_ALL.docx"
+       output_file = "TAC_SIMULATION_SCENARIO_ALL_CPCS_EXAMPLE_ALL_TEST.docx"
 )
 
