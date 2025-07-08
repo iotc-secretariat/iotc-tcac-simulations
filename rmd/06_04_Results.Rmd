@@ -1,12 +1,12 @@
 ## Simulation Results {#simulationResults}
 
-The simulation results can be downloaded as an Excel file using the **Download** button in the 'Tables' tab. The filename corresponds to the date and time the download request was issued, formatted as a serialised timestamp (e.g., TCAC_simulation_2025_07_07_124531.xlsx). The file contains the following five worksheets:
+The simulation results can be downloaded as an Excel file using the **Download** button in the 'Tables' tab. The filename corresponds to the date and time the download request was issued. The file contains the following five worksheets:
 
-1. 'CPC_REFERENCES' containing the CPC configuration parameters as in [CPC_CONFIGURATIONS.xlsx](./CPC_CONFIGURATIONS.xlsx)
+1. 'CPC_REFERENCES' containing the CPC configuration parameters as in [CPC_CONFIGURATIONS.xlsx](https://www.iotc.org/TCAC/15/Data/02)
 
-2. 'COASTAL_STATE_REFERENCES' containing the coastal states configuration parameters as in [CPC_CONFIGURATIONS.xlsx](./CPC_CONFIGURATIONS.xlsx)
+2. 'COASTAL_STATE_REFERENCES' containing the coastal states configuration parameters as in [CPC_CONFIGURATIONS.xlsx](https://www.iotc.org/TCAC/15/Data/02)
 
-3. 'HISTORICAL_CATCHES' containing the historical catches for the selected species as extracted from [HISTORICAL_CATCH_ESTIMATES.csv](./HISTORICAL_CATCH_ESTIMATES.csv)
+3. 'HISTORICAL_CATCHES' containing the historical catches for the selected species as extracted from [HISTORICAL_CATCH_ESTIMATES.csv](https://www.iotc.org/TCAC/15/Data/01)
 
 4. 'SIMULATION_CONFIGURATION' containing all the configuration parameters set by the users for the specific simulation round
 

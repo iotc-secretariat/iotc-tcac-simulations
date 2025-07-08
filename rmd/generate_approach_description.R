@@ -6,6 +6,7 @@ library(rmarkdown)
 library(openxlsx)
 library(flextable)
 library(dplyr)
+library(data.table)
 
 setwd("./rmd")
 

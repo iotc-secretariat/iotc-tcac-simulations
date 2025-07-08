@@ -1,6 +1,30 @@
 # Appendix 3: Description of the Historical Catch Dataset {#catchFields}
 
+```{r}
+block_caption("Description of the fields included in the historical catch dataset (1950-2021) considered for the simulations", 
+              style = "Table Caption", 
+              autonum = run_autonum(seq_id = 'tab', 
+                                    bkm = "App3", 
+#                                    start_at = 1, 
+                                    pre_label = "Tab. A", 
+                                    prop = fp_text_lite(bold = TRUE))
+)
 
+catch_metadata = data.table(read.xlsx("../inputs/metadata_configuration_file.xlsx", sheet = "CATCH", sep.names = " "))
+
+catch_metadata[, -c("Code List")] %>% 
+  flextable() %>% 
+  flextable::font(part = "all", fontname = "Calibri") %>% 
+  flextable::fontsize(part = "all", size = 9) %>% 
+  flextable::align(part = "header", align = "center") %>% 
+  flextable::bold(part = "header") %>% 
+  flextable::bg(part = "header", bg = "gray") %>% 
+  flextable::colformat_num(j = 1, big.mark = "") %>% 
+  flextable::border_inner(border = fp_border()) %>%
+  flextable::border_outer(border = fp_border(width = 2)) %>% 
+  #mk_par(j = "Field Name", value = as_paragraph(hyperlink_text(x = `Field Name`, url = `Code List`))) %>% 
+  flextable::width(width = c(1.85, 3, 1.4))
+```
 
 
 <!-- The fields included in the catch dataset include:   -->

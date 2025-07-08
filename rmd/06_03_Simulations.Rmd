@@ -1,10 +1,10 @@
-## Simulations {#simulations}
+## Simulation Tool {#simulations}
 
-The Secretariat has developed an interactive simulation tool to facilitate the exploration of various configuration options for the components of catch allocation outlined in the Draft Allocation Regime (v7), presented at the 13^th^ session of the TCAC ([IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E)). The tool is an interactive R Shiny web application, available at [https://foodandagricultureorganization.shinyapps.io/iotc-tcac-simulations/](https://foodandagricultureorganization.shinyapps.io/iotc-tcac-simulations/), and is password-protected. Access credentials will be provided to participating delegates.
+The Secretariat has developed an interactive simulation tool to facilitate the exploration of various configuration options for the components of catch allocation outlined in the Draft Allocation Regime (v7), presented at the 13^th^ session of the TCAC ([IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E)). The tool is an interactive R Shiny web application, available at [https://foodandagricultureorganization.shinyapps.io/iotc-tcac-simulations/](https://foodandagricultureorganization.shinyapps.io/iotc-tcac-simulations/). The App is password-protected to support access control and monitoring, with login credentials provided to participating delegates. To ensure full transparency and reproducibility, all scripts and data used to generate the Shiny App are available in the [iotc-tcac-simulations](https://github.com/iotc-secretariat/iotc-tcac-simulations) repository, hosted on the IOTC Secretariat's GitHub.
 
 ### Total Allowable Catch Values
 
-The App allows users to set the TAC values, which are pre-filled by default in accordance with the most recent IOTC resolutions for bigeye and skipjack tunas, and with the MSY values derived from stock assessments for albacore, swordfish, and yellowfin tuna:
+The App allows users to set the TAC values, which are pre-filled by default in accordance with the most recent IOTC resolutions for bigeye and skipjack tunas, and with the Maximum Sustainable Yield (MSY) values derived from stock assessments for albacore, swordfish, and yellowfin tuna:
 
 - Albacore: 45,000 t  ([IOTC-2024-SC27-ES01](https://iotc.org/documents/albacore-tuna-0))
 
@@ -33,9 +33,7 @@ The relative contributions of the three components of Option 2 -- the Human Deve
 The weight assigned to the catch-based allocation corresponds to the remaining percentage once the baseline and coastal State weights have been specified. To calculate the catch-based allocation weight for each CPC, historical catch data are averaged over a user-defined time frame using one of two computational approaches:
   
 - the annual average across the selected time period; or
-- the average of the best _n_ years across the selected time period.
-
-In the latter case, the ‘best years’ are defined as those with the highest catches, within the selected period, for a given fleet and species over _n_ years.
+- the average of the best _n_ years across the selected time period, where the ‘best years’ are defined as those with the highest catches, within the selected period.
 
 ### Transition Period for Implementation
 
