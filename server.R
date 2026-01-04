@@ -45,32 +45,34 @@ server = function(input, output, session) {
           selected = "Simulation",
           tabPanel(
             "Reference data",
-            tabsetPanel(
-              tabPanel(
-                "CPC summary",
-                fluidRow(
-                  column(width = 12,
-                         DT::dataTableOutput("CPC_summary_table")
-                  )
-                )
-              ),
-              tabPanel(
-                "Coastal states summary",
-                fluidRow(
-                  column(width = 12,
-                         DT::dataTableOutput("coastal_states_summary_table")
-                  )
-                )
-              ),
-              tabPanel(
-                "Historical catches",
-                fluidRow(
-                  column(width = 12,
-                         DT::dataTableOutput("historical_catches_table")
-                  )
-                )
-              )
-            )
+            h3("Select a reporting entity"),
+            uiOutput("ref_entity_selector")
+            # tabsetPanel(
+            #   tabPanel(
+            #     "CPC summary",
+            #     fluidRow(
+            #       column(width = 12,
+            #              DT::dataTableOutput("CPC_summary_table")
+            #       )
+            #     )
+            #   ),
+            #   tabPanel(
+            #     "Coastal states summary",
+            #     fluidRow(
+            #       column(width = 12,
+            #              DT::dataTableOutput("coastal_states_summary_table")
+            #       )
+            #     )
+            #   ),
+            #   tabPanel(
+            #     "Historical catches",
+            #     fluidRow(
+            #       column(width = 12,
+            #              DT::dataTableOutput("historical_catches_table")
+            #       )
+            #     )
+            #   )
+            # )
           ),
           tabPanel(
             "Simulation",
@@ -325,6 +327,31 @@ server = function(input, output, session) {
       )
     )
 
+  })
+  
+  #REFERENCE DATA
+  #report by entity
+  output$ref_entity_selector = renderUI({
+    selectizeInput("ref_reporting_entity", label = NULL, selected = NULL, multiple = FALSE, 
+                   choices = {
+                     entity_choices <- CPC_data$CODE
+                     setNames(entity_choices, CPC_data$NAME_EN)
+                   },options = list( 
+                     render = I("{
+                      item: function(item, escape) {
+                        var icon_href = 'https://raw.githubusercontent.com/fdiwg/flags/main/'+item.value.toLowerCase()+'.gif';
+                        return '<div><img src=\"'+icon_href+'\" height=16 width=28 style=\"margin-bottom:3px\" /> ' + item.label + '</div>'; 
+                      },
+                      option: function(item, escape) { 
+                        var icon_href = 'https://raw.githubusercontent.com/fdiwg/flags/main/'+item.value.toLowerCase()+'.gif';
+                        return '<div><img src=\"'+icon_href+'\" height=16 width=28 style=\"margin-bottom:3px\" /> ' + item.label + '</div>'; 
+                      }
+                    }"
+                     ),
+                     placeholder = "Please select a reporting entity",
+                     onInitialize = I('function() { this.setValue(""); }')
+                   )
+    )
   })
   
   output$CPC_summary_table = 
@@ -782,11 +809,11 @@ server = function(input, output, session) {
                      render = I("{
                       item: function(item, escape) {
                         var icon_href = 'https://raw.githubusercontent.com/fdiwg/flags/main/'+item.value.toLowerCase()+'.gif';
-                        return '<div><img src=\"'+icon_href+'\" height=16 width=32/> ' + item.label + '</div>'; 
+                        return '<div><img src=\"'+icon_href+'\" height=16 width=28 style=\"margin-bottom:3px\" /> ' + item.label + '</div>'; 
                       },
                       option: function(item, escape) { 
                         var icon_href = 'https://raw.githubusercontent.com/fdiwg/flags/main/'+item.value.toLowerCase()+'.gif';
-                        return '<div><img src=\"'+icon_href+'\" height=16 width=32/> ' + item.label + '</div>'; 
+                        return '<div><img src=\"'+icon_href+'\" height=16 width=28 style=\"margin-bottom:3px\" /> ' + item.label + '</div>'; 
                       }
                     }"
                      ),
