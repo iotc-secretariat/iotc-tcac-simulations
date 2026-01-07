@@ -33,7 +33,7 @@ server = function(input, output, session) {
             width = 8,
             h4(
               img(src = "iotc-logo.png", height = "48px"), 
-              span("IOTC TCAC simulation tool v1.1 [ "),
+              span("IOTC TCAC simulation tool v2.0 [ "),
               a("source code", href = "https://github.com/iotc-secretariat/iotc-tcac-simulations", target = "_BLANK"),
               span(" | "),
               a("readme", href = "README.html", target = "_BLANK"),
@@ -98,22 +98,30 @@ server = function(input, output, session) {
                      ), 
                      
                      span(
-                       sliderInput("cs_weight", label = "Coastal state weight (%)",
+                       sliderInput("ds_weight", label = "Developing states weight (%)",
                                    width = "100%",
                                    min = 0, max = 100, value = 0, step = .5, animate = FALSE
                        )
                      ),
                      
+                     # span(
+                     #   sliderInput("cs_weight", label = "Coastal state weight (%)",
+                     #               width = "100%",
+                     #               min = 0, max = 100, value = 0, step = .5, animate = FALSE
+                     #   )
+                     # ),
+                     
                      br(),              
                      
                      strong("Baseline weight:"),      textOutput("ba_wgt", inline = TRUE),
-                     strong("Coastal state weight:"), textOutput("cs_wgt", inline = TRUE),
+                     strong("Developing states weight:"), textOutput("ds_wgt", inline = TRUE),
+                     # strong("Coastal state weight:"), textOutput("cs_wgt", inline = TRUE),
                      strong("Catch-based weight:"),   textOutput("cb_wgt", inline = TRUE),
                      
                      hr(), 
                      
                      tabsetPanel(
-                       selected = "Coastal state weights",
+                       selected = "Developing states weights",
                        tabPanel(
                          "Baseline weights",
                          fluidRow(
@@ -125,12 +133,12 @@ server = function(input, output, session) {
                          )
                        ),
                        tabPanel(
-                         "Coastal state weights",
+                         "Developing states weights",
                          fluidRow(
                            column(width = 12,
                                   div(class="top-padded",
                                       span(class="triple",
-                                           sliderInput("cs_weights", "Coastal state component weights (%)",
+                                           sliderInput("ds_weights", "Developing states component weights (%)",
                                                        width = "100%",
                                                        min = 0, max = 100, value = c(35, 82.5), step = .5, sep = "", animate = FALSE
                                            )
@@ -138,62 +146,84 @@ server = function(input, output, session) {
                                       
                                       br(),
                                       
-                                      strong("Equal weight:"),          textOutput("cs_eq_wgt", inline = TRUE),
-                                      strong("Socio-economic weight:"), textOutput("cs_se_wgt", inline = TRUE),
-                                      strong("EEZ weight:"),            textOutput("cs_ez_wgt", inline = TRUE),
-                                      
-                                      hr(),
-                                      
-                                      fluidRow(
-                                        column(
-                                          width = 12,
-                                          selectInput ("se_option", "Socio-economic options", width = "100%", choices = AVAILABLE_SOCIO_ECONOMIC_OPTIONS, selected = "O2")
-                                        )
-                                      ),
-                                      conditionalPanel(
-                                        condition = "input.se_option == 'O1'",
-                                        fluidRow(
-                                          column(
-                                            width = 12,
-                                            span(class="triple",
-                                                 sliderInput("cs_se_o1_weights", "Option #1 - Socio-economic sub-component weights (%)",
-                                                             width = "100%",
-                                                             min = 0, max = 100, value = c(30, 70), step = .5, sep = "", animate = FALSE
-                                                 )
-                                            ),
-                                            
-                                            br(),
-                                            
-                                            strong("Vulnerability weight:"),    textOutput("cs_se_vul_wgt",     inline = TRUE),
-                                            strong("Priority sectors weight:"), textOutput("cs_se_pri_sec_wgt", inline = TRUE),
-                                            strong("Disprop. burden weight:"),  textOutput("cs_se_dis_bur_wgt", inline = TRUE)
-                                          )
-                                        )
-                                      ),
-                                      conditionalPanel(
-                                        condition = "input.se_option == 'O2'",
-                                        fluidRow(
-                                          column(
-                                            width = 12,
-                                            span(class="triple",
-                                                 sliderInput("cs_se_o2_weights", "Option #2 - Socio-economic sub-component weights (%)",
-                                                             width = "100%",
-                                                             min = 0, max = 100, value = c(30, 60), step = .5, sep = "", animate = FALSE
-                                                 )
-                                            ),
-                                            
-                                            br(),
-                                            
-                                            strong("HDI weight:"),  textOutput("cs_se_HDI_wgt",  inline = TRUE),
-                                            strong("GNI weight:"),  textOutput("cs_se_GNI_wgt",  inline = TRUE),
-                                            strong("SIDS weight:"), textOutput("cs_se_SIDS_wgt", inline = TRUE)
-                                          )
-                                        )
-                                      )
+                                      strong("Equal weight:"),          textOutput("ds_eq_wgt", inline = TRUE),
+                                      strong("Least-Developed Country weight:"), textOutput("ds_ldc_wgt", inline = TRUE),
+                                      strong("SIDS weight:"),            textOutput("ds_sids_wgt", inline = TRUE),
+                                      hr()
                                   )
                            )
                          )
                        ),
+                       # tabPanel(
+                       #   "Coastal state weights",
+                       #   fluidRow(
+                       #     column(width = 12,
+                       #            div(class="top-padded",
+                       #                span(class="triple",
+                       #                     sliderInput("cs_weights", "Coastal state component weights (%)",
+                       #                                 width = "100%",
+                       #                                 min = 0, max = 100, value = c(35, 82.5), step = .5, sep = "", animate = FALSE
+                       #                     )
+                       #                ),
+                       #                
+                       #                br(),
+                       #                
+                       #                strong("Equal weight:"),          textOutput("cs_eq_wgt", inline = TRUE),
+                       #                strong("Socio-economic weight:"), textOutput("cs_se_wgt", inline = TRUE),
+                       #                strong("EEZ weight:"),            textOutput("cs_ez_wgt", inline = TRUE),
+                       #                
+                       #                hr()
+                       #                #SOCIO-ECONOMIC OPTIONS
+                       #                fluidRow(
+                       #                  column(
+                       #                    width = 12,
+                       #                    selectInput ("se_option", "Socio-economic options", width = "100%", choices = AVAILABLE_SOCIO_ECONOMIC_OPTIONS, selected = "O2")
+                       #                  )
+                       #                ),
+                       #                conditionalPanel(
+                       #                  condition = "input.se_option == 'O1'",
+                       #                  fluidRow(
+                       #                    column(
+                       #                      width = 12,
+                       #                      span(class="triple",
+                       #                           sliderInput("cs_se_o1_weights", "Option #1 - Socio-economic sub-component weights (%)",
+                       #                                       width = "100%",
+                       #                                       min = 0, max = 100, value = c(30, 70), step = .5, sep = "", animate = FALSE
+                       #                           )
+                       #                      ),
+                       # 
+                       #                      br(),
+                       # 
+                       #                      strong("Vulnerability weight:"),    textOutput("cs_se_vul_wgt",     inline = TRUE),
+                       #                      strong("Priority sectors weight:"), textOutput("cs_se_pri_sec_wgt", inline = TRUE),
+                       #                      strong("Disprop. burden weight:"),  textOutput("cs_se_dis_bur_wgt", inline = TRUE)
+                       #                    )
+                       #                  )
+                       #                ),
+                       #                conditionalPanel(
+                       #                  condition = "input.se_option == 'O2'",
+                       #                  fluidRow(
+                       #                    column(
+                       #                      width = 12,
+                       #                      span(class="triple",
+                       #                           sliderInput("cs_se_o2_weights", "Option #2 - Socio-economic sub-component weights (%)",
+                       #                                       width = "100%",
+                       #                                       min = 0, max = 100, value = c(30, 60), step = .5, sep = "", animate = FALSE
+                       #                           )
+                       #                      ),
+                       # 
+                       #                      br(),
+                       # 
+                       #                      strong("HDI weight:"),  textOutput("cs_se_HDI_wgt",  inline = TRUE),
+                       #                      strong("GNI weight:"),  textOutput("cs_se_GNI_wgt",  inline = TRUE),
+                       #                      strong("SIDS weight:"), textOutput("cs_se_SIDS_wgt", inline = TRUE)
+                       #                    )
+                       #                  )
+                       #                )
+                       #            )
+                       #     )
+                       #   )
+                       # ),
                        tabPanel(
                          "Catch-based weights",
                          div(class="top-padded", 
@@ -430,113 +460,149 @@ server = function(input, output, session) {
     formatToPercent(input$ba_weight)
   })
   
+  # Developing states weight
+  
+  output$ds_wgt = renderText({
+    formatToPercent(input$ds_weight)
+  })
+  
   # Coastal states weight
   
-  output$cs_wgt = renderText({
-    formatToPercent(input$cs_weight)
-  })
+  # output$cs_wgt = renderText({
+  #   formatToPercent(input$cs_weight)
+  # })
   
   # Catch-based weight
   
   output$cb_wgt = renderText({
-    formatToPercent(100 - input$ba_weight - input$cs_weight)
+    formatToPercent(100 - input$ba_weight - input$ds_weight)
   })
   
-  # Coastal states / equal weight
+  # Developing states / equal weight
   
-  output$cs_eq_wgt = renderText({
-    formatToPercent(input$cs_weights[1])
+  output$ds_eq_wgt = renderText({
+    formatToPercent(input$ds_weights[1])
   })
   
-  # Coastal states / socio-economic weight
+  # Developing states / LDC weight
   
-  output$cs_se_wgt = renderText({
-    formatToPercent(input$cs_weights[2] - input$cs_weights[1])
+  output$ds_ldc_wgt = renderText({
+    formatToPercent(input$ds_weights[2] - input$ds_weights[1])
   })
   
-  # Coastal states / NJA weight
+  # Developing states / SIDS weight
   
-  output$cs_ez_wgt = renderText({
-    formatToPercent(100 - input$cs_weights[2])
+  output$ds_sids_wgt = renderText({
+    formatToPercent(100 - input$ds_weights[2])
   })
   
-  # Coastal states / socio-economic weight / option #1 / vulnerability
-  
-  output$cs_se_vul_wgt = renderText({
-    formatToPercent(input$cs_se_o1_weights[1])
-  })
-  
-  # Coastal states / socio-economic weight / option #1 / priority sectors
-  
-  output$cs_se_pri_sec_wgt = renderText({
-    formatToPercent(input$cs_se_o1_weights[2] - input$cs_se_o1_weights[1])
-  })
-  
-  # Coastal states / socio-economic weight / option #1 / disproportionate burden
-  
-  output$cs_se_dis_bur_wgt = renderText({
-    formatToPercent(100 - input$cs_se_o1_weights[2])
-  })
-  
-  # Coastal states / socio-economic weight / option #2 / HDI
-  
-  output$cs_se_HDI_wgt = renderText({
-    formatToPercent(input$cs_se_o2_weights[1])
-  })
-  
-  # Coastal states / socio-economic weight / option #2 / GNI
-  
-  output$cs_se_GNI_wgt = renderText({
-    formatToPercent(input$cs_se_o2_weights[2] - input$cs_se_o2_weights[1])
-  })
-  
-  # Coastal states / socio-economic weight / option #2 / SIDS
-  
-  output$cs_se_SIDS_wgt = renderText({
-    formatToPercent(100 - input$cs_se_o2_weights[2])
-  })
+  # # Coastal states / equal weight
+  # 
+  # output$cs_eq_wgt = renderText({
+  #   formatToPercent(input$cs_weights[1])
+  # })
+  # 
+  # # Coastal states / socio-economic weight
+  # 
+  # output$cs_se_wgt = renderText({
+  #   formatToPercent(input$cs_weights[2] - input$cs_weights[1])
+  # })
+  # 
+  # # Coastal states / NJA weight
+  # 
+  # output$cs_ez_wgt = renderText({
+  #   formatToPercent(100 - input$cs_weights[2])
+  # })
+  # 
+  # # Coastal states / socio-economic weight / option #1 / vulnerability
+  # 
+  # output$cs_se_vul_wgt = renderText({
+  #   formatToPercent(input$cs_se_o1_weights[1])
+  # })
+  # 
+  # # Coastal states / socio-economic weight / option #1 / priority sectors
+  # 
+  # output$cs_se_pri_sec_wgt = renderText({
+  #   formatToPercent(input$cs_se_o1_weights[2] - input$cs_se_o1_weights[1])
+  # })
+  # 
+  # # Coastal states / socio-economic weight / option #1 / disproportionate burden
+  # 
+  # output$cs_se_dis_bur_wgt = renderText({
+  #   formatToPercent(100 - input$cs_se_o1_weights[2])
+  # })
+  # 
+  # # Coastal states / socio-economic weight / option #2 / HDI
+  # 
+  # output$cs_se_HDI_wgt = renderText({
+  #   formatToPercent(input$cs_se_o2_weights[1])
+  # })
+  # 
+  # # Coastal states / socio-economic weight / option #2 / GNI
+  # 
+  # output$cs_se_GNI_wgt = renderText({
+  #   formatToPercent(input$cs_se_o2_weights[2] - input$cs_se_o2_weights[1])
+  # })
+  # 
+  # # Coastal states / socio-economic weight / option #2 / SIDS
+  # 
+  # output$cs_se_SIDS_wgt = renderText({
+  #   formatToPercent(100 - input$cs_se_o2_weights[2])
+  # })
   
   prepare_output = function(input) {
     unit = input$out_unit
     
     ba_wgt = (input$ba_weight) * 0.01
-    cs_wgt = (input$cs_weight) * 0.01
-    cb_wgt = (1 - ba_wgt -  cs_wgt)
+    ds_wgt = (input$ds_weight) * 0.01
+    # cs_wgt = (input$cs_weight) * 0.01
+    cb_wgt = (1 - ba_wgt -  ds_wgt)
+    # cb_wgt = (1 - ba_wgt -  cs_wgt)
     
-    cs_eq_wgt = (input$cs_weights[1]) * 0.01
-    cs_se_wgt = (input$cs_weights[2] - input$cs_weights[1]) * 0.01
-    cs_ez_wgt = (100 - input$cs_weights[2] ) * 0.01
+    ds_eq_wgt = (input$ds_weights[1]) * 0.01
+    ds_ldc_wgt = (input$ds_weights[2] - input$ds_weights[1]) * 0.01
+    ds_sids_wgt = (100 - input$ds_weights[2]) * 0.01
     
-    cs_se_opt = input$se_option
+    # cs_eq_wgt = (input$cs_weights[1]) * 0.01
+    # cs_se_wgt = (input$cs_weights[2] - input$cs_weights[1]) * 0.01
+    # cs_ez_wgt = (100 - input$cs_weights[2] ) * 0.01
     
-    if(cs_se_opt == "O1") {
-      cs_se_option_subweights = 
-        list(
-          VUL_wgt     = (input$cs_se_o1_weights[1]) * 0.01,
-          PRI_SEC_wgt = (input$cs_se_o1_weights[2] - input$cs_se_o1_weights[1]) * 0.01,
-          DIS_BUR_wgt = (100 - input$cs_se_o1_weights[2]) * 0.01
-        )
-    } else {
-      cs_se_option_subweights = 
-        list(
-          HDI_wgt  = (input$cs_se_o2_weights[1]) * 0.01,
-          GNI_wgt  = (input$cs_se_o2_weights[2] - input$cs_se_o2_weights[1]) * 0.01,
-          SIDS_wgt = (100 - input$cs_se_o2_weights[2]) * 0.01
-        )
-    }
+    # cs_se_opt = input$se_option
+    # 
+    # if(cs_se_opt == "O1") {
+    #   cs_se_option_subweights = 
+    #     list(
+    #       VUL_wgt     = (input$cs_se_o1_weights[1]) * 0.01,
+    #       PRI_SEC_wgt = (input$cs_se_o1_weights[2] - input$cs_se_o1_weights[1]) * 0.01,
+    #       DIS_BUR_wgt = (100 - input$cs_se_o1_weights[2]) * 0.01
+    #     )
+    # } else {
+    #   cs_se_option_subweights = 
+    #     list(
+    #       HDI_wgt  = (input$cs_se_o2_weights[1]) * 0.01,
+    #       GNI_wgt  = (input$cs_se_o2_weights[2] - input$cs_se_o2_weights[1]) * 0.01,
+    #       SIDS_wgt = (100 - input$cs_se_o2_weights[2]) * 0.01
+    #     )
+    # }
     
     BA_ALLOCATION = baseline_allocation(CPC_DATA)
     
-    CS_ALLOCATION = coastal_state_allocation(CPC_data   = CPC_DATA,
-                                             CS_SE_data = CS_SE_DATA,
-                                             equal_portion_weight              = cs_eq_wgt,
-                                             socio_economic_weight             = cs_se_wgt,
-                                             socio_economic_option            = cs_se_opt,
-                                             socio_economic_option_subweights = cs_se_option_subweights,
-                                             #socio_economic_weight_HDI  = cs_se_HDI_wgt,
-                                             #socio_economic_weight_GNI  = cs_se_GNI_wgt,
-                                             #socio_economic_weight_SIDS = cs_se_SIDS_wgt,
-                                             NJA_weight                  = cs_ez_wgt)
+    DS_ALLOCATION = developing_state_allocation(CPC_data   = CPC_DATA,
+                                             DS_LDC_data = DS_LDC_DATA,
+                                             equal_portion_weight = ds_eq_wgt,
+                                             ldc_weight = ds_ldc_wgt,
+                                             sids_weight = ds_sids_wgt)
+    
+    # CS_ALLOCATION = coastal_state_allocation(CPC_data   = CPC_DATA,
+    #                                          CS_SE_data = CS_SE_DATA,
+    #                                          equal_portion_weight              = cs_eq_wgt,
+    #                                          socio_economic_weight             = cs_se_wgt,
+    #                                          socio_economic_option            = cs_se_opt,
+    #                                          socio_economic_option_subweights = cs_se_option_subweights,
+    #                                          #socio_economic_weight_HDI  = cs_se_HDI_wgt,
+    #                                          #socio_economic_weight_GNI  = cs_se_GNI_wgt,
+    #                                          #socio_economic_weight_SIDS = cs_se_SIDS_wgt,
+    #                                          NJA_weight                  = cs_ez_wgt)
     
     filtered_catch_data = subset_and_postprocess_catch_data(catch_data   = ALL_CATCH_DATA,
                                                             species_code = input$species,
@@ -551,7 +617,7 @@ server = function(input, output, session) {
     }
     
     CB_ALLOCATION = catch_based_allocation(CPC_data   = CPC_DATA,
-                                           CS_SE_data = CS_SE_DATA,
+                                           DS_LDC_data = DS_LDC_DATA,
                                            catch_data = filtered_catch_data,
                                            average_catch_function = average_catch_function,
                                            coastal_weights = c(input$cb_year01_wgt * 0.01, input$cb_year02_wgt * 0.01, input$cb_year03_wgt * 0.01,
@@ -562,7 +628,8 @@ server = function(input, output, session) {
     QUOTAS = # Scales down the resulting catches if the output unit is set to 'quota' (so as to get this as % instead)
       allocate_TAC(TAC = ifelse(unit == "quota", 1, input$tac), 
                    baseline_allocation      = BA_ALLOCATION, baseline_allocation_weight      = ba_wgt, #input$ba_wgt * 0.01,
-                   coastal_state_allocation = CS_ALLOCATION, coastal_state_allocation_weight = cs_wgt, #input$cs_wgt * 0.01,
+                   developing_state_allocation = DS_ALLOCATION, developing_state_allocation_weight = ds_wgt, #input$ds_wgt * 0.01,
+                   # coastal_state_allocation = CS_ALLOCATION, coastal_state_allocation_weight = cs_wgt, #input$cs_wgt * 0.01,
                    catch_based_allocation   = CB_ALLOCATION, catch_based_allocation_weight   = cb_wgt) #input$cb_wgt * 0.01)
     
     return(

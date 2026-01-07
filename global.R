@@ -70,6 +70,8 @@ AVAILABLE_HEATMAP_TYPES = list(`Global`  = "global",
 
 CPC_DATA   = CONFIG$CPC_CONFIG
 CS_SE_DATA = CONFIG$CS_SE_CONFIG
+DS_LDC_DATA = CS_SE_DATA #TO ASK about data
+DS_LDC_DATA$LDC_STATUS_WEIGHT = 1 - as.numeric(DS_LDC_DATA$HDI) #TO ASK how to get the LDC_STATUS_WEIGHT or if provided at source
 
 
 #shiny scripts

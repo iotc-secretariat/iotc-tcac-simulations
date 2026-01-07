@@ -13,6 +13,59 @@ baseline_allocation = function(CPC_data = read_configuration()$CPC_CONFIG) {
   )
 }
 
+## DEVELOPING STATE ALLOCATION ####
+#QUESTIONs:
+#- how to compute LDC_ALLOCATION?
+#- NJA_weight?
+developing_state_allocation = function(CPC_data,
+                                       DS_LDC_data,
+                                       equal_portion_weight,
+                                       ldc_weight,
+                                       sids_weight) {
+  
+  all_weights = equal_portion_weight + ldc_weight + sids_weight
+  
+  if(all_weights != 1)
+    stop(paste0("The weights provided for the allocation sub-components should sum up to 100% (now: ", all_weights * 100, "%)"))
+ 
+  print(paste0("Developing state allocation params: EQ_wgt = ", equal_portion_weight, ", ", 
+               "LDC_wgt = ", ldc_weight, ", ",
+               "SIDS_wgt = ", sids_weight))
+  
+  
+  ##TO REVIEW => recycled from coastal_state_allocation
+  
+  # We start by considering all CPCs with an area under national jurisdiction in the IO. 
+  # Some of them might *not* be considered coastal states though (e.g., EU)
+  component_allocation_table = DS_LDC_data[HAS_NJA_IO == TRUE]
+  
+  component_allocation_table = 
+    base::merge(
+      component_allocation_table, CPC_data[, .(CODE, NJA_SIZE_WEIGHTING)],
+      by = "CODE", all.x = TRUE
+    )
+  
+  # Coastal state allocation - para. 6.6(1)(a) - EQUAL PORTION
+  component_allocation_table[, EQUAL_ALLOCATION := 1.00 / nrow(component_allocation_table)]
+  component_allocation_table[DEVELOPMENT_STATUS == "LD", LDC_ALLOCATION := LDC_STATUS_WEIGHT / sum(LDC_STATUS_WEIGHT, na.rm = TRUE)]
+  component_allocation_table[DEVELOPMENT_STATUS != "DE", SIDS_ALLOCATION := SIDS_STATUS_WEIGHT / sum(SIDS_STATUS_WEIGHT, na.rm = TRUE)]
+  
+  # component_allocation_table[is.na(HDI_ALLOCATION),  HDI_ALLOCATION  := 0] #TO REMOVE?
+  # component_allocation_table[is.na(GNI_ALLOCATION),  GNI_ALLOCATION  := 0] #TO REMOVE?
+  component_allocation_table[is.na(LDC_ALLOCATION), LDC_ALLOCATION := 0] #NEW need LDC_STATUS_WEIGHT
+  component_allocation_table[is.na(SIDS_ALLOCATION), SIDS_ALLOCATION := 0]
+  
+  #developing state allocation table
+  component_allocation_table = 
+    component_allocation_table[, DEVELOPING_STATE_ALLOCATION := ((equal_portion_weight * EQUAL_ALLOCATION) + 
+                                                                (ldc_weight * LDC_ALLOCATION) + 
+                                                                (sids_weight * SIDS_ALLOCATION))][, .(CPC_CODE = CODE, DEVELOPING_STATE_ALLOCATION)]
+  
+  
+  return(component_allocation_table)
+   
+}
+
 ## COASTAL STATE ALLOCATION ####
 
 # Performs the coastal state allocation, considering different options for the socio-economic part, with different socio-economic sub-weights to be provided
@@ -21,8 +74,8 @@ coastal_state_allocation = function(CPC_data,
                                     CS_SE_data,
                                     equal_portion_weight,
                                     socio_economic_weight,
-                                    socio_economic_option,
-                                    socio_economic_option_subweights, # A list of weights depending on the selected socio-economic option (see previous parameter)
+                                    socio_economic_option = NULL,
+                                    socio_economic_option_subweights = NULL, # A list of weights depending on the selected socio-economic option (see previous parameter)
                                     NJA_weight
                                    ) {
   
@@ -35,9 +88,10 @@ coastal_state_allocation = function(CPC_data,
                                                 "SE_wgt = ", socio_economic_weight, ", ",
                                                 "EZ_wgt = ", NJA_weight))
 
-  print(paste0("Coastal state socio-economic allocation option: ", socio_economic_option))
+  all_se_weights = NULL
+  if(!is.null(socio_economic_option)) print(paste0("Coastal state socio-economic allocation option: ", socio_economic_option))
   
-  if(socio_economic_option == "O1") { # First option (see para. 6.6(1)(b)
+  if(!is.null(socio_economic_option)) if(socio_economic_option == "O1") { # First option (see para. 6.6(1)(b)
     print(paste0("Coastal state socio-economic allocation params: vul_wgt = ",     socio_economic_option_subweights$VUL_wgt,     ", ", 
                                                                  "pri_sec_wgt = ", socio_economic_option_subweights$PRI_SEC_wgt, ", ",
                                                                  "dis_bur_wgt = ", socio_economic_option_subweights$DIS_BUR_wgt))
@@ -45,7 +99,7 @@ coastal_state_allocation = function(CPC_data,
     all_se_weights = socio_economic_option_subweights$VUL + socio_economic_option_subweights$PRI_SEC + socio_economic_option_subweights$DIS_BUR
   }
     
-  if(socio_economic_option == "O2") { # Second option (see para. 6.6(1)(b)
+  if(!is.null(socio_economic_option)) if(socio_economic_option == "O2") { # Second option (see para. 6.6(1)(b)
     print(paste0("Coastal state socio-economic allocation params: HDI_wgt = ",  socio_economic_option_subweights$HDI_wgt, ", ", 
                                                                  "GNI_wgt = ",  socio_economic_option_subweights$GNI_wgt, ", ",
                                                                  "SIDS_wgt = ", socio_economic_option_subweights$SIDS_wgt))
@@ -53,7 +107,7 @@ coastal_state_allocation = function(CPC_data,
     all_se_weights = socio_economic_option_subweights$HDI + socio_economic_option_subweights$GNI + socio_economic_option_subweights$SIDS
   }
   
-  if(all_se_weights != 1)
+  if(!is.null(all_se_weights)) if(all_se_weights != 1)
     stop(paste0("The weights provided for the socio-economic allocation sub-components should sum up to 100% (now: ", all_se_weights * 100, "%)"))
   
   # We start by considering all CPCs with an area under national jurisdiction in the IO. 
@@ -132,7 +186,7 @@ coastal_state_allocation = function(CPC_data,
 
   # Puts together the final allocation table with all three components 
   
-  if(socio_economic_option == "O1") { # First option
+  if(!is.null(socio_economic_option)) if(socio_economic_option == "O1") { # First option
     component_allocation_table = 
       component_allocation_table[, COASTAL_STATE_ALLOCATION := ((equal_portion_weight * EQUAL_ALLOCATION) + 
                                                                 (socio_economic_weight * (socio_economic_option_subweights$VUL_wgt     * VUL_ALLOCATION)    ) + 
@@ -141,8 +195,8 @@ coastal_state_allocation = function(CPC_data,
                                                                 (NJA_weight * NJA_ALLOCATION))][, .(CPC_CODE = CODE, COASTAL_STATE_ALLOCATION)]
   }
 
-  if(socio_economic_option == "O2") { # Second option
-    component_allocation_table_final = 
+  if(!is.null(socio_economic_option)) if(socio_economic_option == "O2") { # Second option
+    component_allocation_table = 
       component_allocation_table[, .(EQUAL_PORTION_WEIGHT  = equal_portion_weight, 
                                      EQUAL_ALLOCATION, 
                                      CSA_EQUAL_ALLOCATION  = equal_portion_weight * EQUAL_ALLOCATION, 
@@ -165,11 +219,12 @@ coastal_state_allocation = function(CPC_data,
                                                                   (NJA_weight * NJA_ALLOCATION))), .(CPC_CODE = CODE)]
   }
   
-  return(component_allocation_table_final)
+  return(component_allocation_table)
 }
 
 ## CATCH-BASED ALLOCATION FUNCTION ####
 catch_based_allocation = function(CPC_data,   # Unused
+                                  DS_LDC_data, # TO ASK IF WE NEED IT
                                   CS_SE_data, # Unused
                                   catch_data,
                                   average_catch_function,
@@ -208,39 +263,47 @@ catch_based_allocation = function(CPC_data,   # Unused
 # Performs the allocation of a given TAC (in tons) to the weighted annual quotas (in %) using the various coefficients for the
 # three main components and their respective weights
 allocate_TAC = function(TAC, 
-                        baseline_allocation,      baseline_allocation_weight, 
-                        coastal_state_allocation, coastal_state_allocation_weight,
-                        catch_based_allocation,   catch_based_allocation_weight) {
+                        baseline_allocation,
+                        baseline_allocation_weight,
+                        developing_state_allocation,
+                        developing_state_allocation_weight,
+                        # coastal_state_allocation,
+                        # coastal_state_allocation_weight,
+                        catch_based_allocation,
+                        catch_based_allocation_weight) {
   
-  all_weights = baseline_allocation_weight + coastal_state_allocation_weight + catch_based_allocation_weight
+  all_weights = baseline_allocation_weight + developing_state_allocation_weight + catch_based_allocation_weight
 
   if(round(all_weights * 100, 1) != 100)
     stop(paste0("The weights provided for the various allocation components should sum up to 100% (now:", all_weights * 100, "%)"))
 
   print(paste0("Allocate TAC parameters: [ TAC = ", TAC, 
-                                        ", BA_wgt = ", baseline_allocation_weight, 
-                                        ", CS_wgt = ", coastal_state_allocation_weight,
+                                        ", BA_wgt = ", baseline_allocation_weight,
+                                        ", DS_wgt = ", developing_state_allocation_weight,
+                                        #", CS_wgt = ", coastal_state_allocation_weight,
                                         ", CB_wgt = ", catch_based_allocation_weight, " ]"))
   
   # Need to 'copy' the inputs, otherwise the code below will update the original allocation tables...
   baseline_allocation      = copy(baseline_allocation)    
-  coastal_state_allocation = copy(coastal_state_allocation)
+  developing_state_allocation = copy(developing_state_allocation)
+  # coastal_state_allocation = copy(coastal_state_allocation)
   catch_based_allocation   = copy(catch_based_allocation)
 
   baseline_allocation     [, BASELINE_ALLOCATION            := TAC * BASELINE_ALLOCATION      * baseline_allocation_weight]
-  coastal_state_allocation[, COASTAL_STATE_ALLOCATION       := TAC * COASTAL_STATE_ALLOCATION * coastal_state_allocation_weight]
+  developing_state_allocation[, DEVELOPING_STATE_ALLOCATION       := TAC * DEVELOPING_STATE_ALLOCATION * developing_state_allocation_weight]
+  # coastal_state_allocation[, COASTAL_STATE_ALLOCATION       := TAC * COASTAL_STATE_ALLOCATION * coastal_state_allocation_weight]
   catch_based_allocation  [, 2:ncol(catch_based_allocation) := lapply(.SD, function(x) { x * TAC * catch_based_allocation_weight }), .SDcols = 2:ncol(catch_based_allocation)]
   
   # This can definitely be implemented better...
-  constant_allocation = base::merge(baseline_allocation, coastal_state_allocation,  
+  constant_allocation = base::merge(baseline_allocation, developing_state_allocation,  
                               by = "CPC_CODE", 
                               all.x = TRUE)
   
   # Removes NAs in the coastal state allocation (for non-coastal CPCs)
-  constant_allocation[is.na(COASTAL_STATE_ALLOCATION), COASTAL_STATE_ALLOCATION := 0.0]
+  constant_allocation[is.na(DEVELOPING_STATE_ALLOCATION), DEVELOPING_STATE_ALLOCATION := 0.0]
   
-  # Calculates the 'constant' allocation for all CPCs as the sum of the baseline allocation and the coastal state allocation factor (does not change with selected catch periods and coastal catches weights)
-  constant_allocation = constant_allocation[, CONSTANT_ALLOCATION := BASELINE_ALLOCATION + COASTAL_STATE_ALLOCATION][, .(CPC_CODE, CONSTANT_ALLOCATION)]
+  # Calculates the 'constant' allocation for all CPCs as the sum of the baseline allocation and the developing state allocation factor (does not change with selected catch periods and coastal catches weights)
+  constant_allocation = constant_allocation[, CONSTANT_ALLOCATION := BASELINE_ALLOCATION + DEVELOPING_STATE_ALLOCATION][, .(CPC_CODE, CONSTANT_ALLOCATION)]
   
   # This also can definitely be implemented better...
   final_allocation_table = base::merge(baseline_allocation[, .(CPC_CODE)], catch_based_allocation,
