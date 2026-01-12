@@ -45,8 +45,50 @@ server = function(input, output, session) {
           selected = "Simulation",
           tabPanel(
             "Reference data",
-            h3("Select a reporting entity"),
-            uiOutput("ref_entity_selector")
+            fluidRow(
+              column(
+                width = 6,
+                h3("Select a CPC"),
+                uiOutput("ref_cpc_selector")
+              ),
+              column(
+                width = 6,
+                bs4Card(
+                  title = "CPC Information",
+                  status = "primary",
+                  solidHeader = TRUE,
+                  collapsible = FALSE,
+                  width = 12,
+                  br(),
+                  # Key properties listed
+                  uiOutput("ref_cpc_characteristics")
+                )
+              )
+            ),
+            hr(),
+            fluidRow(
+              column(
+                width = 12,
+                tabsetPanel(
+                  selected = "Chart",
+                  type = "pills",
+                  tabPanel(
+                    "Chart",
+                    uiOutput("ref_cpc_data_species_selector"),
+                    plotly::plotlyOutput("ref_cpc_catch_plot")
+                  ),
+                  tabPanel(
+                    "Data",
+                    fluidRow(
+                      column(
+                        width = 12,
+                        DT::dataTableOutput("ref_cpc_catch_table")
+                      )
+                    )
+                  )
+                )
+              )
+            )
             # tabsetPanel(
             #   tabPanel(
             #     "CPC summary",
@@ -360,12 +402,31 @@ server = function(input, output, session) {
   })
   
   #REFERENCE DATA
-  #report by entity
-  output$ref_entity_selector = renderUI({
-    selectizeInput("ref_reporting_entity", label = NULL, selected = NULL, multiple = FALSE, 
+  #reactives
+  selected_cpc <- reactive({
+    req(input$ref_cpc)
+    filter(CPC_DATA, CODE == input$ref_cpc) %>% slice(1)
+  })
+  selected_cpc_catches <- reactive({
+    req(input$ref_cpc)
+    catch_selected <- ALL_CATCH_DATA[ALL_CATCH_DATA$FLEET_CODE == input$ref_cpc]
+    catch_selected[ASSIGNED_AREA == "HIGH_SEAS", ORIGIN := "High Seas"]
+    catch_selected[ASSIGNED_AREA == paste0("NJA_", FLEET_CODE), ORIGIN := "Own NJA"]
+    catch_selected[ASSIGNED_AREA != paste0("NJA_", FLEET_CODE) & ASSIGNED_AREA != "HIGH_SEAS", ORIGIN := "Foreign NJAs"]
+    catch_selected
+  })
+  selected_cpc_species_catches <- reactive({
+    req(input$ref_cpc)
+    req(input$ref_cpc_data_species)
+    selected_cpc_catches()[SPECIES_CODE == input$ref_cpc_data_species]
+  })
+  
+  #report by CPC
+  output$ref_cpc_selector = renderUI({
+    selectizeInput("ref_cpc", label = NULL, selected = NULL, multiple = FALSE, 
                    choices = {
-                     entity_choices <- CPC_data$CODE
-                     setNames(entity_choices, CPC_data$NAME_EN)
+                     entity_choices <- CPC_DATA$CODE
+                     setNames(entity_choices, CPC_DATA$NAME_EN)
                    },options = list( 
                      render = I("{
                       item: function(item, escape) {
@@ -378,81 +439,98 @@ server = function(input, output, session) {
                       }
                     }"
                      ),
-                     placeholder = "Please select a reporting entity",
+                     placeholder = "Please select a CPC",
                      onInitialize = I('function() { this.setValue(""); }')
                    )
     )
   })
-  
-  output$CPC_summary_table = 
-    DT::renderDataTable(
-      DT::datatable(
-        CPC_DATA, 
-        class = "stripe cell-border",
-        rownames = FALSE,
-        escape = FALSE,
-        colnames = c("Code", "Name (English)", "Name (French)", "Status code", "Status", "Is SIDS?", "Is coastal?", "Has NJA in the IO?", "NJA size", "NJA vs. IOTC size", "NJA size weighting"),
-        options = 
-          list(
-            pageLength= 15,
-            searching = TRUE,
-            autoWidth = TRUE,
-            paging    = TRUE,
-            info      = TRUE
-          ),
-        filter = list(position = "top") 
+  #chart species selector
+  output$ref_cpc_data_species_selector = renderUI({
+    req(input$ref_cpc)
+    if(!is.null(input$ref_cpc) & input$ref_cpc != ""){
+      req(!is.null(selected_cpc_catches()))
+      tagList(
+        h3("Select a species"),
+        selectizeInput("ref_cpc_data_species", label = NULL, selected = NULL, multiple = FALSE, 
+                     choices = {
+                       entity_choices <- unique(selected_cpc_catches()$SPECIES_CODE)
+                       entity_choices <- entity_choices[order(entity_choices)]
+                       entity_names = fdi4R::cl_asfis_species[fdi4R::cl_asfis_species$code %in% entity_choices,]
+                       entity_names = entity_names[order(entity_names$code),]$label
+                       setNames(entity_choices, entity_names)
+                     },options = list( 
+                       placeholder = "Please select a species",
+                       onInitialize = I('function() { this.setValue(""); }')
+                     )
+        )
       )
-      %>% DT::formatCurrency("NJA_SIZE", mark = ",", digits = 0, currency = "&nbsp;km<sup>2</sup>", before = FALSE)
-      %>% DT::formatPercentage("NJA_IOTC_RELATIVE_SIZE", digits = 2)
-    )
+    }else{
+      tags$p(tags$em("Select a CPC to get information"))
+    }
+  })
   
-  output$coastal_states_summary_table = 
-    DT::renderDataTable(
-      DT::datatable(
-        CS_SE_DATA, 
-        class = "stripe cell-border",
-        rownames = FALSE,
-        escape = FALSE,
-        colnames = c("Code", "Name (English)", "Name (French)", "Is&nbsp;coastal?", "Has&nbsp;NJA&nbsp;area?", 
-                     "Development&nbsp;status", "Pro&nbsp;capita&nbsp;fish&nbsp;consumption", "CUV&nbsp;index", "%&nbsp;workers&nbsp;employed&nbsp;SSF", "%&nbsp;fisheries&nbsp;contrib.&nbsp;to&nbsp;GDP", "%&nbsp;fisheries&nbsp;contrib.&nbsp;total&nbsp;export", 
-                     "HDI", "HDI&nbsp;tier", "HDI&nbsp;tier&nbsp;weight", "GNI", "GNI&nbsp;weight", "SIDS&nbsp;status", "SIDS&nbsp;status&nbsp;weight"),
-        options = 
-          list(
-            pageLength= 15,
-            searching = TRUE,
-            autoWidth = TRUE,
-            paging    = TRUE,
-            info      = TRUE
-          ),
-        filter = list(position = "top")
+  output$ref_cpc_characteristics <- renderUI({
+    req(input$ref_cpc)
+    if(!is.null(input$ref_cpc) & input$ref_cpc != ""){
+      tags$ul(class = "list-unstyled",
+              tags$li(tags$p("Name: ", tags$b(selected_cpc()$NAME_EN))),
+              tags$li(tags$p("Name (French): ", tags$b(selected_cpc()$NAME_FR))),
+              tags$li(tags$p("Status: ", tags$b(selected_cpc()$STATUS))),
+              tags$li(tags$p("SIDS?: ", if(selected_cpc()$IS_SIDS) tags$b("Yes") else tags$b("No")))
       )
-      %>% DT::formatCurrency("PER_CAPITA_FISH_CONSUMPTION_KG", mark = ",", digits = 2, currency = "&nbsp;kg&nbsp;/&nbsp;year", before = FALSE)
-      %>% DT::formatRound(c("HDI_TIER_WEIGHT", "GNI_STATUS_WEIGHT"), digits = 2)
-      %>% DT::formatPercentage(c("PROP_WORKERS_EMPLOYED_SSF", "PROP_FISHERIES_CONTRIBUTION_GDP", "PROP_EXPORT_VALUE_FISHERY"), digits = 2)
-      %>% DT::formatRound("HDI_STATUS", digits = 3)
-    )
+    }else{
+      tags$p(tags$em("Select a CPC to get information"))
+    }
+  })
   
-  output$historical_catches_table = 
-    DT::renderDataTable(
-      DT::datatable(
-        ALL_CATCH_DATA, 
-        class = "stripe cell-border",
-        rownames = FALSE,
-        escape = FALSE,
-        colnames = c("Year", "Flag state", "Fleet", "Type of fishery", "Fishery", "School type", "Assigned area", "Species", "Catches"),
-        options = 
-          list(
-            pageLength= 50,
-            searching = TRUE,
-            autoWidth = TRUE,
-            paging    = TRUE,
-            info      = TRUE
-          ),
-        filter = list(position = "top")
-      )
-      %>% DT::formatCurrency("CATCH_MT", mark = ",", digits = 2, currency = "&nbsp;t", before = FALSE)
+  output$ref_cpc_catch_plot <- plotly::renderPlotly({
+    req(input$ref_cpc_data_species)
+    req(!is.null(selected_cpc_catches()))
+    plotly::plot_ly(selected_cpc_species_catches(), x = ~YEAR, y = ~CATCH_MT, type = 'bar', split = ~ORIGIN) %>% 
+      plotly::layout(
+        xaxis = list(title = ""), 
+        yaxis = list(title = 'Total catch (t)', tickformat = ",.0f"), 
+        colorway = RColorBrewer::brewer.pal(3, "Set1"),
+        barmode = 'stack', 
+        legend = list(
+          orientation = "h", 
+          x = 0.5, 
+          y = -0.05, 
+          xanchor = "center", 
+          yanchor = "top"
+        )
     )
+  })
   
+  output$ref_cpc_catch_table = DT::renderDataTable({
+    req(input$ref_cpc)
+    DT::datatable(
+      selected_cpc_catches(),
+      class = "stripe cell-border",
+      rownames = FALSE,
+      escape = FALSE,
+      colnames = c("Year", "Flag state", "Fleet", "Type of fishery", "Fishery", "School type", "Assigned area", "Species", "Catches", "Water Jurisdiction Area"),
+      options =
+        list(
+          autoWidth = FALSE,
+          dom = 'Bfrtip',
+          deferRender = TRUE,
+          scroll = FALSE,
+          pageLength= 10,
+          searching = TRUE,
+          autoWidth = TRUE,
+          paging    = TRUE,
+          info      = TRUE,
+          buttons = list(
+            list(extend = 'copy'),
+            list(extend = 'csv', filename = sprintf("IOTC_TCAC_Historical_Catches_for_%s_species_%s.csv", input$ref_cpc, input$ref_cpc_data_species) , title = NULL, header = TRUE),
+            list(extend = 'excel', filename =  sprintf("IOTC_TCAC_Historical_Catches_for_%s_species_%s.xlsx", input$ref_cpc, input$ref_cpc_data_species), title = NULL, header = TRUE),
+            list(extend = "pdf", title = sprintf("IOTC_TCAC_Historical_Catches_for_%s_species_%s.pdf", input$ref_cpc, input$ref_cpc_data_species), header = TRUE, orientation = "landscape")
+          )
+        ),
+      filter = list(position = "top")
+    ) %>% DT::formatCurrency("CATCH_MT", mark = ",", digits = 2, currency = "&nbsp;t", before = FALSE)
+  })
   
   # Baseline weight
   
