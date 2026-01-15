@@ -13,8 +13,20 @@ server = function(input, output, session) {
     data = user_base,
     user_col = user,
     pwd_col = password,
-    log_out = reactive(logout_init())
+    log_out = reactive({
+      logout_init()
+    })
   )
+  
+  observe({
+    if(credentials()$user_auth){
+      shinyjs::show("main-content")
+      shinyjs::hide("login-wrapper")
+    }else{
+      shinyjs::hide("main-content")
+      shinyjs::show("login-wrapper")
+    }
+  })
   
   # app 
   output$main <- renderUI({
@@ -28,57 +40,43 @@ server = function(input, output, session) {
         )
       ),
       tags$div(
-        fluidRow(
-          column(
-            width = 8,
-            h4(
-              img(src = "iotc-logo.png", height = "48px"), 
-              span("IOTC TCAC simulation tool v2.0 [ "),
-              a("source code", href = "https://github.com/iotc-secretariat/iotc-tcac-simulations", target = "_BLANK"),
-              span(" | "),
-              a("readme", href = "README.html", target = "_BLANK"),
-              span(" ]")
-            )
-          )
-        ),
         tabsetPanel(
-          selected = "Simulation",
+          selected = "simulation",
           tabPanel(
-            "Reference data",
+            title = "Reference data",
+            value = "ref_data",
             fluidRow(
               column(
-                width = 6,
-                h3("Select a CPC"),
+                width = 3,
+                h5("Select a entity"),
                 uiOutput("ref_cpc_selector")
               ),
               column(
+                width = 3,
+                uiOutput("cpc_map_wrapper")
+              ),
+              column(
                 width = 6,
-                bs4Card(
-                  title = "CPC Information",
-                  status = "primary",
-                  solidHeader = TRUE,
-                  collapsible = FALSE,
-                  width = 12,
-                  br(),
-                  # Key properties listed
-                  uiOutput("ref_cpc_characteristics")
-                )
+                uiOutput("ref_cpc_card")
               )
+              
             ),
             hr(),
             fluidRow(
               column(
                 width = 12,
                 tabsetPanel(
-                  selected = "Chart",
+                  selected = "ref_data_chart",
                   type = "pills",
                   tabPanel(
-                    "Chart",
+                    title = "Chart",
+                    value = "ref_data_chart",
                     uiOutput("ref_cpc_data_species_selector"),
                     plotly::plotlyOutput("ref_cpc_catch_plot")
                   ),
                   tabPanel(
-                    "Data",
+                    title = "Data",
+                    value = "ref_data_table",
                     fluidRow(
                       column(
                         width = 12,
@@ -89,35 +87,10 @@ server = function(input, output, session) {
                 )
               )
             )
-            # tabsetPanel(
-            #   tabPanel(
-            #     "CPC summary",
-            #     fluidRow(
-            #       column(width = 12,
-            #              DT::dataTableOutput("CPC_summary_table")
-            #       )
-            #     )
-            #   ),
-            #   tabPanel(
-            #     "Coastal states summary",
-            #     fluidRow(
-            #       column(width = 12,
-            #              DT::dataTableOutput("coastal_states_summary_table")
-            #       )
-            #     )
-            #   ),
-            #   tabPanel(
-            #     "Historical catches",
-            #     fluidRow(
-            #       column(width = 12,
-            #              DT::dataTableOutput("historical_catches_table")
-            #       )
-            #     )
-            #   )
-            # )
           ),
           tabPanel(
-            "Simulation",
+            title = "Simulation",
+            value = "simulation",
             fluidRow(
               column(width = 4,
                      style = "border-right: 1px #ccc solid; background-color:#ccc;",
@@ -146,18 +119,10 @@ server = function(input, output, session) {
                        )
                      ),
                      
-                     # span(
-                     #   sliderInput("cs_weight", label = "Coastal state weight (%)",
-                     #               width = "100%",
-                     #               min = 0, max = 100, value = 0, step = .5, animate = FALSE
-                     #   )
-                     # ),
-                     
                      br(),              
                      
                      strong("Baseline weight:"),      textOutput("ba_wgt", inline = TRUE),
                      strong("Developing states weight:"), textOutput("ds_wgt", inline = TRUE),
-                     # strong("Coastal state weight:"), textOutput("cs_wgt", inline = TRUE),
                      strong("Catch-based weight:"),   textOutput("cb_wgt", inline = TRUE),
                      
                      hr(), 
@@ -196,76 +161,6 @@ server = function(input, output, session) {
                            )
                          )
                        ),
-                       # tabPanel(
-                       #   "Coastal state weights",
-                       #   fluidRow(
-                       #     column(width = 12,
-                       #            div(class="top-padded",
-                       #                span(class="triple",
-                       #                     sliderInput("cs_weights", "Coastal state component weights (%)",
-                       #                                 width = "100%",
-                       #                                 min = 0, max = 100, value = c(35, 82.5), step = .5, sep = "", animate = FALSE
-                       #                     )
-                       #                ),
-                       #                
-                       #                br(),
-                       #                
-                       #                strong("Equal weight:"),          textOutput("cs_eq_wgt", inline = TRUE),
-                       #                strong("Socio-economic weight:"), textOutput("cs_se_wgt", inline = TRUE),
-                       #                strong("EEZ weight:"),            textOutput("cs_ez_wgt", inline = TRUE),
-                       #                
-                       #                hr()
-                       #                #SOCIO-ECONOMIC OPTIONS
-                       #                fluidRow(
-                       #                  column(
-                       #                    width = 12,
-                       #                    selectInput ("se_option", "Socio-economic options", width = "100%", choices = AVAILABLE_SOCIO_ECONOMIC_OPTIONS, selected = "O2")
-                       #                  )
-                       #                ),
-                       #                conditionalPanel(
-                       #                  condition = "input.se_option == 'O1'",
-                       #                  fluidRow(
-                       #                    column(
-                       #                      width = 12,
-                       #                      span(class="triple",
-                       #                           sliderInput("cs_se_o1_weights", "Option #1 - Socio-economic sub-component weights (%)",
-                       #                                       width = "100%",
-                       #                                       min = 0, max = 100, value = c(30, 70), step = .5, sep = "", animate = FALSE
-                       #                           )
-                       #                      ),
-                       # 
-                       #                      br(),
-                       # 
-                       #                      strong("Vulnerability weight:"),    textOutput("cs_se_vul_wgt",     inline = TRUE),
-                       #                      strong("Priority sectors weight:"), textOutput("cs_se_pri_sec_wgt", inline = TRUE),
-                       #                      strong("Disprop. burden weight:"),  textOutput("cs_se_dis_bur_wgt", inline = TRUE)
-                       #                    )
-                       #                  )
-                       #                ),
-                       #                conditionalPanel(
-                       #                  condition = "input.se_option == 'O2'",
-                       #                  fluidRow(
-                       #                    column(
-                       #                      width = 12,
-                       #                      span(class="triple",
-                       #                           sliderInput("cs_se_o2_weights", "Option #2 - Socio-economic sub-component weights (%)",
-                       #                                       width = "100%",
-                       #                                       min = 0, max = 100, value = c(30, 60), step = .5, sep = "", animate = FALSE
-                       #                           )
-                       #                      ),
-                       # 
-                       #                      br(),
-                       # 
-                       #                      strong("HDI weight:"),  textOutput("cs_se_HDI_wgt",  inline = TRUE),
-                       #                      strong("GNI weight:"),  textOutput("cs_se_GNI_wgt",  inline = TRUE),
-                       #                      strong("SIDS weight:"), textOutput("cs_se_SIDS_wgt", inline = TRUE)
-                       #                    )
-                       #                  )
-                       #                )
-                       #            )
-                       #     )
-                       #   )
-                       # ),
                        tabPanel(
                          "Catch-based weights",
                          div(class="top-padded", 
@@ -349,9 +244,10 @@ server = function(input, output, session) {
                      h5(strong("Results")),
                      hr(),
                      tabsetPanel(
-                       selected = "Tables",
+                       selected = "simu_all_entities",
                        tabPanel(
-                         "Tables",
+                         title = "All entities",
+                         value = "simu_all_entities",
                          fluidRow(
                            column(
                              width = 3,
@@ -362,32 +258,83 @@ server = function(input, output, session) {
                              selectInput("out_heat_style", "Heatmap style", width = "100%", choices = AVAILABLE_HEATMAP_STYLES, selected = "color")
                            ),
                            column(
-                             width = 3,
+                             width = 2,
                              selectInput("out_heat_type",  "Heatmap type", width = "100%", choices = AVAILABLE_HEATMAP_TYPES, selected = "global")
                            ),
                            column(
-                             width = 3,
+                             width = 4,
                              div(
                                class="button-padded",
-                               downloadButton("download_data", "Download", icon=icon("table"))
+                               downloadButton("download_data", "Download", icon=icon("table")),
+                               downloadButton("report_full","Download full report",icon=icon("download"))
                              )
                            )
                          ),
                          fluidRow(
                            column(width = 12,
-                                  DT::dataTableOutput("quotas_table")
+                            tabsetPanel(
+                              type = "pills",
+                              vertical = TRUE,
+                              selected = "simu_all_entities_total",
+                              tabPanel(
+                                title = tags$b("Total allocation"),
+                                value = "simu_all_entities_total",
+                                DT::dataTableOutput("all_entities_quotas_table")
+                              ),
+                              tabPanel(
+                                title = "Baseline weight allocation",
+                                value = "simu_all_entities_ba",
+                                icon = icon("angle-right"),
+                                DT::dataTableOutput("all_entities_ba_alloc_table")
+                              ),
+                              tabPanel(
+                                title = "Developing states weight allocation",
+                                value = "simu_all_entities_ds",
+                                icon = icon("angle-right"),
+                                DT::dataTableOutput("all_entities_ds_alloc_table")
+                              ),
+                              tabPanel(
+                                title = "Catch-based weight allocation",
+                                value = "simu_all_entities_cb",
+                                icon = icon("angle-right"),
+                                DT::dataTableOutput("all_entities_cb_alloc_table")
+                              )
+                            )
                            )
                          )
                        ),
                        tabPanel(
-                         "Reports",
+                         title = "By entity",
+                         value = "simu_by_entity",
+                         h5("Select a entity"),
                          fluidRow(
-                           column(width = 12,
-                                  h3("Full report (All CPCs)"),
-                                  downloadButton("report_full","Download full report",icon=icon("download")),br(),
-                                  h3("Report by entity"),
-                                  uiOutput("report_by_entity_selector"),
-                                  downloadButton("report_by_entity", "Download entity report",icon=icon("download"))
+                           column(width = 3,
+                            uiOutput("report_by_entity_selector")
+                           ),
+                           column(width = 3,
+                            uiOutput("report_by_entity_download_wrapper")     
+                           )
+                         ),
+                         fluidRow(
+                           column(
+                             width = 12,
+                             tabsetPanel(
+                               type = "pills",
+                               vertical = TRUE,
+                               selected = "simu_by_entity_total",
+                               tabPanel(
+                                 title = tags$b("Total allocation"),
+                                 value = "simu_by_entity_total",
+                                 uiOutput("simu_entity_total_allocations")
+                               ),
+                               tabPanel(
+                                 title = "Details",
+                                 value = "simu_by_entity_details",
+                                 icon = icon("angle-right"),
+                                 uiOutput("simu_entity_detailed_allocations")
+                               )
+                             )
+                             
                            )
                          )
                        )
@@ -405,7 +352,7 @@ server = function(input, output, session) {
   #reactives
   selected_cpc <- reactive({
     req(input$ref_cpc)
-    filter(CPC_DATA, CODE == input$ref_cpc) %>% slice(1)
+    filter(ENTITIES, CODE == input$ref_cpc) %>% slice(1)
   })
   selected_cpc_catches <- reactive({
     req(input$ref_cpc)
@@ -425,8 +372,8 @@ server = function(input, output, session) {
   output$ref_cpc_selector = renderUI({
     selectizeInput("ref_cpc", label = NULL, selected = NULL, multiple = FALSE, 
                    choices = {
-                     entity_choices <- CPC_DATA$CODE
-                     setNames(entity_choices, CPC_DATA$NAME_EN)
+                     entity_choices <- ENTITIES$CODE
+                     setNames(entity_choices, ENTITIES$NAME_EN)
                    },options = list( 
                      render = I("{
                       item: function(item, escape) {
@@ -439,7 +386,7 @@ server = function(input, output, session) {
                       }
                     }"
                      ),
-                     placeholder = "Please select a CPC",
+                     placeholder = "Please select a entity",
                      onInitialize = I('function() { this.setValue(""); }')
                    )
     )
@@ -450,7 +397,7 @@ server = function(input, output, session) {
     if(!is.null(input$ref_cpc) & input$ref_cpc != ""){
       req(!is.null(selected_cpc_catches()))
       tagList(
-        h3("Select a species"),
+        h5("Select a species"),
         selectizeInput("ref_cpc_data_species", label = NULL, selected = NULL, multiple = FALSE, 
                      choices = {
                        entity_choices <- unique(selected_cpc_catches()$SPECIES_CODE)
@@ -465,23 +412,199 @@ server = function(input, output, session) {
         )
       )
     }else{
-      tags$p(tags$em("Select a CPC to get information"))
+      tags$p(tags$em("Select a entity to get information"))
+    }
+  })
+  
+  output$ref_cpc_card <- renderUI({
+    req(input$ref_cpc)
+    if(!is.null(input$ref_cpc) & input$ref_cpc != ""){
+      bs4Dash::bs4Card(
+        title = tagList(
+          img(src = sprintf("https://raw.githubusercontent.com/fdiwg/flags/main/%s.gif", tolower(input$ref_cpc)), height = "20px", width = "30px"),
+          tags$b(selected_cpc()$NAME_EN)
+        ),
+        status = "primary",
+        solidHeader = TRUE,
+        collapsible = FALSE,
+        width = 12,
+        tagList(
+          fluidRow(
+            bs4Dash::infoBox(
+              title = "Status",
+              icon = switch(as.character(selected_cpc()$STATUS_CODE),
+                "CP" = icon("landmark"),
+                "FE" = icon("ship")
+              ),
+              color = "info",
+              width = 12,
+              value = tags$b(selected_cpc()$STATUS)
+            )
+          ),
+          fluidRow(
+            bs4Dash::infoBox(
+              title = "Coastal State ?",
+              width = 6,
+              color = "primary",
+              value = if(selected_cpc()$IS_COASTAL) tags$b("Yes") else tags$b("No")
+            ),
+            bs4Dash::infoBox(
+              title = "Developing State ?",
+              width = 6,
+              color = "gray-dark",
+              value = if(selected_cpc()$IS_DEVELOPING) tags$b("Yes") else tags$b("No")
+            )
+          ),
+          fluidRow(
+            bs4Dash::infoBox(
+              title = "Least-Developed country (LDC) ?",
+              width = 6,
+              color = "maroon",
+              value = if(selected_cpc()$IS_LDC) tags$b("Yes") else tags$b("No")
+            ),
+            bs4Dash::infoBox(
+              title = "Small Island Developing State (SIDS) ?",
+              width = 6,
+              color = "fuchsia",
+              value = if(selected_cpc()$IS_SIDS) tags$b("Yes") else tags$b("No")
+            )
+          )
+        )
+      )
+    }else{
+      NULL
     }
   })
   
   output$ref_cpc_characteristics <- renderUI({
     req(input$ref_cpc)
     if(!is.null(input$ref_cpc) & input$ref_cpc != ""){
-      tags$ul(class = "list-unstyled",
+      tagList(
+      
               tags$li(tags$p("Name: ", tags$b(selected_cpc()$NAME_EN))),
               tags$li(tags$p("Name (French): ", tags$b(selected_cpc()$NAME_FR))),
               tags$li(tags$p("Status: ", tags$b(selected_cpc()$STATUS))),
               tags$li(tags$p("SIDS?: ", if(selected_cpc()$IS_SIDS) tags$b("Yes") else tags$b("No")))
       )
     }else{
-      tags$p(tags$em("Select a CPC to get information"))
+      tags$p(tags$em("Select a entity to get information"))
     }
   })
+  
+  output$cpc_map_wrapper <- renderUI({
+    leafletOutput("cpc_map", height = 375, width = 400)
+  })
+  
+  output$cpc_map <- renderLeaflet({
+    leaflet() %>%
+      addTiles() %>%
+      addLayersControl(
+        overlayGroups = c("Country/Territory boundaries", "Coastline","NJA part in IOTC competence area"),
+        options = layersControlOptions(collapsed = T)
+      )
+  })
+  
+  observeEvent(input$ref_cpc, {
+    req(input$ref_cpc)
+    
+    #sf data
+    country_polys = fdi4R::un_countries
+    country_lines = fdi4R::un_boundaries
+    
+    #polygon selection
+    cpc_admin <- country_polys[country_polys$ISO_3 == input$ref_cpc, ]
+    
+    # Filter lines for the chosen country (exclude type==6)
+    filtered <- country_lines %>%
+      dplyr::filter(
+        TYPE != 6,
+        ISO3_CNT1 == input$ref_cpc | ISO3_CNT2 == input$ref_cpc
+      )
+    
+    #NJA
+    njas = fdi4R::wja_level1__x__rfb_comp[fdi4R::wja_level1__x__rfb_comp$code2 == "IOTC",]
+    cpc_nja = njas[regexpr(input$ref_cpc, njas$code1) > 0,] %>% sf::st_collection_extract()
+    
+    # Mutually exclusive styling classes
+    coastal_lines <- filtered %>% dplyr::filter(TYPE %in% c(0))
+    dotted_lines <- filtered %>% dplyr::filter(TYPE %in% c(4, 8, 9))
+    dashed_lines  <- filtered %>% dplyr::filter(TYPE %in% c(2, 3) & !TYPE %in% c(8, 9))
+    solid_lines   <- filtered %>% dplyr::filter(!TYPE %in% c(0, 2, 3, 4, 8, 9))
+    
+    proxy <- leafletProxy("cpc_map") %>%
+      clearGroup("Country/Territory boundaries") %>%
+      clearGroup("Coastline") %>%
+      clearGroup("NJA part in IOTC competence area")
+    
+    # Ppolygon FIRST
+    if (nrow(cpc_admin) > 0) {
+      proxy <- proxy %>%
+        addPolygons(
+          data = cpc_admin,
+          group = "Country/Territory boundaries",
+          fillColor = "grey",
+          fillOpacity = 0.6,
+          color = "#00000000", # transparent stroke
+          weight = 0
+        )
+    }
+    if (nrow(solid_lines) > 0) {
+      proxy <- proxy %>%
+        addPolylines(
+          data = solid_lines,
+          group = "Country/Territory boundaries",
+          color = "black", weight = 2, opacity = 1
+        )
+    }
+    if (nrow(dashed_lines) > 0) {
+      proxy <- proxy %>%
+        addPolylines(
+          data = dashed_lines,
+          group = "Country/Territory boundaries",
+          color = "black", weight = 2, opacity = 1,
+          dashArray = "8,8"
+        )
+    }
+    if (nrow(dotted_lines) > 0) {
+      proxy <- proxy %>%
+        addPolylines(
+          data = dotted_lines,
+          group = "Country/Territory boundaries",
+          color = "black", weight = 2, opacity = 1,
+          dashArray = "1, 6"
+        )
+    }
+    if (nrow(coastal_lines) > 0) {
+      proxy <- proxy %>%
+        addPolylines(
+          data = coastal_lines,
+          group = "Coastline",
+          color = "darkblue", weight = 1, opacity = 1
+        )
+    }
+    
+    # Zoom to selection if we have features
+    if (nrow(filtered) > 0) {
+      bb <- do.call(sf::st_bbox, lapply(list(filtered, cpc_admin, cpc_nja), sf::st_bbox))
+      proxy %>% fitBounds(
+        lng1 = as.numeric(bb["xmin"]), lat1 = as.numeric(bb["ymin"]),
+        lng2 = as.numeric(bb["xmax"]), lat2 = as.numeric(bb["ymax"])
+      )
+    }
+    # NJA (intersect with IOTC competence area)?
+    if (nrow(cpc_nja) > 0){
+      proxy <- proxy %>%
+        addPolygons(
+          data = cpc_nja,
+          fillColor = "#22a4e6",
+          fillOpacity = 0.8,
+          group = "NJA part in IOTC competence area",
+          color = "white", # transparent stroke
+          weight = 0
+        )
+    }
+    
+  }, ignoreInit = FALSE)
   
   output$ref_cpc_catch_plot <- plotly::renderPlotly({
     req(input$ref_cpc_data_species)
@@ -509,7 +632,7 @@ server = function(input, output, session) {
       class = "stripe cell-border",
       rownames = FALSE,
       escape = FALSE,
-      colnames = c("Year", "Flag state", "Fleet", "Type of fishery", "Fishery", "School type", "Assigned area", "Species", "Catches", "Water Jurisdiction Area"),
+      colnames = c("Year", "Flag state", "entity", "Type of fishery", "Fishery", "School type", "Assigned area", "Species", "Catches", "Water Jurisdiction Area"),
       options =
         list(
           autoWidth = FALSE,
@@ -543,13 +666,7 @@ server = function(input, output, session) {
   output$ds_wgt = renderText({
     formatToPercent(input$ds_weight)
   })
-  
-  # Coastal states weight
-  
-  # output$cs_wgt = renderText({
-  #   formatToPercent(input$cs_weight)
-  # })
-  
+
   # Catch-based weight
   
   output$cb_wgt = renderText({
@@ -574,113 +691,33 @@ server = function(input, output, session) {
     formatToPercent(100 - input$ds_weights[2])
   })
   
-  # # Coastal states / equal weight
-  # 
-  # output$cs_eq_wgt = renderText({
-  #   formatToPercent(input$cs_weights[1])
-  # })
-  # 
-  # # Coastal states / socio-economic weight
-  # 
-  # output$cs_se_wgt = renderText({
-  #   formatToPercent(input$cs_weights[2] - input$cs_weights[1])
-  # })
-  # 
-  # # Coastal states / NJA weight
-  # 
-  # output$cs_ez_wgt = renderText({
-  #   formatToPercent(100 - input$cs_weights[2])
-  # })
-  # 
-  # # Coastal states / socio-economic weight / option #1 / vulnerability
-  # 
-  # output$cs_se_vul_wgt = renderText({
-  #   formatToPercent(input$cs_se_o1_weights[1])
-  # })
-  # 
-  # # Coastal states / socio-economic weight / option #1 / priority sectors
-  # 
-  # output$cs_se_pri_sec_wgt = renderText({
-  #   formatToPercent(input$cs_se_o1_weights[2] - input$cs_se_o1_weights[1])
-  # })
-  # 
-  # # Coastal states / socio-economic weight / option #1 / disproportionate burden
-  # 
-  # output$cs_se_dis_bur_wgt = renderText({
-  #   formatToPercent(100 - input$cs_se_o1_weights[2])
-  # })
-  # 
-  # # Coastal states / socio-economic weight / option #2 / HDI
-  # 
-  # output$cs_se_HDI_wgt = renderText({
-  #   formatToPercent(input$cs_se_o2_weights[1])
-  # })
-  # 
-  # # Coastal states / socio-economic weight / option #2 / GNI
-  # 
-  # output$cs_se_GNI_wgt = renderText({
-  #   formatToPercent(input$cs_se_o2_weights[2] - input$cs_se_o2_weights[1])
-  # })
-  # 
-  # # Coastal states / socio-economic weight / option #2 / SIDS
-  # 
-  # output$cs_se_SIDS_wgt = renderText({
-  #   formatToPercent(100 - input$cs_se_o2_weights[2])
-  # })
-  
-  prepare_output = function(input) {
+  #compute_allocation
+  compute_allocation = function(input) {
     unit = input$out_unit
     
+    #input tac
+    tac = input$tac
+    
+    #input weights
     ba_wgt = (input$ba_weight) * 0.01
     ds_wgt = (input$ds_weight) * 0.01
-    # cs_wgt = (input$cs_weight) * 0.01
     cb_wgt = (1 - ba_wgt -  ds_wgt)
-    # cb_wgt = (1 - ba_wgt -  cs_wgt)
-    
     ds_eq_wgt = (input$ds_weights[1]) * 0.01
     ds_ldc_wgt = (input$ds_weights[2] - input$ds_weights[1]) * 0.01
     ds_sids_wgt = (100 - input$ds_weights[2]) * 0.01
     
-    # cs_eq_wgt = (input$cs_weights[1]) * 0.01
-    # cs_se_wgt = (input$cs_weights[2] - input$cs_weights[1]) * 0.01
-    # cs_ez_wgt = (100 - input$cs_weights[2] ) * 0.01
+    #Baseline allocation
+    BA_ALLOCATION = baseline_allocation(CPC_data)
+    BA_ALLOCATION[, BA_TAC := ifelse(unit == "quota", 1, tac) * BASELINE_ALLOCATION * ba_wgt]
     
-    # cs_se_opt = input$se_option
-    # 
-    # if(cs_se_opt == "O1") {
-    #   cs_se_option_subweights = 
-    #     list(
-    #       VUL_wgt     = (input$cs_se_o1_weights[1]) * 0.01,
-    #       PRI_SEC_wgt = (input$cs_se_o1_weights[2] - input$cs_se_o1_weights[1]) * 0.01,
-    #       DIS_BUR_wgt = (100 - input$cs_se_o1_weights[2]) * 0.01
-    #     )
-    # } else {
-    #   cs_se_option_subweights = 
-    #     list(
-    #       HDI_wgt  = (input$cs_se_o2_weights[1]) * 0.01,
-    #       GNI_wgt  = (input$cs_se_o2_weights[2] - input$cs_se_o2_weights[1]) * 0.01,
-    #       SIDS_wgt = (100 - input$cs_se_o2_weights[2]) * 0.01
-    #     )
-    # }
-    
-    BA_ALLOCATION = baseline_allocation(CPC_DATA)
-    
-    DS_ALLOCATION = developing_state_allocation(CPC_data   = CPC_DATA,
-                                             DS_LDC_data = DS_LDC_DATA,
-                                             equal_portion_weight = ds_eq_wgt,
-                                             ldc_weight = ds_ldc_wgt,
-                                             sids_weight = ds_sids_wgt)
-    
-    # CS_ALLOCATION = coastal_state_allocation(CPC_data   = CPC_DATA,
-    #                                          CS_SE_data = CS_SE_DATA,
-    #                                          equal_portion_weight              = cs_eq_wgt,
-    #                                          socio_economic_weight             = cs_se_wgt,
-    #                                          socio_economic_option            = cs_se_opt,
-    #                                          socio_economic_option_subweights = cs_se_option_subweights,
-    #                                          #socio_economic_weight_HDI  = cs_se_HDI_wgt,
-    #                                          #socio_economic_weight_GNI  = cs_se_GNI_wgt,
-    #                                          #socio_economic_weight_SIDS = cs_se_SIDS_wgt,
-    #                                          NJA_weight                  = cs_ez_wgt)
+    #Developing state allocation
+    DS_ALLOCATION = developing_state_allocation(
+      CPC_data   = CPC_data,
+      equal_portion_weight = ds_eq_wgt,
+      ldc_weight = ds_ldc_wgt,
+      sids_weight = ds_sids_wgt
+    )
+    DS_ALLOCATION[, DS_TAC := ifelse(unit == "quota", 1, tac) * DEVELOPING_STATE_ALLOCATION * ds_wgt]
     
     filtered_catch_data = subset_and_postprocess_catch_data(catch_data   = ALL_CATCH_DATA,
                                                             species_code = input$species,
@@ -694,8 +731,8 @@ server = function(input, output, session) {
       }
     }
     
-    CB_ALLOCATION = catch_based_allocation(CPC_data   = CPC_DATA,
-                                           DS_LDC_data = DS_LDC_DATA,
+    #Catch-based allocation
+    CB_ALLOCATION = catch_based_allocation(CPC_data   = ENTITIES,
                                            catch_data = filtered_catch_data,
                                            average_catch_function = average_catch_function,
                                            coastal_weights = c(input$cb_year01_wgt * 0.01, input$cb_year02_wgt * 0.01, input$cb_year03_wgt * 0.01,
@@ -707,84 +744,148 @@ server = function(input, output, session) {
       allocate_TAC(TAC = ifelse(unit == "quota", 1, input$tac), 
                    baseline_allocation      = BA_ALLOCATION, baseline_allocation_weight      = ba_wgt, #input$ba_wgt * 0.01,
                    developing_state_allocation = DS_ALLOCATION, developing_state_allocation_weight = ds_wgt, #input$ds_wgt * 0.01,
-                   # coastal_state_allocation = CS_ALLOCATION, coastal_state_allocation_weight = cs_wgt, #input$cs_wgt * 0.01,
                    catch_based_allocation   = CB_ALLOCATION, catch_based_allocation_weight   = cb_wgt) #input$cb_wgt * 0.01)
     
-    return(
-      QUOTAS
+    #set after quota to avoid propagating these columns (used for Catch-based intermediate result display)
+    CB_ALLOCATION[, CB_TAC_1 := ifelse(unit == "quota",1,tac) * cb_wgt * CATCH_BASED_ALLOCATION_YEAR_1]
+    CB_ALLOCATION[, CB_TAC_2 := ifelse(unit == "quota",1,tac) * cb_wgt * CATCH_BASED_ALLOCATION_YEAR_2]
+    CB_ALLOCATION[, CB_TAC_3 := ifelse(unit == "quota",1,tac) * cb_wgt * CATCH_BASED_ALLOCATION_YEAR_3]
+    CB_ALLOCATION[, CB_TAC_4 := ifelse(unit == "quota",1,tac) * cb_wgt * CATCH_BASED_ALLOCATION_YEAR_4]
+    CB_ALLOCATION[, CB_TAC_5 := ifelse(unit == "quota",1,tac) * cb_wgt * CATCH_BASED_ALLOCATION_YEAR_5]
+    CB_ALLOCATION[, CB_TAC_6 := ifelse(unit == "quota",1,tac) * cb_wgt * CATCH_BASED_ALLOCATION_YEAR_6]
+    CB_ALLOCATION[, CB_TAC_7 := ifelse(unit == "quota",1,tac) * cb_wgt * CATCH_BASED_ALLOCATION_YEAR_7]
+    CB_ALLOCATION[, CB_TAC_8 := ifelse(unit == "quota",1,tac) * cb_wgt * CATCH_BASED_ALLOCATION_YEAR_8]
+    CB_ALLOCATION[, CB_TAC_9 := ifelse(unit == "quota",1,tac) * cb_wgt * CATCH_BASED_ALLOCATION_YEAR_9]
+    CB_ALLOCATION[, CB_TAC_10 := ifelse(unit == "quota",1,tac) * cb_wgt * CATCH_BASED_ALLOCATION_YEAR_10]
+    
+    outputs = list(
+      BA_ALLOCATION = BA_ALLOCATION,
+      DS_ALLOCATION = DS_ALLOCATION,
+      CB_ALLOCATION = CB_ALLOCATION,
+      QUOTAS = QUOTAS,
+      UNIT = unit
     )
+    
+    return(outputs)
   }
   
-  output$quotas_table = DT::renderDataTable({
-    unit = input$out_unit
+  #prepare_allocation_datatable
+  prepare_allocation_datatable = function(allocation, component, unit){
     
-    QUOTAS = prepare_output(input)
+    dt_alloc = allocation[[component]]
+    if(component != "QUOTAS"){
+      dt_alloc = dt_alloc[, .SD, .SDcols = colnames(dt_alloc) == "CPC_CODE" |
+                            grepl("TAC", colnames(dt_alloc))]
+    }
+    dt_alloc_basenames = colnames(dt_alloc)
+    dt_alloc = base::merge(dt_alloc, CPC_data[, .(CODE, STATUS_CODE, NAME_EN, NAME_FR)], by.x = "CPC_CODE", by.y = "CODE")
+    dt_alloc = dt_alloc[, .SD, .SDcols = c("NAME_EN", dt_alloc_basenames[dt_alloc_basenames != "CPC_CODE"])]
     
-    QUOTAS_DT = 
-      DT::datatable(
-        QUOTAS, 
-        class = "cell-border",
-        rownames = FALSE,
-        escape = FALSE,
-        colnames = c("CPC", paste0("Year #", c(1:10))),
-        options = 
-          list(
-            order = list(list(1, "desc")),
-            pageLength= 100,
-            autoWidth = FALSE,
-            paging    = FALSE,
-            searching = FALSE,
-            info      = TRUE
-          )
-      )
+    allocation_dt = DT::datatable(
+      dt_alloc, 
+      class = "cell-border",
+      rownames = FALSE,
+      escape = FALSE,
+      colnames = c(
+        "CPC", 
+        if(component %in% c("CB_ALLOCATION", "QUOTAS")){
+          paste0("Year #", c(1:10))
+        } else{
+          "TAC"
+        }
+      ),
+      options = 
+        list(
+          order = list(list(1, "desc")),
+          pageLength= 100,
+          autoWidth = FALSE,
+          paging    = FALSE,
+          searching = FALSE,
+          info      = TRUE
+        )
+    )
     
     if(unit == "quota")
-      QUOTAS_DT = QUOTAS_DT %>% DT::formatPercentage(2:ncol(QUOTAS), digits = 2)
+      allocation_dt = allocation_dt %>% DT::formatPercentage(2:ncol(dt_alloc), digits = 2)
     else
-      QUOTAS_DT = QUOTAS_DT %>% DT::formatCurrency(2:ncol(QUOTAS), digits = 2, currency = "&nbsp;t", before = FALSE)
+      allocation_dt = allocation_dt %>% DT::formatCurrency(2:ncol(dt_alloc), digits = 2, currency = "&nbsp;t", before = FALSE)
     
-    QUOTAS_NORM = QUOTAS[, 2:ncol(QUOTAS)]
+    alloc_NORM = dt_alloc[, 2:ncol(dt_alloc)]
     
     if(input$out_heat_style == "color") {
       if(input$out_heat_type  == "by_year") {
-        for(column in colnames(QUOTAS_NORM)) {
-          breaks = quantile(range(QUOTAS_NORM[[column]]), probs = seq(0, 1, .05))
+        for(column in colnames(alloc_NORM)) {
+          breaks = quantile(range(alloc_NORM[[column]]), probs = seq(0, 1, .05))
           colors = round(seq(255, 40, length.out = length(breaks) + 1), 0) %>% { paste0("rgb(255, ", ., ",", ., ")") }
           
-          QUOTAS_DT = 
-            QUOTAS_DT %>% DT::formatStyle(column, backgroundColor = DT::styleInterval(breaks, colors))
+          allocation_dt = 
+            allocation_dt %>% DT::formatStyle(column, backgroundColor = DT::styleInterval(breaks, colors))
         }
       } else if(input$out_heat_type  == "global") {
-        breaks = quantile(range(QUOTAS_NORM), probs = seq(0, 1, .05))
+        breaks = quantile(range(alloc_NORM), probs = seq(0, 1, .05))
         colors = round(seq(255, 40, length.out = length(breaks) + 1), 0) %>% { paste0("rgb(255, ", ., ",", ., ")") }
         
-        QUOTAS_DT = 
-          QUOTAS_DT %>% DT::formatStyle(colnames(QUOTAS_NORM), backgroundColor = DT::styleInterval(breaks, colors))
+        allocation_dt = 
+          allocation_dt %>% DT::formatStyle(colnames(alloc_NORM), backgroundColor = DT::styleInterval(breaks, colors))
       }
     } else if(input$out_heat_style == "bar") {
       if(input$out_heat_type  == "by_year") {
-        for(column in colnames(QUOTAS_NORM)) {
-          QUOTAS_DT = 
-            QUOTAS_DT %>% DT::formatStyle(column,
-                                          background = DT::styleColorBar(range(QUOTAS_NORM[[column]]), "#FF4444"),
+        for(column in colnames(alloc_NORM)) {
+          allocation_dt = 
+            allocation_dt %>% DT::formatStyle(column,
+                                          background = DT::styleColorBar(range(alloc_NORM[[column]]), "#FF4444"),
                                           backgroundSize = '98% 88%',
                                           backgroundRepeat = 'no-repeat',
                                           backgroundPosition = 'center')
         }
       } else if(input$out_heat_type  == "global") {
-        QUOTAS_DT = 
-          QUOTAS_DT %>% DT::formatStyle(colnames(QUOTAS_NORM),
-                                        background = DT::styleColorBar(range(QUOTAS_NORM), "#FF4444"),
+        allocation_dt = 
+          allocation_dt %>% DT::formatStyle(colnames(alloc_NORM),
+                                        background = DT::styleColorBar(range(alloc_NORM), "#FF4444"),
                                         backgroundSize = '98% 88%',
                                         backgroundRepeat = 'no-repeat',
                                         backgroundPosition = 'center')
       }
       
     }
-    
-    return(
-      QUOTAS_DT
-    )
+    return(allocation_dt)
+  }
+  
+  computed_allocation <- reactive({
+    compute_allocation(input)
+  })
+  computed_allocation_for_entity <- reactive({
+    req(input$reporting_entity)
+    if(!is.null(input$reporting_entity) & input$reporting_entity != ""){
+      result = lapply(computed_allocation()[1:4], function(x){
+        x[CPC_CODE == input$reporting_entity,]
+      })
+      names(result) = names(computed_allocation())[1:4]
+      result$UNIT = computed_allocation()$UNIT
+      result
+    }else{
+      NULL
+    }
+  })
+  
+  output$all_entities_quotas_table = DT::renderDataTable({
+    unit = input$out_unit
+    prepare_allocation_datatable(computed_allocation(), "QUOTAS", unit)
+  })
+  
+  output$all_entities_ba_alloc_table = DT::renderDataTable({
+    unit = input$out_unit
+    prepare_allocation_datatable(computed_allocation(), "BA_ALLOCATION", unit)
+  })
+  
+  output$all_entities_ds_alloc_table = DT::renderDataTable({
+    unit = input$out_unit
+    prepare_allocation_datatable(computed_allocation(), "DS_ALLOCATION", unit)
+  })
+  
+  output$all_entities_cb_alloc_table = DT::renderDataTable({
+    unit = input$out_unit
+    prepare_allocation_datatable(computed_allocation(), "CB_ALLOCATION", unit)
   })
   
   #download table as EXCEL
@@ -800,32 +901,13 @@ server = function(input, output, session) {
       config = rbind(config, as.list(c("TARGET_TAC_T", input$tac)))
       
       config = rbind(config, as.list(c("BASELINE_WEIGHT",      formatToPercent(input$ba_weight))))
-      config = rbind(config, as.list(c("COASTAL_STATE_WEIGHT", formatToPercent(input$cs_weight))))
-      
-      config = rbind(config, as.list(c("COASTAL_STATE_EQUAL_WEIGHT",          formatToPercent(input$cs_weights[1]))))
-      config = rbind(config, as.list(c("COASTAL_STATE_SOCIO_ECONOMIC_WEIGHT", formatToPercent(input$cs_weights[2] - input$cs_weights[1]))))
-      
-      if(input$se_option == "O1") {
-        config = rbind(config, as.list(c("COASTAL_STATE_SOCIO_ECONOMIC_OPTION", "Option #1")))
-        
-        config = rbind(config, as.list(c("COASTAL_STATE_SOCIO_ECONOMIC_OPTION_1_VULNERABILITY_WEIGHT",           formatToPercent(input$cs_se_o1_weights[1]))))
-        config = rbind(config, as.list(c("COASTAL_STATE_SOCIO_ECONOMIC_OPTION_1_PRIORITY_SECTOR_WEIGHT",         formatToPercent(input$cs_se_o1_weights[2] - input$cs_se_o1_weights[1]))))
-        config = rbind(config, as.list(c("COASTAL_STATE_SOCIO_ECONOMIC_OPTION_1_DISPROPORTIONATE_BURDEN_WEIGHT", formatToPercent(100 - input$cs_se_o1_weights[2]))))
-      } else if(input$se_option == "O2") { 
-        config = rbind(config, as.list(c("COASTAL_STATE_SOCIO_ECONOMIC_OPTION", "Option #2")))
-        
-        config = rbind(config, as.list(c("COASTAL_STATE_SOCIO_ECONOMIC_OPTION_2_HDI_WEIGHT",  formatToPercent(input$cs_se_o2_weights[1]))))
-        config = rbind(config, as.list(c("COASTAL_STATE_SOCIO_ECONOMIC_OPTION_2_GNI_WEIGHT",  formatToPercent(input$cs_se_o2_weights[2] - input$cs_se_o2_weights[1]))))
-        config = rbind(config, as.list(c("COASTAL_STATE_SOCIO_ECONOMIC_OPTION_2_SIDS_WEIGHT", formatToPercent(100 - input$cs_se_o2_weights[2]))))
-      }
-      
-      config = rbind(config, as.list(c("COASTAL_STATE_NJA_WEIGHT",            formatToPercent(100 - input$cs_weights[2]))))
-      
+      config = rbind(config, as.list(c("DEVELOPING_STATE_WEIGHT", formatToPercent(input$ds_weight))))
+      config = rbind(config, as.list(c("DEVELOPING_STATE_EQUAL_WEIGHT",          formatToPercent(input$ds_weights[1]))))
+      config = rbind(config, as.list(c("DEVELOPING_STATE_SOCIO_ECONOMIC_WEIGHT", formatToPercent(input$ds_weights[2] - input$ds_weights[1]))))
       config = rbind(config, as.list(c("CATCH_BASED_WEIGHT",                  formatToPercent(100 - input$ba_weight - input$cs_weight))))
       
       config = rbind(config, as.list(c("HISTORICAL_CATCH_INTERVAL_START", input$period[1])))
       config = rbind(config, as.list(c("HISTORICAL_CATCH_INTERVAL_END",   input$period[2])))
-      
       config = rbind(config, as.list(c("HISTORICAL_CATCH_AVERAGE",        ifelse(input$avg_period == "best", "Best \"n\" years", "Selected period"))))
       
       if(input$avg_period == "best")
@@ -864,8 +946,7 @@ server = function(input, output, session) {
       addWorksheet(WB, "SIMULATION_CONFIGURATION")
       addWorksheet(WB, "OUTPUT_QUOTAS")
       
-      writeData(WB, sheet = 1, CPC_DATA, rowNames = FALSE)
-      writeData(WB, sheet = 2, CS_SE_DATA, rowNames = FALSE)
+      writeData(WB, sheet = 1, ENTITIES, rowNames = FALSE)
       writeData(WB, sheet = 3, ALL_CATCH_DATA[SPECIES_CODE == input$species], rowNames = FALSE)
       writeData(WB, sheet = 4, config, rowNames = FALSE)
       writeData(WB, sheet = 5, quotas, rowNames = FALSE)
@@ -894,14 +975,12 @@ server = function(input, output, session) {
       REPORTING_ENTITY = NULL
       
       BASELINE_WEIGHT = as.numeric(input$ba_weight)/100
-      COASTAL_STATE_WEIGHT = as.numeric(input$cs_weight)/100
-      CATCH_BASED_WEIGHT = as.numeric((100 - input$ba_weight - input$cs_weight))/100
-      CS_EQUAL_WEIGHT = as.numeric(input$cs_weights[1])/100
-      CS_SOCIO_ECONOMIC_WEIGHT = as.numeric((input$cs_weights[2] - input$cs_weights[1]))/100
-      SE_HDI_WEIGHT = as.numeric(input$cs_se_o2_weights[1])/100
-      SE_GNI_WEIGHT = as.numeric((input$cs_se_o2_weights[2] - input$cs_se_o2_weights[1]))/100
-      SE_SID_WEIGHT = as.numeric((100 - input$cs_se_o2_weights[2]))/100
-      CS_NJA_WEIGHT = as.numeric((100 - input$cs_weights[2]))/100
+      DEVELOPING_STATE_WEIGHT = as.numeric(input$ds_weight)/100
+      DS_EQUAL_WEIGHT = as.numeric(input$ds_weights[1])/100
+      DS_LDC_WEIGHT = as.numeric((input$ds_weights[2] - input$ds_weights[1]))/100
+      DS_SIDS_WEIGHT = as.numeric((100 - input$ds_weights[2]))/100
+      CATCH_BASED_WEIGHT = as.numeric((100 - input$ba_weight - input$ds_weight))/100
+      
       SPECIES_CODE_SELECTED = input$species
       SPECIES_SELECTED = SPECIES_TABLE[SPECIES_CODE == SPECIES_CODE_SELECTED, SPECIES]
       TARGET_TAC_T = input$tac
@@ -968,7 +1047,7 @@ server = function(input, output, session) {
     )
   })
   #download report as PDF
-  output$report_by_entity = downloadHandler(
+  output$report_by_entity_download = downloadHandler(
     filename = function() {
       paste("TCAC_simulation_", input$reporting_entity, "_", format(Sys.time(), "%Y_%m_%d_%H%M%S"), ".docx", sep = "")
     },
@@ -977,14 +1056,12 @@ server = function(input, output, session) {
       REPORTING_ENTITY = input$reporting_entity
       
       BASELINE_WEIGHT = as.numeric(input$ba_weight)/100
-      COASTAL_STATE_WEIGHT = as.numeric(input$cs_weight)/100
-      CATCH_BASED_WEIGHT = as.numeric((100 - input$ba_weight - input$cs_weight))/100
-      CS_EQUAL_WEIGHT = as.numeric(input$cs_weights[1])/100
-      CS_SOCIO_ECONOMIC_WEIGHT = as.numeric((input$cs_weights[2] - input$cs_weights[1]))/100
-      SE_HDI_WEIGHT = as.numeric(input$cs_se_o2_weights[1])/100
-      SE_GNI_WEIGHT = as.numeric((input$cs_se_o2_weights[2] - input$cs_se_o2_weights[1]))/100
-      SE_SID_WEIGHT = as.numeric((100 - input$cs_se_o2_weights[2]))/100
-      CS_NJA_WEIGHT = as.numeric((100 - input$cs_weights[2]))/100
+      DEVELOPING_STATE_WEIGHT = as.numeric(input$ds_weight)/100
+      DS_EQUAL_WEIGHT = as.numeric(input$ds_weights[1])/100
+      DS_LDC_WEIGHT = as.numeric((input$ds_weights[2] - input$ds_weights[1]))/100
+      DS_SIDS_WEIGHT = as.numeric((100 - input$ds_weights[2]))/100
+      CATCH_BASED_WEIGHT = as.numeric((100 - input$ba_weight - input$ds_weight))/100
+      
       SPECIES_CODE_SELECTED = input$species
       SPECIES_SELECTED = SPECIES_TABLE[SPECIES_CODE == SPECIES_CODE_SELECTED, SPECIES]
       TARGET_TAC_T = input$tac
@@ -1026,13 +1103,166 @@ server = function(input, output, session) {
       # wordApp$Quit() #quits the COM Word application
       # rm(list = "wordApp")
       
-    })
+  })
   
-    #observe species for TAC selection
-    observeEvent(input$species,{
-      updateNumericInput(
-        inputId = "tac",
-        value = SCENARIO_PARAMETERS[SCENARIO_PARAMETERS$SPECIES_CODE_SELECTED == input$species,][1,]$TARGET_TAC_T
+  output$report_by_entity_download_wrapper = renderUI({
+    req(input$reporting_entity)
+    if(!is.null(input$reporting_entity) & input$reporting_entity != ""){
+      downloadButton("report_by_entity_download", "Download entity report",icon=icon("download"))
+    }else{
+      tags$div()
+    }
+  })
+  
+  output$simu_entity_total_allocations = renderUI({
+    req(!is.null(computed_allocation_for_entity()))
+    result = computed_allocation_for_entity()
+    unit = result$UNIT
+    fluidRow(
+      column(
+        width = 12,
+        bs4Dash::infoBox(
+          title = "Total Allowable Catches (TACs)",
+          width = 12,
+          icon = icon("fish"),
+          color = "primary",
+          value = plotly::plotlyOutput("entity_quota_plot")
+        )
       )
-    })
+    )
+    
+  })
+  
+  output$simu_entity_detailed_allocations = renderUI({
+    req(!is.null(computed_allocation_for_entity()))
+    result = computed_allocation_for_entity()
+    unit = result$UNIT
+    
+    tagList(
+      fluidRow(
+        column(
+          width = 6,
+          bs4Dash::infoBox(
+            title = "Baseline allocation",
+            width = 12,
+            color = "success",
+            value = if(nrow(result$BA_ALLOCATION) > 0){
+              tagList(
+                tags$b(sprintf(
+                  "%s t",
+                  format(ifelse(unit == "quota", round(result$BA_ALLOCATION$BA_TAC * input$tac), round(result$BA_ALLOCATION$BA_TAC)), big.mark = ",")
+                )),
+                hr(),
+                tags$em(paste0(sprintf(
+                  "Allocation: %s",
+                  round(ifelse(unit == "quota", result$BA_ALLOCATION$BA_TAC, result$BA_ALLOCATION$BA_TAC / input$tac) * 100, 2)
+                ), "%"))
+              )
+            }else{"–"}
+          ),
+          bs4Dash::infoBox(
+            title = "Developing state allocation",
+            width = 12,
+            color = "gray-dark",
+            value = if(nrow(result$DS_ALLOCATION) > 0){
+              tagList(
+                tags$b(sprintf(
+                  "%s t",
+                  format(ifelse(unit == "quota", round(result$DS_ALLOCATION$DS_TAC * input$tac), round(result$DS_ALLOCATION$DS_TAC)), big.mark = ",")
+                )),
+                hr(),
+                tags$em(paste0(sprintf(
+                  "Allocation: %s",
+                  round(ifelse(unit == "quota", result$DS_ALLOCATION$DS_TAC, result$DS_ALLOCATION$DS_TAC / input$tac) * 100, 2)
+                ), "%"))
+              )
+            }else{"–"}
+          )
+        ),
+        column(
+          width = 6,
+          bs4Dash::infoBox(
+            title = "Catch-based allocation",
+            width = 12,
+            icon = icon("fish"),
+            color = "info",
+            value = plotly::plotlyOutput("entity_cb_allocation_plot")
+          )
+        )
+      )
+    )
+  })
+  
+  output$entity_quota_plot = renderPlotly({
+    req(!is.null(computed_allocation_for_entity()))
+    quota_result = computed_allocation_for_entity()$QUOTAS
+    quota_result_long <- quota_result %>%
+      pivot_longer(
+        cols = starts_with("QUOTA_YEAR_"),
+        names_to = "YEAR",
+        names_prefix = "QUOTA_YEAR_",
+        values_to = "QUOTA"
+      ) %>%
+      mutate(
+        YEAR = as.integer(YEAR)
+      )
+    if(computed_allocation_for_entity()$UNIT == "quota"){
+      quota_result_long$QUOTA = quota_result_long$QUOTA * input$tac
+    }
+    plotly::plot_ly(quota_result_long, x = ~YEAR, y = ~QUOTA, type = 'bar') %>% 
+      plotly::layout(
+        xaxis = list(title = "YEAR"), 
+        yaxis = list(title = 'TAC (t)', tickformat = ",.0f"), 
+        colorway = RColorBrewer::brewer.pal(3,"Blues"),
+        barmode = 'stack', 
+        legend = list(
+          orientation = "h", 
+          x = 0.5, 
+          y = -0.05, 
+          xanchor = "center", 
+          yanchor = "top"
+        )
+      )
+  })
+  
+  output$entity_cb_allocation_plot = renderPlotly({
+    req(!is.null(computed_allocation_for_entity()))
+    cb_result = computed_allocation_for_entity()$CB_ALLOCATION
+    cb_result_long <- cb_result[,.(CPC_CODE, CB_TAC_1, CB_TAC_2, CB_TAC_3, CB_TAC_4, CB_TAC_5,
+                                   CB_TAC_6, CB_TAC_7, CB_TAC_8, CB_TAC_9, CB_TAC_10)] %>%
+      pivot_longer(
+        cols = starts_with("CB_TAC_"),
+        names_to = "YEAR",
+        names_prefix = "CB_TAC_",
+        values_to = "TAC"
+      ) %>%
+      mutate(
+        YEAR = as.integer(YEAR)
+      )
+    if(computed_allocation_for_entity()$UNIT == "quota"){
+      cb_result_long$TAC = cb_result_long$TAC * input$tac
+    }
+    plotly::plot_ly(cb_result_long, x = ~YEAR, y = ~TAC, type = 'bar') %>% 
+      plotly::layout(
+        xaxis = list(title = "YEAR"), 
+        yaxis = list(title = 'Catch-based TAC allocation (t)', tickformat = ",.0f"), 
+        colorway = RColorBrewer::brewer.pal(3,"Blues"),
+        barmode = 'stack', 
+        legend = list(
+          orientation = "h", 
+          x = 0.5, 
+          y = -0.05, 
+          xanchor = "center", 
+          yanchor = "top"
+        )
+      )
+  })
+  
+  #observe species for TAC selection
+  observeEvent(input$species,{
+    updateNumericInput(
+      inputId = "tac",
+      value = SCENARIO_PARAMETERS[SCENARIO_PARAMETERS$SPECIES_CODE_SELECTED == input$species,][1,]$TARGET_TAC_T
+    )
+  })
 }

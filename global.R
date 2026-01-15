@@ -17,6 +17,9 @@ library(kableExtra)
 library(knitr)
 library(rmarkdown)
 library(fdi4R)
+library(leaflet)
+library(dplyr)
+library(tidyr)
 
 #options
 options(scipen = 9999)
@@ -36,9 +39,8 @@ user_base <- dplyr::tibble(
 SCENARIO_PARAMETERS = fread("./inputs/IOTC-2024-TCAC13-REF03_Rev1_-_INPUT_PARAMETERS.csv")
 
 #variables
-CONFIG = read_configuration("./cfg/CPC_CONFIGURATIONS.xlsx")
-
-ALL_CATCH_DATA = read_catch_data("./cfg/HISTORICAL_CATCH_ESTIMATES.csv", CPC_data = CONFIG$CPC_CONFIG)[CATCH_MT > 0]
+ENTITIES = read_entities()
+ALL_CATCH_DATA = read_catch_data("./inputs/data/HISTORICAL_CATCH_ESTIMATES.csv", CPC_data = ENTITIES)[CATCH_MT > 0]
 
 AVAILABLE_YEARS = list(MIN = min(ALL_CATCH_DATA$YEAR), 
                        MAX = max(ALL_CATCH_DATA$YEAR))
@@ -70,11 +72,7 @@ AVAILABLE_HEATMAP_STYLES = list(`Background color` = "color",
 AVAILABLE_HEATMAP_TYPES = list(`Global`  = "global",
                                `By year` = "by_year")
 
-CPC_DATA   = CONFIG$CPC_CONFIG
-CS_SE_DATA = CONFIG$CS_SE_CONFIG
-DS_LDC_DATA = CS_SE_DATA #TO ASK about data
-DS_LDC_DATA$LDC_STATUS_WEIGHT = 1 - as.numeric(DS_LDC_DATA$HDI) #TO ASK how to get the LDC_STATUS_WEIGHT or if provided at source
-
+CPC_DATA   = ENTITIES
 
 #shiny scripts
 print(list.files())

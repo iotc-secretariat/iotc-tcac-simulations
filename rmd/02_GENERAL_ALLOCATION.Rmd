@@ -31,54 +31,33 @@ kable(BA_ALLOCATION_TABLE_FORMATTED, align = c("l", "l", "l", "c", "r", "r"), fo
 if(is.null(REPORTING_ENTITY)) pagebreak()
 ```
 
-# Coastal state allocation
+# Developing state allocation
 
 ## Equal allocation
 
-```{r CoastalStateAllocationEqualTable, ft.align = "center"}
-kable(CS_EQUAL_ALLOCATION_TABLE_FORMATTED, align = c("l", "l", "l", "c", "r", "r"), format.args = list(big.mark = ","))
+```{r DevelopingStateAllocationEqualTable, ft.align = "center"}
+kable(DS_EQUAL_ALLOCATION_TABLE_FORMATTED, align = c("l", "l", "l", "c", "r", "r"), format.args = list(big.mark = ","))
 ```
 
 ```{r, results='asis',message=FALSE, warning=FALSE, comment=FALSE,echo=FALSE}
 if(is.null(REPORTING_ENTITY)) pagebreak()
 ```
 
-## Socio-economic allocation
+## Least-developed country allocation
 
-### Human Development Index status allocation
 
-```{r CoastalStateAllocationSEHDITable}
-kable(CS_SE_HDI_ALLOCATION_TABLE_FORMATTED, align = c("l", "l", "l", "c", "c", "r", "r"), format.args = list(big.mark = ","))
+```{r DevelopingStateAllocationLdcTable, ft.align = "center"}
+kable(DS_LDC_ALLOCATION_TABLE_FORMATTED, align = c("l", "l", "l", "c", "r", "r"), format.args = list(big.mark = ","))
 ```
 
 ```{r, results='asis',message=FALSE, warning=FALSE, comment=FALSE,echo=FALSE}
 if(is.null(REPORTING_ENTITY)) pagebreak()
 ```
 
-### Gross national income status allocation
+## SIDS allocation
 
-```{r CoastalStateAllocationSEGNITable}
-kable(CS_SE_GNI_ALLOCATION_TABLE_FORMATTED, align = c("l", "l", "l", "c", "c", "r", "r"), format.args = list(big.mark = ","))
-```
-
-```{r, results='asis',message=FALSE, warning=FALSE, comment=FALSE,echo=FALSE}
-if(is.null(REPORTING_ENTITY)) pagebreak()
-```
-
-### Small Islands Development status allocation
-
-```{r CoastalStateAllocationSESIDSTable}
-kable(CS_SE_SIDS_ALLOCATION_TABLE_FORMATTED, align = c("l", "l", "l", "c", "r", "r"), format.args = list(big.mark = ","))
-```
-
-```{r, results='asis',message=FALSE, warning=FALSE, comment=FALSE,echo=FALSE}
-if(is.null(REPORTING_ENTITY)) pagebreak()
-```
-
-## National Jurisdiction Area allocation
-
-```{r CoastalStateAllocationNJATable}
-kable(CS_NJA_ALLOCATION_TABLE_FORMATTED, align = c("l", "l", "l", "c", "r", "r", "r"), format.args = list(big.mark = ","))
+```{r DevelopingStateAllocationSidsTable, ft.align = "center"}
+kable(DS_SIDS_ALLOCATION_TABLE_FORMATTED, align = c("l", "l", "l", "c", "r", "r"), format.args = list(big.mark = ","))
 ```
 
 ```{r, results='asis',message=FALSE, warning=FALSE, comment=FALSE,echo=FALSE}

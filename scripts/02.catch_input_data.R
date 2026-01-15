@@ -1,4 +1,4 @@
-read_raw_catch_data = function(file = "./cfg/IOTC-2023-TCAC12-DATA01 - Historical catch estimates.xlsx") {
+read_raw_catch_data = function(file = "./inputs/data/IOTC-2023-TCAC12-DATA01 - Historical catch estimates.xlsx") {
   return(
     as.data.table(
       read.xlsx(
@@ -10,7 +10,7 @@ read_raw_catch_data = function(file = "./cfg/IOTC-2023-TCAC12-DATA01 - Historica
   )
 }
 
-read_catch_data = function(file = "./cfg/HISTORICAL_CATCH_ESTIMATES.csv", CPC_data = read_configuration()$CPC_CONFIG) { 
+read_catch_data = function(file = "./inputs/data/HISTORICAL_CATCH_ESTIMATES.csv", CPC_data = read_entities()) { 
   # These are the ones used for the TCAC12 interactive app, and represent the output of
   # the initialization process for https://bitbucket.org/iotc-ws/iotc-tcac/src/master/
   
@@ -31,7 +31,7 @@ read_catch_data = function(file = "./cfg/HISTORICAL_CATCH_ESTIMATES.csv", CPC_da
   
   # We need to decide if we want to consider only catches in the high seas or within CPC NJAs
   # In that case:
-  POSTPROCESSED_CATCH_DATA = POSTPROCESSED_CATCH_DATA[ASSIGNED_AREA == "HIGH_SEAS" | ASSIGNED_AREA %in% paste0("NJA_", CPC_data[HAS_NJA_IO == TRUE]$CODE)]
+  POSTPROCESSED_CATCH_DATA = POSTPROCESSED_CATCH_DATA[ASSIGNED_AREA == "HIGH_SEAS" | ASSIGNED_AREA %in% paste0("NJA_", CPC_data[IS_COASTAL == TRUE]$CODE)]
   
   return(POSTPROCESSED_CATCH_DATA)
 }

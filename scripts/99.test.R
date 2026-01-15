@@ -1,12 +1,10 @@
 #### EXAMPLE FOR YFT ASSUMING A TAC OF 500000 t
 source("00.core.R")
 
-CPC_data   = read_configuration()$CPC_CONFIG
-CS_SE_data = read_configuration()$CS_SE_CONFIG
+CPC_data   = read_entities()
+catch_data = read_catch_data(CPC_data = CPC_data)
 
-catch_data = read_catch_data()
-
-BA_ALLOCATION = baseline_allocation()
+BA_ALLOCATION = baseline_allocation(CPC_data = CPC_data)
 
 CS_ALLOCATION = coastal_state_allocation(CPC_data = CPC_data, CS_SE_data = CS_SE_data,
                                          equal_portion_weight       = 0.350,

@@ -1,6 +1,6 @@
 ## BASELINE ALLOCATION FUNCTION ####
 # Performs the baseline allocation, by attributing the same relative weight to all CPCs
-baseline_allocation = function(CPC_data = read_configuration()$CPC_CONFIG) {
+baseline_allocation = function(CPC_data = read_entities()) {
   component_allocation_table = CPC_data[STATUS_CODE %in% c("CP"), .(CPC_CODE = CODE)]
   
   # Baseline allocation - para. 6.5
@@ -18,7 +18,6 @@ baseline_allocation = function(CPC_data = read_configuration()$CPC_CONFIG) {
 #- how to compute LDC_ALLOCATION?
 #- NJA_weight?
 developing_state_allocation = function(CPC_data,
-                                       DS_LDC_data,
                                        equal_portion_weight,
                                        ldc_weight,
                                        sids_weight) {
@@ -32,200 +31,38 @@ developing_state_allocation = function(CPC_data,
                "LDC_wgt = ", ldc_weight, ", ",
                "SIDS_wgt = ", sids_weight))
   
-  
   ##TO REVIEW => recycled from coastal_state_allocation
   
-  # We start by considering all CPCs with an area under national jurisdiction in the IO. 
+  # We start by considering all CPCs with an area under national jurisdiction in the IO + IS_DEVELOPING 
   # Some of them might *not* be considered coastal states though (e.g., EU)
-  component_allocation_table = DS_LDC_data[HAS_NJA_IO == TRUE]
-  
-  component_allocation_table = 
-    base::merge(
-      component_allocation_table, CPC_data[, .(CODE, NJA_SIZE_WEIGHTING)],
-      by = "CODE", all.x = TRUE
-    )
+  component_allocation_table = CPC_data[IS_COASTAL == TRUE & IS_DEVELOPING == TRUE,]
   
   # Coastal state allocation - para. 6.6(1)(a) - EQUAL PORTION
   component_allocation_table[, EQUAL_ALLOCATION := 1.00 / nrow(component_allocation_table)]
-  component_allocation_table[DEVELOPMENT_STATUS == "LD", LDC_ALLOCATION := LDC_STATUS_WEIGHT / sum(LDC_STATUS_WEIGHT, na.rm = TRUE)]
-  component_allocation_table[DEVELOPMENT_STATUS != "DE", SIDS_ALLOCATION := SIDS_STATUS_WEIGHT / sum(SIDS_STATUS_WEIGHT, na.rm = TRUE)]
-  
-  # component_allocation_table[is.na(HDI_ALLOCATION),  HDI_ALLOCATION  := 0] #TO REMOVE?
-  # component_allocation_table[is.na(GNI_ALLOCATION),  GNI_ALLOCATION  := 0] #TO REMOVE?
+  component_allocation_table[IS_LDC == TRUE, LDC_ALLOCATION := LDC_STATUS_WEIGHT / sum(LDC_STATUS_WEIGHT, na.rm = TRUE)]
+  component_allocation_table[IS_SIDS == TRUE, SIDS_ALLOCATION := SIDS_STATUS_WEIGHT / sum(SIDS_STATUS_WEIGHT, na.rm = TRUE)]
   component_allocation_table[is.na(LDC_ALLOCATION), LDC_ALLOCATION := 0] #NEW need LDC_STATUS_WEIGHT
   component_allocation_table[is.na(SIDS_ALLOCATION), SIDS_ALLOCATION := 0]
   
   #developing state allocation table
-  component_allocation_table = 
-    component_allocation_table[, DEVELOPING_STATE_ALLOCATION := ((equal_portion_weight * EQUAL_ALLOCATION) + 
-                                                                (ldc_weight * LDC_ALLOCATION) + 
-                                                                (sids_weight * SIDS_ALLOCATION))][, .(CPC_CODE = CODE, DEVELOPING_STATE_ALLOCATION)]
+  component_allocation_table[, DEVELOPING_STATE_EQUAL_ALLOCATION := equal_portion_weight * EQUAL_ALLOCATION]
+  component_allocation_table[, DEVELOPING_STATE_LDC_ALLOCATION := ldc_weight * LDC_ALLOCATION]
+  component_allocation_table[, DEVELOPING_STATE_SIDS_ALLOCATION := sids_weight * SIDS_ALLOCATION]
+  component_allocation_table = component_allocation_table[, DEVELOPING_STATE_ALLOCATION := (DEVELOPING_STATE_EQUAL_ALLOCATION + 
+                                                              DEVELOPING_STATE_LDC_ALLOCATION + 
+                                                              DEVELOPING_STATE_SIDS_ALLOCATION)][, .(CPC_CODE = CODE, 
+                                                                                                     DEVELOPING_STATE_EQUAL_ALLOCATION,
+                                                                                                     DEVELOPING_STATE_LDC_ALLOCATION,
+                                                                                                     DEVELOPING_STATE_SIDS_ALLOCATION,
+                                                                                                     DEVELOPING_STATE_ALLOCATION)]
   
   
   return(component_allocation_table)
    
-}
-
-## COASTAL STATE ALLOCATION ####
-
-# Performs the coastal state allocation, considering different options for the socio-economic part, with different socio-economic sub-weights to be provided
-# Can be improved by removing the need for the explicit provision of the 'socio_economic_option' parameter
-coastal_state_allocation = function(CPC_data,
-                                    CS_SE_data,
-                                    equal_portion_weight,
-                                    socio_economic_weight,
-                                    socio_economic_option = NULL,
-                                    socio_economic_option_subweights = NULL, # A list of weights depending on the selected socio-economic option (see previous parameter)
-                                    NJA_weight
-                                   ) {
-  
-  all_weights = equal_portion_weight + socio_economic_weight + NJA_weight
-  
-  if(all_weights != 1)
-    stop(paste0("The weights provided for the allocation sub-components should sum up to 100% (now: ", all_weights * 100, "%)"))
-   
-  print(paste0("Coastal state allocation params: EQ_wgt = ", equal_portion_weight, ", ", 
-                                                "SE_wgt = ", socio_economic_weight, ", ",
-                                                "EZ_wgt = ", NJA_weight))
-
-  all_se_weights = NULL
-  if(!is.null(socio_economic_option)) print(paste0("Coastal state socio-economic allocation option: ", socio_economic_option))
-  
-  if(!is.null(socio_economic_option)) if(socio_economic_option == "O1") { # First option (see para. 6.6(1)(b)
-    print(paste0("Coastal state socio-economic allocation params: vul_wgt = ",     socio_economic_option_subweights$VUL_wgt,     ", ", 
-                                                                 "pri_sec_wgt = ", socio_economic_option_subweights$PRI_SEC_wgt, ", ",
-                                                                 "dis_bur_wgt = ", socio_economic_option_subweights$DIS_BUR_wgt))
-
-    all_se_weights = socio_economic_option_subweights$VUL + socio_economic_option_subweights$PRI_SEC + socio_economic_option_subweights$DIS_BUR
-  }
-    
-  if(!is.null(socio_economic_option)) if(socio_economic_option == "O2") { # Second option (see para. 6.6(1)(b)
-    print(paste0("Coastal state socio-economic allocation params: HDI_wgt = ",  socio_economic_option_subweights$HDI_wgt, ", ", 
-                                                                 "GNI_wgt = ",  socio_economic_option_subweights$GNI_wgt, ", ",
-                                                                 "SIDS_wgt = ", socio_economic_option_subweights$SIDS_wgt))
-    
-    all_se_weights = socio_economic_option_subweights$HDI + socio_economic_option_subweights$GNI + socio_economic_option_subweights$SIDS
-  }
-  
-  if(!is.null(all_se_weights)) if(all_se_weights != 1)
-    stop(paste0("The weights provided for the socio-economic allocation sub-components should sum up to 100% (now: ", all_se_weights * 100, "%)"))
-  
-  # We start by considering all CPCs with an area under national jurisdiction in the IO. 
-  # Some of them might *not* be considered coastal states though (e.g., EU)
-  component_allocation_table = CS_SE_data[HAS_NJA_IO == TRUE]
-  
-  component_allocation_table = 
-    base::merge(
-      component_allocation_table, CPC_data[, .(CODE, NJA_SIZE_WEIGHTING)],
-      by = "CODE", all.x = TRUE
-    )
-  
-  # Coastal state allocation - para. 6.6(1)(a) - EQUAL PORTION
-  component_allocation_table[, EQUAL_ALLOCATION := 1.00 / nrow(component_allocation_table)]
-  
-  # Coastal state allocation - para. 6.6(1)(b) - SOCIO-ECONOMIC DATA
-
-  # Option 1
-  
-  ## It is unclear whether only developing / least developed coastal states should be considered here...
-  
-  ### Assuming it applies to all (proper) coastal states:
-  
-  component_allocation_table[IS_COASTAL == TRUE, VUL_PCF_ALLOCATION  := PER_CAPITA_FISH_CONSUMPTION_KG  / sum(PER_CAPITA_FISH_CONSUMPTION_KG, na.rm = TRUE)]
-  component_allocation_table[IS_COASTAL == TRUE, VUL_CUVI_ALLOCATION := CUV_INDEX                       / sum(CUV_INDEX , na.rm = TRUE)]
-  
-  component_allocation_table[IS_COASTAL == TRUE, PRI_SEC_SSF_ALLOCATION  := PROP_WORKERS_EMPLOYED_SSF   / sum(PROP_WORKERS_EMPLOYED_SSF, na.rm = TRUE)]
-  component_allocation_table[IS_COASTAL == TRUE, PRI_SEC_SIDS_ALLOCATION := SIDS_STATUS                 / sum(SIDS_STATUS, na.rm = TRUE)]
-  
-  component_allocation_table[IS_COASTAL == TRUE, DIS_BUR_GDP_ALLOCATION := PROP_WORKERS_EMPLOYED_SSF    / sum(PROP_WORKERS_EMPLOYED_SSF, na.rm = TRUE)]
-  component_allocation_table[IS_COASTAL == TRUE, DIS_BUR_EXP_ALLOCATION := PROP_EXPORT_VALUE_FISHERY    / sum(PROP_EXPORT_VALUE_FISHERY, na.rm = TRUE)]
-
-  ### Assuming it applies to developing / least developed coastal states only:
-  
-  #component_allocation_table[IS_COASTAL == TRUE & DEVELOPMENT_STATUS != "DE", VUL_PCF_ALLOCATION  := PER_CAPITA_FISH_CONSUMPTION_KG  / sum(PER_CAPITA_FISH_CONSUMPTION_KG, na.rm = TRUE)]
-  #component_allocation_table[IS_COASTAL == TRUE & DEVELOPMENT_STATUS != "DE", VUL_CUVI_ALLOCATION := CUV_INDEX                       / sum(CUV_INDEX , na.rm = TRUE)]
-  
-  #component_allocation_table[IS_COASTAL == TRUE & DEVELOPMENT_STATUS != "DE", PRI_SEC_SSF_ALLOCATION  := PROP_WORKERS_EMPLOYED_SSF   / sum(PROP_WORKERS_EMPLOYED_SSF, na.rm = TRUE)]
-  #component_allocation_table[IS_COASTAL == TRUE & DEVELOPMENT_STATUS != "DE", PRI_SEC_SIDS_ALLOCATION := SIDS_STATUS                 / sum(SIDS_STATUS, na.rm = TRUE)]
-
-  #component_allocation_table[IS_COASTAL == TRUE & DEVELOPMENT_STATUS != "DE", DIS_BUR_GDP_ALLOCATION := PROP_WORKERS_EMPLOYED_SSF    / sum(PROP_WORKERS_EMPLOYED_SSF, na.rm = TRUE)]
-  #component_allocation_table[IS_COASTAL == TRUE & DEVELOPMENT_STATUS != "DE", DIS_BUR_EXP_ALLOCATION := PROP_EXPORT_VALUE_FISHERY    / sum(PROP_EXPORT_VALUE_FISHERY, na.rm = TRUE)]
-  
-  ## In both cases:
-  
-  component_allocation_table[is.na(VUL_PCF_ALLOCATION),  VUL_PCF_ALLOCATION  := 0]
-  component_allocation_table[is.na(VUL_CUVI_ALLOCATION), VUL_CUVI_ALLOCATION := 0]
-  
-  component_allocation_table[is.na(PRI_SEC_SSF_ALLOCATION),  PRI_SEC_SSF_ALLOCATION := 0]
-  component_allocation_table[is.na(PRI_SEC_SIDS_ALLOCATION), PRI_SEC_SIDS_ALLOCATION   := 0]
-  
-  component_allocation_table[is.na(DIS_BUR_GDP_ALLOCATION), DIS_BUR_GDP_ALLOCATION := 0]
-  component_allocation_table[is.na(DIS_BUR_EXP_ALLOCATION), DIS_BUR_EXP_ALLOCATION := 0]
-  
-  # We weight every sub-sub-component at 50% as the sub-weighting of each component in 6.6(1)(b)[OPTION 1](i-ii-iii) is not clearly specified: 
-  
-  component_allocation_table[, VUL_ALLOCATION     := .5 * VUL_PCF_ALLOCATION     + .5 * VUL_CUVI_ALLOCATION]
-  component_allocation_table[, PRI_SEC_ALLOCATION := .5 * PRI_SEC_SSF_ALLOCATION + .5 * PRI_SEC_SIDS_ALLOCATION]
-  component_allocation_table[, DIS_BUR_ALLOCATION := .5 * DIS_BUR_GDP_ALLOCATION + .5 * DIS_BUR_EXP_ALLOCATION]
-  
-  # Option 2
-  
-  ## It is fair to assume it only applies to least developed and developing coastal states only
-  
-  component_allocation_table[IS_COASTAL == TRUE & DEVELOPMENT_STATUS != "DE", HDI_ALLOCATION  := HDI_TIER_WEIGHT    / sum(HDI_TIER_WEIGHT,    na.rm = TRUE)]
-  component_allocation_table[IS_COASTAL == TRUE & DEVELOPMENT_STATUS != "DE", GNI_ALLOCATION  := GNI_STATUS_WEIGHT  / sum(GNI_STATUS_WEIGHT , na.rm = TRUE)]
-  component_allocation_table[IS_COASTAL == TRUE & DEVELOPMENT_STATUS != "DE", SIDS_ALLOCATION := SIDS_STATUS_WEIGHT / sum(SIDS_STATUS_WEIGHT, na.rm = TRUE)]
-  
-  component_allocation_table[is.na(HDI_ALLOCATION),  HDI_ALLOCATION  := 0]
-  component_allocation_table[is.na(GNI_ALLOCATION),  GNI_ALLOCATION  := 0]
-  component_allocation_table[is.na(SIDS_ALLOCATION), SIDS_ALLOCATION := 0]
-  
-  # Coastal state allocation - para. 6.6(1)(c) - NJA area size.
-  # It applies to all CPCs with an NJA in the IO, regardless of whether they're coastal states or not.
-  component_allocation_table[, NJA_ALLOCATION := NJA_SIZE_WEIGHTING / sum(NJA_SIZE_WEIGHTING)]
-
-  # Puts together the final allocation table with all three components 
-  
-  if(!is.null(socio_economic_option)) if(socio_economic_option == "O1") { # First option
-    component_allocation_table = 
-      component_allocation_table[, COASTAL_STATE_ALLOCATION := ((equal_portion_weight * EQUAL_ALLOCATION) + 
-                                                                (socio_economic_weight * (socio_economic_option_subweights$VUL_wgt     * VUL_ALLOCATION)    ) + 
-                                                                (socio_economic_weight * (socio_economic_option_subweights$PRI_SEC_wgt * PRI_SEC_ALLOCATION)) + 
-                                                                (socio_economic_weight * (socio_economic_option_subweights$DIS_BUR_wgt * DIS_BUR_ALLOCATION)) + 
-                                                                (NJA_weight * NJA_ALLOCATION))][, .(CPC_CODE = CODE, COASTAL_STATE_ALLOCATION)]
-  }
-
-  if(!is.null(socio_economic_option)) if(socio_economic_option == "O2") { # Second option
-    component_allocation_table = 
-      component_allocation_table[, .(EQUAL_PORTION_WEIGHT  = equal_portion_weight, 
-                                     EQUAL_ALLOCATION, 
-                                     CSA_EQUAL_ALLOCATION  = equal_portion_weight * EQUAL_ALLOCATION, 
-                                     SOCIO_ECONOMIC_WEIGHT = socio_economic_weight, 
-                                     SEW_HDI               = socio_economic_option_subweights$HDI_wgt, 
-                                     HDI_ALLOCATION, 
-                                     CSA_HDI_ALLOCATION    = socio_economic_weight * socio_economic_option_subweights$HDI_wgt  * HDI_ALLOCATION, 
-                                     SEW_GNI               = socio_economic_option_subweights$GNI_wgt, 
-                                     GNI_ALLOCATION, 
-                                     CSA_GNI_ALLOCATION    = socio_economic_weight * socio_economic_option_subweights$GNI_wgt  * GNI_ALLOCATION, 
-                                     SIDS_ALLOCATION,  
-                                     CSA_SIDS_ALLOCATION   = socio_economic_weight * socio_economic_option_subweights$SIDS_wgt * SIDS_ALLOCATION, 
-                                     NJA_WEIGHT            = NJA_weight, 
-                                     NJA_ALLOCATION, 
-                                     CSA_NJA_ALLOCATION    = NJA_weight * NJA_ALLOCATION, 
-                                     COASTAL_STATE_ALLOCATION = ((equal_portion_weight * EQUAL_ALLOCATION) + 
-                                                                  (socio_economic_weight * (socio_economic_option_subweights$HDI_wgt  * HDI_ALLOCATION) ) + 
-                                                                  (socio_economic_weight * (socio_economic_option_subweights$GNI_wgt  * GNI_ALLOCATION) ) + 
-                                                                  (socio_economic_weight * (socio_economic_option_subweights$SIDS_wgt * SIDS_ALLOCATION)) + 
-                                                                  (NJA_weight * NJA_ALLOCATION))), .(CPC_CODE = CODE)]
-  }
-  
-  return(component_allocation_table)
 }
 
 ## CATCH-BASED ALLOCATION FUNCTION ####
-catch_based_allocation = function(CPC_data,   # Unused
-                                  DS_LDC_data, # TO ASK IF WE NEED IT
-                                  CS_SE_data, # Unused
+catch_based_allocation = function(CPC_data,
                                   catch_data,
                                   average_catch_function,
                                   coastal_weights) {
@@ -267,8 +104,6 @@ allocate_TAC = function(TAC,
                         baseline_allocation_weight,
                         developing_state_allocation,
                         developing_state_allocation_weight,
-                        # coastal_state_allocation,
-                        # coastal_state_allocation_weight,
                         catch_based_allocation,
                         catch_based_allocation_weight) {
   
@@ -280,18 +115,15 @@ allocate_TAC = function(TAC,
   print(paste0("Allocate TAC parameters: [ TAC = ", TAC, 
                                         ", BA_wgt = ", baseline_allocation_weight,
                                         ", DS_wgt = ", developing_state_allocation_weight,
-                                        #", CS_wgt = ", coastal_state_allocation_weight,
                                         ", CB_wgt = ", catch_based_allocation_weight, " ]"))
   
   # Need to 'copy' the inputs, otherwise the code below will update the original allocation tables...
   baseline_allocation      = copy(baseline_allocation)    
   developing_state_allocation = copy(developing_state_allocation)
-  # coastal_state_allocation = copy(coastal_state_allocation)
   catch_based_allocation   = copy(catch_based_allocation)
-
-  baseline_allocation     [, BASELINE_ALLOCATION            := TAC * BASELINE_ALLOCATION      * baseline_allocation_weight]
+  
+  baseline_allocation     [, BASELINE_ALLOCATION            := TAC * BASELINE_ALLOCATION * baseline_allocation_weight]
   developing_state_allocation[, DEVELOPING_STATE_ALLOCATION       := TAC * DEVELOPING_STATE_ALLOCATION * developing_state_allocation_weight]
-  # coastal_state_allocation[, COASTAL_STATE_ALLOCATION       := TAC * COASTAL_STATE_ALLOCATION * coastal_state_allocation_weight]
   catch_based_allocation  [, 2:ncol(catch_based_allocation) := lapply(.SD, function(x) { x * TAC * catch_based_allocation_weight }), .SDcols = 2:ncol(catch_based_allocation)]
   
   # This can definitely be implemented better...
