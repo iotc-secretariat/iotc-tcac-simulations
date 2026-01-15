@@ -20,6 +20,7 @@ library(fdi4R)
 library(leaflet)
 library(dplyr)
 library(tidyr)
+library(plotly)
 
 #options
 options(scipen = 9999)
