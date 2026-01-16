@@ -1,10 +1,25 @@
 # Overview
 
-This repository hosts a Shiny App developed by the IOTC Secretariat to simulate and explore how different allocation scenarios affect the distribution of total catch among IOTC Contracting Parties and Cooperating Non-Contracting Parties (CPCs). The tool allows users to adjust parameters reflecting various allocation criteria, including each CPC's status (e.g. Coastal State, Small Island Developing State), historical catch levels, and catches taken within National Jurisdiction Areas (NJAs) by foreign fleets. It is designed to support transparent discussions and informed decision-making under the framework of the Technical Committee on Allocation Criteria.
+This repository hosts a Shiny App developed by the IOTC Secretariat to simulate and explore how different allocation scenarios affect the distribution of total catch among IOTC Contracting Parties and Cooperating non-contracting Parties (CPCs). The tool allows users to adjust parameters reflecting various allocation criteria, including each CPC's status -- i.e.,  Developing Coastal State, Least Developed Country, and Small Island Developing State --, historical catch levels, and catches taken within National Jurisdiction Areas (NJAs) by foreign fleets. It is designed to support transparent discussions and informed decision-making under the framework of the Technical Committee on Allocation Criteria (TCAC).
 
 # Configuration
 
-The definitions of all relevant parameters characterising each CPC in relation to the allocation criteria are provided in the [`cfg/CPC_CONFIGURATIONS.xlsx`](./CPC_CONFIGURATIONS.xlsx) file which includes two worksheets:
+The definitions of all relevant parameters characterising each CPC in relation to the allocation criteria are provided in the [`inputs/data/iotc_entities.csv`](./inputs/data/iotc_entities.csv) file. The file lists all current IOTC *Contracting Parties* (CP) and *Cooperating Non-Contracting Parties* (CNCP), as well as Taiwan,China as *Fishing entity* (FE), together with their:
+
+- ISO3_CODE: 
+- M49_CODE: 
+- NAME_EN: 
+- NAME_FR: 
+- STATUS_CODE: 
+- STATUS: 
+- IS_DEVELOPING: 
+- IS_LDC: 
+- IS_SIDS: 
+- IS_COASTAL: 
+- NJA_IO_SIZE: 
+
+<!--
+[`cfg/CPC_CONFIGURATIONS.xlsx`](./CPC_CONFIGURATIONS.xlsx) file which includes two worksheets:
 
 -   A `CPC` worksheet that lists all current IOTC *Contracting Parties* (CP) as well as Liberia as *Cooperating Non-Contracting Party* (CNCP), and Taiwan,China as *Fishing entity* (FE), together with their:
 
@@ -15,10 +30,8 @@ The definitions of all relevant parameters characterising each CPC in relation t
     -   STATUS: Contracting Party, Cooperating Non-Contracting Party, and Fishing Entity
     -   IS_SIDS: Small Island Developing States (SIDS) status
     -   IS_COASTAL: Coastal State status
-    -   HAS_NJA_IO: Presence of a National Jurisdiction Area (NJA) within the [IOTC Area of Competence](https://iotc.org/about-iotc/competence)
     -   NJA_SIZE: Size of the NJA (km2)
-    -   NJA_IOTC_RELATIVE_SIZE: Relative size of the NJA (percentage; %) with respect to the IOTC Area of Competence.
-    
+
 </p>
 
 -   A `COASTAL_STATE_SOCIO_ECONOMIC` worksheet that lists all IOTC CPC Coastal States, along with their development status (sourced from [this document](https://www.un.org/development/desa/dpad/wp-content/uploads/sites/45/WESP2020_Annex.pdf)). It also includes a set of socio-economic indicators addressing the requirements of both *Option 1* and *Option 2* in [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E) para. 6.6(1)(b). It is important to note that the indicators required for *Option 1* are not yet available to the IOTC Secretariat. 
@@ -37,6 +50,8 @@ The definitions of all relevant parameters characterising each CPC in relation t
 
 The HDI and GNI indicators required for *Option 2* have been sourced from the [UNDP](https://hdr.undp.org/data-center/human-development-index#/indicies/HDI) and [World Bank](https://datahelpdesk.worldbank.org/knowledgebase/articles/906519-world-bank-country-and-lending-group) websites, respectively. The HDI for the EU was averaged using data from this [source](https://www.theglobaleconomy.com/rankings/human_development/European-union/). In absence of HDI data for Somalia, the lowest value in the dataset, 0.446 (reported for Mozambique), was used.
 
+-->
+
 ## Assumptions
 
 ### CPC and Coastal State Configuration
@@ -47,7 +62,7 @@ For the purposes of the simulations, the following assumptions were made:
 
 -   For historical reasons, the waters of the Chagos Archipelago were considered to be under the sovereignty of the United Kingdom of Great Britain and Northern Ireland (`GBR`)
 
--   In addition to having an NJA in the Indian Ocean, France (OT) (`FRAT`) shall be considered de facto as an IOTC Coastal State (see Appendix 4, para. 2 of the [Report of the 12th Technical Committee on Allocation Criteria](https://iotc.org/documents/TCAC/12/RE))
+<!-- -   In addition to having an NJA in the Indian Ocean, France (OT) (`ATF`) shall be considered de facto as an IOTC Coastal State (see Appendix 4, para. 2 of the [Report of the 12th Technical Committee on Allocation Criteria](https://iotc.org/documents/TCAC/12/RE)) 
 
 -   The European Union / REIO (`EUR`) has an NJA in the Indian Ocean (i.e., the NJA around Réunion and Mayotte) and, for this reason, "*should benefit from an allocation that relates to the size of the EEZ of its outermost territories in the IOTC Area of Competence.*" (see Appendix 4, para. 2 of the [Report of the 12th Technical Committee on Allocation Criteria](https://iotc.org/documents/TCAC/12/RE))
 
@@ -55,7 +70,7 @@ For the purposes of the simulations, the following assumptions were made:
 
 -   There are different views as whether `EUR` "(...) *should benefit from the portion of the coastal state allocation criteria related to aspirations under paragraph 6.6(1)(a) (...)*" (see Appendix 4, para. 2 of the [Report of the 12th Technical Committee on Allocation Criteria](https://iotc.org/documents/TCAC/12/RE)). In their current configurations, the simulations considered `EUR` as benefiting from the portion of allocation specified by paragraph 6.6(1)(a) of [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E)
 
--   Following TCAC12, in consultations between the IOTC Secretariat and the United Kingdom of Great Britain and Northern Ireland (`GBR`), `GBR` informed the Secretariat that para 6.6.(1)(b) would not apply to their case, but that paragraph 6.6.(1)(a) and (c) would. This understanding has been incorporated into the current configuration of the TCAC simulations conducted by the Secretariat.
+-   Following TCAC12, in consultations between the IOTC Secretariat and the United Kingdom of Great Britain and Northern Ireland (`GBR`), `GBR` informed the Secretariat that para 6.6.(1)(b) would not apply to their case, but that paragraph 6.6.(1)(a) and (c) would. This understanding has been incorporated into the current configuration of the TCAC simulations conducted by the Secretariat. -->
 
 ### Historical Catches
 
