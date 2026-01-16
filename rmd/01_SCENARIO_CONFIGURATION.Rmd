@@ -19,16 +19,12 @@ if(!is.null(REPORTING_ENTITY)) cat("# Entity
 | Total allowable catch | `r prettyNum(TARGET_TAC_T, big.mark = ",")` t | 
 |  **Main allocation components** ||
 | 1 - Baseline weight          | `r BASELINE_WEIGHT*100`% |
-| 2 - Coastal state weight | `r COASTAL_STATE_WEIGHT*100`% |
+| 2 - Developing state weight | `r DEVELOPING_STATE_WEIGHT*100`% |
 | 3 - Catch-based weight   | `r CATCH_BASED_WEIGHT*100`% | 
-| **Coastal State components (item 2)** |||
-| 2.1 - Equal share weight    | `r CS_EQUAL_WEIGHT*100`% |
-| 2.2 - Socio-economic weight |  `r CS_SOCIO_ECONOMIC_WEIGHT*100`% |
-| 2.3 - National jurisdiction area surface weight | `r CS_NJA_WEIGHT*100`% |
-| **Socio-economic components (item 2.2)** |
-| 2.2.1 - Human Development Index status weight   | `r SE_HDI_WEIGHT*100`% |
-| 2.2.2 - Gross National Income status weight     | `r SE_GNI_WEIGHT*100`% |
-| 2.2.3 - Small Islands Development status weight | `r SE_SID_WEIGHT*100`% |
+| **Developing State components (item 2)** |||
+| 2.1 - Equal share weight    | `r DS_EQUAL_WEIGHT*100`% |
+| 2.2 - Least-developed country weight |  `r DS_LDC_WEIGHT*100`% |
+| 2.3 - SIDS weight | `r DS_SIDS_WEIGHT*100`% |
 | **Catch-based configuration parameters** ||
 | Reference years | `r paste(HISTORICAL_CATCH_INTERVAL_START, HISTORICAL_CATCH_INTERVAL_END, sep = "-")` |
 | Reference method | `r HISTORICAL_CATCH_METHOD` |

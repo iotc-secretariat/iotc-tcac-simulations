@@ -1,0 +1,33 @@
+"ISO3_CODE","M49_CODE","NAME_EN","NAME_FR","STATUS_CODE","STATUS","IS_DEVELOPING","IS_LDC","IS_SIDS","IS_COASTAL","NJA_IO_SIZE"
+"ATF",260,"France Overseas Territories","France (Territoires)","CP","Contracting Party",0,0,0,1,1294307
+"AUS",36,"Australia","Australie","CP","Contracting Party",0,0,0,1,4320207
+"BGD",50,"Bangladesh","Bangladesh","CP","Contracting Party",1,1,0,1,77773
+"CHN",156,"China","Chine","CP","Contracting Party",1,0,0,0,0
+"COM",174,"Comoros","Comores","CP","Contracting Party",1,1,1,1,164571
+"EUR",,"European Union","Union européenne","CP","Contracting Party",0,0,0,1,378244
+"GBR",826,"United Kingdom of Great Britain and Northern Ireland","Royaume-Uni de Grande-Bretagne et d'Irlande du Nord","CP","Contracting Party",0,0,0,1,638580
+"IDN",360,"Indonesia","Indonésie","CP","Contracting Party",1,0,0,1,1948313
+"IND",356,"India","Inde","CP","Contracting Party",1,0,0,1,2283347
+"IRN",364,"Iran (Islamic Republic of)","Iran (République islamique d')","CP","Contracting Party",1,0,0,1,161846
+"JPN",392,"Japan","Japon","CP","Contracting Party",1,0,0,0,0
+"KEN",404,"Kenya","Kenya","CP","Contracting Party",1,0,0,1,111436
+"KOR",410,"Republic of Korea","République de Corée","CP","Contracting Party",0,0,0,0,0
+"LBR",430,"Liberia","Libéria","CNCP","Cooperating Non-Contracting Party",1,1,0,0,0
+"LKA",144,"Sri Lanka","Sri Lanka","CP","Contracting Party",1,0,0,1,530275
+"MDG",450,"Madagascar","Madagascar","CP","Contracting Party",1,1,0,1,1199904
+"MDV",462,"Maldives","Maldives","CP","Contracting Party",1,0,1,1,916244
+"MOZ",508,"Mozambique","Mozambique","CP","Contracting Party",1,1,0,1,570059
+"MUS",480,"Mauritius","Maurice","CP","Contracting Party",1,0,1,1,1272857
+"MYS",458,"Malaysia","Malaisie","CP","Contracting Party",1,0,0,1,62343
+"OMN",512,"Oman","Oman","CP","Contracting Party",1,0,0,1,535212
+"PAK",586,"Pakistan","Pakistan","CP","Contracting Party",1,0,0,1,220792
+"PAN",591,"Panama","Panama","CNCP","Cooperating Non-Contracting Party",1,0,0,0,0
+"PHL",608,"Philippines","Philippines","CP","Contracting Party",1,0,0,0,0
+"SDN",729,"Sudan","Soudan","CP","Contracting Party",1,1,0,1,66483
+"SOM",706,"Somalia","Somalie","CP","Contracting Party",1,1,0,1,829359
+"SYC",690,"Seychelles","Seychelles","CP","Contracting Party",1,0,1,1,1332252
+"TWN",,"Taiwan,China","Taiwan,Chine","FE","Fishing fleet",1,0,0,0,0
+"THA",764,"Thailand","Thaïlande","CP","Contracting Party",1,0,0,1,118137
+"TZA",834,"United Republic of Tanzania","République-Unie de Tanzanie","CP","Contracting Party",1,1,0,1,240763
+"YEM",887,"Yemen","Yémen","CP","Contracting Party",1,1,0,1,543647
+"ZAF",710,"South Africa","Afrique du Sud","CP","Contracting Party",1,0,0,1,781573

@@ -61,3 +61,7 @@ hr.thin {
   border-top:    #428bca;
   border-bottom: #428bca;
 }
+
+.selectize-dropdown [data-selectable] {
+  padding-left: 4px !important;
+}
