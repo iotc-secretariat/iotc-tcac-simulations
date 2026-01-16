@@ -22,14 +22,11 @@ This document describes the list of changes and improvements to make to the App:
 - Possibility to add the FAO drawings for the 5 species of interest to the TCAC
 - Update "ReadMe" file to reflect changes in the App
 
-## HISTORICAL_CATCH_ESTIMATES.csv
-
-- Update *FRAT* to *ATF* in the FLEET_CODE column to link the catches with the WJA
-- Update *TWN* to *CHN* in the FLAG column and keep *TWN* for the entity
-
 # Tool Tips
 
+## Parameters
 
+- Baseline weight (%)
 
 
 
