@@ -2,6 +2,7 @@
 
 This document describes the list of changes and improvements to make to the App:
 
+- Update the NJA size in the entity reference file in accordance with the new NJA spatial layer
 - Replace "Target TAC (t)" by "Target Total Allowable Catch (TAC; t)"
 - Replace "Albacore tuna" by "Albacore" in the species code list/drop-down list
 - Add European Union flag

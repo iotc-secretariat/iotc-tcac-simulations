@@ -2,91 +2,43 @@
 
 This repository hosts a Shiny App developed by the IOTC Secretariat to simulate and explore how different allocation scenarios affect the distribution of total catch among IOTC Contracting Parties and Cooperating non-contracting Parties (CPCs). The tool allows users to adjust parameters reflecting various allocation criteria, including each CPC's status -- i.e.,  Developing Coastal State, Least Developed Country, and Small Island Developing State --, historical catch levels, and catches taken within National Jurisdiction Areas (NJAs) by foreign fleets. It is designed to support transparent discussions and informed decision-making under the framework of the Technical Committee on Allocation Criteria (TCAC).
 
-# Configuration
+# Input Data
 
-The definitions of all relevant parameters characterising each CPC in relation to the allocation criteria are provided in the [`inputs/data/iotc_entities.csv`](./inputs/data/iotc_entities.csv) file. The file lists all current IOTC *Contracting Parties* (CP) and *Cooperating Non-Contracting Parties* (CNCP), as well as Taiwan,China as *Fishing entity* (FE), together with their:
+### Entity Reference Table
 
-- ISO3_CODE: 
-- M49_CODE: 
-- NAME_EN: 
-- NAME_FR: 
-- STATUS_CODE: 
-- STATUS: 
-- IS_DEVELOPING: 
-- IS_LDC: 
-- IS_SIDS: 
-- IS_COASTAL: 
-- NJA_IO_SIZE: 
+The definitions of all parameters used to characterise each CPC in relation to the allocation criteria are provided in the [`inputs/data/iotc_entities.csv`](./inputs/data/iotc_entities.csv) file. This file lists all current IOTC *Contracting Parties* (CP) and *Cooperating Non-Contracting Parties* (CNCP), as well as Taiwan,China as a *Fishing Entity* (FE), together with the following information:
 
-<!--
-[`cfg/CPC_CONFIGURATIONS.xlsx`](./CPC_CONFIGURATIONS.xlsx) file which includes two worksheets:
-
--   A `CPC` worksheet that lists all current IOTC *Contracting Parties* (CP) as well as Liberia as *Cooperating Non-Contracting Party* (CNCP), and Taiwan,China as *Fishing entity* (FE), together with their:
-
-    -   CODE: Mnemonic code (generally, the ISO3 code of the country)
-    -   NAME_EN: Official English name
-    -   NAME_FR: Official French name 
-    -   STATUS_CODE: CP, CNCP, and FE
-    -   STATUS: Contracting Party, Cooperating Non-Contracting Party, and Fishing Entity
-    -   IS_SIDS: Small Island Developing States (SIDS) status
-    -   IS_COASTAL: Coastal State status
-    -   NJA_SIZE: Size of the NJA (km2)
-
-</p>
-
--   A `COASTAL_STATE_SOCIO_ECONOMIC` worksheet that lists all IOTC CPC Coastal States, along with their development status (sourced from [this document](https://www.un.org/development/desa/dpad/wp-content/uploads/sites/45/WESP2020_Annex.pdf)). It also includes a set of socio-economic indicators addressing the requirements of both *Option 1* and *Option 2* in [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E) para. 6.6(1)(b). It is important to note that the indicators required for *Option 1* are not yet available to the IOTC Secretariat. 
-
-    -   CODE: Mnemonic code (generally, the ISO3 code of the country)
-    -   NAME_EN: Official English name
-    -   NAME_FR: Official French name
-    -   DEVELOPMENT_STATUS: Least developed (LD), developing (DG), developed (DE)
-    -   PER_CAPITA_FISH_CONSUMPTION_KG: Per capita fish consumption (kg / person / year) [*Option 1*]
-    -   CUV_INDEX: Commonwealth Universal Vulnerability index [*Option 1*]
-    -   PROP_WORKERS_EMPLOYED_SSF: Contribution (%) of fish workers employed in small-scale and artisanal fisheries [*Option 1*]
-    -   PROP_FISHERIES_CONTRIBUTION_GDP: Contribution (%) of fisheries to GDP [*Option 1*]
-    -   PROP_EXPORT_VALUE_FISHERY: Contribution (%) of fisheries exports to total export value [*Option 1*]
-    -   HDI_STATUS: Human Development Index status [*Option 2*]
-    -   GNI_STATUS: Gross National Income Status [*Option 2*]
-
-The HDI and GNI indicators required for *Option 2* have been sourced from the [UNDP](https://hdr.undp.org/data-center/human-development-index#/indicies/HDI) and [World Bank](https://datahelpdesk.worldbank.org/knowledgebase/articles/906519-world-bank-country-and-lending-group) websites, respectively. The HDI for the EU was averaged using data from this [source](https://www.theglobaleconomy.com/rankings/human_development/European-union/). In absence of HDI data for Somalia, the lowest value in the dataset, 0.446 (reported for Mozambique), was used.
-
--->
-
-## Assumptions
-
-### CPC and Coastal State Configuration
-
-For the purposes of the simulations, the following assumptions were made:
-
--   The NJAs of the IOTC CPCs were sourced from the Flanders Marine Institute [*maritime boundaries* geodatabase](https://doi.org/10.14284/628). They are available for download from the [IOTC Reference Data Catalogue](https://data.iotc.org/reference/latest/domain/admin/shapefiles/IO_NJA_AREAS_1.0.0_SHP.zip)
-
--   For historical reasons, the waters of the Chagos Archipelago were considered to be under the sovereignty of the United Kingdom of Great Britain and Northern Ireland (`GBR`)
-
-<!-- -   In addition to having an NJA in the Indian Ocean, France (OT) (`ATF`) shall be considered de facto as an IOTC Coastal State (see Appendix 4, para. 2 of the [Report of the 12th Technical Committee on Allocation Criteria](https://iotc.org/documents/TCAC/12/RE)) 
-
--   The European Union / REIO (`EUR`) has an NJA in the Indian Ocean (i.e., the NJA around Réunion and Mayotte) and, for this reason, "*should benefit from an allocation that relates to the size of the EEZ of its outermost territories in the IOTC Area of Competence.*" (see Appendix 4, para. 2 of the [Report of the 12th Technical Committee on Allocation Criteria](https://iotc.org/documents/TCAC/12/RE))
-
--   Despite the above, `EUR` "(...) *would not be seeking the application of paragraph 6.6(1)(b) of the coastal state allocation criteria (...)*" (see Appendix 4, para. 2 of [Report of the 12th Technical Committee on Allocation Criteria](https://iotc.org/documents/TCAC/12/RE))
-
--   There are different views as whether `EUR` "(...) *should benefit from the portion of the coastal state allocation criteria related to aspirations under paragraph 6.6(1)(a) (...)*" (see Appendix 4, para. 2 of the [Report of the 12th Technical Committee on Allocation Criteria](https://iotc.org/documents/TCAC/12/RE)). In their current configurations, the simulations considered `EUR` as benefiting from the portion of allocation specified by paragraph 6.6(1)(a) of [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E)
-
--   Following TCAC12, in consultations between the IOTC Secretariat and the United Kingdom of Great Britain and Northern Ireland (`GBR`), `GBR` informed the Secretariat that para 6.6.(1)(b) would not apply to their case, but that paragraph 6.6.(1)(a) and (c) would. This understanding has been incorporated into the current configuration of the TCAC simulations conducted by the Secretariat. -->
+| Field name        | Description | Source |
+| :------ | :--------------------- | :-------- |
+| `ISO3_CODE`       | Three-letter ISO 3166-1 alpha-3 country code | [IOTC (2026)](https://data.iotc.org/reference/latest/domain/admin/#Entities) | 
+| `M49_CODE`        | United Nations M49 numeric country or area code, used for statistical purposes | [UN (2026) ](https://unstats.un.org/unsd/methodology/m49/) |
+| `NAME_EN`         | Official name of the Contracting Party, Cooperating Non-Contracting Party, or Fishing Entity in English | [IOTC (2026)](https://data.iotc.org/reference/latest/domain/admin/#Entities) |
+| `NAME_FR`         | Official name of the Contracting Party, Cooperating Non-Contracting Party, or Fishing Entity in French | [IOTC (2026)](https://data.iotc.org/reference/latest/domain/admin/#Entities) |
+| `STATUS_CODE`     | IOTC membership status code: `CP` (Contracting Party), `CNCP` (Cooperating Non-Contracting Party), or `FE` (Fishing Entity) | [IOTC (2026)](https://data.iotc.org/reference/latest/domain/admin/#CPCs) |
+| `STATUS`          | Descriptive label corresponding to `STATUS_CODE` (e.g. *Contracting Party*, *Cooperating Non-Contracting Party*, *Fishing Entity*) | [IOTC (2026)](https://data.iotc.org/reference/latest/domain/admin/#CPCs) |
+| `IS_DEVELOPING`   | Indicator of developing country status according to [United Nations classification (`TRUE` / `FALSE`) | [UN (2020)](https://www.un.org/development/desa/dpad/wp-content/uploads/sites/45/WESP2020_Annex.pdf) |
+| `IS_LDC`          | Indicator of Least Developed Country (LDC) status according to United Nations classification (`TRUE` / `FALSE`) | [UN (2026)](https://unstats.un.org/unsd/methodology/m49/#ldc) |
+| `IS_SIDS`         | Indicator of Small Island Developing State (SIDS) status according to United Nations classification (`TRUE` / `FALSE`) | [UN (2026)](https://unstats.un.org/unsd/methodology/m49/#sids) |
+| `IS_COASTAL`      | Indicator of coastal State status within the IOTC Area of Competence (`TRUE` / `FALSE`) | [Flanders Marine Institute (2026)](https://www.marineregions.org/) |
+| `NJA_IO_SIZE`     | Surface area (in square kilometres) of the national jurisdictional area (Exclusive Economic Zone and/or equivalent maritime zones) within the Indian Ocean | [Flanders Marine Institute (2026)](https://www.marineregions.org/) |
 
 ### Historical Catches
 
 This information is essential for calculating the third component (*catch-based*) of the allocation criteria and can be downloaded from [`cfg/HISTORICAL_CATCH_ESTIMATES.csv`](./HISTORICAL_CATCH_ESTIMATES.csv). The file can be opened as a spreadsheet using MS Excel, LibreOffice Calc, Google Sheets, or any text editor.
 
-The fields included in the catch dataset include:  
+The catch input file used by the TCAC application contains aggregated catch estimates by year, flag, fleet, fishery, area, and species. The definitions of the fields included in this file are provided below.
 
--   YEAR: Year of fishing
--   FLAG_CODE: Code for [flag States](https://data.iotc.org/reference/latest/domain/admin/#countries)
--   FLEET_CODE: Code for [fishing fleets](https://data.iotc.org/reference/latest/domain/admin/#fleets)
--   FISHERY_TYPE: code for main fishery categories (ART = Artisanal, IND = Industrial)
--   FISHERY_CODE: Code for [fishing gears](https://data.iotc.org/reference/latest/domain/fisheries/#Gears) 
--   SCHOOL_TYPE_CODE: Code for [types of tuna school association](https://data.iotc.org/reference/latest/domain/legacy/#schoolTypes) (LS = School associated with a drifting floating object, natural or artificial; FS = Free-swimming school)
--   ASSIGNED_AREA; Areas Beyond National Jurisdiction (HIGH_SEAS) or National Jurisdiction Areas (NJA) where the last three characters correspond to the [country](https://data.iotc.org/reference/latest/domain/admin/#countries) (e.g., NJA_COM = National Jurisdiction Area of Comoros)
--   SPECIES_CODE: ALB = albacore; BET = bigeye tuna; SKJ = skipjack tuna; SWO = swordfish; YFT = yellowfin tuna
--   CATCH_MT: estimated catch in metric tonnes.   
+| Field name           | Description |
+|:------- | :-------------------------- |
+| `YEAR`               | Year of fishing activity |
+| `FLAG_CODE`          | Code identifying the [flag State](https://data.iotc.org/reference/latest/domain/admin/#countries)e, as defined in the IOTC reference list of countries |
+| `FLEET_CODE`         | Code identifying the [fishing fleet](https://data.iotc.org/reference/latest/domain/admin/#fleets), as defined in the IOTC reference list of fleets |
+| `FISHERY_TYPE`       | Code identifying the main fishery category: `ART` (Artisanal) or `IND` (Industrial) |
+| `FISHERY_CODE`       | Code identifying the [fishing gear](https://data.iotc.org/reference/latest/domain/fisheries/#Gears) used, as defined in the IOTC reference list of fishing gears |
+| `SCHOOL_TYPE_CODE`   | Code identifying the type of tuna school association: `LS` (school associated with a drifting floating object, natural or artificial) or `FS` (free-swimming school) |
+| `ASSIGNED_AREA`      | Area where the catch is assigned. Values include Areas Beyond National Jurisdiction (`HIGH_SEAS`) and National Jurisdiction Areas (`NJA_xxx`), where the last three characters correspond to the relevant [country code](https://data.iotc.org/reference/latest/domain/admin/#countries), e.g. `NJA_COM` for the National Jurisdiction Area of Comoros |
+| `SPECIES_CODE`       | Code identifying the [species](https://data.iotc.org/reference/latest/domain/biology/#IOTCspecies) : `ALB` (albacore), `BET` (bigeye tuna), `SKJ` (skipjack tuna), `SWO` (swordfish), `YFT` (yellowfin tuna) |
+| `CATCH_MT`           | Estimated catch, expressed in metric tonnes |
 
 Historical catch data are available for all years from 1950 to 2021 stratified by year, fleet, gear, school type, species, and assigned area.
 
@@ -94,12 +46,43 @@ It is important to note that the need to apportion historical catches by flag or
 
 For this reason, the historical catch series with a full area breakdown is only available for the five major IOTC species (albacore, bigeye tuna, skipjack tuna, swordfish, and yellowfin tuna). These data have been estimated using the regular grid versus the NJA overlapping area fraction to assign catches estimated for the former to the area that falls within a given NJA.
 
+### National Jurisdiction Areas
+
+The NJAs of the IOTC CPCs were sourced from the Flanders Marine Institute [*maritime boundaries* geodatabase](https://doi.org/10.14284/628). They are available for download from the [IOTC Reference Data Catalogue](https://data.iotc.org/reference/latest/domain/admin/shapefiles/IO_NJA_AREAS_1.0.0_SHP.zip)
+
+For the purposes of the simulations, the following assumptions were made:
+
+i.  For historical reasons, the waters of the Chagos Archipelago were considered to be under the sovereignty of the United Kingdom of Great Britain and Northern Ireland (`GBR`)
+
+ii. In case of disputed areas
+
+iii. Lost catch data for wrong grids (outside the Indian Ocean - include the map)
+
+iv. Other NJAs:
+
+
+## Allocation Computation
+
+### Baseline Weight
+
+### Coastal State Weight
+
+#### Equal Weight
+
+#### Least-Developed Country Weight
+
+#### SIDS weight
+
+### Catch-Based Weight
+
 To calculate the catch-based allocation weight for each CPC, information on historical catches is averaged across a selectable time frame using two possible approaches that require computation:
 
 -   the annual average across the entire time period
 -   the average of the best "*n*" years across the time period
 
 In the latter case, the *best years* are defined as those with the highest catches during the selected period for a given fleet and species.
+
+<!--
 
 # User Interface
 
@@ -302,6 +285,6 @@ The **Reports** tab provides access to reports that include the configuration pa
 
 ![](assets/images/app_results_reports.png)
 
-
+-->
 
 
