@@ -367,11 +367,11 @@ server = function(input, output, session) {
                    },options = list( 
                      render = I("{
                       item: function(item, escape) {
-                        var icon_href = 'https://raw.githubusercontent.com/fdiwg/flags/main/'+item.value.toLowerCase()+'.gif';
+                        var icon_href = 'https://raw.githubusercontent.com/fdiwg/flags/release/40/'+item.value.toLowerCase()+'.png';
                         return '<div><img src=\"'+icon_href+'\" height=16 width=28 style=\"margin-bottom:3px\" /> ' + item.label + '</div>'; 
                       },
                       option: function(item, escape) { 
-                        var icon_href = 'https://raw.githubusercontent.com/fdiwg/flags/main/'+item.value.toLowerCase()+'.gif';
+                        var icon_href = 'https://raw.githubusercontent.com/fdiwg/flags/release/40/'+item.value.toLowerCase()+'.png';
                         return '<div><img src=\"'+icon_href+'\" height=16 width=28 style=\"margin-bottom:3px\" /> ' + item.label + '</div>'; 
                       }
                     }"
@@ -411,7 +411,7 @@ server = function(input, output, session) {
     if(!is.null(input$ref_cpc) & input$ref_cpc != ""){
       bs4Dash::bs4Card(
         title = tagList(
-          img(src = sprintf("https://raw.githubusercontent.com/fdiwg/flags/main/%s.gif", tolower(input$ref_cpc)), height = "20px", width = "30px"),
+          img(src = sprintf("https://raw.githubusercontent.com/fdiwg/flags/release/80/%s.png", tolower(input$ref_cpc)), width = "80px"),
           tags$b(selected_cpc()$NAME_EN)
         ),
         status = "primary",
@@ -1023,11 +1023,11 @@ server = function(input, output, session) {
                    },options = list( 
                      render = I("{
                       item: function(item, escape) {
-                        var icon_href = 'https://raw.githubusercontent.com/fdiwg/flags/main/'+item.value.toLowerCase()+'.gif';
+                        var icon_href = 'https://raw.githubusercontent.com/fdiwg/flags/release/40/'+item.value.toLowerCase()+'.png';
                         return '<div><img src=\"'+icon_href+'\" height=16 width=28 style=\"margin-bottom:3px\" /> ' + item.label + '</div>'; 
                       },
                       option: function(item, escape) { 
-                        var icon_href = 'https://raw.githubusercontent.com/fdiwg/flags/main/'+item.value.toLowerCase()+'.gif';
+                        var icon_href = 'https://raw.githubusercontent.com/fdiwg/flags/release/40/'+item.value.toLowerCase()+'.png';
                         return '<div><img src=\"'+icon_href+'\" height=16 width=28 style=\"margin-bottom:3px\" /> ' + item.label + '</div>'; 
                       }
                     }"
