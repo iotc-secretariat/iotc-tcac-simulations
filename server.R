@@ -389,13 +389,37 @@ server = function(input, output, session) {
       tagList(
         h5("Select a species"),
         selectizeInput("ref_cpc_data_species", label = NULL, selected = NULL, multiple = FALSE, 
-                     choices = {
-                       entity_choices <- unique(selected_cpc_catches()$SPECIES_CODE)
-                       entity_choices <- entity_choices[order(entity_choices)]
-                       entity_names = fdi4R::cl_asfis_species[fdi4R::cl_asfis_species$code %in% entity_choices,]
-                       entity_names = entity_names[order(entity_names$code),]$label
-                       setNames(entity_choices, entity_names)
-                     },options = list( 
+                     width = 350,
+                     choices = NULL,
+                     options = list(
+                       options = {
+                         entity_choices <- unique(selected_cpc_catches()$SPECIES_CODE)
+                         entity_choices <- entity_choices[order(entity_choices)]
+                         entity_names = fdi4R::cl_asfis_species[fdi4R::cl_asfis_species$code %in% entity_choices,]
+                         species = data.frame(
+                           code = entity_choices,
+                           label_en = entity_names[order(entity_names$code),]$label,
+                           sciname = entity_names[order(entity_names$code),]$definition,
+                           stringsAsFactors = FALSE
+                         )
+                         lapply(seq_len(nrow(species)), function(i) {
+                           as.list(species[i, ])
+                         })
+                       },
+                       valueField  = "code",
+                       labelField  = "label_en",
+                       searchField = c("code", "label_en", "sciname"),
+                       render = I("{
+                          item: function(item, escape) {
+                            var icon_href = 'species/'+item.code+'.png';
+                            return '<div>' + item.label_en + ' – <em>' + item.sciname + '</em> <img src=\"'+icon_href+'\" height=30 style=\"margin-bottom:3px;float:right;\" /></div>'; 
+                          },
+                          option: function(item, escape) {
+                            var icon_href = 'species/'+item.code+'.png';
+                            return '<div>' + item.label_en + ' – <em>' + item.sciname + '</em> <img src=\"'+icon_href+'\" height=30 style=\"margin-bottom:3px;float:right;\" /></div>'; 
+                          }
+                        }"
+                       ),
                        placeholder = "Please select a species",
                        onInitialize = I('function() { this.setValue(""); }')
                      )
@@ -497,6 +521,7 @@ server = function(input, output, session) {
   observeEvent(input$ref_cpc, {
     req(input$ref_cpc)
     
+    #MAP
     #sf data
     country_polys = fdi4R::un_countries
     country_lines = fdi4R::un_boundaries
