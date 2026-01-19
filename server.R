@@ -512,7 +512,7 @@ server = function(input, output, session) {
       )
     
     #NJA
-    njas = fdi4R::wja_level1__x__rfb_comp[fdi4R::wja_level1__x__rfb_comp$code2 == "IOTC",]
+    njas = fdi4R::wja_level1__x__iotc_indian_ocean_areas[fdi4R::wja_level1__x__iotc_indian_ocean_areas$code2 == "IO_ALL",]
     cpc_nja = njas[regexpr(input$ref_cpc, njas$code1) > 0,] %>% sf::st_collection_extract()
     
     # Mutually exclusive styling classes
@@ -524,7 +524,7 @@ server = function(input, output, session) {
     proxy <- leafletProxy("cpc_map") %>%
       clearGroup("Country/Territory boundaries") %>%
       clearGroup("Coastline") %>%
-      clearGroup("NJA part in IOTC competence area")
+      clearGroup("NJA part in Indian Ocean")
     
     # Ppolygon FIRST
     if (nrow(cpc_admin) > 0) {
@@ -582,14 +582,14 @@ server = function(input, output, session) {
         lng2 = as.numeric(bb["xmax"]), lat2 = as.numeric(bb["ymax"])
       )
     }
-    # NJA (intersect with IOTC competence area)?
+    # NJA (intersect with Indian Ocean)?
     if (nrow(cpc_nja) > 0){
       proxy <- proxy %>%
         addPolygons(
           data = cpc_nja,
           fillColor = "#22a4e6",
           fillOpacity = 0.8,
-          group = "NJA part in IOTC competence area",
+          group = "NJA part in Indian Ocean",
           color = "white", # transparent stroke
           weight = 0
         )

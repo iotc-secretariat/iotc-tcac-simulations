@@ -456,7 +456,7 @@
       "RemoteHost": "api.github.com",
       "RemoteRepo": "fdi4R",
       "RemoteUsername": "fdiwg",
-      "RemoteSha": "dbc036cbf8842f432cba5df7f9100a1b1c46825e",
+      "RemoteSha": "42b858c1e7f0624c682b5c037603a3325f084ff2",
       "Requirements": [
         "R",
         "geosphere",
@@ -469,7 +469,7 @@
         "tmap",
         "worrms"
       ],
-      "Hash": "1ebf4d36c42ee3ab8abb8e5196a1bb3a"
+      "Hash": "49721b809f7776325cb90f1d205a429e"
     },
     "fontBitstreamVera": {
       "Package": "fontBitstreamVera",
