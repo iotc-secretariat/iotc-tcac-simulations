@@ -48,7 +48,7 @@ server = function(input, output, session) {
             fluidRow(
               column(
                 width = 3,
-                h5("Select a entity"),
+                h5("Select an entity"),
                 uiOutput("ref_cpc_selector")
               ),
               column(
@@ -101,7 +101,7 @@ server = function(input, output, session) {
                               selectInput("species", "Species", width = "100%", choices = AVAILABLE_SPECIES, selected = "YFT")
                        ),
                        column(width = 6,
-                              numericInput("tac", "Target TAC (t)", value = 421000, min = 10000, step = 10000),
+                              numericInput("tac", "Target Total Allowable Catch (TAC; t)", value = 421000, min = 10000, step = 10000),
                        )
                      ),
                      
@@ -224,18 +224,8 @@ server = function(input, output, session) {
                                )
                              ),
                              
-                             hr(class = "thin"),
+                             hr(class = "thin")
                              
-                             strong("High-Seas only catches"),
-                             
-                             hr(),
-                             
-                             fluidRow(
-                               column(
-                                 width = 12,
-                                 checkboxInput("onlyHS", "Focus exclusively on catches estimated to have been taken in Areas Beyond National Jurisdiction (High Seas; HS)", FALSE)
-                               )
-                             ) 
                          )
                        )
                      )
@@ -306,7 +296,7 @@ server = function(input, output, session) {
                        tabPanel(
                          title = "By entity",
                          value = "simu_by_entity",
-                         h5("Select a entity"),
+                         h5("Select an entity"),
                          fluidRow(
                            column(width = 3,
                             uiOutput("report_by_entity_selector")
@@ -386,7 +376,7 @@ server = function(input, output, session) {
                       }
                     }"
                      ),
-                     placeholder = "Please select a entity",
+                     placeholder = "Please Select an entity",
                      onInitialize = I('function() { this.setValue(""); }')
                    )
     )
@@ -412,7 +402,7 @@ server = function(input, output, session) {
         )
       )
     }else{
-      tags$p(tags$em("Select a entity to get information"))
+      tags$p(tags$em("Select an entity to get information"))
     }
   })
   
@@ -487,7 +477,7 @@ server = function(input, output, session) {
               tags$li(tags$p("SIDS?: ", if(selected_cpc()$IS_SIDS) tags$b("Yes") else tags$b("No")))
       )
     }else{
-      tags$p(tags$em("Select a entity to get information"))
+      tags$p(tags$em("Select an entity to get information"))
     }
   })
   
@@ -652,7 +642,7 @@ server = function(input, output, session) {
           )
         ),
       filter = list(position = "top")
-    ) %>% DT::formatCurrency("CATCH_MT", mark = ",", digits = 2, currency = "&nbsp;t", before = FALSE)
+    ) %>% DT::formatCurrency("CATCH_MT", mark = ",", digits = 2, currency = "", before = FALSE)
   })
   
   # Baseline weight
@@ -722,7 +712,7 @@ server = function(input, output, session) {
     filtered_catch_data = subset_and_postprocess_catch_data(catch_data   = ALL_CATCH_DATA,
                                                             species_code = input$species,
                                                             years        = input$period[1]:input$period[2],
-                                                            onlyHS = input$onlyHS)
+                                                            onlyHS = FALSE)
     average_catch_function = period_average_catch_data
     
     if(input$avg_period == "best") {
@@ -808,7 +798,7 @@ server = function(input, output, session) {
     if(unit == "quota")
       allocation_dt = allocation_dt %>% DT::formatPercentage(2:ncol(dt_alloc), digits = 2)
     else
-      allocation_dt = allocation_dt %>% DT::formatCurrency(2:ncol(dt_alloc), digits = 2, currency = "&nbsp;t", before = FALSE)
+      allocation_dt = allocation_dt %>% DT::formatCurrency(2:ncol(dt_alloc), digits = 0, currency = "", before = FALSE)
     
     alloc_NORM = dt_alloc[, 2:ncol(dt_alloc)]
     
@@ -816,14 +806,14 @@ server = function(input, output, session) {
       if(input$out_heat_type  == "by_year") {
         for(column in colnames(alloc_NORM)) {
           breaks = quantile(range(alloc_NORM[[column]]), probs = seq(0, 1, .05))
-          colors = round(seq(255, 40, length.out = length(breaks) + 1), 0) %>% { paste0("rgb(255, ", ., ",", ., ")") }
+          colors = colorRampPalette(c("#ffffff", "#17a2b8"))(length(breaks) + 1)
           
           allocation_dt = 
             allocation_dt %>% DT::formatStyle(column, backgroundColor = DT::styleInterval(breaks, colors))
         }
       } else if(input$out_heat_type  == "global") {
         breaks = quantile(range(alloc_NORM), probs = seq(0, 1, .05))
-        colors = round(seq(255, 40, length.out = length(breaks) + 1), 0) %>% { paste0("rgb(255, ", ., ",", ., ")") }
+        colors = colorRampPalette(c("#ffffff", "#17a2b8"))(length(breaks) + 1)
         
         allocation_dt = 
           allocation_dt %>% DT::formatStyle(colnames(alloc_NORM), backgroundColor = DT::styleInterval(breaks, colors))
@@ -833,7 +823,7 @@ server = function(input, output, session) {
         for(column in colnames(alloc_NORM)) {
           allocation_dt = 
             allocation_dt %>% DT::formatStyle(column,
-                                          background = DT::styleColorBar(range(alloc_NORM[[column]]), "#FF4444"),
+                                          background = DT::styleColorBar(range(alloc_NORM[[column]]), "#17a2b8"),
                                           backgroundSize = '98% 88%',
                                           backgroundRepeat = 'no-repeat',
                                           backgroundPosition = 'center')
@@ -841,7 +831,7 @@ server = function(input, output, session) {
       } else if(input$out_heat_type  == "global") {
         allocation_dt = 
           allocation_dt %>% DT::formatStyle(colnames(alloc_NORM),
-                                        background = DT::styleColorBar(range(alloc_NORM), "#FF4444"),
+                                        background = DT::styleColorBar(range(alloc_NORM), "#17a2b8"),
                                         backgroundSize = '98% 88%',
                                         backgroundRepeat = 'no-repeat',
                                         backgroundPosition = 'center')
@@ -999,7 +989,7 @@ server = function(input, output, session) {
       CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_09 = input$cb_year09_wgt/100
       CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_10 = input$cb_year10_wgt/100
       ALLOCATION_TRANSITION = sapply(1:10, function(x){ eval(parse(text = paste0("CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_", sprintf("%02d",x)))) })
-      OnlyHS = input$onlyHS
+      OnlyHS = FALSE
       
       # Source the R allocation scripts
       source("./initialisation/05_SCENARIO_ALLOCATION_COMPUTATION.R", local = TRUE)
@@ -1081,7 +1071,7 @@ server = function(input, output, session) {
       CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_09 = input$cb_year09_wgt/100
       CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_10 = input$cb_year10_wgt/100
       ALLOCATION_TRANSITION = sapply(1:10, function(x){ eval(parse(text = paste0("CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_", sprintf("%02d",x)))) })
-      OnlyHS = input$onlyHS
+      OnlyHS = FALSE
       
       # Source the R allocation scripts
       source("./initialisation/05_SCENARIO_ALLOCATION_COMPUTATION.R", local = TRUE)

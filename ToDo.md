@@ -2,25 +2,39 @@
 
 This document describes the list of changes and improvements to make to the App:
 
+* Computation / Datasets
+
 - Update the NJA size in the entity reference file in accordance with the new NJA spatial layer
-- Replace "Target TAC (t)" by "Target Total Allowable Catch (TAC; t)"
-- Replace "Albacore tuna" by "Albacore" in the species code list/drop-down list
-- Add European Union flag
-- Possibility to improve the quality of the flag logos (other source?)
-- Replace "Select a entity" by "Select an entity" in the Reference data tab
-- Replace "Please select a entity" by "Please select an entity" in the drop-down list of the Reference data tab
-- Update Australian NJA to reflect the 4 components present in the Indian Ocean in the map: c("AUS", "AUS_CCK", "AUS_CXR", "AUS_HMD")
-- Add an option of export of the Catch Dataset (Data) in the Reference data tab (DT package)
+- Update Australian NJA to reflect the 4 components present in the Indian Ocean in the map: c("AUS", "AUS_CCK", "AUS_CXR", "AUS_HMD") => _HMD part is not intersecting IOTC area of competence so it is not displayed, the other features are_
+
+* Labelling
+
+- Replace "Target TAC (t)" by "Target Total Allowable Catch (TAC; t)" => _DONE_
+- Replace "Albacore tuna" by "Albacore" in the species code list/drop-down list => _DONE_
+- Replace "Select a entity" by "Select an entity" in the Reference data tab => _DONE_
+- Replace "Please select a entity" by "Please select an entity" in the drop-down list of the Reference data tab = > _DONE_
 - Enrich the catch dataset with labels/names for flag state, entity, type of fishery, fishery, school type, assigned area species
 - The headers (column names) of the catch dataset should read: Year, Flag state code, Flag Sate, Entity code, Entity, Type of fishery code, Type of fishery, Fishery code, Fishery, School type code, School type, Assigned area code, Assigned Area (**Do we really need to keep the codes, maybe for potential advanced users??**)
-- Remove "t" from the Catches column
-- Change colour palettes from red to blue for the simulation results: 'All entities' tab 
-- Remove the 2 decimal places in the simulation results: 'All entities' tab 
-- Remove the "t" standing for metric tonnes in the simulation results: 'All entities' tab
+
+* UI
+
+- Add European Union flag => _To address through FDI_
+- Possibility to improve the quality of the flag logos (other source?) => _To address through FDI_
 - Add general disclaimer and individual short disclaimers on each map (see below)
-- Remove "High Seas only catches" [Focus exclusively on catches estimate to have been taken in Areas Beyond National Jurisdiction (High Seas; HS)] in Simulation configuration panel (bottom)
+
+* Features
+
+- Add an option of export of the Catch Dataset (Data) in the Reference data tab (DT package)
+- Remove "t" from the Catches column => _DONE_
+- Change colour palettes from red to blue for the simulation results: 'All entities' tab => _DONE_
+- Remove the 2 decimal places in the simulation results: 'All entities' tab  => _DONE_
+- Remove the "t" standing for metric tonnes in the simulation results: 'All entities' tab => _DONE_
+- Remove "High Seas only catches" [Focus exclusively on catches estimate to have been taken in Areas Beyond National Jurisdiction (High Seas; HS)] in Simulation configuration panel (bottom) => _DONE_
 - Add information on the species selected for the Results "By entity"
 - Possibility to add the FAO drawings for the 5 species of interest to the TCAC
+
+* Documentation
+
 - Update "ReadMe" file to reflect changes in the App
 
 # Tool Tips
@@ -28,9 +42,6 @@ This document describes the list of changes and improvements to make to the App:
 ## Parameters
 
 - Baseline weight (%)
-
-
-
 
 # Map & Spatial Data Disclaimer
 

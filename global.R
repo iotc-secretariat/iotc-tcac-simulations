@@ -46,7 +46,7 @@ ALL_CATCH_DATA = read_catch_data("./inputs/data/HISTORICAL_CATCH_ESTIMATES.csv",
 AVAILABLE_YEARS = list(MIN = min(ALL_CATCH_DATA$YEAR), 
                        MAX = max(ALL_CATCH_DATA$YEAR))
 
-AVAILABLE_SPECIES = list(`ALB - Albacore tuna`  = "ALB",
+AVAILABLE_SPECIES = list(`ALB - Albacore`  = "ALB",
                          `BET - Bigeye tuna`    = "BET",
                          `SKJ - Skipjack tuna`  = "SKJ",
                          `YFT - Yellowfin tuna` = "YFT",
