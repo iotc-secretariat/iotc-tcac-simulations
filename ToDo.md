@@ -15,6 +15,7 @@ This document describes the list of changes and improvements to make to the App:
 - Replace "Please select a entity" by "Please select an entity" in the drop-down list of the Reference data tab = > _DONE_
 - Enrich the catch dataset with labels/names for flag state, entity, type of fishery, fishery, school type, assigned area species
 - The headers (column names) of the catch dataset should read: Year, Flag state code, Flag Sate, Entity code, Entity, Type of fishery code, Type of fishery, Fishery code, Fishery, School type code, School type, Assigned area code, Assigned Area (**Do we really need to keep the codes, maybe for potential advanced users??**)
+- The right column header should not read **TAC** in the `Results` panel, as the TAC represents the total value of catch allowed. It could read "Value", corresponding either to Quota (%) or "Catches (t)" depending on the variable selected through the scroll-down list. It could also read each of those when selected, if not complicated to implement.
 
 * UI
 
