@@ -354,17 +354,15 @@ display: none;
 
 <div id="overview" class="section level1">
 <h1>Overview</h1>
-<p>This repository hosts a Shiny App developed by the IOTC Secretariat
-to simulate and explore how different allocation scenarios affect the
+<p>This repository hosts a Shiny application developed by the IOTC
+Secretariat to explore how alternative allocation scenarios affect the
 distribution of total catch among IOTC Contracting Parties and
-Cooperating non-contracting Parties (CPCs). The tool allows users to
-adjust parameters reflecting various allocation criteria, including each
-CPC’s status – i.e., Developing Coastal State, Least Developed Country,
-and Small Island Developing State –, historical catch levels, and
-catches taken within National Jurisdiction Areas (NJAs) by foreign
-fleets. It is designed to support transparent discussions and informed
-decision-making under the framework of the Technical Committee on
-Allocation Criteria (TCAC).</p>
+Cooperating Non-Contracting Parties (CPCs). Users can adjust parameters
+reflecting CPC status, historical catch levels, and catches within
+National Jurisdiction Areas (NJAs) by foreign fleets. The tool is
+intended to support transparent discussion and informed decision-making
+within the framework of the Technical Committee on Allocation Criteria
+(TCAC).</p>
 </div>
 <div id="input-data" class="section level1">
 <h1>Input Data</h1>
@@ -557,8 +555,7 @@ area.</p>
 by flag or fleet according to the area of operation (high seas versus
 the NJA of any given coastal state) requires the IOTC Secretariat to
 estimate this information. This estimation process was presented at the
-last TCAC meeting in October 2023 and was endorsed by the meeting
-participants (see <a href="https://iotc.org/documents/TCAC/12/INF02">IOTC-2023-TCAC12-INF02</a>).</p>
+TCAC meeting in October 2023 (see <a href="https://iotc.org/documents/TCAC/12/INF02">IOTC-2023-TCAC12-INF02</a>).</p>
 <p>For this reason, the historical catch series with a full area
 breakdown is only available for the five major IOTC species (albacore,
 bigeye tuna, skipjack tuna, swordfish, and yellowfin tuna). These data
@@ -568,38 +565,95 @@ that falls within a given NJA.</p>
 </div>
 <div id="national-jurisdiction-areas" class="section level3">
 <h3>National Jurisdiction Areas</h3>
-<p>The NJAs of the IOTC CPCs were sourced from the Flanders Marine
-Institute <a href="https://doi.org/10.14284/628"><em>maritime
-boundaries</em> geodatabase</a>. They are available for download from
-the <a href="https://data.iotc.org/reference/latest/domain/admin/shapefiles/IO_NJA_AREAS_1.0.0_SHP.zip">IOTC
-Reference Data Catalogue</a></p>
-<p>For the purposes of the simulations, the following assumptions were
-made:</p>
+<p>The National Jurisdiction Areas (NJAs) of the IOTC CPCs were sourced
+from the Flanders Marine Institute (VLIZ) <em>maritime boundaries</em>
+geodatabase (<a href="https://doi.org/10.14284/628" class="uri">https://doi.org/10.14284/628</a>). The corresponding spatial
+layers are available for download from the IOTC Reference Data Catalogue
+(<a href="https://data.iotc.org/reference/latest/domain/admin/shapefiles/IO_NJA_AREAS_2.0.0_SHP.zip" class="uri">https://data.iotc.org/reference/latest/domain/admin/shapefiles/IO_NJA_AREAS_2.0.0_SHP.zip</a>).</p>
+<p>For the purposes of the simulations implemented in the TCAC
+application, the following assumptions were applied:</p>
 <ol style="list-style-type: lower-roman">
-<li><p>For historical reasons, the waters of the Chagos Archipelago were
-considered to be under the sovereignty of the United Kingdom of Great
-Britain and Northern Ireland (<code>GBR</code>)</p></li>
-<li><p>In case of disputed areas</p></li>
-<li><p>Lost catch data for wrong grids (outside the Indian Ocean -
-include the map)</p></li>
-<li><p>Other NJAs:</p></li>
+<li><p>For historical reasons, the waters of the Chagos Archipelago,
+considered here as part of the National Jurisdiction Areas of Mauritius,
+were treated as being under the sovereignty of the United Kingdom of
+Great Britain and Northern Ireland (<code>GBR</code>), under the
+administration of the British Indian Ocean Territory prior to 2021. A
+full Marine Protected Area has been in place since April 2010 and,
+consequently, no official fisheries catches have been reported from
+these waters since that date, except for a coastal handline
+fishery;</p></li>
+<li><p>Although Mayotte became an overseas department of France in 2011,
+catches associated with Mayotte are attributed to France in IOTC
+datasets from 2014 onwards, corresponding to the point at which
+reporting practices and fleet attribution became consistently aligned
+with French national submissions. Accordingly, catches taken in the
+waters of Mayotte during the period 1995–2013 were allocated to the
+French Southern Territories (<code>ATF</code>), and to France
+(<code>FRA</code>) thereafter;</p></li>
+<li><p>In the case of disputed areas, catches were allocated to each
+country claiming the area. The current version of the Indian Ocean Water
+Jurisdiction Areas includes the following disputed areas: United Arab
+Emirates with I.R. Iran (<code>ARE_IRN</code>), Eritrea with Djibouti
+(<code>ERI_DJI</code>), Mayotte (France) with Comoros
+(<code>FRA_COM_MYT</code>), France with Madagascar and Mauritius
+(<code>FRA_MDG_MUS</code>), Iraq with I.R. Iran (<code>IRQ_IRN</code>),
+Madagascar with France (<code>MDG_FRA</code>), Qatar with Saudi Arabia
+and the United Arab Emirates (<code>QAT_SAU_ARE</code>), and Sudan with
+Egypt (<code>SDN_EGY</code>);</p></li>
+<li><p>Catches estimated to have been taken in the NJAs of non-IOTC CPCs
+(United Arab Emirates, Bahrain, Djibouti, Egypt, Eritrea, Iraq, Jordan,
+Kuwait, Myanmar, Qatar, Saudi Arabia, and Timor-Leste) were aggregated
+under the assigned area <code>OTHER</code>;</p></li>
+<li><p>Catch data reported for incorrect spatial grids (i.e. located
+outside the Indian Ocean) could not be assigned to any NJA or to the
+high seas and were therefore excluded from the analysis.</p></li>
 </ol>
 </div>
 <div id="allocation-computation" class="section level2">
 <h2>Allocation Computation</h2>
+<p>All weights are expressed in percentage of the total value of the
+Total Allowable Catch (TAC).</p>
 <div id="baseline-weight" class="section level3">
 <h3>Baseline Weight</h3>
+<p>The baseline weight represents the portion of the Total Allowable
+Catch (TAC) that is allocated evenly among the the 29 IOTC Contracting
+Parties (CPs): Australia (AUS), Bangladesh (BGD), China (CHN), Comoros
+(COM), European Union (EUR), France Overseas Territories (ATF), India
+(IND), Indonesia (IDN), Iran (Islamic Republic of) (IRN), Japan (JPN),
+Kenya (KEN), Madagascar (MDG), Malaysia (MYS), Maldives (MDV), Mauritius
+(MUS), Mozambique (MOZ), Oman (OMN), Pakistan (PAK), Philippines (PHL),
+Republic of Korea (KOR), Seychelles (SYC), Somalia (SOM), South Africa
+(ZAF), Sri Lanka (LKA), Sudan (SDN), Thailand (THA), United Kingdom of
+Great Britain and Northern Ireland (GBR), United Republic of Tanzania
+(TZA), and Yemen (YEM).</p>
+<p><strong>Example</strong>. If the baseline weight is set to 10%, each
+CP receives an equal share of the TAC: 10 ÷ 29 ≈ 0.345%. For a TAC of
+421,000 t (the default case for yellowfin tuna), this corresponds to
+approximately 1,452 t per CP.</p>
 </div>
-<div id="coastal-state-weight" class="section level3">
-<h3>Coastal State Weight</h3>
+<div id="developing-states-weight" class="section level3">
+<h3>Developing states Weight</h3>
+<p>The developing states weight represents the portion of the Total
+Allowable Catch (TAC) that is allocated among the IOTC developing
+coastal states: Bangladesh (BGD), Comoros (COM), India (IND), Indonesia
+(IDN), Iran (Islamic Republic of) (IRN), Kenya (KEN), Madagascar (MDG),
+Malaysia (MYS), Maldives (MDV), Mauritius (MUS), Mozambique (MOZ), Oman
+(OMN), Pakistan (PAK), Seychelles (SYC), Somalia (SOM), South Africa
+(ZAF), Sri Lanka (LKA), Sudan (SDN), Thailand (THA), United Republic of
+Tanzania (TZA), and Yemen (YEM).</p>
+<p>This allocation component is composed of three sub-components, the
+weight of each can be configured by the user: (i) Equal weight, (ii)
+Least-developed country weight, and (iii) Small Islands Developing
+States weight</p>
+<p>, i.e., the relative weight of each component can be set</p>
 <div id="equal-weight" class="section level4">
 <h4>Equal Weight</h4>
 </div>
 <div id="least-developed-country-weight" class="section level4">
 <h4>Least-Developed Country Weight</h4>
 </div>
-<div id="sids-weight" class="section level4">
-<h4>SIDS weight</h4>
+<div id="small-islands-developing-state-weight" class="section level4">
+<h4>Small Islands Developing State Weight</h4>
 </div>
 </div>
 <div id="catch-based-weight" class="section level3">
@@ -615,18 +669,16 @@ period</li>
 <p>In the latter case, the <em>best years</em> are defined as those with
 the highest catches during the selected period for a given fleet and
 species.</p>
+</div>
+</div>
+</div>
+<div id="ui" class="section level1">
+<h1>User Interface</h1>
+<p>The simulation is presented through an interactive R Shiny <a href="https://foodandagricultureorganization.shinyapps.io/iotc-tcac-simulations-review/">web
+application</a> that is password-protected.</p>
+<p>The main screen features two tabbed panels: one to display the <a href="#referenceData">Reference data</a> used by the simulation, and
+another to present users with the configuration <a href="#inputConfig">Parameters</a> and the simulation <a href="#results">Results</a>.</p>
 <!--
-
-# User Interface
-
-The simulation is presented through an interactive R Shiny [web application](https://data.iotc.org/tcac13/simulations/) that is password-protected.
-
-The main screen features two tabbed panels: one to display the [reference data](#referenceData) used by the simulation, and [another](#simulationResults) to present users with the [configuration parameters](#inputConfig) and the [simulation outputs](#outputs).
-
-![An overview of the web application user interface](assets/images/app_UI_all_rev.png)
-
-<br/>
-
 ## Reference Data Panel
 
 This panel provides access to three main categories of configuration datasets which are presented as sortable, filterable tables, and provide an interactive version of the tabular configuration files included with the application:
@@ -819,8 +871,6 @@ The **Reports** tab provides access to reports that include the configuration pa
 ![](assets/images/app_results_reports.png)
 
 -->
-</div>
-</div>
 </div>
 
 
