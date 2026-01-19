@@ -575,7 +575,8 @@ server = function(input, output, session) {
     
     # Zoom to selection if we have features
     if (nrow(filtered) > 0) {
-      bb <- do.call(sf::st_bbox, lapply(list(filtered, cpc_admin, cpc_nja), sf::st_bbox))
+      #bb <- do.call(sf::st_bbox, lapply(list(filtered, cpc_admin, cpc_nja), sf::st_bbox))
+      bb <- sf::st_bbox(cpc_nja)
       proxy %>% fitBounds(
         lng1 = as.numeric(bb["xmin"]), lat1 = as.numeric(bb["ymin"]),
         lng2 = as.numeric(bb["xmax"]), lat2 = as.numeric(bb["ymax"])
