@@ -513,7 +513,7 @@ server = function(input, output, session) {
     leaflet() %>%
       addTiles() %>%
       addLayersControl(
-        overlayGroups = c("Country/Territory boundaries", "Coastline","NJA part in IOTC competence area"),
+        overlayGroups = c("Country/Territory boundaries", "Coastline","NJA part in Indian Ocean", "Overlapping claim part in Indian Ocean"),
         options = layersControlOptions(collapsed = T)
       )
   })
@@ -538,7 +538,12 @@ server = function(input, output, session) {
     
     #NJA
     njas = fdi4R::wja_level1__x__iotc_indian_ocean_areas[fdi4R::wja_level1__x__iotc_indian_ocean_areas$code2 == "IO_ALL",]
+    wja1 = fdi4R::wja_level1 %>% as.data.frame()
+    njas = njas %>% dplyr::left_join(wja1, by = dplyr::join_by(code1 == code))
+    nja_claims = njas[njas$type == "Overlapping claim",]
+    njas = njas[njas$type == "Jurisdiction Area",]
     cpc_nja = njas[regexpr(input$ref_cpc, njas$code1) > 0,] %>% sf::st_collection_extract()
+    cpc_nja_claims = nja_claims[regexpr(input$ref_cpc, nja_claims$code1) > 0,] %>% sf::st_collection_extract()
     
     # Mutually exclusive styling classes
     coastal_lines <- filtered %>% dplyr::filter(TYPE %in% c(0))
@@ -549,7 +554,8 @@ server = function(input, output, session) {
     proxy <- leafletProxy("cpc_map") %>%
       clearGroup("Country/Territory boundaries") %>%
       clearGroup("Coastline") %>%
-      clearGroup("NJA part in Indian Ocean")
+      clearGroup("NJA part in Indian Ocean") %>%
+      clearGroup("Overlapping claim part in Indian Ocean")
     
     # Ppolygon FIRST
     if (nrow(cpc_admin) > 0) {
@@ -619,6 +625,28 @@ server = function(input, output, session) {
           weight = 0
         )
     }
+    # NJA Overlapping claim (intersect with Indian Ocean)?
+    if (nrow(cpc_nja_claims) > 0){
+      proxy <- proxy %>%
+        addPolygons(
+          data = cpc_nja_claims,
+          fillColor = "orange",
+          fillOpacity = 0.8,
+          group = "Overlapping claim part in Indian Ocean",
+          color = "white", # transparent stroke
+          weight = 0
+        )
+    }
+    
+    proxy <- proxy %>%
+      removeControl(layerId = "WJA") %>%
+      addLegend(
+        layerId = "WJA",
+        "bottomright", 
+        colors = c("#22a4e6","orange"), 
+        labels = c("Jurisdiction Area","Overlapping Claim"),
+        values = NULL
+      )
     
   }, ignoreInit = FALSE)
   
