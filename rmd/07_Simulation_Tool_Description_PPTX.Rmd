@@ -1,0 +1,167 @@
+---
+title: "Catch Data Availability, Estimations, and Gaps Relevant to the IOTC Allocation Process"
+subtitle: "15^th^ Meeting of the Technical Committee on Allocation Criteria  - 14-18 July 2025"
+author: "[IOTC Secretariat](mailto:IOTC-Secretariat@fao.org)"
+---
+  
+```{r general_options, echo = FALSE}
+knitr::opts_chunk$set(echo = FALSE, tidy.opts = list(width.cutoff = 60), tidy = TRUE, size = "small", fig.width = 12, fig.height = 6.75)
+#knit_hooks$set(inline = function(x) {prettyNum(x, big.mark = ",")})
+```
+
+## Purpose
+
+To provide participants at the 13^th^ Meeting of the Technical Committee on Allocation Criteria ([TCAC13](https://iotc.org/meetings/13th-meeting-technical-committee-allocation-criteria-tcac)) with an overview of the origins, data, assumptions and App developed by the Secretariat to simulate the allocation criteria outlined in [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E).
+
+<br>
+
+**`TOTAL ALLOCATION`** =   
+ `BASELINE ALLOCATION (para. 6.5)` +   
+ `COASTAL STATE ALLOCATION (para 6.6)` +   
+ `CATCH-BASED ALLOCATION (para 6.7)`  
+
+---
+
+## Baseline Allocation
+
+```{r BaselineWeight, fig.cap = '**CPC Status**. _"Baseline Allocation consisting of 5-10% of the Total Allowable Catch (TAC) for a given fish stock shall be allocated **equally** between all CPCs"_ (para. 6.5 of [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E))'}
+include_graphics("../outputs/maps/CPC_STATUS_MAP.png")
+```
+
+---
+
+## Coastal State Allocation: 1- Equal Share
+
+```{r CSEqualWeight, fig.cap = '**Coastal status**. _"35-45% of the Coastal State Allocation recognizing Coastal State CPCs’ interests and aspirations, to be shared in **equal portion** by all Coastal State CPCs"_ (para. 6.6a of [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E)))'}
+include_graphics("../outputs/maps/CPC_COASTAL_MAP.png")
+```
+
+---
+
+## Coastal State Allocation: 2- Socio-Economics
+
+```{r CSSocioEconomicsHDI, fig.cap = 'Human Development Index. _"47.5-55% of the Coastal State Allocation dedicated to Coastal State CPCs that are developing coastal States, in particular Small Island Developing States and least developed States"_ (para. 6.6b of [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E)))'}
+include_graphics("../outputs/maps/CS_HDI_MAP.png")
+```
+
+---
+
+## Coastal State Allocation: 2- Socio-Economics
+
+```{r CSSocioEconomicsGNI, fig.cap = 'Gross National Income. _"47.5-55% of the Coastal State Allocation dedicated to Coastal State CPCs that are developing coastal States, in particular Small Island Developing States and least developed States"_ (para. 6.6b of [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E))'}
+include_graphics("../outputs/maps/CS_GNI_MAP.png")
+```
+
+---
+
+## Coastal State Allocation: 2- Socio-Economics
+
+```{r CSSocioEconomicsSIDS, fig.cap = 'Small Island Developing States. _"47.5-55% of the Coastal State Allocation dedicated to Coastal State CPCs that are developing coastal States, in particular Small Island Developing States and least developed States"_ (para. 6.6b of [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E))'}
+include_graphics("../outputs/maps/SIDS_MAP.png")
+```
+
+---
+
+## Coastal State Allocation: 3- NJA Surface
+
+```{r CSNJASweight, fig.cap = '**National Jurisdiction Areas**. _"0-17.5% of the Coastal State Allocation dedicated to Coastal State CPCs to address their rights and status as coastal States, to be shared based on the indicators in Annex 2"_ (para. 6.6c of [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E))'}
+include_graphics("../inputs/figures/IOTC_NJA_MAP_WITH_LIMITS_MUTLIPLE_COLOURS.png")
+```
+
+--- 
+
+## Catch-Based Allocation
+
+```{r CatchAllCPCs, fig.cap = '**Historical Catches by Stock (all CPCs)**. _"Each CPC shall be eligible to receive a Catch-based Allocation consisting a share of the TAC established based on the historical catches of the CPC [...]"_ (para. 6.7(1) of [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E))'}
+include_graphics("../outputs/charts/CATCHES_CPCS_ALL_SPECIES_FACETED_BARPLOT.png")
+```
+
+---
+
+## Catch-Based Allocation
+
+
+```{r CatchByCPC, fig.cap = '**Historical Catches by Stock (by CPC)**. _"Each CPC shall be eligible to receive a Catch-based Allocation consisting a share of the TAC established based on the historical catches of the CPC [...]"_ (para. 6.7(1) of [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E))'}
+include_graphics("../outputs/charts/CATCHES_CPCS_SPECIES_FACETED_BARPLOT.png")
+```
+
+---
+
+## Catch Distributed Between ABNJ and NJAs
+
+```{r TotalCatches, fig.cap = '**Cumulative annual catches**. _"The spatial separation of historical catches, by each CPC, as between areas within (NJA) and beyond (ABNJ) national jurisdiction shall be made [...] (para. 6.8(3) of [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E))"_'}
+include_graphics("../outputs/charts/CATCH_AREAS_ALL_BARPLOT.png")
+```
+
+---
+
+## Catch Distributed Between ABNJ and NJAs
+
+```{r TotalCatchesByArea, fig.cap = '**Cumulative annual catches**. _"The spatial separation of historical catches, by each CPC, as between areas within (NJA) and beyond national jurisdiction shall be made [...] (para. 6.8(3) of [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E))"_'}
+include_graphics("../outputs/charts/CATCH_AREA_CATEGORIES_BARPLOT.png")
+```
+
+--- 
+
+## Catch Data Available at the Secretariat
+
+- Following Article XI of the [Agreement](https://iotc.org/sites/default/files/documents/2012/5/25/IOTC%20Agreement.pdf) for the establishment of the IOTC, CPCs are required to collect and report fisheries data in accordance with the [Conservation and Management Measures](https://iotc.org/cmms)
+
+- Catch data are annually reported by the CPCs to the IOTC following Res. [15/02](https://www.iotc.org/cmm/resolution-1502-mandatory-statistical-reporting-requirements-iotc-contracting-parties-and) _On mandatory statistical reporting requirements for IOTC Contracting Parties and Cooperating Non-Contracting Parties (CPCs)_
+
+- The IOTC Secretariat collates and curates the catch data and makes them available as public-domain datasets
+
+--- 
+
+## Uncertainties in IOTC Catch Data
+
+- Annual catch data are considered to be under-estimated, particularly in coastal fisheries
+
+- Annual catch data may be incomplete or inconsistent and are consolidated by the Secretariat according to the Scientific Committee
+
+- Geo-referenced catch data:
+
+  + May not be collected or reported
+  + May not be raised to the whole fisheries
+  + May be reported in both numbers of fish and weight
+  + Are reported as 1x1&deg; and 5x5&deg; grids for surface and longline fisheries, respectively, according to Res. [15/02](https://www.iotc.org/cmm/resolution-1502-mandatory-statistical-reporting-requirements-iotc-contracting-parties-and)
+
+---
+
+## Assumption For Gridded-Catch Distribution
+
+```{r SpatialUncertainty, fig.cap = '**Example of 5x5&deg; overlap**. _"Catches reported for 5x5 or 1x1 degree grid squares that overlap one or more areas under national jurisdictions of coastal States and/or the high seas, shall be distributed proportionately by area (para. 6.8.3(c)(i) of [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E))"_'}
+include_graphics("../inputs/figures/5x5SpatialUncertaintyIllustration.png")
+```
+
+---
+
+## Assumptions Required For the Catch Dataset
+
+- Use of best scientific estimates of total annual catches
+- Estimates of average weights to convert numbers into weights
+- Raising of geo-referenced catches to total annual catches
+- Estimation of catches between national NJAs, foreign NJAs, and ABNJ  
+
+<br>
+
+See details in [IOTC-2023-TCAC12-DATA01_presentation](https://iotc.org/documents/TCAC/12/INF02)
+
+---
+
+## IOTC TCAC simulation tool
+
+- R Shiny App accessible from https://data.iotc.org/tcac13/simulations/:
+
+  + login: iotc
+  + pwd: albacares
+
+- Detailed information on data sources, assumptions, and user Guide available here:
+
+  + https://data.iotc.org/tcac13/simulations/README.html
+  + https://iotc.org/documents/TCAC/13/INF16
+
+---
+
+
+

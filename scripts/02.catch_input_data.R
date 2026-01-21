@@ -94,6 +94,6 @@ weight_catch_data = function(catch_data,
                                     HS_CATCH_MT + 
                                     ABNJ_CATCH_MT * ( 1 - coastal_weight) + 
                                     FOREIGN_CATCH_MT * coastal_weight)), 
-               keyby = .(CPC_CODE, YEAR)][CATCH_MT > 0]
+               keyby = .(CPC_CODE, YEAR)]
   )
 }
