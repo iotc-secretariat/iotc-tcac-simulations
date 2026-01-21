@@ -1,11 +1,13 @@
-# User Interface {#ui}
+---
+title: "TCAC Application – User Interface"
+output: html_document
+---
 
 The simulation is presented through an interactive R Shiny [web application](https://foodandagricultureorganization.shinyapps.io/iotc-tcac-simulations-review/) that is password-protected.
 
 The main screen features two tabbed panels: one to display the [Reference data](#referenceData) used by the simulation, and another to present users with the configuration [Parameters](#inputConfig) and the simulation [Results](#results).
 
-
-## Reference Data Panel
+## Reference Data Panel {#referenceDataPanel}
 
 This panel provides access to three main categories of configuration datasets which are presented as sortable, filterable tables, and provide an interactive version of the tabular configuration files included with the application:
 
@@ -25,7 +27,7 @@ This panel provides access to three main categories of configuration datasets wh
 
     ![Historical catch data panel](assets/images/app_ref_data_historical_catches_rev.png)
 
-## Simulation Panel
+## Simulation Panel {#simulationPanel}
 
 This panel provides access to the configuration [parameters](#inputConfig) (left panel) and the simulation [results](#outputs) (right panel), projecting up to 10 years into the future to account for the transitional period in the allocation of catches from flag States to Coastal States, where applicable.
 

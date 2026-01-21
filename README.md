@@ -1,3 +1,8 @@
+---
+title: "TCAC Application – Data and Methodological Notes"
+output: html_document
+---
+
 # Overview
 
 This repository hosts a Shiny application developed by the IOTC Secretariat to explore how alternative allocation scenarios affect the distribution of total catch among IOTC Contracting Parties and Cooperating Non-Contracting Parties (CPCs). Users can adjust parameters reflecting CPC status, historical catch levels, and catches within National Jurisdiction Areas (NJAs) by foreign fleets. The tool is intended to support transparent discussion and informed decision-making within the framework of the Technical Committee on Allocation Criteria (TCAC).
@@ -25,7 +30,7 @@ The definitions of all parameters used to characterise each CPC in relation to t
 
 ### Historical Catches {#catch}
 
-This information is essential for calculating the third component (*catch-based*) of the allocation criteria and can be downloaded from [`cfg/HISTORICAL_CATCH_ESTIMATES.csv`](./HISTORICAL_CATCH_ESTIMATES.csv). The file can be opened as a spreadsheet using MS Excel, LibreOffice Calc, Google Sheets, or any text editor.
+This information is essential for calculating the third component (*catch-based*) of the allocation criteria and can be downloaded from [`inputs/data/HISTORICAL_CATCH_ESTIMATES.csv`](./HISTORICAL_CATCH_ESTIMATES.csv). The file can be opened as a spreadsheet using MS Excel, LibreOffice Calc, Google Sheets, or any text editor.
 
 The catch input file used by the TCAC application contains aggregated catch estimates by year, flag, fleet, fishery, area, and species. The definitions of the fields included in this file are provided below.
 
