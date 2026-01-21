@@ -4,25 +4,26 @@ This repository hosts a Shiny application developed by the IOTC Secretariat to e
 
 # Input Data
 
-### Entity Reference Table
+### Entity Reference Table {#entities}
 
 The definitions of all parameters used to characterise each CPC in relation to the allocation criteria are provided in the [`inputs/data/iotc_entities.csv`](./inputs/data/iotc_entities.csv) file. This file lists all current IOTC *Contracting Parties* (CP) and *Cooperating Non-Contracting Parties* (CNCP), as well as Taiwan,China as a *Fishing Entity* (FE), together with the following information:
 
 | Field name        | Description | Source |
 | :------ | :--------------------- | :-------- |
-| `ISO3_CODE`       | Three-letter ISO 3166-1 alpha-3 country code | [IOTC (2026)](https://data.iotc.org/reference/latest/domain/admin/#Entities) | 
-| `M49_CODE`        | United Nations M49 numeric country or area code, used for statistical purposes | [UN (2026) ](https://unstats.un.org/unsd/methodology/m49/) |
-| `NAME_EN`         | Official name of the Contracting Party, Cooperating Non-Contracting Party, or Fishing Entity in English | [IOTC (2026)](https://data.iotc.org/reference/latest/domain/admin/#Entities) |
-| `NAME_FR`         | Official name of the Contracting Party, Cooperating Non-Contracting Party, or Fishing Entity in French | [IOTC (2026)](https://data.iotc.org/reference/latest/domain/admin/#Entities) |
-| `STATUS_CODE`     | IOTC membership status code: `CP` (Contracting Party), `CNCP` (Cooperating Non-Contracting Party), or `FE` (Fishing Entity) | [IOTC (2026)](https://data.iotc.org/reference/latest/domain/admin/#CPCs) |
-| `STATUS`          | Descriptive label corresponding to `STATUS_CODE` (e.g. *Contracting Party*, *Cooperating Non-Contracting Party*, *Fishing Entity*) | [IOTC (2026)](https://data.iotc.org/reference/latest/domain/admin/#CPCs) |
-| `IS_DEVELOPING`   | Indicator of developing country status according to [United Nations classification (`TRUE` / `FALSE`) | [UN (2020)](https://www.un.org/development/desa/dpad/wp-content/uploads/sites/45/WESP2020_Annex.pdf) |
+| `ISO3_CODE`       | Three-letter ISO 3166-1 alpha-3 country code | [IOTC Reference Data (2026)](https://data.iotc.org/reference/latest/domain/admin/#Entities) | 
+| `NAME_EN`         | Official name of the Contracting Party, Cooperating Non-Contracting Party, or Fishing Entity in English | [IOTC Reference Data (2026)](https://data.iotc.org/reference/latest/domain/admin/#Entities) |
+| `NAME_FR`         | Official name of the Contracting Party, Cooperating Non-Contracting Party, or Fishing Entity in French | [IOTC Reference Data (2026))](https://data.iotc.org/reference/latest/domain/admin/#Entities) |
+| `STATUS_CODE`     | IOTC membership status code: `CP` (Contracting Party), `CNCP` (Cooperating Non-Contracting Party), or `FE` (Fishing Entity) | [IOTC Reference Data (2026)](https://data.iotc.org/reference/latest/domain/admin/#CPCs) |
+| `STATUS`          | Descriptive label corresponding to `STATUS_CODE` (e.g. *Contracting Party*, *Cooperating Non-Contracting Party*, *Fishing Entity*) | [IOTC Reference Data (2026)](https://data.iotc.org/reference/latest/domain/admin/#CPCs) |
+| `IS_DEVELOPING`   | Indicator of developing country status* according to [United Nations classification (`TRUE` / `FALSE`) | [UN (2020)](https://www.un.org/development/desa/dpad/wp-content/uploads/sites/45/WESP2020_Annex.pdf) |
 | `IS_LDC`          | Indicator of Least Developed Country (LDC) status according to United Nations classification (`TRUE` / `FALSE`) | [UN (2026)](https://unstats.un.org/unsd/methodology/m49/#ldc) |
 | `IS_SIDS`         | Indicator of Small Island Developing State (SIDS) status according to United Nations classification (`TRUE` / `FALSE`) | [UN (2026)](https://unstats.un.org/unsd/methodology/m49/#sids) |
 | `IS_COASTAL`      | Indicator of coastal State status within the IOTC Area of Competence (`TRUE` / `FALSE`) | [Flanders Marine Institute (2026)](https://www.marineregions.org/) |
-| `NJA_IO_SIZE`     | Surface area (in square kilometres) of the national jurisdictional area (Exclusive Economic Zone and/or equivalent maritime zones) within the Indian Ocean | [Flanders Marine Institute (2026)](https://www.marineregions.org/) |
+| `NJA_IO_SIZE`     | Surface area (in square kilometres) of the NJA within the Indian Ocean (see [NJA section](#njas) for details) | [Flanders Marine Institute (2026)](https://www.marineregions.org/) |
 
-### Historical Catches
+*Seychelles is classified as a coastal developing country within the IOTC, consistent with its status as a SIDS recognised by the United Nations (UN). Although Seychelles has a high level of human development and income per capita, it is not classified as a developed country in the UN system and remains eligible for developing-country and SIDS-specific provisions under IOTC frameworks.
+
+### Historical Catches {#catch}
 
 This information is essential for calculating the third component (*catch-based*) of the allocation criteria and can be downloaded from [`cfg/HISTORICAL_CATCH_ESTIMATES.csv`](./HISTORICAL_CATCH_ESTIMATES.csv). The file can be opened as a spreadsheet using MS Excel, LibreOffice Calc, Google Sheets, or any text editor.
 
@@ -46,21 +47,33 @@ It is important to note that the need to apportion historical catches by flag or
 
 For this reason, the historical catch series with a full area breakdown is only available for the five major IOTC species (albacore, bigeye tuna, skipjack tuna, swordfish, and yellowfin tuna). These data have been estimated using the regular grid versus the NJA overlapping area fraction to assign catches estimated for the former to the area that falls within a given NJA.
 
-### National Jurisdiction Areas
+### National Jurisdiction Areas {#njas}
+
+#### Source
 
 The National Jurisdiction Areas (NJAs) of the IOTC CPCs were sourced from the Flanders Marine Institute (VLIZ) *maritime boundaries* geodatabase (<https://doi.org/10.14284/628>). The corresponding spatial layers are available for download from the IOTC Reference Data Catalogue (https://data.iotc.org/reference/latest/domain/admin/shapefiles/IO_NJA_AREAS_2.0.0_SHP.zip).
 
-For the purposes of the simulations implemented in the TCAC application, the following assumptions were applied:
+#### Assumptions
+
+For the purposes of allocating catches to NJAs within the simulations implemented in the TCAC application, the following assumptions were applied:
 
 i. For historical reasons, the waters of the Chagos Archipelago, considered here as part of the NJAs of Mauritius, were treated as being under the sovereignty of the United Kingdom of Great Britain and Northern Ireland (`GBR`), under the administration of the British Indian Ocean Territory prior to 2021. A full Marine Protected Area has been in place since April 2010 and, consequently, no official fisheries catches have been reported from these waters since that date, except for a coastal handline fishery;
 
-ii. For the purposes of allocating catches to NJAs, disputed areas involving Mayotte, Tromelin, and the Glorioso Islands (Iles Glorieuses) were treated as follows: waters associated with Mayotte (France) with Comoros (`FRA_COM_MYT`) and France with Madagascar and Mauritius (`FRA_MDG_MUS`) were attributed to France (`FRA`), while waters associated with Madagascar with France (`MDG_FRA`) were attributed to the French Southern Territories (`ATF`). This assumption was adopted to simplify the allocation procedure and to ensure internal consistency with long-standing IOTC statistical practices, whereby catches from these areas have historically been attributed accordingly in national submissions and Secretariat compilations. This treatment is applied solely for analytical purposes within the TCAC application and does not prejudice the positions of CPCs with respect to sovereignty or maritime claims;
+ii. Disputed areas involving Mayotte, Tromelin, and the Glorioso Islands (Îles Glorieuses) were treated as follows: waters associated with Mayotte (France) with Comoros (`FRA_COM_MYT`) and France with Madagascar and Mauritius (`FRA_MDG_MUS`) were attributed to France (`FRA`), while waters associated with Madagascar with France (`MDG_FRA`) were attributed to the France Overseas Territories (`ATF`). This assumption was adopted to simplify the allocation procedure and to ensure internal consistency with long-standing IOTC statistical practices, whereby catches from these areas have historically been attributed accordingly in national submissions and Secretariat compilations. This treatment is applied solely for analytical purposes within the TCAC application and does not prejudice the positions of CPCs with respect to sovereignty or maritime claims;
 
-iii. Although Mayotte became an overseas department of France in 2011, catches associated with Mayotte are attributed to France in IOTC datasets from 2014 onwards, corresponding to the point at which reporting practices and fleet attribution became consistently aligned with French national submissions. Accordingly, catches taken in the waters of Mayotte during the period 1995–2013 were allocated to the French Southern Territories (`ATF`), and to France (`FRA`) thereafter;
+iii. Although Mayotte became an overseas department of France in 2011, catches associated with Mayotte are attributed to France in IOTC datasets from 2014 onwards, corresponding to the point at which reporting practices and fleet attribution became consistently aligned with French national submissions. Accordingly, catches taken in the waters of Mayotte during the period 1995–2013 were allocated to the France Overseas Territories (`ATF`), and to France (`FRA`) thereafter;
 
-iv. Catches estimated to have been taken in the NJAs of non-IOTC CPCs (United Arab Emirates (`ARE`), Bahrain (`BHR`), Djibouti (`DJI`), Egypt (`EGY`), Eritrea (`ERI`), Iraq (`IRQ`), Jordan (`JOR`), Kuwait (`KWT`), Myanmar (`MMR`), Qatar (`QAT`), Saudi Arabia (`SAU`), and Timor-Leste (`TLS`)), including disputed areas (United Arab Emirates with I.R. Iran (`ARE_IRN`), Eritrea with Djibouti (`ERI_DJI`), Iraq with I.R. Iran (`IRQ_IRN`), Qatar with Saudi Arabia and the United Arab Emirates (`QAT_SAU_ARE`), and Sudan with Egypt (`SDN_EGY`)) were aggregated under the assigned area `OTHER`;
+iv. The NJA for the Islamic Republic of Iran (`IRN`) was defined as the combination of the Iranian NJA (`IRN`) and the maritime areas subject to dispute with the United Arab Emirates (`ARE_IRN`) and Iraq (`IRQ_IRN`);
 
-v. Catch data reported for incorrect spatial grids (i.e. located outside the Indian Ocean) could not be assigned to any NJA or to the high seas and were therefore excluded from the analysis.
+v. The NJA for Sudan (SDN) was defined as the combination of the Sudanese NJA (`SDN`) and the maritime area subject to dispute with Egypt (`SDN_EGY` );
+
+vi. Catches estimated to have been taken in the NJAs of non-IOTC CPCs -- United Arab Emirates (`ARE`), Bahrain (`BHR`), Djibouti (`DJI`), Egypt (`EGY`), Eritrea (`ERI`), Iraq (`IRQ`), Jordan (`JOR`), Kuwait (`KWT`), Myanmar (`MMR`), Qatar (`QAT`), Saudi Arabia (`SAU`), and Timor-Leste (`TLS`), including disputed areas (Eritrea with Djibouti (`ERI_DJI`) and Qatar with Saudi Arabia and the United Arab Emirates (`QAT_SAU_ARE`) -- were aggregated under the assigned area `OTHER`;
+
+vii. Catch data reported for incorrect spatial grids (i.e. located outside the Indian Ocean) could not be assigned to any NJA or to the high seas and were therefore excluded from the analysis.
+
+#### Surface Areas
+
+Surface areas of NJAs were computed using the _st_area()_ function in R after projecting geometries to the Eckert IV equal-area projection (Eck4). Resulting area estimates were expressed in square kilometres, and geometries were subsequently re-projected to WGS 84 (EPSG:4326) for storage and visualisation.
 
 ## Allocation Computation
 
@@ -109,7 +122,3 @@ To calculate this allocation component, historical catch data are averaged over 
 Under the latter approach, the _best years_ are defined as those with the highest reported catches for a given CPC and species during the selected reference period.
 
 _Example_. If the catch-based weight is set to 50% and the reference period of 2000-2016 is selected, 
-
-
-
-
