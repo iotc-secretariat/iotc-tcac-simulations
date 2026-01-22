@@ -975,11 +975,11 @@ server = function(input, output, session) {
       if(input$out_unit == "quota") {
         quotas = 
           quotas %>% 
-          dplyr::mutate_if(startsWith(names(.), "QUOTA_"), scales::percent, accuracy = 0.01)
+          dplyr::mutate_if(startsWith(names(.), "QUOTA_"), scales::percent, accuracy = 0.01, suffix = "")
       } else {
         quotas = 
           quotas %>% 
-          dplyr::mutate_if(startsWith(names(.), "QUOTA_"), function(x) paste0(format(round(as.numeric(x), 1), nsmall = 1, big.mark = ","), " t"))
+          dplyr::mutate_if(startsWith(names(.), "QUOTA_"), function(x) round(as.numeric(x), 1))
       }
       
       WB = createWorkbook()
@@ -1171,7 +1171,7 @@ server = function(input, output, session) {
       column(
         width = 12,
         bs4Dash::infoBox(
-          title = "Total Allowable Catches (TACs)",
+          title = "Total allocation (t)",
           width = 12,
           icon = icon("fish"),
           color = "primary",
@@ -1261,7 +1261,7 @@ server = function(input, output, session) {
     plotly::plot_ly(quota_result_long, x = ~YEAR, y = ~QUOTA, type = 'bar') %>% 
       plotly::layout(
         xaxis = list(title = "YEAR"), 
-        yaxis = list(title = 'TAC (t)', tickformat = ",.0f"), 
+        yaxis = list(title = 'Total allocation (t)', tickformat = ",.0f"), 
         colorway = RColorBrewer::brewer.pal(3,"Blues"),
         barmode = 'stack', 
         legend = list(
