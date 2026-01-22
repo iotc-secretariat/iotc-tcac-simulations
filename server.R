@@ -1309,4 +1309,18 @@ server = function(input, output, session) {
       value = SCENARIO_PARAMETERS[SCENARIO_PARAMETERS$SPECIES_CODE_SELECTED == input$species,][1,]$TARGET_TAC_T
     )
   })
+  
+  #observe sum of weight
+  observeEvent(input$ds_weight,{
+    if(input$ba_weight + input$ds_weight > 100){
+      print(sprintf("Can't set ds_weight = %s, reducing weight to %s", input$ds_weight, 100 - input$ba_weight))
+      updateSliderInput(session = session, inputId = "ds_weight", value = 100 - input$ba_weight)
+    }
+  })
+  observeEvent(input$ba_weight,{
+    if(input$ba_weight + input$ds_weight > 100){
+      print(sprintf("Can't set ba_weight = %s, reducing weight to %s", input$ba_weight, 100 - input$ds_weight))
+      updateSliderInput(session = session, inputId = "ba_weight", value = 100 - input$ds_weight)
+    }
+  })
 }
