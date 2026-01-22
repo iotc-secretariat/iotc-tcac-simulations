@@ -4,6 +4,8 @@ This document describes the list of changes and improvements to make to the App:
 
 * Labelling
 
+- Replace EEZ by NJA for consistency in the header "Coastal state EEZ attribution weights" of the Parameters Panel. It should read "Coastal state NJA attribution weights"
+
 - Enrich the catch dataset with labels/names for flag state, entity, type of fishery, fishery, school type, assigned area species
 
 - The headers (column names) of the catch dataset should read: Year, Flag state code, Flag Sate, Entity code, Entity, Type of fishery code, Type of fishery, Fishery code, Fishery, School type code, School type, Assigned area code, Assigned Area (**Do we really need to keep the codes, maybe for potential advanced users??**)
