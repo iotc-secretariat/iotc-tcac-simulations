@@ -970,7 +970,7 @@ server = function(input, output, session) {
       
       config = rbind(config, as.list(c("OUTPUT_UNIT", input$out_unit)))
       
-      quotas = prepare_output(input)
+      quotas = computed_allocation()$QUOTAS
       
       if(input$out_unit == "quota") {
         quotas = 
@@ -1006,6 +1006,7 @@ server = function(input, output, session) {
       activeSheet(WB) <- 5
       
       saveWorkbook(WB, file = file, overwrite = TRUE)
+      postMessage("Successful data file generation, ready to download", type = "success")
     }
   )
   
@@ -1056,6 +1057,8 @@ server = function(input, output, session) {
         file.path(tempdir(), "rmd", "00_A_SINGLE_SIMULATION_ALL_CPCS.Rmd"),
         output_file = file
       )
+      
+      postMessage("Successful full report generation, ready to download", "success")
       
       # Convert report to PDF
       # wordApp = COMCreate("Word.Application") #creates COM object
@@ -1138,6 +1141,8 @@ server = function(input, output, session) {
         file.path(tempdir(), "rmd", "00_A_SINGLE_SIMULATION_ALL_CPCS.Rmd"),
         output_file = file
       )
+      
+      postMessage("Successful entity report generation, ready to download", "success")
       
       # Convert report to PDF
       # wordApp = COMCreate("Word.Application") #creates COM object
