@@ -1313,14 +1313,15 @@ server = function(input, output, session) {
   #observe sum of weight
   observeEvent(input$ds_weight,{
     if(input$ba_weight + input$ds_weight > 100){
-      print(sprintf("Can't set ds_weight = %s, reducing weight to %s", input$ds_weight, 100 - input$ba_weight))
       updateSliderInput(session = session, inputId = "ds_weight", value = 100 - input$ba_weight)
+      postMessage(sprintf("Can't set developing state weight to %s %%. Reducing developing states weight to <b>%s</b> %%", input$ds_weight, 100 - input$ba_weight), "warning")
     }
   })
   observeEvent(input$ba_weight,{
     if(input$ba_weight + input$ds_weight > 100){
       print(sprintf("Can't set ba_weight = %s, reducing weight to %s", input$ba_weight, 100 - input$ds_weight))
       updateSliderInput(session = session, inputId = "ba_weight", value = 100 - input$ds_weight)
+      postMessage(sprintf("Can't set baseline weight to %s %%. Reducing baseline weight to <b%s</b> %%", input$ba_weight, 100 - input$ds_weight), "warning")
     }
   })
 }
