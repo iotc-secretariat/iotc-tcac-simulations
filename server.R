@@ -185,7 +185,7 @@ server = function(input, output, session) {
                              
                              hr(class = "thin"),
                              
-                             strong("Coastal state EEZ attribution weights (%)"),
+                             strong("Coastal state NJA attribution weights (%)"),
                              
                              hr(),
                              
@@ -540,10 +540,21 @@ server = function(input, output, session) {
     njas = fdi4R::wja_level1__x__iotc_indian_ocean_areas[fdi4R::wja_level1__x__iotc_indian_ocean_areas$code2 == "IO_ALL",]
     wja1 = fdi4R::wja_level1 %>% as.data.frame()
     njas = njas %>% dplyr::left_join(wja1, by = dplyr::join_by(code1 == code))
-    nja_claims = njas[njas$type == "Overlapping claim",]
-    njas = njas[njas$type == "Jurisdiction Area",]
-    cpc_nja = njas[regexpr(input$ref_cpc, njas$code1) > 0,] %>% sf::st_collection_extract()
-    cpc_nja_claims = nja_claims[regexpr(input$ref_cpc, nja_claims$code1) > 0,] %>% sf::st_collection_extract()
+    
+    eur_nja = fdi4R::wja_level1_eur_iotc_cpc__x__iotc_indian_ocean_areas[fdi4R::wja_level1_eur_iotc_cpc__x__iotc_indian_ocean_areas$code2 == "IO_ALL",]
+    wja_eur = fdi4R::wja_level1_eur_iotc_cpc %>% as.data.frame()
+    eur_nja = eur_nja %>% dplyr::left_join(wja_eur, by = dplyr::join_by(code1 == code))
+    
+    nja_claims = njas[regexpr("Overlapping claim",njas$type)>0,]
+    eur_nja_claims = eur_nja[regexpr("Overlapping claim",eur_nja$type)>0,]
+    nja_claims = rbind(nja_claims, eur_nja_claims)
+    
+    njas = njas[regexpr("Jurisdiction Area", njas$type)>0,]
+    eur_nja = eur_nja[regexpr("Jurisdiction Area",eur_nja$type)>0,]
+    njas = rbind(njas, eur_nja)
+    
+    cpc_nja = njas[regexpr(input$ref_cpc, toupper(njas$code1)) > 0,] %>% sf::st_collection_extract()
+    cpc_nja_claims = nja_claims[regexpr(input$ref_cpc, toupper(nja_claims$code1)) > 0,] %>% sf::st_collection_extract()
     
     # Mutually exclusive styling classes
     coastal_lines <- filtered %>% dplyr::filter(TYPE %in% c(0))
@@ -605,14 +616,12 @@ server = function(input, output, session) {
     }
     
     # Zoom to selection if we have features
-    if (nrow(filtered) > 0) {
-      #bb <- do.call(sf::st_bbox, lapply(list(filtered, cpc_admin, cpc_nja), sf::st_bbox))
-      bb <- if(nrow(cpc_nja)>0) sf::st_bbox(cpc_nja) else sf::st_bbox(filtered)
-      proxy %>% fitBounds(
-        lng1 = as.numeric(bb["xmin"]), lat1 = as.numeric(bb["ymin"]),
-        lng2 = as.numeric(bb["xmax"]), lat2 = as.numeric(bb["ymax"])
-      )
-    }
+    bb <- if(nrow(cpc_nja)>0) sf::st_bbox(rbind(cpc_nja, cpc_nja_claims)) else sf::st_bbox(filtered)
+    proxy %>% fitBounds(
+      lng1 = as.numeric(bb["xmin"]), lat1 = as.numeric(bb["ymin"]),
+      lng2 = as.numeric(bb["xmax"]), lat2 = as.numeric(bb["ymax"])
+    )
+    
     # NJA (intersect with Indian Ocean)?
     if (nrow(cpc_nja) > 0){
       proxy <- proxy %>%
@@ -825,6 +834,13 @@ server = function(input, output, session) {
     dt_alloc = base::merge(dt_alloc, CPC_data[, .(CODE, STATUS_CODE, NAME_EN, NAME_FR)], by.x = "CPC_CODE", by.y = "CODE")
     dt_alloc = dt_alloc[, .SD, .SDcols = c("NAME_EN", dt_alloc_basenames[dt_alloc_basenames != "CPC_CODE"])]
     
+    if(unit == "quota"){
+      target_cols = colnames(dt_alloc)[2:ncol(dt_alloc)]
+      for(target_col in target_cols){
+        dt_alloc[[target_col]] <- round(dt_alloc[[target_col]] * 100,2)
+      }
+    }
+    
     allocation_dt = DT::datatable(
       dt_alloc, 
       class = "cell-border",
@@ -849,11 +865,11 @@ server = function(input, output, session) {
         )
     )
     
-    if(unit == "quota")
-      allocation_dt = allocation_dt %>% DT::formatPercentage(2:ncol(dt_alloc), digits = 2)
-    else
+    if(unit == "quota"){
+      allocation_dt = allocation_dt %>% DT::formatRound(2:ncol(dt_alloc), digits = 2)
+    }else{
       allocation_dt = allocation_dt %>% DT::formatCurrency(2:ncol(dt_alloc), digits = 0, currency = "", before = FALSE)
-    
+    }
     alloc_NORM = dt_alloc[, 2:ncol(dt_alloc)]
     
     if(input$out_heat_style == "color") {
@@ -975,7 +991,7 @@ server = function(input, output, session) {
       if(input$out_unit == "quota") {
         quotas = 
           quotas %>% 
-          dplyr::mutate_if(startsWith(names(.), "QUOTA_"), scales::percent, accuracy = 0.01, suffix = "")
+          dplyr::mutate_if(startsWith(names(.), "QUOTA_"), function(x) round(as.numeric(x)*100, 2))
       } else {
         quotas = 
           quotas %>% 
