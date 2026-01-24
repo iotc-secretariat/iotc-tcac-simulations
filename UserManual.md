@@ -3,13 +3,34 @@ title: "TCAC Application – User Interface"
 output: html_document
 ---
 
-The simulation is presented through an interactive R Shiny [web application](https://foodandagricultureorganization.shinyapps.io/iotc-tcac-simulations-review/) that is password-protected.
+The simulations are presented through an interactive R Shiny [web application](https://foodandagricultureorganization.shinyapps.io/iotc-tcac-simulations-review/). Access to the application is password-protected.
 
-The main screen features two tabbed panels: one to display the [Reference data](#referenceData) used by the simulation, and another to present users with the configuration [Parameters](#inputConfig) and the simulation [Results](#results).
+The main interface consists of two tabbed panels:
 
+1. [Reference data](#referenceData) – provides access to, and allows exploration of, the input datasets used in the simulations.
+2. [Parameters](#parameters) – allows users to view and modify the configuration parameters and to visualise the simulation results.
+ 
 ## Reference Data Panel {#referenceDataPanel}
 
-This panel provides access to three main categories of configuration datasets which are presented as sortable, filterable tables, and provide an interactive version of the tabular configuration files included with the application:
+This panel is split into two horizontal components:
+
+1. The top panel enables the user selecting the IOTC entity of interest through a scroll-down list. Once selected, the National Jurisdiction Area (NJA; see [ReadMe file](./README.html)) of the entity is displayed with an interactive map and the main features of the entity are displayed in a frame,  including (i) the entity status (Contracting Party of Fishing Entity) and whether it is a (ii) coastal state, (iii) developing state, (iv) least-developed country, and (v) Small Island Developing State (SIDs). 
+
+![Reference data top panel](assets/images/TCAC16/referenceDataTopPanel.png)
+
+<br/>
+
+2. The bottom panel
+
+
+
+![Reference data bottom panel](assets/images/TCAC16/referenceDataBottomPanel.png)
+
+<br/>
+
+<!--
+
+provides access to two tabs: (left tab) Reference data and (right tab) Simulation categories of configuration datasets which are presented as sortable, filterable tables, and provide an interactive version of the tabular configuration files included with the application:
 
 -   ***CPC summary***, with information on each IOTC entity (see fields of `CPC` worksheet described in the Section [Process Configuration](#configuration)
 
