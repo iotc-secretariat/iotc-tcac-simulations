@@ -56,7 +56,7 @@ For this reason, the historical catch series with a full area breakdown is only 
 
 #### Source
 
-The National Jurisdiction Areas (NJAs) of the IOTC CPCs were sourced from the Flanders Marine Institute (VLIZ) *maritime boundaries* geodatabase (<https://doi.org/10.14284/628>). The corresponding spatial layers are available for download from the IOTC Reference Data Catalogue (https://data.iotc.org/reference/latest/domain/admin/shapefiles/IO_NJA_AREAS_2.0.0_SHP.zip).
+The National Jurisdiction Areas (NJAs) of the IOTC CPCs were sourced from the Flanders Marine Institute (VLIZ) *maritime boundaries* geodatabase (<https://doi.org/10.14284/628>). The corresponding spatial layers are available for download from the IOTC Reference Data Catalogue (see Section [Indian Ocean National Jurisdiction Areas](https://data.iotc.org/reference/latest/domain/admin/#IOareasNJACS)).
 
 #### Assumptions
 
@@ -117,7 +117,7 @@ _Example_. If the developing states weight is set to 10% and the small island de
 
 ### Catch-Based Weight
 
-The **catch-based weight** (%) represents the portion of the TAC allocated to each CP and to Taiwan,China, in proportion to its contribution to the total catch of the species over a selected historical reference period.
+The **catch-based weight** (%) represents the portion of the TAC allocated to each CP and to Taiwan,China, in proportion to its contribution to the total catch of the species by all IOTC Contracting Parties over a selected historical reference period.
 
 To calculate this allocation component, historical catch data are averaged over a user-selected reference period using one of two alternative approaches:
 
@@ -128,12 +128,6 @@ Under the latter approach, the _best years_ are defined as those with the highes
 
 In a second step, a period of up to 10 years is considered to implement the reallocation of catches taken by foreign fleets in coastal state NJAs. Each coefficient represents the percentage of those catches to be attributed to the coastal state for that year.
 
-_Example_. The average annual catch of yellowfin tuna (YFT) was estimated at approximately 391,000 t during the period 2000–2016. Over this period, Comoros (`COM`) contributed a mean annual catch of around 2,500 t, corresponding to a share of 2,500 ÷ 391,000 ≈ 0.64% of the total catch. For a TAC of 421,000 t (the default value for yellowfin tuna), if the catch-based weight is set to 100% and the reference period 2000–2016 is selected, this corresponds to an allocation of approximately 2,692 t for Comoros.
+_Example_. The average annual catch of yellowfin tuna (YFT) by the IOTC CPs on the high seas and in the IOTC NJAs was estimated at approximately 366,000 t during the period 2000–2016. Over this period, Comoros (`COM`) contributed a mean annual catch of around 2,500 t, corresponding to a share of 2,500 ÷ 365,000 ≈ 0.69% of the total catch. For a TAC of 421,000 t (the default value for yellowfin tuna), if the catch-based weight is set to 100% and the reference period 2000–2016 is selected, this corresponds to an allocation of approximately 2,692 t for Comoros.
 
 During the same period, Comorian fisheries did not operate outside national jurisdiction, while an average of approximately 2,350 t of yellowfin tuna per year was taken by foreign fleets within the NJAs of Comoros under licensing agreements. Consequently, if the coastal State NJA attribution weight is set to 100%, Comoros would receive a total allocation of approximately 2,692 + 2,350 ≈ 5,040 t.
-
-
-
-
-
-
