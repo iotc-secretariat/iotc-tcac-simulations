@@ -14,9 +14,7 @@ This document describes the list of changes and improvements to make to the App:
 
 * UI
 
-- Add constraint to the sliders so that the sum equals to 100%. Right now, it is possible to get negative values for the Catch-based weight
-
-- Add general disclaimer and individual short disclaimers on each map:
+- Add individual short disclaimers on each map:
 
 _The boundaries and names shown and the designations used on this map do not imply official endorsement or acceptance by the United Nations._
 
