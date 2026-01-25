@@ -144,20 +144,42 @@ The Heatmap type parameter determines the context for relative values:
 
 - **By year** – compares values within the same year only.
 
-- Downloading Results
+The simulation results can be downloaded using the following buttons:
 
-The simulation results can be downloaded as an Excel file through the ***Download*** button. The name of the file corresponds to the serialised date (including the time) at which the download request was issued (e.g., `TCAC_simulation_2026_01_25_121303.xlsx`), while its content includes the following five worksheets:
+- **Excel file** – via the **Download** button.
 
-1.  `CPC_REFERENCES` containing the CPC configuration parameters as in [`inputs/data/iotc_entities.csv`](./inputs/data/iotc_entities.csv)
+- **Word file** – via the **Download full report** button.
 
-2.  `HISTORICAL_CATCHES` containing the historical catches for the selected species as extracted from [`inputs/data/HISTORICAL_CATCH_ESTIMATES.csv`](./inputs/data/HISTORICAL_CATCH_ESTIMATES.csv)
+**Contents of the Excel file**
 
-3.  `SIMULATION_CONFIGURATION` containing all the configuration parameters set by the users for the specific simulation round
+The Excel file contains these worksheets:
 
-4.  `OUTPUT_QUOTAS` containing the outputs of the simulation expressed either as fraction of the annual TAC or as catches in tonnes by CPC and simulation year (depending on the chosen value of the **output unit** parameter)
+1. `CPC_REFERENCES` -- CPC configuration (from [`inputs/data/iotc_entities.csv`](./inputs/data/iotc_entities.csv))
 
-The **Reports** tab provides access to reports that include the configuration parameters and output tables for all components (baseline, coastal State, and catch-based) and their sub-components. These reports downloadable either for all CPCs (Full report) or for a selected entity.
+2. `HISTORICAL_CATCHES` -- historical catches for the selected species (from [`inputs/data/HISTORICAL_CATCH_ESTIMATES.csv`](./inputs/data/HISTORICAL_CATCH_ESTIMATES.csv))
 
-#### by Entity
+3. `SIMULATION_CONFIGURATION` -- all configuration parameters set by the user for this simulation round
 
-![**Simulation results panel -- All entities**](assets/images/TCAC16/simulationResultsByEntity.png){style="display:block; margin-left:auto; margin-right:auto;"}
+4. `OUTPUT_QUOTAS` -- simulation outputs, expressed either as a fraction of the annual TAC or as catch in tonnes by CPC and year, depending on the selected output unit
+
+**Contents of the Word file**
+
+The Word file provides pre-formatted reports, including configuration parameters and output tables for all components (baseline, developing State, catch-based) and their sub-components.
+
+**File naming**
+
+The Excel file is named according to the date and time the download was requested, for example: `TCAC_simulation_2026_01_25_121303.xlsx`
+
+#### By Entity
+
+This tab allows the user to select a single entity and view:
+
+- The final total allocation chart for that entity.
+
+- Detailed breakdown of each allocation component: Baseline, developing State, and catch-based.
+
+![**Simulation results panel -- By entity**. Allocation values for the selected entity, showing Baseline and Developing State components, and a 10-year projected Catch-Based allocation in the bar chart](assets/images/TCAC16/simulationResultsByEntity.png){style="display:block; margin-left:auto; margin-right:auto;"}
+
+<br>
+
+A Word report containing pre-formatted tables for the selected entity—including configuration parameters and outputs for all components and sub-components—can be downloaded using the Download full report button.
