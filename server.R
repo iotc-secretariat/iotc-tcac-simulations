@@ -1001,7 +1001,6 @@ server = function(input, output, session) {
       WB = createWorkbook()
       
       addWorksheet(WB, "CPC_REFERENCES")
-      addWorksheet(WB, "COASTAL_STATE_REFERENCES")
       addWorksheet(WB, "HISTORICAL_CATCHES")
       addWorksheet(WB, "SIMULATION_CONFIGURATION")
       addWorksheet(WB, "OUTPUT_QUOTAS")
@@ -1014,7 +1013,6 @@ server = function(input, output, session) {
       # Column widths are taken directly from Excel once all cols have been expanded to their maximum
       
       setColWidths(WB, 1, 1:9,  widths = c(5.14, 48.71, 6.86, 5.43, 8.29, 11.29, 8.29, 23, 19.86))
-      setColWidths(WB, 2, 1:16, widths = c(5.14, 8.29, 10.71, 21.43, 34.71, 10.43, 30, 34.86, 28.29, 11, 8.14, 16.29, 11.14, 19.43, 11.71, 20))
       setColWidths(WB, 3, 1:9,  widths = c(4.71, 10.57, 11, 12.57, 13.29, 18.71, 15, 13.14, 9.86)) 
       setColWidths(WB, 4, 1   , widths = 56.43)
       setColWidths(WB, 5, 2:11, widths = 15.71)
