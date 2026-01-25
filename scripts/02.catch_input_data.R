@@ -25,13 +25,12 @@ read_catch_data = function(file = "./inputs/data/HISTORICAL_CATCH_ESTIMATES.csv"
   # For the time being we consider the Chagos archipelago to still be under sovereignty of GBR
   POSTPROCESSED_CATCH_DATA[ASSIGNED_AREA == "NJA_CHAGOS", ASSIGNED_AREA := "NJA_GBR"]
   
-  # We need to decide if we want to keep only catches from current CPCs for the catch-based allocation part
-  # In that case:
+  # Keep only catches from current CPCs for the catch-based allocation part
   POSTPROCESSED_CATCH_DATA = POSTPROCESSED_CATCH_DATA[FLEET_CODE %in% CPC_data[STATUS_CODE %in% c("CP", "FE")]$CODE]
   
-  # We need to decide if we want to consider only catches in the high seas or within CPC NJAs
-  # In that case:
-  POSTPROCESSED_CATCH_DATA = POSTPROCESSED_CATCH_DATA[ASSIGNED_AREA == "HIGH_SEAS" | ASSIGNED_AREA %in% paste0("NJA_", CPC_data[IS_COASTAL == TRUE]$CODE)]
+  # Consider only catches in the high seas and within CPC NJAs (i.e., remove CPC catches from non-IOTC members)
+  #POSTPROCESSED_CATCH_DATA = POSTPROCESSED_CATCH_DATA[ASSIGNED_AREA == "HIGH_SEAS" | ASSIGNED_AREA %in% paste0("NJA_", CPC_data[IS_COASTAL == TRUE]$CODE)]
+  POSTPROCESSED_CATCH_DATA = POSTPROCESSED_CATCH_DATA[ASSIGNED_AREA == "HIGH_SEAS" | gsub("NJA_", "", ASSIGNED_AREA) %in% CPC_data$CODE)]
   
   return(POSTPROCESSED_CATCH_DATA)
 }

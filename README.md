@@ -48,7 +48,7 @@ The catch input file used by the TCAC application contains aggregated catch esti
 
 Historical catch data are available for all years from 1950 to 2021 stratified by year, fleet, gear, school type, species, and assigned area.
 
-It is important to note that the need to apportion historical catches by flag or fleet according to the area of operation (high seas versus the NJA of any given coastal state) requires the IOTC Secretariat to estimate this information. This estimation process was presented at the TCAC meeting in October 2023 (see [IOTC-2023-TCAC12-INF02](https://iotc.org/documents/TCAC/12/INF02)).
+It is important to note that the need to apportion historical catches by flag or fleet according to the area of operation (high seas versus the NJA of any given coastal State) requires the IOTC Secretariat to estimate this information. This estimation process was presented at the TCAC meeting in October 2023 (see [IOTC-2023-TCAC12-INF02](https://iotc.org/documents/TCAC/12/INF02)).
 
 For this reason, the historical catch series with a full area breakdown is only available for the five major IOTC species (albacore, bigeye tuna, skipjack tuna, swordfish, and yellowfin tuna). These data have been estimated using the regular grid versus the NJA overlapping area fraction to assign catches estimated for the former to the area that falls within a given NJA.
 
@@ -56,7 +56,7 @@ For this reason, the historical catch series with a full area breakdown is only 
 
 #### Source
 
-The National Jurisdiction Areas (NJAs) of the IOTC CPCs were sourced from the Flanders Marine Institute (VLIZ) *maritime boundaries* geodatabase (<https://doi.org/10.14284/628>). The corresponding spatial layers are available for download from the IOTC Reference Data Catalogue (https://data.iotc.org/reference/latest/domain/admin/shapefiles/IO_NJA_AREAS_2.0.0_SHP.zip).
+The National Jurisdiction Areas (NJAs) of the IOTC CPCs were sourced from the Flanders Marine Institute (VLIZ) *maritime boundaries* geodatabase (<https://doi.org/10.14284/628>). The corresponding spatial layers are available for download from the IOTC Reference Data Catalogue (see Section [Indian Ocean National Jurisdiction Areas](https://data.iotc.org/reference/latest/domain/admin/#IOareasNJACS)).
 
 #### Assumptions
 
@@ -92,16 +92,16 @@ _Example_. If the baseline weight is set to 10%, each contractin party receives 
 
 ### Developing States Weight
 
-The **developing states weight** (%) represents the portion of the TAC that is allocated among the 21 IOTC developing coastal states: Bangladesh (`BGD`), Comoros (`COM`), India (`IND`), Indonesia (`IDN`), 
+The **developing states weight** (%) represents the portion of the TAC that is allocated among the 21 IOTC developing coastal States: Bangladesh (`BGD`), Comoros (`COM`), India (`IND`), Indonesia (`IDN`), 
 I.R. Iran (`IRN`), Kenya (`KEN`), Madagascar (`MDG`), Malaysia (`MYS`), Maldives (`MDV`), Mauritius (`MUS`), Mozambique (`MOZ`), Oman (`OMN`), Pakistan (`PAK`), Seychelles (`SYC`), Somalia (`SOM`), South Africa (`ZAF`), Sri Lanka (`LKA`), Sudan (`SDN`), Thailand (`THA`), United Republic of Tanzania (`TZA`), and Yemen (`YEM`).
 
-This allocation component comprises three sub-components: (i) an equal-weight component, (ii) a least-developed country (LDC) component, and (iii) a small island developing States (SIDS) component. The relative contribution of each sub-component can be adjusted by the user to reflect different weighting schemes for developing coastal states according to their status.
+This allocation component comprises three sub-components: (i) an equal-weight component, (ii) a least-developed country (LDC) component, and (iii) a small island developing States (SIDS) component. The relative contribution of each sub-component can be adjusted by the user to reflect different weighting schemes for developing coastal States according to their status.
 
 #### Equal Weight
 
-The **equal-weight** (%) sub-component of the developing states allocation component represents the portion of the TAC that is allocated evenly among the the 21 IOTC developing coastal states: Bangladesh (`BGD`), Comoros (`COM`), India (`IND`), Indonesia (`IDN`), I.R. Iran (`IRN`), Kenya (`KEN`), Madagascar (`MDG`), Malaysia (`MYS`), Maldives (`MDV`), Mauritius (`MUS`), Mozambique (`MOZ`), Oman (`OMN`), Pakistan (`PAK`), Seychelles (`SYC`), Somalia (`SOM`), South Africa (`ZAF`), Sri Lanka (`LKA`), Sudan (`SDN`), Thailand (`THA`), United Republic of Tanzania (`TZA`), and Yemen (`YEM`).
+The **equal-weight** (%) sub-component of the developing states allocation component represents the portion of the TAC that is allocated evenly among the the 21 IOTC developing coastal States: Bangladesh (`BGD`), Comoros (`COM`), India (`IND`), Indonesia (`IDN`), I.R. Iran (`IRN`), Kenya (`KEN`), Madagascar (`MDG`), Malaysia (`MYS`), Maldives (`MDV`), Mauritius (`MUS`), Mozambique (`MOZ`), Oman (`OMN`), Pakistan (`PAK`), Seychelles (`SYC`), Somalia (`SOM`), South Africa (`ZAF`), Sri Lanka (`LKA`), Sudan (`SDN`), Thailand (`THA`), United Republic of Tanzania (`TZA`), and Yemen (`YEM`).
 
-_Example_. If the developing states weight is set to 10% and the equal weight is set to 35%, each developing coastal state receives an equal share of the TAC equal to 10% x 35% ÷ 21 ≈ 0.17%. For a TAC of 421,000 t (the default case for yellowfin tuna), this corresponds to approximately 702 t per developing coastal state.
+_Example_. If the developing states weight is set to 10% and the equal weight is set to 35%, each developing coastal State receives an equal share of the TAC equal to 10% x 35% ÷ 21 ≈ 0.17%. For a TAC of 421,000 t (the default case for yellowfin tuna), this corresponds to approximately 702 t per developing coastal State.
 
 #### Least-Developed Country Weight
 
@@ -117,7 +117,7 @@ _Example_. If the developing states weight is set to 10% and the small island de
 
 ### Catch-Based Weight
 
-The **catch-based weight** (%) represents the portion of the TAC allocated to each CP and to Taiwan,China, in proportion to its contribution to the total catch of the species over a selected historical reference period.
+The **catch-based weight** (%) represents the portion of the TAC allocated to each CP and to Taiwan,China, in proportion to its contribution to the total catch of the species by all IOTC Contracting Parties over a selected historical reference period.
 
 To calculate this allocation component, historical catch data are averaged over a user-selected reference period using one of two alternative approaches:
 
@@ -128,12 +128,6 @@ Under the latter approach, the _best years_ are defined as those with the highes
 
 In a second step, a period of up to 10 years is considered to implement the reallocation of catches taken by foreign fleets in coastal state NJAs. Each coefficient represents the percentage of those catches to be attributed to the coastal state for that year.
 
-_Example_. The average annual catch of yellowfin tuna (YFT) was estimated at approximately 391,000 t during the period 2000–2016. Over this period, Comoros (`COM`) contributed a mean annual catch of around 2,500 t, corresponding to a share of 2,500 ÷ 391,000 ≈ 0.64% of the total catch. For a TAC of 421,000 t (the default value for yellowfin tuna), if the catch-based weight is set to 100% and the reference period 2000–2016 is selected, this corresponds to an allocation of approximately 2,692 t for Comoros.
+_Example_. The average annual catch of yellowfin tuna (YFT) by the IOTC CPs on the high seas and in the IOTC NJAs was estimated at approximately 366,000 t during the period 2000–2016. Over this period, Comoros (`COM`) contributed a mean annual catch of around 2,500 t, corresponding to a share of 2,500 ÷ 365,000 ≈ 0.69% of the total catch. For a TAC of 421,000 t (the default value for yellowfin tuna), if the catch-based weight is set to 100% and the reference period 2000–2016 is selected, this corresponds to an allocation of approximately 2,692 t for Comoros.
 
 During the same period, Comorian fisheries did not operate outside national jurisdiction, while an average of approximately 2,350 t of yellowfin tuna per year was taken by foreign fleets within the NJAs of Comoros under licensing agreements. Consequently, if the coastal State NJA attribution weight is set to 100%, Comoros would receive a total allocation of approximately 2,692 + 2,350 ≈ 5,040 t.
-
-
-
-
-
-
