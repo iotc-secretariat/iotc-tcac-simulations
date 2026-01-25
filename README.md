@@ -48,7 +48,7 @@ The catch input file used by the TCAC application contains aggregated catch esti
 
 Historical catch data are available for all years from 1950 to 2021 stratified by year, fleet, gear, school type, species, and assigned area.
 
-It is important to note that the need to apportion historical catches by flag or fleet according to the area of operation (high seas versus the NJA of any given coastal state) requires the IOTC Secretariat to estimate this information. This estimation process was presented at the TCAC meeting in October 2023 (see [IOTC-2023-TCAC12-INF02](https://iotc.org/documents/TCAC/12/INF02)).
+It is important to note that the need to apportion historical catches by flag or fleet according to the area of operation (high seas versus the NJA of any given coastal State) requires the IOTC Secretariat to estimate this information. This estimation process was presented at the TCAC meeting in October 2023 (see [IOTC-2023-TCAC12-INF02](https://iotc.org/documents/TCAC/12/INF02)).
 
 For this reason, the historical catch series with a full area breakdown is only available for the five major IOTC species (albacore, bigeye tuna, skipjack tuna, swordfish, and yellowfin tuna). These data have been estimated using the regular grid versus the NJA overlapping area fraction to assign catches estimated for the former to the area that falls within a given NJA.
 
@@ -92,16 +92,16 @@ _Example_. If the baseline weight is set to 10%, each contractin party receives 
 
 ### Developing States Weight
 
-The **developing states weight** (%) represents the portion of the TAC that is allocated among the 21 IOTC developing coastal states: Bangladesh (`BGD`), Comoros (`COM`), India (`IND`), Indonesia (`IDN`), 
+The **developing states weight** (%) represents the portion of the TAC that is allocated among the 21 IOTC developing coastal States: Bangladesh (`BGD`), Comoros (`COM`), India (`IND`), Indonesia (`IDN`), 
 I.R. Iran (`IRN`), Kenya (`KEN`), Madagascar (`MDG`), Malaysia (`MYS`), Maldives (`MDV`), Mauritius (`MUS`), Mozambique (`MOZ`), Oman (`OMN`), Pakistan (`PAK`), Seychelles (`SYC`), Somalia (`SOM`), South Africa (`ZAF`), Sri Lanka (`LKA`), Sudan (`SDN`), Thailand (`THA`), United Republic of Tanzania (`TZA`), and Yemen (`YEM`).
 
-This allocation component comprises three sub-components: (i) an equal-weight component, (ii) a least-developed country (LDC) component, and (iii) a small island developing States (SIDS) component. The relative contribution of each sub-component can be adjusted by the user to reflect different weighting schemes for developing coastal states according to their status.
+This allocation component comprises three sub-components: (i) an equal-weight component, (ii) a least-developed country (LDC) component, and (iii) a small island developing States (SIDS) component. The relative contribution of each sub-component can be adjusted by the user to reflect different weighting schemes for developing coastal States according to their status.
 
 #### Equal Weight
 
-The **equal-weight** (%) sub-component of the developing states allocation component represents the portion of the TAC that is allocated evenly among the the 21 IOTC developing coastal states: Bangladesh (`BGD`), Comoros (`COM`), India (`IND`), Indonesia (`IDN`), I.R. Iran (`IRN`), Kenya (`KEN`), Madagascar (`MDG`), Malaysia (`MYS`), Maldives (`MDV`), Mauritius (`MUS`), Mozambique (`MOZ`), Oman (`OMN`), Pakistan (`PAK`), Seychelles (`SYC`), Somalia (`SOM`), South Africa (`ZAF`), Sri Lanka (`LKA`), Sudan (`SDN`), Thailand (`THA`), United Republic of Tanzania (`TZA`), and Yemen (`YEM`).
+The **equal-weight** (%) sub-component of the developing states allocation component represents the portion of the TAC that is allocated evenly among the the 21 IOTC developing coastal States: Bangladesh (`BGD`), Comoros (`COM`), India (`IND`), Indonesia (`IDN`), I.R. Iran (`IRN`), Kenya (`KEN`), Madagascar (`MDG`), Malaysia (`MYS`), Maldives (`MDV`), Mauritius (`MUS`), Mozambique (`MOZ`), Oman (`OMN`), Pakistan (`PAK`), Seychelles (`SYC`), Somalia (`SOM`), South Africa (`ZAF`), Sri Lanka (`LKA`), Sudan (`SDN`), Thailand (`THA`), United Republic of Tanzania (`TZA`), and Yemen (`YEM`).
 
-_Example_. If the developing states weight is set to 10% and the equal weight is set to 35%, each developing coastal state receives an equal share of the TAC equal to 10% x 35% ÷ 21 ≈ 0.17%. For a TAC of 421,000 t (the default case for yellowfin tuna), this corresponds to approximately 702 t per developing coastal state.
+_Example_. If the developing states weight is set to 10% and the equal weight is set to 35%, each developing coastal State receives an equal share of the TAC equal to 10% x 35% ÷ 21 ≈ 0.17%. For a TAC of 421,000 t (the default case for yellowfin tuna), this corresponds to approximately 702 t per developing coastal State.
 
 #### Least-Developed Country Weight
 

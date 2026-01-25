@@ -12,213 +12,152 @@ The main interface consists of two tabbed panels:
  
 ## Reference Data Panel {#referenceDataPanel}
 
-This panel is split into two horizontal components:
+This panel is divided into two horizontal components.
 
-1. The top panel enables the user selecting the IOTC entity of interest through a scroll-down list. Once selected, the National Jurisdiction Area (NJA; see [ReadMe file](./README.html)) of the entity is displayed with an interactive map and the main features of the entity are displayed in a frame,  including (i) the entity status (Contracting Party of Fishing Entity) and whether it is a (ii) coastal state, (iii) developing state, (iv) least-developed country, and (v) Small Island Developing State (SIDs). 
+### Top Panel
 
-![Reference data top panel](assets/images/TCAC16/referenceDataTopPanel.png)
+The top panel allows the user to select the IOTC entity of interest from a drop-down list. Once an entity is selected, its National Jurisdiction Area (NJA) (see [ReadMe file](./README.html)) is displayed on an interactive map.
+
+Key characteristics of the selected entity are also summarised in an information frame, including:
+
+-   the entity status (Contracting Party or Fishing Entity);
+-   whether the entity is a coastal State;
+-   whether it is classified as a developing State;
+-   whether it is a least-developed country; and
+-   whether it is a Small Island Developing State (SIDS).
+
+![**Reference data top panel**. Interactive map of National Jurisdiction Areas. Use zoom and pan to navigate, and toggle layers to display country/territory boundaries, coastlines, NJAs in the Indian Ocean, and overlapping claim areas](assets/images/TCAC16/referenceDataTopPanel.png)
 
 <br/>
 
-2. The bottom panel
+### Bottom Panel
 
+The bottom panel is composed of two tabs: 
 
+- **Chart**
 
-![Reference data bottom panel](assets/images/TCAC16/referenceDataBottomPanel.png)
+This tab allows the user to select the species of interest from a drop-down list. Five species are currently considered for allocation: albacore, bigeye tuna, skipjack tuna, swordfish, and yellowfin tuna.
+
+The estimated catch time series for the selected entity and species are displayed as an interactive stacked bar chart, disaggregated by the spatial origin of the catch:
+
+- Own NJA (green) – catch taken within the entity’s national jurisdiction waters by all national fisheries;
+
+- High seas (blue) – catch taken on the high seas by national surface and longline fisheries; and
+
+- Foreign NJAs (red) – catch taken by national surface and longline fisheries within the national jurisdiction areas of other entities.
+
+![**Reference data bottom panel -- Chart**. Interactive stacked bar chart showing catch by entity, species, and spatial origin. Hover over bars to see values, use the legend to show or hide categories, and access chart controls (download, zoom, reset) from the top-right toolbar](assets/images/TCAC16/referenceDataBottomPanelChart.png)
+
+<br>
+
+- **Data**
+
+This tab allows the user to view all catch data used as inputs to the simulations in an interactive table. The table includes search and filtering options, enabling users to quickly locate and explore specific records.
+
+![**Reference data bottom panel -- Data**. Interactive table showing estimated catch by entity, fishery, species, and spatial origin, with search and filter options](assets/images/TCAC16/referenceDataBottomPanelData.png)
 
 <br/>
-
-<!--
-
-provides access to two tabs: (left tab) Reference data and (right tab) Simulation categories of configuration datasets which are presented as sortable, filterable tables, and provide an interactive version of the tabular configuration files included with the application:
-
--   ***CPC summary***, with information on each IOTC entity (see fields of `CPC` worksheet described in the Section [Process Configuration](#configuration)
-
-    ![CPC summary data panel](assets/images/app_ref_data_cpc_summary_rev.png)
-
-    <br/>
-
--   ***Coastal states summary***, with information on each Coastal State (see fields of  `COASTAL_STATE_SOCIO_ECONOMIC` worksheet described in Section [Process Configuration](#configuration))
-
-    ![Coastal states summary data panel](assets/images/app_ref_data_coastal_states_summary.png)
-
-    <br/>
-
--   ***Historical catches***, with estimated catches for the five major IOTC species stratified by year, fleet, gear, school type, species, and assigned area (see fields described in the Section [Historical Catches](#historicalCatch))
-
-    ![Historical catch data panel](assets/images/app_ref_data_historical_catches_rev.png)
 
 ## Simulation Panel {#simulationPanel}
 
-This panel provides access to the configuration [parameters](#inputConfig) (left panel) and the simulation [results](#outputs) (right panel), projecting up to 10 years into the future to account for the transitional period in the allocation of catches from flag States to Coastal States, where applicable.
+This panel provides access to the simulation configuration [parameters](#parameters) (left panel) and the simulation [results](#results) (right panel). The simulations project up to 10 years into the future in order to account for the transitional period associated with the allocation of catches from flag States to coastal States, where applicable.
 
-### Configuration Parameters
+### Parameters {#parameters}
 
--   The ***Species*** subject to the simulation, which affects the catch records to be used to calculate the *catch-based* allocation component
+This panel allows the user to select the **species** subject to the simulation from a drop-down list and to specify the **Target Total Allowable Catch (TAC)**, expressed in metric tonnes (t). Default TAC values are provided for each species and may be updated manually by the user. The selected TAC values are used in the simulations to express the quotas allocated to each entity in terms of the amount of catch allocated.
 
--   The ***Target TAC*** in metric tonnes (t), which affects the estimated annual catches for each CPC and year
+![**Simulation configuration parameter panel -- General**. Select the species, set the TAC, and assign weights to the allocation criteria (baseline, coastal developing States, catch history) to distribute the TAC among IOTC entities](assets/images/TCAC16/simulationParametersPanel.png){style="display:block; margin-left:auto; margin-right:auto;"}
 
-    ![Species and TAC configuration controls](assets/images/app_config_species_tac_rev.png)
+<br>
 
-    <br/>
+Once the species and TAC are set, the panel allows the user to define the values of the three allocation component weights, whose sum must equal 100%:
 
--   The main component weights
+1. **Baseline weight**
 
-    ![Main component weights configuration controls](assets/images/app_config_main_components_wgt_rev.png)
+Assigns an equal portion of the TAC to all Contracting Parties.
 
-    <br/>
+2. **Developing States weight**
 
-    1.  The ***Baseline weight*** does not require any additional configuration, as it assigns an equal portion of the quota to each CPC (see para. 6.5 of [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E))
+Applies to IOTC coastal developing States. This weight is further divided into three sub-components:
 
-        ![Baseline weights configuration controls](assets/images/app_config_baseline_components_wgt_rev.png)
+- **Equal weight** -- portion of the TAC allocated evenly among the 21 IOTC developing coastal States
 
-        <br/>
+- **Least-Developed Country (LDC) weight** -- portion of the TAC allocated evenly among the 8 IOTC least-developed coastal States
 
-    2.  The ***Coastal state weight*** applies to all IOTC CPCs with a NJA in the IOTC Area of Competence (see para. 6.6(1) of [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E))
+- **Small Island Developing States (SIDS) weight** -- portion of the TAC allocated evenly among the 4 IOTC SIDS.
 
-        ![Coastal state sub-component weights configuration controls](assets/images/app_config_coastal_state_components_wgt_rev.png)
+![**Simulation configuration parameter panel -- Developing States Weight Components**. Set the relative weight of each sub-component: Equal weight, Least-Developed Country (LDC) weight, and Small Island Developing States (SIDS) weight ](assets/images/TCAC16/simulationParametersPanelDSweight.png){style="display:block; margin-left:auto; margin-right:auto;"}
 
-        <br/>
+<br>
 
-        This component weight is further broken down into:
+3. **Catch-based weight**
 
-        1.  ***Equal weight*** (see para. 6.6(1)(a) of [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E))
+Allocates the TAC to each Contracting Party and Taiwan,China, in proportion to its historical contribution to the total catch of the selected species.
 
-        2.  ***Socio-economic weight*** (see para. 6.6(1)(b) of [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E))
+The user can select one of two reference periods within the historical catch interval to calculate average historical catches:
 
-            Its sub-components can be selected from two possible options, which consider different aspects of the social and economic environment and status of all IOTC CPCs:
+- **Selected period** -- a continuous range of years
 
-            -   **Option #1**: *Vulnerability + Priority sectors + Disproportionate burden* (see para. 6.6(1)(a)[OPTION 1] of [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E))
+- **Best "n" years** -- the top 'n' years with the highest catches within the historical interval, with Number of years as a selectable parameter.
 
-                <br/>
+![**Simulation configuration parameter panel -- Catch-Based Weight**. Select the reference period and method to calculate average historical catches for each entity. Define the 10-year sequence of percentages to reallocate catches taken by foreign fleets within a coastal state's NJA](assets/images/TCAC16/simulationParametersPanelCBweight.png){style="display:block; margin-left:auto; margin-right:auto;"}
 
-                ![Socio-economic sub-component weights configuration controls (Option #1)](assets/images/app_config_socio_economic_wgts_option1_rev.png)
+<br>
 
-                <br/>
+In a final step, the reallocation of catches taken by foreign fleets within a coastal state's NJA is implemented gradually over a transitional period of 6 or 10 years. For each year, a coefficient specifies the fraction of these catches to be attributed to the coastal state. By default, the coefficients increase from less than 100% to 100% over the period, so that all catches are eventually assigned to the coastal state. Users can modify the sequence of coefficients if desired.
 
-                This option includes three distinct sub-component weights to account for:
+### Results {#results}
 
-                1.  the **Vulnerability** of the CPC (see para. 6.6(1)(a)[OPTION 1 (i)] [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E)), whose main components (equally weighted at 50% each) are:
-                    -   the **Per capita fish consumption**
-                    -   the **Commonwealth Universal Vulnerability index** (CUVI)
-                2.  the **priority sectors** of the CPC (see para. 6.6(1)(a)[OPTION 1 (ii)] of [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E)), whose main components (equally weighted at 50% each) are:
-                    -   the **Proportion of fish workers employed in small-scale and artisanal fisheries**
-                    -   the **SIDS** status (yes / no)
-                3.  the **Disproportionate burden** on developing CPCs (see para. 6.6(1)(a)[OPTION 1 (iii) of [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E)], whose main components (equally weighted at 50% each) are:
-                    -   the **Contribution of the whole fisheries sector to the GDP**
-                    -   the **Proportion of total export value made up of fisheries export**
+The results of the simulation are presented in two tabs: **All entities** and **By entity**.
 
-                <br/>
+#### All Entities
 
-            -   **Option #2**: *HDI + GNI + SIDS* (see para. 6.6(1)(a)[OPTION 2] [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E))
+This tab displays the final allocation table, with CPCs as rows and allocation years as columns (1 to 10). Each cell shows the quota assigned to a CPC for a given year.
 
-                <br/>
+The quota can be expressed as either:
 
-                ![Socio-economic sub-component weights configuration controls (Option #2)](assets/images/app_config_socio_economic_wgts_option2_rev.png)
+- Percentage of the TAC (default), or
 
-                <br/>
+- Absolute value in tonnes, calculated from the percentage and the TAC set by the user.
 
-                This option includes three distinct sub-component weights to account for:
+![**Simulation results panel -- All entities**](assets/images/TCAC16/simulationResultsAllEntities.png){style="display:block; margin-left:auto; margin-right:auto;"}
 
-                1.  The **Human Development Index** (HDI) status
+<br>
 
-                2.  The **Gross National Income** (GNI) status
+By default, cell background colour intensity reflects the relative value of the quota. The appearance can be adjusted using the Heatmap style parameter:
 
-                3.  The **Small Island Developing State** (SIDS) status
+- Background colour (default) -– cell intensity represents relative value
 
-        3.  ***EEZ weight*** (see para. 6.6(1)(c) of [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E)) to replace the lack of indicators based on spatial stock abundance.
+![**Simulation results panel -- All entities**. Annual quota values (%) for all entities over the 10-year transition period, shown using the default background colour heatmap style](assets/images/TCAC16/simulationResultsAllEntitiesColor.png){style="display:block; margin-left:auto; margin-right:auto;"}
 
-    3.  The ***Catch-based weight*** reflects the requirement that CPCs are eligible to receive allocations based on their historical catches for each stock. The criteria used to consider historical catches in determining this weight are outlined in para. 8 of [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E), and the simulation tool allows for selection and configuration of these criteria:
+<br>
 
-        1.  The ***Historical catch interval*** influences the calculation of average catches (see para. 6.8(1)(a) of [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E))
+- Bar -– relative value is shown with a horizontal bar inside each cell
 
-            ![Historical catch interval configuration controls](assets/images/app_config_catch_based_config_period_rev.png)
+![**Simulation results panel -- All entities**. Annual quota values (%) for all entities over the 10-year transition period, shown using the bar heatmap style](assets/images/TCAC16/simulationResultsAllEntitiesBar.png){style="display:block; margin-left:auto; margin-right:auto;"}
 
-            <br/>
+<br>
 
-        2.  The type of ***Historical catch average*** to be considered (see para. 6.8(1)(a) of [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E)) must be selected from the following options:
+The Heatmap type parameter determines the context for relative values:
 
-            -   **Selected period** for calculating the average catch by CPC across the entire historical catch interval
+- **Global (default)** – compares all values in the table.
 
-                ![Historical catch average configuration controls (selected period)](assets/images/app_config_catch_based_config_period_type_all_rev.png)
+- **By year** – compares values within the same year only.
 
-                <br/>
+- Downloading Results
 
-            -   **Best "n" years** for calculating the average catch by CPC over the top 'n' years (based on catches) identified within the historical catch interval, with ***Number of years*** as a selectable parameter
+The simulation results can be downloaded as an Excel file through the ***Download*** button. The name of the file corresponds to the serialised date (including the time) at which the download request was issued (e.g., `TCAC_simulation_2026_01_25_121303.xlsx`), while its content includes the following five worksheets:
 
-                ![Historical catch average configuration controls (best 'n' years)](assets/images/app_config_catch_based_config_period_type_best_rev.png)
+1.  `CPC_REFERENCES` containing the CPC configuration parameters as in [`inputs/data/iotc_entities.csv`](./inputs/data/iotc_entities.csv)
 
-            <br/>
+2.  `HISTORICAL_CATCHES` containing the historical catches for the selected species as extracted from [`inputs/data/HISTORICAL_CATCH_ESTIMATES.csv`](./inputs/data/HISTORICAL_CATCH_ESTIMATES.csv)
 
-        3.  A stepwise approach (see paras. 6.8(2) and 6.12 of [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E)) is employed to implement the NJA attribution to coastal and flag states over a period of 6 or 10 years. This approach presents a species-independent set of 10 coefficients that determine the fraction of catches from a flag state estimated to have been taken into the NJA of a CPC, which shall therefore be assigned to the coastal state owning the NJA. Each coefficient represents the percentage of those catches to be attributed to the coastal state for that year. In theory, these coefficients should represent a progression from a starting value of less than 100% to 100% (indicating that all catches are attributed to the coastal state); however, nothing prevents users from introducing any sequence they prefer for these coefficients.
+3.  `SIMULATION_CONFIGURATION` containing all the configuration parameters set by the users for the specific simulation round
 
-            ![Historical catch transitional attribution controls](assets/images/app_config_catch_based_config_transition_rev.png){style="border: 1px solid black;"}
-
-            <br/>
-
-        4.  The ***High-seas only catches*** parameter of the simulation tool aims to facilitate the exploration of simulations for high seas-only catches, as the high seas are less affected by data limitations, do not require any assumptions on catch attribution (i.e., existence of fishing agreements), and exclude artisanal fisheries that occur solely within waters under national jurisdiction.
-
-            ![Simulating high seas-only catches](assets/images/app_config_high_seas_only.png)
-
-
-### Outputs
-
-The outputs of the simulation are presented with two tabs: (i) Tables and (ii) Reports.
-
-![](assets/images/app_results.png)
-
-The tab **Tables** provides the final allocation table with CPCs as rows and allocation years as columns (from 1 to indicate the initial year, up to a maximum of 10). Each cell contains the quota assigned to the CPC for a specific year. Depending on the choice of the ***Output unit*** parameter, this quota can be expressed either as a fraction (% of the TAC for a given species) or as an absolute value in tonnes. The absolute value is computed from the output quotas (in %) and the TAC (in metric tonnes) set by the user.
-
-![](assets/images/app_output_unit.png)
-
-By default, each cell has a background colour whose intensity is directly proportional to the value within the cell, relative to other cells or values within the same year, or across the entire table.
-
-The visual representation of the relative cell value can be changed via the ***Heatmap style*** parameter.
-
-![](assets/images/app_output_heatmap_style.png)
-
-This presents two options:
-
--   **Background colour** (default) to represent the (relative) cell value through the intensity of the background
-
-    ![Output table using the 'background colour' heatmap option](assets/images/app_output_heatmap_bg.png)
-
-    <br/>
-
--   **Bar** to represent the (relative) cell value through a horizontal bar
-
-    ![Output table using the 'bar' heatmap option](assets/images/app_output_heatmap_bar.png)
-
-    <br/>
-
-The context in which the relative cell value is calculated can also be modified using the ***Heatmap type*** parameter.
-
-![](assets/images/app_output_heatmap_type.png)
-
-This presents two options:
-
--   **Global** (default), to calculate each cell's relative value with respect to all values in the table, or
-
--   **By year** to calculate each cell's relative value with respect to all values estimated for the same year
-
-The simulation results can be downloaded as an Excel file through the ***Download*** button. The name of the file corresponds to the serialised date (including the time) at which the download request was issued (e.g., `TCAC13_simulation_2024_02_01_150856.xlsx`), while its content includes the following five worksheets:
-
-1.  `CPC_REFERENCES` containing the CPC configuration parameters as in [`cfg/CPC_CONFIGURATIONS.xlsx`](./CPC_CONFIGURATIONS.xlsx)
-
-2.  `COASTAL_STATE_REFERENCES` containing the coastal states configuration parameters as in [`cfg/CPC_CONFIGURATIONS.xlsx`](./CPC_CONFIGURATIONS.xlsx)
-
-3.  `HISTORICAL_CATCHES` containing the historical catches for the selected species as extracted from [`cfg/HISTORICAL_CATCH_ESTIMATES.csv`](./HISTORICAL_CATCH_ESTIMATES.csv)
-
-4.  `SIMULATION_CONFIGURATION` containing all the configuration parameters set by the users for the specific simulation round
-
-5.  `OUTPUT_QUOTAS` containing the outputs of the simulation expressed either as fraction of the annual TAC or as catches in tons by CPC and simulation year (depending on the chosen value of the **output unit** parameter)
-
-### Reports
+4.  `OUTPUT_QUOTAS` containing the outputs of the simulation expressed either as fraction of the annual TAC or as catches in tonnes by CPC and simulation year (depending on the chosen value of the **output unit** parameter)
 
 The **Reports** tab provides access to reports that include the configuration parameters and output tables for all components (baseline, coastal State, and catch-based) and their sub-components. These reports downloadable either for all CPCs (Full report) or for a selected entity.
 
-![](assets/images/app_results_reports.png)
+#### by Entity
 
--->
-
-
+![**Simulation results panel -- All entities**](assets/images/TCAC16/simulationResultsByEntity.png){style="display:block; margin-left:auto; margin-right:auto;"}

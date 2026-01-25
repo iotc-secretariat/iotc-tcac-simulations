@@ -12,7 +12,11 @@ This document describes the list of changes and improvements to make to the App:
 
 - The right column header should not read **TAC** in the `Results` panel, as the TAC represents the total value of catch allowed. It could read "Value", corresponding either to Quota (%) or "Catches (t)" depending on the variable selected through the scroll-down list. It could also read each of those when selected, if not complicated to implement.
 
+- The species selection list could be similar to the one used in the Reference Data panel, i.e., include the text "Please select a species", as well as the images of each of the IOTC species 
+
 * UI
+
+- Remove "%" from the cells of the main allocation table that is exported, from the Results - All entities panel.
 
 - Add individual short disclaimers on each map:
 
