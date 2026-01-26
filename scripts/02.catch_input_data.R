@@ -30,7 +30,7 @@ read_catch_data = function(file = "./inputs/data/HISTORICAL_CATCH_ESTIMATES.csv"
   
   # Consider only catches in the high seas and within CPC NJAs (i.e., remove CPC catches from non-IOTC members)
   #POSTPROCESSED_CATCH_DATA = POSTPROCESSED_CATCH_DATA[ASSIGNED_AREA == "HIGH_SEAS" | ASSIGNED_AREA %in% paste0("NJA_", CPC_data[IS_COASTAL == TRUE]$CODE)]
-  POSTPROCESSED_CATCH_DATA = POSTPROCESSED_CATCH_DATA[ASSIGNED_AREA == "HIGH_SEAS" | gsub("NJA_", "", ASSIGNED_AREA) %in% CPC_data$CODE)]
+  POSTPROCESSED_CATCH_DATA = POSTPROCESSED_CATCH_DATA[ASSIGNED_AREA == "HIGH_SEAS" | gsub("NJA_", "", ASSIGNED_AREA) %in% CPC_data$CODE]
   
   return(POSTPROCESSED_CATCH_DATA)
 }
