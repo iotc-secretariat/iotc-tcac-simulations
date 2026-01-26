@@ -26,5 +26,6 @@ _The boundaries and names shown and the designations used on this map do not imp
 
 * Features
 
-- Add an option of export of the Catch Dataset (Data) in the Reference data tab (DT package)
+- Add an option of export of the Catch Dataset (Data) in the Reference data tab (DT package) _DONE_
+
 - Add information on the species selected for the Results "By entity"

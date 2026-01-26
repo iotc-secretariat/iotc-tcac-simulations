@@ -359,6 +359,7 @@ server = function(input, output, session) {
     catch_selected[ASSIGNED_AREA == "HIGH_SEAS", ORIGIN := "High Seas"]
     catch_selected[ASSIGNED_AREA == paste0("NJA_", FLEET_CODE), ORIGIN := "Own NJA"]
     catch_selected[ASSIGNED_AREA != paste0("NJA_", FLEET_CODE) & ASSIGNED_AREA != "HIGH_SEAS", ORIGIN := "Foreign NJAs"]
+    catch_selected[,CATCH_MT := round(CATCH_MT, 2)]
     catch_selected
   })
   selected_cpc_species_catches <- reactive({
@@ -706,35 +707,36 @@ server = function(input, output, session) {
     )
   })
   
-  output$ref_cpc_catch_table = DT::renderDataTable({
-    req(input$ref_cpc)
-    DT::datatable(
-      selected_cpc_catches(),
-      class = "stripe cell-border",
-      rownames = FALSE,
-      escape = FALSE,
-      colnames = c("Year", "Flag state", "entity", "Type of fishery", "Fishery", "School type", "Assigned area", "Species", "Catches", "Water Jurisdiction Area"),
-      options =
-        list(
-          autoWidth = FALSE,
-          dom = 'Bfrtip',
-          deferRender = TRUE,
-          scroll = FALSE,
-          pageLength= 10,
-          searching = TRUE,
-          autoWidth = TRUE,
-          paging    = TRUE,
-          info      = TRUE,
-          buttons = list(
-            list(extend = 'copy'),
-            list(extend = 'csv', filename = sprintf("IOTC_TCAC_Historical_Catches_for_%s_species_%s.csv", input$ref_cpc, input$ref_cpc_data_species) , title = NULL, header = TRUE),
-            list(extend = 'excel', filename =  sprintf("IOTC_TCAC_Historical_Catches_for_%s_species_%s.xlsx", input$ref_cpc, input$ref_cpc_data_species), title = NULL, header = TRUE),
-            list(extend = "pdf", title = sprintf("IOTC_TCAC_Historical_Catches_for_%s_species_%s.pdf", input$ref_cpc, input$ref_cpc_data_species), header = TRUE, orientation = "landscape")
-          )
-        ),
-      filter = list(position = "top")
-    ) %>% DT::formatCurrency("CATCH_MT", mark = ",", digits = 2, currency = "", before = FALSE)
-  })
+  output$ref_cpc_catch_table = DT::renderDataTable(
+    selected_cpc_catches(),
+    class = "stripe cell-border",
+    colnames = c("Year", "Flag state", "entity", "Type of fishery", "Fishery", "School type", "Assigned area", "Species", "Catches", "Water Jurisdiction Area"),
+    server = FALSE,
+    escape = FALSE,
+    rownames = FALSE,
+    extensions = c("Buttons"),
+    filter = list(position = 'top', clear = FALSE),
+    options = list(
+      autoWidth = FALSE,
+      dom = 'Bfrtip',
+      deferRender = TRUE,
+      scroll = FALSE,
+      pageLength= 10,
+      searching = TRUE,
+      autoWidth = TRUE,
+      paging    = TRUE,
+      info      = TRUE,
+      buttons = list(
+        list(extend = 'copy'),
+        list(extend = 'csv', filename = sprintf("IOTC_TCAC_Historical_Catches_for_%s", input$ref_cpc) , title = NULL, header = TRUE),
+        list(extend = 'excel', filename =  sprintf("IOTC_TCAC_Historical_Catches_for_%s", input$ref_cpc), title = NULL, header = TRUE),
+        list(extend = "pdf", title = sprintf("IOTC_TCAC_Historical_Catches_for_%s", input$ref_cpc), header = TRUE, orientation = "landscape")
+      ),
+      exportOptions = list(
+        modifiers = list(page = "all", selected = TRUE)
+      )
+    )
+  )
   
   # Baseline weight
   
