@@ -4,7 +4,7 @@ This document describes the list of changes and improvements to make to the App:
 
 * Labelling
 
-- Replace EEZ by NJA for consistency in the header "Coastal state EEZ attribution weights" of the Parameters Panel. It should read "Coastal state NJA attribution weights"
+- Replace EEZ by NJA for consistency in the header "Coastal state EEZ attribution weights" of the Parameters Panel. It should read "Coastal state NJA attribution weights" _DONE_
 
 - Enrich the catch dataset with labels/names for flag state, entity, type of fishery, fishery, school type, assigned area species
 
@@ -16,13 +16,13 @@ This document describes the list of changes and improvements to make to the App:
 
 * UI
 
-- Remove "%" from the cells of the main allocation table that is exported, from the Results - All entities panel.
+- Remove "%" from the cells of the main allocation table that is exported, from the Results - All entities panel. _DONE_
 
-- Add individual short disclaimers on each map:
+- Add individual short disclaimers on each map: _DONE_
 
 _The boundaries and names shown and the designations used on this map do not imply official endorsement or acceptance by the United Nations._
 
-- Fix separation between map widget and frame with information on 
+- Fix separation between map widget and frame with information on _DONE_
 
 * Features
 
