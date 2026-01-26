@@ -52,14 +52,23 @@ server = function(input, output, session) {
                 uiOutput("ref_cpc_selector")
               ),
               column(
-                width = 3,
-                uiOutput("cpc_map_wrapper")
+                width = 9
+              )
+              
+            ),
+            fluidRow(
+              column(
+                width = 4,
+                uiOutput("ref_cpc_map_wrapper"),
+                uiOutput("ref_cpc_map_disclaimer")
+              ),
+              column(
+                width = 2
               ),
               column(
                 width = 6,
                 uiOutput("ref_cpc_card")
               )
-              
             ),
             hr(),
             fluidRow(
@@ -505,17 +514,30 @@ server = function(input, output, session) {
     }
   })
   
-  output$cpc_map_wrapper <- renderUI({
-    leafletOutput("cpc_map", height = 375, width = 400)
+  output$ref_cpc_map_wrapper <- renderUI({
+    leafletOutput("ref_cpc_map", height = 375, width = 400)
   })
   
-  output$cpc_map <- renderLeaflet({
+  output$ref_cpc_map <- renderLeaflet({
     leaflet() %>%
       addTiles() %>%
       addLayersControl(
         overlayGroups = c("Country/Territory boundaries", "Coastline","NJA part in Indian Ocean", "Overlapping claim part in Indian Ocean"),
         options = layersControlOptions(collapsed = T)
       )
+  })
+  
+  output$ref_cpc_map_disclaimer <- renderUI({
+    shiny::actionLink(inputId = "ref_cpc_map_disclaimer_link", label = "Map disclaimer")
+  })
+  observeEvent(input$ref_cpc_map_disclaimer_link,{
+    shiny::showModal(
+      shiny::modalDialog(
+        title = "Map disclaimer",
+        easyClose = F,
+        tags$p("The boundaries and names shown and the designations used on this map do not imply official endorsement or acceptance by the United Nations. Please refer to the ReadMe file for details on the assumptions applied to disputed areas (shown as Overlapping Claim) in the data processing.")
+      )
+    )
   })
   
   observeEvent(input$ref_cpc, {
@@ -545,16 +567,22 @@ server = function(input, output, session) {
     wja_eur = fdi4R::wja_level1_eur_iotc_cpc %>% as.data.frame()
     eur_nja = eur_nja %>% dplyr::left_join(wja_eur, by = dplyr::join_by(code1 == code))
     
-    nja_claims = njas[regexpr("Overlapping claim",njas$type)>0,]
-    eur_nja_claims = eur_nja[regexpr("Overlapping claim",eur_nja$type)>0,]
+    nja_claims = njas[njas$type == "OC",]
+    eur_nja_claims = eur_nja[eur_nja$type == "OC",]
+    nja_claims = nja_claims[,colnames(nja_claims)[!startsWith(colnames(nja_claims), "gml_id")]]
+    eur_nja_claims = eur_nja_claims[,colnames(eur_nja_claims)[!startsWith(colnames(eur_nja_claims), "gml_id")]]
+    
     nja_claims = rbind(nja_claims, eur_nja_claims)
     
-    njas = njas[regexpr("Jurisdiction Area", njas$type)>0,]
-    eur_nja = eur_nja[regexpr("Jurisdiction Area",eur_nja$type)>0,]
-    njas = rbind(njas, eur_nja)
+    njas = njas[njas$type == "JA",]
+    eur_nja = eur_nja[eur_nja$type == "JA",]
+    njas = njas[,colnames(njas)[!startsWith(colnames(njas),"gml_id")]]
+    eur_nja = eur_nja[,colnames(eur_nja)[!startsWith(colnames(eur_nja),"gml_id")]]
     
-    cpc_nja = njas[regexpr(input$ref_cpc, toupper(njas$code1)) > 0,] %>% sf::st_collection_extract()
-    cpc_nja_claims = nja_claims[regexpr(input$ref_cpc, toupper(nja_claims$code1)) > 0,] %>% sf::st_collection_extract()
+    njas = rbind(njas, eur_nja)
+
+    cpc_nja = njas[regexpr(input$ref_cpc, njas$code1) > 0,] %>% sf::st_collection_extract()
+    cpc_nja_claims = nja_claims[regexpr(input$ref_cpc, nja_claims$code1) > 0,] %>% sf::st_collection_extract()
     
     # Mutually exclusive styling classes
     coastal_lines <- filtered %>% dplyr::filter(TYPE %in% c(0))
@@ -562,7 +590,7 @@ server = function(input, output, session) {
     dashed_lines  <- filtered %>% dplyr::filter(TYPE %in% c(2, 3) & !TYPE %in% c(8, 9))
     solid_lines   <- filtered %>% dplyr::filter(!TYPE %in% c(0, 2, 3, 4, 8, 9))
     
-    proxy <- leafletProxy("cpc_map") %>%
+    proxy <- leafletProxy("ref_cpc_map") %>%
       clearGroup("Country/Territory boundaries") %>%
       clearGroup("Coastline") %>%
       clearGroup("NJA part in Indian Ocean") %>%
@@ -1006,18 +1034,18 @@ server = function(input, output, session) {
       addWorksheet(WB, "OUTPUT_QUOTAS")
       
       writeData(WB, sheet = 1, ENTITIES, rowNames = FALSE)
-      writeData(WB, sheet = 3, ALL_CATCH_DATA[SPECIES_CODE == input$species], rowNames = FALSE)
-      writeData(WB, sheet = 4, config, rowNames = FALSE)
-      writeData(WB, sheet = 5, quotas, rowNames = FALSE)
+      writeData(WB, sheet = 2, ALL_CATCH_DATA[SPECIES_CODE == input$species], rowNames = FALSE)
+      writeData(WB, sheet = 3, config, rowNames = FALSE)
+      writeData(WB, sheet = 4, quotas, rowNames = FALSE)
       
       # Column widths are taken directly from Excel once all cols have been expanded to their maximum
       
       setColWidths(WB, 1, 1:9,  widths = c(5.14, 48.71, 6.86, 5.43, 8.29, 11.29, 8.29, 23, 19.86))
-      setColWidths(WB, 3, 1:9,  widths = c(4.71, 10.57, 11, 12.57, 13.29, 18.71, 15, 13.14, 9.86)) 
-      setColWidths(WB, 4, 1   , widths = 56.43)
-      setColWidths(WB, 5, 2:11, widths = 15.71)
+      setColWidths(WB, 2, 1:9,  widths = c(4.71, 10.57, 11, 12.57, 13.29, 18.71, 15, 13.14, 9.86)) 
+      setColWidths(WB, 3, 1   , widths = 56.43)
+      setColWidths(WB, 4, 2:11, widths = 15.71)
       
-      activeSheet(WB) <- 5
+      activeSheet(WB) <- 4
       
       saveWorkbook(WB, file = file, overwrite = TRUE)
       postMessage("Successful data file generation, ready to download", type = "success")
