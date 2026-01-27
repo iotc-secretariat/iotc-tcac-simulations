@@ -1,10 +1,10 @@
 # Appendices
 
-## Appendix 1: Description of the CPC dataset {#cpcFields}
+## Appendix 1: Description of the entity dataset {#entityFields}
 
 
 ```{r}
-block_caption("Description of the fields included in the CPC worksheet of the configuration file", 
+block_caption("Description of the fields included in the entity simulation configuration file. NJA = National Jurisdiction Area", 
               style = "Table Caption", 
               autonum = run_autonum(seq_id = 'tab', 
                                     bkm = "App2", 
@@ -13,10 +13,12 @@ block_caption("Description of the fields included in the CPC worksheet of the co
                                     prop = fp_text_lite(bold = TRUE))
 )
 
-cpc_metadata = read.xlsx("../inputs/metadata_configuration_file.xlsx", sheet = "CPC", sep.names = " ")
+entity_metadata = data.table(openxlsx::read.xlsx("../inputs/data/metadata_configuration_file.xlsx", sheet = "entities", sep.names = " "))
 
-cpc_metadata %>% 
-  flextable() %>% 
+entity_metadata[`Field name` == "NJA_SIZE", `Example / Format` := prettyNum(`Example / Format`, big.mark = ",")]
+
+entity_metadata %>% 
+  flextable::flextable() %>% 
   flextable::font(part = "all", fontname = "Calibri") %>% 
   flextable::fontsize(part = "all", size = 9) %>% 
   flextable::align(part = "header", align = "center") %>% 

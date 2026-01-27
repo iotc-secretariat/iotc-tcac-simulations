@@ -1,19 +1,44 @@
 # Input Data {#inputData}
 
-## CPC and Coastal State Status
+For the purpose of the simulations, entities are analytical units representing the 29 current Contracting Parties (CPs) and Cooperating non-Contracting Parties (CNPCs) of the IOTC, together with Taiwan,China, which participates in the Commission’s work as an invited expert. In the simulations, Taiwan,China is included as a fishing entity strictly for modelling purposes. The two CNPCs (Liberia and Panama) are included in the reference file for completeness; however, they are not considered in the allocation process, as neither country has ever operated an active fishery in the IOTC Area of Competence.
 
-The definitions of all parameters characterising each Contracting Party and Cooperating Non-Contracting Party (CPC) in relation to the allocation criteria are provided in the Excel spreadsheet  [CPC_CONFIGURATIONS.xlsx](https://www.iotc.org/TCAC/15/Data/02) file. This file contains two worksheets:
-  
-- The 'CPC' worksheet lists all current IOTC Contracting Parties (CPs), Liberia as a Cooperating Non-Contracting Party (CNCP), and Taiwan,China as a Fishing Entity (FE). It includes information on CPC status, classification as a Coastal State or Small Island Developing State (SIDS), and the presence and size of National Jurisdiction Areas (NJAs) within the IOTC Area of Competence
+## Entity Status
 
-- The 'COASTAL_STATE_SOCIO_ECONOMIC' worksheet includes all CPCs identified as Coastal States, along with their development status and a set of socio-economic indicators aligned with the requirements of Option 1 and Option 2 under paragraph 6.6(1)(b) of [IOTC-2024-TCAC13-REF02](https://www.iotc.org/documents/TCAC/13/REF02E).These indicators are used to simulate allocation scenarios that incorporate development and vulnerability criteria.
+The values of all parameters characterising each entity in relation to the allocation criteria are provided in [IOTC-2026-TCAC16-DATASET01](https://www.iotc.org/TCAC/16/Data/01). A detailed description of the fields included in this file is provided in [Appendix 1](#entityInformation).
 
-Detailed descriptions of the fields included in these two worksheets are provided in [Appendix 1](#cpcInformation) and [Appendix 2](#csFields), respectively.
+This version of the simulations (see section [Simulation Tool]{#simulations}) requires information on:
+
+- developing country status, according to United Nations classification ([UN 2020](https://www.un.org/development/desa/dpad/wp-content/uploads/sites/45/WESP2020_Annex.pdf))
+- Least Developed Country (LDC) status, according to United Nations classification ([UN 2026](https://unstats.un.org/unsd/methodology/m49/#ldc))
+- Small Island Developing State (SIDS) status, according to United Nations classification ([UN 2026](https://unstats.un.org/unsd/methodology/m49/#ldc))
+- coastal State status within the IOTC Area of Competence.
+
+It is noted that the distinction between developed and developing countries has been progressively de-emphasised within the United Nations system since 2021 in favour of more nuanced development classifications. However, these categories are retained in the present simulations solely for the purpose of implementing one of the allocation components, in line with previous TCAC discussions and agreed analytical approaches.
+
+It is important to note that Seychelles is classified as a coastal developing country within the IOTC, consistent with its status as a SIDS recognised by the United Nations. Although Seychelles has a high level of human development and income per capita, it is not classified as a developed country under the UN system and therefore remains eligible for developing-country and SIDS-specific provisions within IOTC frameworks.
 
 ## Historical Catches {#historicalCatch}
 
-Historical catch data for albacore, bigeye tuna, skipjack tuna, swordfish, and yellowfin tuna are available from 1950 to 2021. These data can be downloaded from [HISTORICAL_CATCH_ESTIMATES.csv](https://www.iotc.org/TCAC/15/Data/01) and opened using spreadsheet software such as Microsoft Excel, LibreOffice Calc, or any standard text editor. Detailed description of the fields included in the file is provided in [Appendix 3](#catchFields).
+As of 27 January, the catch data used in the simulations remain those considered at the 15th session of the TCAC, covering the period 1950–2021. Since TCAC15, substantial changes to historical catch series have been identified, including revisions and updates, notably for Indonesia. Work is ongoing to update the catch time series beyond 2021 and to incorporate information on licensing agreements in the catch allocation procedure. Until such updates are finalised, the simulations presented here rely on the previously used dataset.
 
-Catch data are stratified by year, fleet, gear, school type, species, and assigned area (either a National Jurisdiction Area or the high seas) to support allocation analyses. The method used to categorise catches by area of operation was presented to the Technical Committee on Allocation Criteria at its twelfth meeting in October 2023 and endorsed by participants ([IOTC-2023-TCAC12-INF02](https://www.iotc.org/documents/TCAC/12/INF02)). For longline and surface fisheries operating on the high seas, catches were allocated to NJAs based on the proportion of spatial overlap between each regular grid cell and the corresponding NJA (see [IOTC–2017–SC20–INF05](https://www.iotc.org/documents/estimation-eez-catches-iotc-database)).
+Historical catch data for albacore, bigeye tuna, skipjack tuna, swordfish and yellowfin tuna are available for the period 1950–2021. These data are provided in [IOTC-2026-TCAC16-DATASET02](https://www.iotc.org/TCAC/16/Data/02). A detailed description of the fields included in the file is provided in [Appendix 2](#catchFields).
 
-The National Jurisdiction Areas (NJAs) of IOTC CPCs were sourced from the Flanders Marine Institute's [Maritime Boundaries Geodatabase](https://doi.org/10.14284/628). These shapefiles are available for download from the [IOTC Reference Data Catalogue](https://data.iotc.org/reference/latest/domain/admin/shapefiles/IO_NJA_AREAS_1.0.0_SHP.zip). For historical reasons, the waters of the Chagos Archipelago were considered to be under the sovereignty of the United Kingdom of Great Britain and Northern Ireland (GBR).
+Catch data are stratified by year, fleet, gear, school type, species, and assigned area (see Section [National Jurisdiction Areas & High Seas](#NJAs)) to support allocation analyses. The methodology used to assign catches to areas of operation was presented to the Technical Committee on Allocation Criteria at its twelfth session in October 2023 and endorsed by participants ([IOTC-2023-TCAC12-INF02](https://www.iotc.org/documents/TCAC/12/INF02)). For longline and surface fisheries operating on the high seas, catches were allocated to NJAs based on the proportion of spatial overlap between each regular grid cell and the corresponding NJA (see [IOTC–2017–SC20–INF05](https://www.iotc.org/documents/estimation-eez-catches-iotc-database)).
+
+### National Jurisdiction Areas & High Seas {#NJAs}
+
+The National Jurisdiction Areas (NJAs) of the IOTC CPCs were sourced from the Flanders Marine Institute (VLIZ) *maritime boundaries* geodatabase (<https://doi.org/10.14284/628>). The corresponding spatial layers are available for download from the IOTC Reference Data Catalogue (see Section [Indian Ocean National Jurisdiction Areas](https://data.iotc.org/reference/latest/domain/admin/#IOareasNJACS)).
+
+For the purposes of allocating catches to NJAs within the simulations implemented in the TCAC application, the following assumptions were applied:
+
+i. For historical reasons, the waters of the Chagos Archipelago, considered here as part of the NJAs of Mauritius, were treated as being under the sovereignty of the United Kingdom of Great Britain and Northern Ireland (GBR), under the administration of the British Indian Ocean Territory prior to 2021. A full Marine Protected Area has been in place since April 2010 and, consequently, no official fisheries catches have been reported from these waters since that date, except for a coastal handline fishery;
+
+ii. Disputed areas involving Mayotte, Tromelin, and the Glorioso Islands (Îles Glorieuses) were treated as follows: waters associated with Mayotte (France) with Comoros (FRA_COM_MYT) and France with Madagascar and Mauritius (FRA_MDG_MUS) were attributed to France (FRA), while waters associated with Madagascar with France (MDG_FRA) were attributed to the France Overseas Territories (ATF). This assumption was adopted to simplify the allocation procedure and to ensure internal consistency with long-standing IOTC statistical practices, whereby catches from these areas have historically been attributed accordingly in national submissions and Secretariat compilations. This treatment is applied solely for analytical purposes within the TCAC application and does not prejudice the positions of CPCs with respect to sovereignty or maritime claims;
+
+iii. Although Mayotte became an overseas department of France in 2011, catches associated with Mayotte are attributed to France in IOTC datasets from 2014 onwards, corresponding to the point at which reporting practices and fleet attribution became consistently aligned with French national submissions. Accordingly, catches taken in the waters of Mayotte during the period 1995–2013 were allocated to the France Overseas Territories (ATF), and to France (FRA) thereafter;
+
+iv. The NJA for the Islamic Republic of Iran (IRN) was defined as the combination of the Iranian NJA (IRN) and the maritime areas subject to dispute with the United Arab Emirates (ARE_IRN) and Iraq (IRQ_IRN);
+
+v. The NJA for Sudan (SDN) was defined as the combination of the Sudanese NJA (SDN) and the maritime area subject to dispute with Egypt (SDN_EGY);
+
+vi. Catches estimated to have been taken in the NJAs of non-IOTC CPCs -- United Arab Emirates (ARE), Bahrain (BHR), Djibouti (DJI), Egypt (EGY), Eritrea (ERI), Iraq (IRQ), Jordan (JOR), Kuwait (KWT), Myanmar (MMR), Qatar (QAT), Saudi Arabia (SAU), and Timor-Leste (TLS), including disputed areas (Eritrea with Djibouti (ERI_DJI) and Qatar with Saudi Arabia and the United Arab Emirates (QAT_SAU_ARE) -- were aggregated under the assigned area OTH.
