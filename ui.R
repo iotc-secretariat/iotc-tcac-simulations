@@ -27,11 +27,11 @@ ui = function() {
                 span("IOTC TCAC simulation tool v2.0 [ ", style = "margin-left:10px;"),
                 a("source code", href = "https://github.com/iotc-secretariat/iotc-tcac-simulations", target = "_BLANK"),
                 span(" | ", style = "margin-left:2px;margin-right:2px;"),
-                a("readme", href = "ReadMe.html", target = "_BLANK"),
+                a("readme", href = "readme.html", target = "_BLANK"),
                 span(" | ", style = "margin-left:2px;margin-right:2px;"),
-                a("user manual", href = "UserManual.html", target = "_BLANK"),
+                a("user manual", href = "usermanual.html", target = "_BLANK"),
                 span(" | ", style = "margin-left:2px;margin-right:2px;"),
-                a("disclaimer", href = "Disclaimer.html", target = "_BLANK"),
+                a("disclaimer", href = "disclaimer.html", target = "_BLANK"),
                 span(" ]")
               ),
               rightUi = tags$li(

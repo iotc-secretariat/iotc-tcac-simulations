@@ -2,12 +2,11 @@
 library(rmarkdown)
 
 # ReadMe ####
-render("ReadMe.md", output_file = "www/ReadMe.html", quiet = TRUE)
+render("ReadMe.md", output_file = "www/readme.html", quiet = TRUE)
 
 # Disclaimer
-render("Disclaimer.md", output_file = "www/Disclaimer.html", quiet = TRUE)
+render("Disclaimer.md", output_file = "www/disclaimer.html", quiet = TRUE)
 
 # User Manual
-#render("UserManual.md", output_file = "www/UserManual.html", quiet = TRUE)
-render("UserManualWithTOC.Rmd", output_file = "www/UserManual.html", quiet = TRUE)
+render("UserManualWithTOC.Rmd", output_file = "www/usermanual.html", quiet = TRUE)
 
