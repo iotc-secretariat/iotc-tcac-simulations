@@ -13,6 +13,6 @@ setwd("./rmd")
 # General report describing data, assumptions, and results
 render("06_00_Simulation_Tool_Description.Rmd", 
        output_dir = "../outputs/", 
-       output_file = "IOTC-2026-TCAC16-INF01 - Simulation_tool_description.docx"
+       output_file = "IOTC-2026-TCAC16-INF01_Rev1 - Simulation_tool_description.docx"
 )
 

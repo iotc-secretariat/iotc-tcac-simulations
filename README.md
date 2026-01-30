@@ -36,17 +36,16 @@ The catch input file used by the TCAC application contains aggregated catch esti
 
 | Field name           | Description |
 |:------- | :-------------------------- |
-| `YEAR`               | Year of fishing activity |
-| `FLAG_CODE`          | Code identifying the [flag State](https://data.iotc.org/reference/latest/domain/admin/#countries), as defined in the IOTC reference list of countries |
-| `FLEET_CODE`         | Code identifying the [fishing fleet](https://data.iotc.org/reference/latest/domain/admin/#fleets), as defined in the IOTC reference list of fleets |
-| `FISHERY_TYPE`       | Code identifying the main fishery category: `ART` (Artisanal) or `IND` (Industrial) |
-| `FISHERY_CODE`       | Code identifying the [fishing gear](https://data.iotc.org/reference/latest/domain/fisheries/#Gears) used, as defined in the IOTC reference list of fishing gears |
-| `SCHOOL_TYPE_CODE`   | Code identifying the type of tuna school association: `LS` (school associated with a drifting floating object, natural or artificial) or `FS` (free-swimming school) |
-| `ASSIGNED_AREA`      | Area where the catch is assigned. Values include Areas Beyond National Jurisdiction (`HIGH_SEAS`) and National Jurisdiction Areas (`NJA_xxx`), where the last three characters correspond to the relevant [country code](https://data.iotc.org/reference/latest/domain/admin/#countries), e.g. `NJA_COM` for the National Jurisdiction Area of Comoros |
-| `SPECIES_CODE`       | Code identifying the [species](https://data.iotc.org/reference/latest/domain/biology/#IOTCspecies) : `ALB` (albacore), `BET` (bigeye tuna), `SKJ` (skipjack tuna), `SWO` (swordfish), `YFT` (yellowfin tuna) |
-| `CATCH_MT`           | Estimated catch, expressed in metric tonnes |
+| `YEAR` | Gregorian calendar year of the fishing activities |
+| `ENTITY_CODE` | Code identifying the entity, i.e., [CPC](https://data.iotc.org/reference/latest/domain/admin/#CPCs) or the fishing fleet of Taiwan,China (`TWN`) |
+| `FISHERY_TYPE_CODE` | Code identifying the scale of the fishing operations, separating fisheries composed of vessels less than 24 m and operating exclusively in NJAs (`ART` = Artisanal/coastal) and surface and longline fisheries that may operate on the High Seas (`IND` = Industrial) |
+| `GEAR_CODE` | Code identifying the [fishing gear](https://data.iotc.org/reference/latest/domain/fisheries/#Gears) used, as defined in the IOTC reference list of fishing gears |
+| `SCHOOL_TYPE_CODE` |Code identifying the [type of tuna school association](https://data.iotc.org/reference/latest/domain/legacy/#schoolTypes): `LS` = school associated with a drifting floating object, natural or artificial; `FS` = free-swimming school; `UNCL` = unclassified |
+| `ASSIGNED_AREA` | Area where the catch is assigned. Values include Areas Beyond National Jurisdiction (`HIGH_SEAS`) and NJAs, where the last three characters correspond to the relevant [country code](https://data.iotc.org/reference/latest/domain/admin/#countries), e.g. `NJA_SYC` for the NJA of Seychelles. `NJA_OTH` represents all non-IOTC coastal States of the Indian Ocean |
+| `SPECIES_CODE` | ASFIS alpha-3 code identifying the [species](https://data.iotc.org/reference/latest/domain/biology/#IOTCspecies): `ALB` (albacore), `BET` (bigeye tuna), `SKJ` (skipjack tuna), `SWO` (swordfish), `YFT` (yellowfin tuna) |
+| `CATCH_MT` | Amount of fish caught and retained in live-weight equivalent, expressed in metric tonnes |
 
-Historical catch data are available for all years from 1950 to 2021 stratified by year, fleet, gear, school type, species, and assigned area.
+Historical catch data are available for all years from 1950 to 2024 stratified by year, fleet, gear, school type, species, and assigned area.
 
 It is important to note that the need to apportion historical catches by flag or fleet according to the area of operation (high seas versus the NJA of any given coastal State) requires the IOTC Secretariat to estimate this information. This estimation process was presented at the TCAC meeting in October 2023 (see [IOTC-2023-TCAC12-INF02](https://iotc.org/documents/TCAC/12/INF02)).
 
@@ -68,13 +67,15 @@ ii. Disputed areas involving Mayotte, Tromelin, and the Glorioso Islands (Îles 
 
 iii. Although Mayotte became an overseas department of France in 2011, catches associated with Mayotte are attributed to France in IOTC datasets from 2014 onwards, corresponding to the point at which reporting practices and fleet attribution became consistently aligned with French national submissions. Accordingly, catches taken in the waters of Mayotte during the period 1995–2013 were allocated to the France Overseas Territories (`ATF`), and to France (`FRA`) thereafter;
 
-iv. The NJA for the Islamic Republic of Iran (`IRN`) was defined as the combination of the Iranian NJA (`IRN`) and the maritime areas subject to dispute with the United Arab Emirates (`ARE_IRN`) and Iraq (`IRQ_IRN`);
+iv. The NJA of the European Union (`EUR`) comprises the waters associated with the two French overseas departments of Réunion Island and Mayotte;
 
-v. The NJA for Sudan (SDN) was defined as the combination of the Sudanese NJA (`SDN`) and the maritime area subject to dispute with Egypt (`SDN_EGY`);
+v. The NJA for the Islamic Republic of Iran (`IRN`) was defined as the combination of the Iranian NJA (`IRN`) and the maritime areas subject to dispute with the United Arab Emirates (`ARE_IRN`) and Iraq (`IRQ_IRN`);
 
-vi. Catches estimated to have been taken in the NJAs of non-IOTC CPCs -- United Arab Emirates (`ARE`), Bahrain (`BHR`), Djibouti (`DJI`), Egypt (`EGY`), Eritrea (`ERI`), Iraq (`IRQ`), Jordan (`JOR`), Kuwait (`KWT`), Myanmar (`MMR`), Qatar (`QAT`), Saudi Arabia (`SAU`), and Timor-Leste (`TLS`), including disputed areas (Eritrea with Djibouti (`ERI_DJI`) and Qatar with Saudi Arabia and the United Arab Emirates (`QAT_SAU_ARE`) -- were aggregated under the assigned area `OTH`;
+vi. The NJA for Sudan (SDN) was defined as the combination of the Sudanese NJA (`SDN`) and the maritime area subject to dispute with Egypt (`SDN_EGY`);
 
-vii. Catch data reported for incorrect spatial grids (i.e. located outside the Indian Ocean) could not be assigned to any NJA or to the high seas and were therefore excluded from the analysis.
+vii. Catches estimated to have been taken in the NJAs of non-IOTC CPCs -- United Arab Emirates (`ARE`), Bahrain (`BHR`), Djibouti (`DJI`), Egypt (`EGY`), Eritrea (`ERI`), Iraq (`IRQ`), Jordan (`JOR`), Kuwait (`KWT`), Myanmar (`MMR`), Qatar (`QAT`), Saudi Arabia (`SAU`), and Timor-Leste (`TLS`), including disputed areas (Eritrea with Djibouti (`ERI_DJI`) and Qatar with Saudi Arabia and the United Arab Emirates (`QAT_SAU_ARE`) -- were aggregated under the assigned area `OTH`;
+
+viii. Catch data reported for incorrect spatial grids (i.e. located outside the Indian Ocean) could not be assigned to any NJA or to the high seas and were therefore excluded from the analysis.
 
 #### Surface Areas
 

@@ -1,7 +1,7 @@
 # Appendix 2: Description of the Historical Catch Dataset {#catchFields}
 
 ```{r}
-block_caption("Description of the fields included in the historical catch dataset (1950-2021) considered for the simulations", 
+block_caption("Description of the fields included in the historical catch dataset (1950-2024) considered for the simulations", 
               style = "Table Caption", 
               autonum = run_autonum(seq_id = 'tab', 
                                     bkm = "App2", 
@@ -14,29 +14,30 @@ catch_metadata = data.table::data.table(openxlsx::read.xlsx("../inputs/data/meta
 
 catch_metadata[`Field Name` == "CATCH_MT", `Example / Format` := prettyNum(`Example / Format`, big.mark = ",")]
 
-catch_metadata[, -c("Code List")] %>% 
-  flextable::flextable() %>% 
-  flextable::font(part = "all", fontname = "Calibri") %>% 
-  flextable::fontsize(part = "all", size = 9) %>% 
-  flextable::align(part = "header", align = "center") %>% 
-  flextable::bold(part = "header") %>% 
-  flextable::bg(part = "header", bg = "gray") %>% 
-  flextable::colformat_num(j = 1, big.mark = "") %>% 
+catch_metadata[, `Code List` := fifelse(is.na(`Code List`), "", `Code List`)]
+
+catch_metadata_ft = 
+  catch_metadata %>%
+  flextable() %>%
+  flextable::align(part = "header", align = "center") %>%
+  flextable::bold(part = "header") %>%
+  flextable::bg(part = "header", bg = "gray") %>%
   flextable::border_inner(border = fp_border()) %>%
-  flextable::border_outer(border = fp_border(width = 2)) %>% 
-  #mk_par(j = "Field Name", value = as_paragraph(hyperlink_text(x = `Field Name`, url = `Code List`))) %>% 
-  flextable::width(width = c(1.85, 3, 1.4))
+  flextable::border_outer(border = fp_border(width = 2)) %>%
+  flextable::compose(
+  j = "Code List",
+  value = as_paragraph(
+    hyperlink_text(
+      x   = `Code List`,
+      url = `Code List`,
+      style = fp_text(underline = TRUE)
+    )
+  )
+) %>% 
+  flextable::font(part = "all", fontname = "Calibri") %>%
+  flextable::fontsize(part = "all", size = 9) %>% 
+  flextable::color(j = "Code List", color = "#0563C1") %>% 
+  flextable::width(width = c(1.3, 3, 1.1, 3.7))
+
+catch_metadata_ft
 ```
-
-
-<!-- The fields included in the catch dataset include:   -->
-
-<!-- -   YEAR: Year of fishing -->
-<!-- -   FLAG_CODE: Code for [flag States](https://data.iotc.org/reference/latest/domain/admin/#countries) -->
-<!-- -   FLEET_CODE: Code for [fishing fleets](https://data.iotc.org/reference/latest/domain/admin/#fleets) -->
-<!-- -   FISHERY_TYPE: code for main fishery categories (ART = Artisanal, IND = Industrial) -->
-<!-- -   FISHERY_CODE: Code for [fishing gears](https://data.iotc.org/reference/latest/domain/fisheries/#Gears)  -->
-<!-- -   SCHOOL_TYPE_CODE: Code for [types of tuna school association](https://data.iotc.org/reference/latest/domain/legacy/#schoolTypes) (LS = School associated with a drifting floating object, natural or artificial; FS = Free-swimming school) -->
-<!-- -   ASSIGNED_AREA; Areas Beyond National Jurisdiction (HIGH_SEAS) or National Jurisdiction Areas (NJA) where the last three characters correspond to the [country](https://data.iotc.org/reference/latest/domain/admin/#countries) (e.g., NJA_COM = National Jurisdiction Area of Comoros) -->
-<!-- -   SPECIES_CODE: ALB = albacore; BET = bigeye tuna; SKJ = skipjack tuna; SWO = swordfish; YFT = yellowfin tuna -->
-<!-- -   CATCH_MT: estimated catch in metric tonnes.    -->
