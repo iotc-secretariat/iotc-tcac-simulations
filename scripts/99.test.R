@@ -41,7 +41,7 @@ QUOTAS2 =
 # 
 # # Mean annual catch of YFT in 2000-2016
 # RC_RAW = catch_data
-# RC_YFT_2000_2016 = RC_RAW[SPECIES_CODE == SPECIES_CODE_SELECTED & YEAR %in% CATCH_PERIOD, .(CATCH = sum(CATCH_MT/length(2000:2016))), keyby = (CPC_CODE = FLEET_CODE)]
+# RC_YFT_2000_2016 = RC_RAW[SPECIES_CODE == SPECIES_CODE_SELECTED & YEAR %in% CATCH_PERIOD, .(CATCH = sum(CATCH_MT/length(2000:2016))), keyby = (CPC_CODE = ENTITY_CODE)]
 # 
 # # Mean annual catch of YFT in 2000-2016 for the CPCs
 # RC_YFT_2000_2016_CPCS = base::merge(RC_YFT_2000_2016[!CPC_CODE %in% c("NEI", "OTH")], CPC_data[, .(CODE, NAME_EN)], by.x = "CPC_CODE", by.y = "CODE", all = TRUE)
@@ -50,7 +50,7 @@ QUOTAS2 =
 # 
 # # Mean annual catch of YFT in 2000-2016 taken by CPCs inside NJAs of non-IOTC members
 # # Those catches cannot be reallocated to the non-IOTC members
-# RC_RAW[SPECIES_CODE == SPECIES_CODE_SELECTED & YEAR %in% CATCH_PERIOD & !FLEET_CODE %in% c("NEI", "OTH") & !ASSIGNED_AREA %in% c("HIGH_SEAS", paste0("NJA_", sort(unique(CPC_data$CODE)))), .(CATCH = sum(CATCH_MT/length(CATCH_PERIOD))), keyby = .(ASSIGNED_AREA)][order(-CATCH)]
+# RC_RAW[SPECIES_CODE == SPECIES_CODE_SELECTED & YEAR %in% CATCH_PERIOD & !ENTITY_CODE %in% c("NEI", "OTH") & !ASSIGNED_AREA %in% c("HIGH_SEAS", paste0("NJA_", sort(unique(CPC_data$CODE)))), .(CATCH = sum(CATCH_MT/length(CATCH_PERIOD))), keyby = .(ASSIGNED_AREA)][order(-CATCH)]
 # 
 # # Display information on IDN
 # CPC_DATA_IDN   = CPC_data[CODE == CPC_CODE_SELECTED]
@@ -66,9 +66,9 @@ QUOTAS2 =
 # 
 # ## Catch-based allocation
 # # NB. ABNJ_CATCH_MT indicates catches from the CPC in other NJAs (through agreements)
-# IDN_CATCH_FOREIGN_NJAs = catch_data[!ASSIGNED_AREA %in% c("NJA_IDN", "HIGH_SEAS") & FLEET_CODE == "IDN" & YEAR %in% 2000:2016 & SPECIES_CODE == SPECIES_CODE_SELECTED][, .(CATCH = sum(CATCH_MT/length(2000:2016))), keyby = .(ASSIGNED_AREA)][order(-CATCH)]
+# IDN_CATCH_FOREIGN_NJAs = catch_data[!ASSIGNED_AREA %in% c("NJA_IDN", "HIGH_SEAS") & ENTITY_CODE == "IDN" & YEAR %in% 2000:2016 & SPECIES_CODE == SPECIES_CODE_SELECTED][, .(CATCH = sum(CATCH_MT/length(2000:2016))), keyby = .(ASSIGNED_AREA)][order(-CATCH)]
 # 
-# FOREIGN_CPCS_CATCH_IDN_NJA = catch_data[ASSIGNED_AREA %in% c("NJA_IDN") & FLEET_CODE != "IDN" & YEAR %in% 2000:2016 & SPECIES_CODE == SPECIES_CODE_SELECTED][, .(CATCH = sum(CATCH_MT/length(2000:2016))), keyby = .(FLEET_CODE)][order(-CATCH)]
+# FOREIGN_CPCS_CATCH_IDN_NJA = catch_data[ASSIGNED_AREA %in% c("NJA_IDN") & ENTITY_CODE != "IDN" & YEAR %in% 2000:2016 & SPECIES_CODE == SPECIES_CODE_SELECTED][, .(CATCH = sum(CATCH_MT/length(2000:2016))), keyby = .(ENTITY_CODE)][order(-CATCH)]
 # 
 # subset_and_postprocess_catch_data(catch_data, SPECIES_CODE_SELECTED, CATCH_PERIOD)[CPC_CODE == CPC_CODE_SELECTED][, .(NJA_CATCH_MT = sum(NJA_CATCH_MT/length(CATCH_PERIOD)), HS_CATCH_MT = sum(HS_CATCH_MT/length(CATCH_PERIOD)), ABNJ_CATCH_MT = sum(ABNJ_CATCH_MT/length(CATCH_PERIOD)), FOREIGN_CATCH_MT = sum(FOREIGN_CATCH_MT/length(CATCH_PERIOD))), keyby = .(CPC_CODE)]
 # 
