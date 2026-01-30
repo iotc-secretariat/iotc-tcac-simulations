@@ -26,7 +26,7 @@ read_catch_data = function(file = "./inputs/data/HISTORICAL_CATCH_ESTIMATES.csv"
   POSTPROCESSED_CATCH_DATA[ASSIGNED_AREA == "NJA_CHAGOS", ASSIGNED_AREA := "NJA_GBR"]
   
   # Keep only catches from current CPCs for the catch-based allocation part
-  POSTPROCESSED_CATCH_DATA = POSTPROCESSED_CATCH_DATA[FLEET_CODE %in% CPC_data[STATUS_CODE %in% c("CP", "FE")]$CODE]
+  POSTPROCESSED_CATCH_DATA = POSTPROCESSED_CATCH_DATA[ENTITY_CODE %in% CPC_data[STATUS_CODE %in% c("CP", "FE")]$CODE]
   
   # Consider only catches in the high seas and within CPC NJAs (i.e., remove CPC catches from non-IOTC members)
   #POSTPROCESSED_CATCH_DATA = POSTPROCESSED_CATCH_DATA[ASSIGNED_AREA == "HIGH_SEAS" | ASSIGNED_AREA %in% paste0("NJA_", CPC_data[IS_COASTAL == TRUE]$CODE)]
@@ -43,12 +43,12 @@ subset_and_postprocess_catch_data = function(catch_data,
 # onlyHS: all catches from foreign fleets in NJAs will be set to 0
   
     catch_data = catch_data[SPECIES_CODE == species_code & YEAR %in% years, .(CATCH_MT = sum(CATCH_MT, na.rm = TRUE)),
-                          keyby = .(FLEET_CODE, YEAR, ASSIGNED_AREA)]
+                          keyby = .(ENTITY_CODE, YEAR, ASSIGNED_AREA)]
   
-  catch_data_NJA       = catch_data[ASSIGNED_AREA == paste0("NJA_", FLEET_CODE),                                .(NJA_CATCH_MT     = sum(CATCH_MT, na.rm = TRUE)), keyby = .(CPC_CODE = FLEET_CODE, YEAR)]
-  catch_data_HS        = catch_data[ASSIGNED_AREA == "HIGH_SEAS",                                               .(HS_CATCH_MT      = sum(CATCH_MT, na.rm = TRUE)), keyby = .(CPC_CODE = FLEET_CODE, YEAR)]
-  catch_data_other_NJA = catch_data[ASSIGNED_AREA != paste0("NJA_", FLEET_CODE) & ASSIGNED_AREA != "HIGH_SEAS", .(ABNJ_CATCH_MT    = sum(CATCH_MT, na.rm = TRUE)), keyby = .(CPC_CODE = FLEET_CODE, YEAR)]
-  catch_data_foreign   = catch_data[ASSIGNED_AREA != paste0("NJA_", FLEET_CODE) & ASSIGNED_AREA != "HIGH_SEAS", .(FOREIGN_CATCH_MT = sum(CATCH_MT, na.rm = TRUE)), keyby = .(CPC_CODE = str_sub(ASSIGNED_AREA, 5), YEAR)]
+  catch_data_NJA       = catch_data[ASSIGNED_AREA == paste0("NJA_", ENTITY_CODE),                                .(NJA_CATCH_MT     = sum(CATCH_MT, na.rm = TRUE)), keyby = .(CPC_CODE = ENTITY_CODE, YEAR)]
+  catch_data_HS        = catch_data[ASSIGNED_AREA == "HIGH_SEAS",                                               .(HS_CATCH_MT      = sum(CATCH_MT, na.rm = TRUE)), keyby = .(CPC_CODE = ENTITY_CODE, YEAR)]
+  catch_data_other_NJA = catch_data[ASSIGNED_AREA != paste0("NJA_", ENTITY_CODE) & ASSIGNED_AREA != "HIGH_SEAS", .(ABNJ_CATCH_MT    = sum(CATCH_MT, na.rm = TRUE)), keyby = .(CPC_CODE = ENTITY_CODE, YEAR)]
+  catch_data_foreign   = catch_data[ASSIGNED_AREA != paste0("NJA_", ENTITY_CODE) & ASSIGNED_AREA != "HIGH_SEAS", .(FOREIGN_CATCH_MT = sum(CATCH_MT, na.rm = TRUE)), keyby = .(CPC_CODE = str_sub(ASSIGNED_AREA, 5), YEAR)]
   
   catch_data_all = 
     merge.data.table(
