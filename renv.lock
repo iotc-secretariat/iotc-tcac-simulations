@@ -755,6 +755,21 @@
       ],
       "Hash": "ac107251d9d9fd72f0ca8049988f1d7f"
     },
+    "iotc.data.reference.codelists": {
+      "Package": "iotc.data.reference.codelists",
+      "Version": "1.0.0",
+      "Source": "GitHub",
+      "RemoteType": "github",
+      "RemoteHost": "api.github.com",
+      "RemoteRepo": "iotc-data-reference-codelists",
+      "RemoteUsername": "iotc-secretariat",
+      "RemoteSha": "2de551f1c187e29d822d2b2a5d5053456b9f2795",
+      "Requirements": [
+        "R",
+        "data.table"
+      ],
+      "Hash": "d011217b0b9aef1a18c74997224c5119"
+    },
     "isoband": {
       "Package": "isoband",
       "Version": "0.3.0",

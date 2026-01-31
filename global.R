@@ -21,6 +21,8 @@ library(leaflet)
 library(dplyr)
 library(tidyr)
 library(plotly)
+library(flextable)
+library(iotc.data.reference.codelists)
 
 #options
 options(scipen = 9999)
@@ -42,6 +44,36 @@ SCENARIO_PARAMETERS = fread("./inputs/IOTC-2024-TCAC13-REF03_Rev1_-_INPUT_PARAME
 #variables
 ENTITIES = read_entities()
 ALL_CATCH_DATA = read_catch_data("./inputs/data/HISTORICAL_CATCH_ESTIMATES.csv", CPC_data = ENTITIES)[CATCH_MT > 0]
+
+#joins reference data
+c_names = names(ALL_CATCH_DATA)
+#join with entities
+ALL_CATCH_DATA = ALL_CATCH_DATA %>% dplyr::left_join(iotc.data.reference.codelists::ENTITIES, by = dplyr::join_by(ENTITY_CODE == CODE))
+t_c_names = c("YEAR","ENTITY_CODE","NAME_EN")
+ALL_CATCH_DATA = ALL_CATCH_DATA[,.SD,.SDcols = c(t_c_names, setdiff(c_names, t_c_names))] %>% dplyr::rename(ENTITY_NAME = NAME_EN)
+#join with fishery types
+ALL_CATCH_DATA = ALL_CATCH_DATA %>% dplyr::left_join(iotc.data.reference.codelists::LEGACY_FISHERY_TYPES, by = dplyr::join_by(FISHERY_TYPE_CODE == CODE))
+t_c_names = c("YEAR","ENTITY_CODE","ENTITY_NAME", "FISHERY_TYPE_CODE", "NAME_EN")
+ALL_CATCH_DATA = ALL_CATCH_DATA[,.SD,.SDcols = c(t_c_names, setdiff(c_names, t_c_names))] %>% dplyr::rename(FISHERY_TYPE_NAME = NAME_EN)
+#join with gears
+ALL_CATCH_DATA = ALL_CATCH_DATA %>% dplyr::left_join(iotc.data.reference.codelists::LEGACY_GEARS, by = dplyr::join_by(GEAR_CODE == CODE))
+t_c_names = c("YEAR","ENTITY_CODE","ENTITY_NAME", "FISHERY_TYPE_CODE", "FISHERY_TYPE_NAME", "GEAR_CODE", "NAME_EN")
+ALL_CATCH_DATA = ALL_CATCH_DATA[,.SD,.SDcols = c(t_c_names, setdiff(c_names, t_c_names))] %>% dplyr::rename(GEAR_NAME = NAME_EN)
+#join with school type
+ALL_CATCH_DATA = ALL_CATCH_DATA %>% dplyr::left_join(iotc.data.reference.codelists::LEGACY_SCHOOL_TYPES, by = dplyr::join_by(SCHOOL_TYPE_CODE == CODE))
+t_c_names = c("YEAR","ENTITY_CODE","ENTITY_NAME", "FISHERY_TYPE_CODE", "FISHERY_TYPE_NAME", "GEAR_CODE", "GEAR_NAME", "SCHOOL_TYPE_CODE", "NAME_EN")
+ALL_CATCH_DATA = ALL_CATCH_DATA[,.SD,.SDcols = c(t_c_names, setdiff(c_names, t_c_names))] %>% dplyr::rename(SCHOOL_TYPE_NAME = NAME_EN)
+#join with school type
+ALL_CATCH_DATA = ALL_CATCH_DATA %>% dplyr::left_join(iotc.data.reference.codelists::LEGACY_SPECIES, by = dplyr::join_by(SPECIES_CODE == CODE))
+t_c_names = c("YEAR","ENTITY_CODE","ENTITY_NAME", "FISHERY_TYPE_CODE", "FISHERY_TYPE_NAME", "GEAR_CODE", "GEAR_NAME", "SCHOOL_TYPE_CODE", "SCHOOL_TYPE_NAME", "SPECIES_CODE", "NAME_EN")
+ALL_CATCH_DATA = ALL_CATCH_DATA[,.SD,.SDcols = c(t_c_names, setdiff(c_names, t_c_names))] %>% dplyr::rename(SPECIES_NAME = NAME_EN)
+#process Assigned area
+ALL_CATCH_DATA[, ISO := sub("^NJA_", "", ASSIGNED_AREA)]
+ALL_CATCH_DATA[iotc.data.reference.codelists::ENTITIES, 
+   ASSIGNED_AREA_NAME := paste("NJA", NAME_EN),
+   on = .(ISO = CODE)
+]
+ALL_CATCH_DATA[, ISO := NULL]
 
 AVAILABLE_YEARS = list(MIN = min(ALL_CATCH_DATA$YEAR), 
                        MAX = max(ALL_CATCH_DATA$YEAR))

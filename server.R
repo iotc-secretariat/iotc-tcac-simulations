@@ -360,7 +360,6 @@ server = function(input, output, session) {
     catch_selected[ASSIGNED_AREA == paste0("NJA_", ENTITY_CODE), ORIGIN := "Own NJA"]
     catch_selected[ASSIGNED_AREA != paste0("NJA_", ENTITY_CODE) & ASSIGNED_AREA != "HIGH_SEAS", ORIGIN := "Foreign NJAs"]
     catch_selected[,CATCH_MT := round(CATCH_MT, 2)]
-    catch_selected
   })
   selected_cpc_species_catches <- reactive({
     req(input$ref_cpc)
@@ -710,7 +709,7 @@ server = function(input, output, session) {
   output$ref_cpc_catch_table = DT::renderDataTable(
     selected_cpc_catches(),
     class = "stripe cell-border",
-    colnames = c("Year", "entity", "Type of fishery", "Gear", "School type", "Species", "Catches", "Assigned area", "Water Jurisdiction Area"),
+    colnames = c("Year", "Entity [Code]", "Entity", "Fishery type [Code]", "Fishery type", "Gear [Code]", "Gear", "School type [Code]", "School type", "Species [Code]", "Species", "Catches", "Assigned area [Code]", "Assigned area", "Water Jurisdiction Area"),
     server = FALSE,
     escape = FALSE,
     rownames = FALSE,
