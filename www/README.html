@@ -498,14 +498,24 @@ definitions of the fields included in this file are provided below.</p>
 <tbody>
 <tr class="odd">
 <td align="left"><code>YEAR</code></td>
-<td align="left">Year of fishing activity</td>
+<td align="left">Gregorian calendar year of the fishing activities</td>
 </tr>
 <tr class="even">
-<td align="left"><code>FLAG_CODE</code></td>
-<td align="left">Code identifying the <a href="https://data.iotc.org/reference/latest/domain/admin/#countries">flag
-State</a>, as defined in the IOTC reference list of countries</td>
+<td align="left"><code>ENTITY_CODE</code></td>
+<td align="left">Code identifying the entity, i.e., <a href="https://data.iotc.org/reference/latest/domain/admin/#CPCs">CPC</a>
+or the fishing fleet of Taiwan,China (<code>TWN</code>)</td>
 </tr>
 <tr class="odd">
+<<<<<<< HEAD
+<td align="left"><code>FISHERY_TYPE_CODE</code></td>
+<td align="left">Code identifying the scale of the fishing operations,
+separating fisheries composed of vessels less than 24 m and operating
+exclusively in NJAs (<code>ART</code> = Artisanal/coastal) and surface
+and longline fisheries that may operate on the High Seas
+(<code>IND</code> = Industrial)</td>
+</tr>
+<tr class="even">
+=======
 <td align="left"><code>ENTITY_CODE</code></td>
 <td align="left">Code identifying the <a href="https://data.iotc.org/reference/latest/domain/admin/#fleets">fishing
 fleet</a>, as defined in the IOTC reference list of fleets</td>
@@ -516,40 +526,43 @@ fleet</a>, as defined in the IOTC reference list of fleets</td>
 <code>ART</code> (Artisanal) or <code>IND</code> (Industrial)</td>
 </tr>
 <tr class="odd">
+>>>>>>> bbcae309cab7812f18e280d3fab25d9d74631a3d
 <td align="left"><code>GEAR_CODE</code></td>
 <td align="left">Code identifying the <a href="https://data.iotc.org/reference/latest/domain/fisheries/#Gears">fishing
 gear</a> used, as defined in the IOTC reference list of fishing
 gears</td>
 </tr>
-<tr class="even">
-<td align="left"><code>SCHOOL_TYPE_CODE</code></td>
-<td align="left">Code identifying the type of tuna school association:
-<code>LS</code> (school associated with a drifting floating object,
-natural or artificial) or <code>FS</code> (free-swimming school)</td>
-</tr>
 <tr class="odd">
+<td align="left"><code>SCHOOL_TYPE_CODE</code></td>
+<td align="left">Code identifying the <a href="https://data.iotc.org/reference/latest/domain/legacy/#schoolTypes">type
+of tuna school association</a>: <code>LS</code> = school associated with
+a drifting floating object, natural or artificial; <code>FS</code> =
+free-swimming school; <code>UNCL</code> = unclassified</td>
+</tr>
+<tr class="even">
 <td align="left"><code>ASSIGNED_AREA</code></td>
 <td align="left">Area where the catch is assigned. Values include Areas
-Beyond National Jurisdiction (<code>HIGH_SEAS</code>) and National
-Jurisdiction Areas (<code>NJA_xxx</code>), where the last three
-characters correspond to the relevant <a href="https://data.iotc.org/reference/latest/domain/admin/#countries">country
-code</a>, e.g. <code>NJA_COM</code> for the National Jurisdiction Area
-of Comoros</td>
+Beyond National Jurisdiction (<code>HIGH_SEAS</code>) and NJAs, where
+the last three characters correspond to the relevant <a href="https://data.iotc.org/reference/latest/domain/admin/#countries">country
+code</a>, e.g. <code>NJA_SYC</code> for the NJA of Seychelles.
+<code>NJA_OTH</code> represents all non-IOTC coastal States of the
+Indian Ocean</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>SPECIES_CODE</code></td>
-<td align="left">Code identifying the <a href="https://data.iotc.org/reference/latest/domain/biology/#IOTCspecies">species</a>
-: <code>ALB</code> (albacore), <code>BET</code> (bigeye tuna),
+<td align="left">ASFIS alpha-3 code identifying the <a href="https://data.iotc.org/reference/latest/domain/biology/#IOTCspecies">species</a>:
+<code>ALB</code> (albacore), <code>BET</code> (bigeye tuna),
 <code>SKJ</code> (skipjack tuna), <code>SWO</code> (swordfish),
 <code>YFT</code> (yellowfin tuna)</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>CATCH_MT</code></td>
-<td align="left">Estimated catch, expressed in metric tonnes</td>
+<td align="left">Amount of fish caught and retained in live-weight
+equivalent, expressed in metric tonnes</td>
 </tr>
 </tbody>
 </table>
-<p>Historical catch data are available for all years from 1950 to 2021
+<p>Historical catch data are available for all years from 1950 to 2024
 stratified by year, fleet, gear, school type, species, and assigned
 area.</p>
 <p>It is important to note that the need to apportion historical catches
@@ -611,6 +624,9 @@ with French national submissions. Accordingly, catches taken in the
 waters of Mayotte during the period 1995–2013 were allocated to the
 France Overseas Territories (<code>ATF</code>), and to France
 (<code>FRA</code>) thereafter;</p></li>
+<li><p>The NJA of the European Union (<code>EUR</code>) comprises the
+waters associated with the two French overseas departments of Réunion
+Island and Mayotte;</p></li>
 <li><p>The NJA for the Islamic Republic of Iran (<code>IRN</code>) was
 defined as the combination of the Iranian NJA (<code>IRN</code>) and the
 maritime areas subject to dispute with the United Arab Emirates

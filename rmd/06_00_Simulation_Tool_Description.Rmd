@@ -44,9 +44,9 @@ footer_test = block_list(fpar(run_word_field(field = "PAGE  \\* ARABIC"),
 
 
 sec_pr = prop_section(
-  header_first = bl_header_with_logo("IOTC-2026-TCAC16-INF01", "right"),
-  header_even = bl_header_no_logo("IOTC-2026-TCAC16-INF01", "right"), 
-  header_default = bl_header_no_logo("IOTC-2026-TCAC16-INF01", "right"), 
+  header_first = bl_header_with_logo("IOTC-2026-TCAC16-INF01_Rev1", "right"),
+  header_even = bl_header_no_logo("IOTC-2026-TCAC16-INF01_Rev1", "right"), 
+  header_default = bl_header_no_logo("IOTC-2026-TCAC16-INF01_Rev1", "right"), 
   footer_default = footer_test, 
   footer_even = footer_test, 
   footer_first = footer_test
