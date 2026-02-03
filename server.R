@@ -461,18 +461,26 @@ server = function(input, output, session) {
               ),
               color = "info",
               width = 12,
-              value = tags$b(selected_cpc()$STATUS)
+              value = if(selected_cpc()$ISO3_CODE != "TWN"){ 
+                tags$b(selected_cpc()$STATUS)
+              }else{
+                tags$b("Fishing entity")
+              }
             )
           ),
           fluidRow(
             bs4Dash::infoBox(
-              title = "Coastal State ?",
+              title = "Coastal State / REIO?",
               width = 6,
               color = "primary",
-              value = if(selected_cpc()$IS_COASTAL) tags$b("Yes") else tags$b("No")
+              value = if(selected_cpc()$ISO3_CODE != "TWN"){
+                if(selected_cpc()$IS_COASTAL) tags$b("Yes") else tags$b("No")
+              }else{
+                tags$b("N/A")
+              }
             ),
             bs4Dash::infoBox(
-              title = "Developing State ?",
+              title = "Developing State / REIO?",
               width = 6,
               color = "gray-dark",
               value = if(selected_cpc()$IS_DEVELOPING) tags$b("Yes") else tags$b("No")
@@ -491,12 +499,30 @@ server = function(input, output, session) {
               color = "fuchsia",
               value = if(selected_cpc()$IS_SIDS) tags$b("Yes") else tags$b("No")
             )
+          ),
+          fluidRow(
+            column(width = 12,
+              uiOutput("ref_cpc_definitions")
+            )
           )
         )
       )
     }else{
       NULL
     }
+  })
+  
+  output$ref_cpc_definitions <- renderUI({
+    shiny::actionLink(inputId = "ref_cpc_definitions_link", label = "Definitions")
+  })
+  observeEvent(input$ref_cpc_definitions_link,{
+    shiny::showModal(
+      shiny::modalDialog(
+        title = "Definitions",
+        easyClose = F,
+        tags$p("REIO = Regional Economic Integration Organisation")
+      )
+    )
   })
   
   output$ref_cpc_characteristics <- renderUI({
@@ -856,12 +882,12 @@ server = function(input, output, session) {
     
     dt_alloc = allocation[[component]]
     if(component != "QUOTAS"){
-      dt_alloc = dt_alloc[, .SD, .SDcols = colnames(dt_alloc) == "CPC_CODE" |
+      dt_alloc = dt_alloc[, .SD, .SDcols = colnames(dt_alloc) == "ENTITY_CODE" |
                             grepl("TAC", colnames(dt_alloc))]
     }
     dt_alloc_basenames = colnames(dt_alloc)
-    dt_alloc = base::merge(dt_alloc, CPC_data[, .(CODE, STATUS_CODE, NAME_EN, NAME_FR)], by.x = "CPC_CODE", by.y = "CODE")
-    dt_alloc = dt_alloc[, .SD, .SDcols = c("NAME_EN", dt_alloc_basenames[dt_alloc_basenames != "CPC_CODE"])]
+    dt_alloc = base::merge(dt_alloc, CPC_data[, .(CODE, STATUS_CODE, NAME_EN, NAME_FR)], by.x = "ENTITY_CODE", by.y = "CODE")
+    dt_alloc = dt_alloc[, .SD, .SDcols = c("NAME_EN", dt_alloc_basenames[dt_alloc_basenames != "ENTITY_CODE"])]
     
     if(unit == "quota"){
       target_cols = colnames(dt_alloc)[2:ncol(dt_alloc)]
@@ -876,7 +902,7 @@ server = function(input, output, session) {
       rownames = FALSE,
       escape = FALSE,
       colnames = c(
-        "CPC", 
+        "Entity", 
         if(component %in% c("CB_ALLOCATION", "QUOTAS")){
           paste0("Year #", c(1:10))
         } else{
@@ -947,7 +973,7 @@ server = function(input, output, session) {
     req(input$reporting_entity)
     if(!is.null(input$reporting_entity) & input$reporting_entity != ""){
       result = lapply(computed_allocation()[1:4], function(x){
-        x[CPC_CODE == input$reporting_entity,]
+        x[ENTITY_CODE == input$reporting_entity,]
       })
       names(result) = names(computed_allocation())[1:4]
       result$UNIT = computed_allocation()$UNIT
@@ -1320,7 +1346,7 @@ server = function(input, output, session) {
   output$entity_cb_allocation_plot = renderPlotly({
     req(!is.null(computed_allocation_for_entity()))
     cb_result = computed_allocation_for_entity()$CB_ALLOCATION
-    cb_result_long <- cb_result[,.(CPC_CODE, CB_TAC_1, CB_TAC_2, CB_TAC_3, CB_TAC_4, CB_TAC_5,
+    cb_result_long <- cb_result[,.(ENTITY_CODE, CB_TAC_1, CB_TAC_2, CB_TAC_3, CB_TAC_4, CB_TAC_5,
                                    CB_TAC_6, CB_TAC_7, CB_TAC_8, CB_TAC_9, CB_TAC_10)] %>%
       pivot_longer(
         cols = starts_with("CB_TAC_"),
