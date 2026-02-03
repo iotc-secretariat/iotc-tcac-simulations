@@ -456,7 +456,7 @@
       "RemoteHost": "api.github.com",
       "RemoteRepo": "fdi4R",
       "RemoteUsername": "fdiwg",
-      "RemoteSha": "6f995a04c9aa5b49dd87362d6cd386da448687e0",
+      "RemoteSha": "c910ce632fca70aba19bfa0068421955586ec02d",
       "Requirements": [
         "R",
         "geosphere",
@@ -469,7 +469,7 @@
         "tmap",
         "worrms"
       ],
-      "Hash": "c599d3702eaaf13f89a652ef6ce3c184"
+      "Hash": "566db4b97639ccf2083620f9de3a7385"
     },
     "flextable": {
       "Package": "flextable",
