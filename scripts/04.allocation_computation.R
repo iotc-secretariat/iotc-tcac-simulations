@@ -1,15 +1,15 @@
 ## BASELINE ALLOCATION FUNCTION ####
 # Performs the baseline allocation, by attributing the same relative weight to all CPCs
 baseline_allocation = function(CPC_data = read_entities()) {
-  component_allocation_table = CPC_data[STATUS_CODE %in% c("CP"), .(CPC_CODE = CODE)]
+  component_allocation_table = CPC_data[STATUS_CODE %in% c("CP"), .(ENTITY_CODE = CODE)]
   
   # Baseline allocation - para. 6.5
   component_allocation_table[, BASELINE_ALLOCATION := 1.00 / nrow(component_allocation_table)] 
   # Add TWN
-  component_allocation_table = rbindlist(list(component_allocation_table, data.table(CPC_CODE = "TWN", BASELINE_ALLOCATION = 0)))
+  component_allocation_table = rbindlist(list(component_allocation_table, data.table(ENTITY_CODE = "TWN", BASELINE_ALLOCATION = 0)))
   
   return(
-    component_allocation_table[order(CPC_CODE)]
+    component_allocation_table[order(ENTITY_CODE)]
   )
 }
 
@@ -50,7 +50,7 @@ developing_state_allocation = function(CPC_data,
   component_allocation_table[, DEVELOPING_STATE_SIDS_ALLOCATION := sids_weight * SIDS_ALLOCATION]
   component_allocation_table = component_allocation_table[, DEVELOPING_STATE_ALLOCATION := (DEVELOPING_STATE_EQUAL_ALLOCATION + 
                                                               DEVELOPING_STATE_LDC_ALLOCATION + 
-                                                              DEVELOPING_STATE_SIDS_ALLOCATION)][, .(CPC_CODE = CODE, 
+                                                              DEVELOPING_STATE_SIDS_ALLOCATION)][, .(ENTITY_CODE = CODE, 
                                                                                                      DEVELOPING_STATE_EQUAL_ALLOCATION,
                                                                                                      DEVELOPING_STATE_LDC_ALLOCATION,
                                                                                                      DEVELOPING_STATE_SIDS_ALLOCATION,
@@ -75,7 +75,7 @@ catch_based_allocation = function(CPC_data,
   if(length(which(coastal_weights < 0)) > 0)
     stop("The NJA attribution weights should not be negative")
   
-  catch_allocation_table = data.table(CPC_CODE = unique(catch_data$CPC_CODE))
+  catch_allocation_table = data.table(ENTITY_CODE = unique(catch_data$ENTITY_CODE))
   
   year = 1
   
@@ -87,7 +87,7 @@ catch_based_allocation = function(CPC_data,
     colnames(current_data)[2] = paste0("CATCH_BASED_ALLOCATION_YEAR_", year)
     
     catch_allocation_table = base::merge(catch_allocation_table, current_data,
-                                   by = "CPC_CODE", all.x = TRUE)
+                                   by = "ENTITY_CODE", all.x = TRUE)
     
     year = year + 1
   }
@@ -128,24 +128,24 @@ allocate_TAC = function(TAC,
   
   # This can definitely be implemented better...
   constant_allocation = base::merge(baseline_allocation, developing_state_allocation,  
-                              by = "CPC_CODE", 
+                              by = "ENTITY_CODE", 
                               all.x = TRUE)
   
   # Removes NAs in the coastal state allocation (for non-coastal CPCs)
   constant_allocation[is.na(DEVELOPING_STATE_ALLOCATION), DEVELOPING_STATE_ALLOCATION := 0.0]
   
   # Calculates the 'constant' allocation for all CPCs as the sum of the baseline allocation and the developing state allocation factor (does not change with selected catch periods and coastal catches weights)
-  constant_allocation = constant_allocation[, CONSTANT_ALLOCATION := BASELINE_ALLOCATION + DEVELOPING_STATE_ALLOCATION][, .(CPC_CODE, CONSTANT_ALLOCATION)]
+  constant_allocation = constant_allocation[, CONSTANT_ALLOCATION := BASELINE_ALLOCATION + DEVELOPING_STATE_ALLOCATION][, .(ENTITY_CODE, CONSTANT_ALLOCATION)]
   
   # This also can definitely be implemented better...
-  final_allocation_table = base::merge(baseline_allocation[, .(CPC_CODE)], catch_based_allocation,
-                                 by = "CPC_CODE", 
+  final_allocation_table = base::merge(baseline_allocation[, .(ENTITY_CODE)], catch_based_allocation,
+                                 by = "ENTITY_CODE", 
                                  all.x = TRUE) # Ensures all CPCs are kept, regardless of whether they had catches in the considered timeframe or not
   
   # Adds the 'constant' allocation (see above) to the catch-based allocations for the first 10 years of projections
-  for(CPC in final_allocation_table$CPC_CODE) { 
+  for(CPC in final_allocation_table$ENTITY_CODE) { 
     # The ifelse(is.na(x), 0, x) part is necessary to address catch-based allocation values for CPCs with no historical catches in the selected period 
-    final_allocation_table[CPC_CODE == CPC, 2:ncol(final_allocation_table) := lapply(.SD, function(x) { ifelse(is.na(x), 0, x) + constant_allocation[CPC_CODE == CPC]$CONSTANT_ALLOCATION }), .SDcols = 2:ncol(final_allocation_table)]
+    final_allocation_table[ENTITY_CODE == CPC, 2:ncol(final_allocation_table) := lapply(.SD, function(x) { ifelse(is.na(x), 0, x) + constant_allocation[ENTITY_CODE == CPC]$CONSTANT_ALLOCATION }), .SDcols = 2:ncol(final_allocation_table)]
   }
   
   # Renames the output columns

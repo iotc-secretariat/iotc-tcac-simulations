@@ -12,7 +12,7 @@ ui = function() {
             title = tagList(
               img(src = "iotc-logo.png", height = "96px"),br(),br(),
               tags$b("IOTC TCAC simulation tool"),
-              tags$small("v2.0 (2026-01-31)"),
+              tags$small("v2.0 (2026-02-03)"),
               
             ),
             login_title = "Login",
