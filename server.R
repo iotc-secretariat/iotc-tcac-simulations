@@ -114,17 +114,37 @@ server = function(input, output, session) {
                        )
                      ),
                      
-                     span(
-                       sliderInput("ba_weight", label = "Baseline weight (%)",
-                                   width = "100%",
-                                   min = 0, max = 100, value = 0, step = .1, animate = FALSE
-                       ) 
+                     fluidRow(
+                       column(width = 9,
+                         sliderInput("ba_weight", label = "Baseline weight (%)",
+                                     width = "100%",
+                                     min = 0, max = 100, value = 0, step = .1, animate = FALSE
+                         )
+                       ),
+                       column(width = 3,
+                         br(),
+                         div(
+                          shiny::numericInput("ba_weight_num", label = NULL, width = "100%",
+                                             min = 0, max = 100, value = 0, step = .1),
+                          style = "margin-top:15px;"
+                         )
+                       )
                      ), 
                      
-                     span(
-                       sliderInput("ds_weight", label = "Developing states weight (%)",
-                                   width = "100%",
-                                   min = 0, max = 100, value = 0, step = .5, animate = FALSE
+                     fluidRow(
+                       column(width = 9,
+                         sliderInput("ds_weight", label = "Developing states weight (%)",
+                                     width = "100%",
+                                     min = 0, max = 100, value = 0, step = .5, animate = FALSE
+                         )
+                       ),
+                       column(width = 3,
+                        br(),
+                        div(
+                          shiny::numericInput("ds_weight_num", label = NULL, width = "100%",
+                                              min = 0, max = 100, value = 0, step = .1),
+                          style = "margin-top:15px;"
+                        )
                        )
                      ),
                      
@@ -483,7 +503,11 @@ server = function(input, output, session) {
               title = "Developing State / REIO?",
               width = 6,
               color = "gray-dark",
-              value = if(selected_cpc()$IS_DEVELOPING) tags$b("Yes") else tags$b("No")
+              value = if(selected_cpc()$ISO3_CODE != "TWN"){
+                if(selected_cpc()$IS_DEVELOPING) tags$b("Yes") else tags$b("No")
+              }else{
+                tags$b("N/A")
+              }
             )
           ),
           fluidRow(
@@ -491,13 +515,21 @@ server = function(input, output, session) {
               title = "Least-Developed country (LDC) ?",
               width = 6,
               color = "maroon",
-              value = if(selected_cpc()$IS_LDC) tags$b("Yes") else tags$b("No")
+              value = if(selected_cpc()$ISO3_CODE != "TWN"){
+                if(selected_cpc()$IS_LDC) tags$b("Yes") else tags$b("No")
+              }else{
+                "N/A"
+              }
             ),
             bs4Dash::infoBox(
               title = "Small Island Developing State (SIDS) ?",
               width = 6,
               color = "fuchsia",
-              value = if(selected_cpc()$IS_SIDS) tags$b("Yes") else tags$b("No")
+              value = if(selected_cpc()$ISO3_CODE != "TWN"){
+                if(selected_cpc()$IS_SIDS) tags$b("Yes") else tags$b("No")
+              }else{
+                tags$b("N/A")
+              }
             )
           ),
           fluidRow(
@@ -768,11 +800,23 @@ server = function(input, output, session) {
   output$ba_wgt = renderText({
     formatToPercent(input$ba_weight)
   })
+  observeEvent(input$ba_weight,{
+    shiny::updateNumericInput(session = session, "ba_weight_num", value = input$ba_weight)
+  })
+  observeEvent(input$ba_weight_num,{
+    shiny::updateSliderInput(session = session, "ba_weight", value = input$ba_weight_num)
+  })
   
   # Developing states weight
   
   output$ds_wgt = renderText({
     formatToPercent(input$ds_weight)
+  })
+  observeEvent(input$ds_weight,{
+    shiny::updateNumericInput(session = session, "ds_weight_num", value = input$ds_weight)
+  })
+  observeEvent(input$ds_weight_num,{
+    shiny::updateSliderInput(session = session, "ds_weight", value = input$ds_weight_num)
   })
 
   # Catch-based weight
