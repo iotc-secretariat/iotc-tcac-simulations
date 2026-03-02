@@ -471,6 +471,21 @@
       ],
       "Hash": "566db4b97639ccf2083620f9de3a7385"
     },
+    "fdisfdata": {
+      "Package": "fdisfdata",
+      "Version": "0.1",
+      "Source": "GitHub",
+      "RemoteType": "github",
+      "RemoteHost": "api.github.com",
+      "RemoteRepo": "fdisfdata",
+      "RemoteUsername": "fdiwg",
+      "RemoteSha": "c478e52f7de4634285dc998f36b692cfda423a33",
+      "Requirements": [
+        "R",
+        "sf"
+      ],
+      "Hash": "f3dbab6aeaef7e466ad568fb2bc987b6"
+    },
     "flextable": {
       "Package": "flextable",
       "Version": "0.9.10",

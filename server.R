@@ -603,8 +603,8 @@ server = function(input, output, session) {
     
     #MAP
     #sf data
-    country_polys = fdi4R::un_countries
-    country_lines = fdi4R::un_boundaries
+    country_polys = fdisfdata::un_countries
+    country_lines = fdisfdata::un_boundaries
     
     #polygon selection
     cpc_admin <- country_polys[country_polys$ISO_3 == input$ref_cpc, ]
@@ -617,12 +617,12 @@ server = function(input, output, session) {
       )
     
     #NJA
-    njas = fdi4R::wja_level1__x__iotc_indian_ocean_areas[fdi4R::wja_level1__x__iotc_indian_ocean_areas$code2 == "IO_ALL",]
-    wja1 = fdi4R::wja_level1 %>% as.data.frame()
+    njas = fdisfdata::wja_level1__x__iotc_indian_ocean_areas[fdisfdata::wja_level1__x__iotc_indian_ocean_areas$code2 == "IO_ALL",]
+    wja1 = fdisfdata::wja_level1 %>% as.data.frame()
     njas = njas %>% dplyr::left_join(wja1, by = dplyr::join_by(code1 == code))
     
-    eur_nja = fdi4R::wja_level1_eur_iotc_cpc__x__iotc_indian_ocean_areas[fdi4R::wja_level1_eur_iotc_cpc__x__iotc_indian_ocean_areas$code2 == "IO_ALL",]
-    wja_eur = fdi4R::wja_level1_eur_iotc_cpc %>% as.data.frame()
+    eur_nja = fdisfdata::wja_level1_eur_iotc_cpc__x__iotc_indian_ocean_areas[fdisfdata::wja_level1_eur_iotc_cpc__x__iotc_indian_ocean_areas$code2 == "IO_ALL",]
+    wja_eur = fdisfdata::wja_level1_eur_iotc_cpc %>% as.data.frame()
     eur_nja = eur_nja %>% dplyr::left_join(wja_eur, by = dplyr::join_by(code1 == code))
     
     nja_claims = njas[njas$type == "OC",]
