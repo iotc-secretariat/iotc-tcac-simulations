@@ -251,4 +251,27 @@ customLoginUI = function (id, title = "Please log in", user_title = "User Name",
                   class = "text-center"))))))
 }
 
+postMessage = function(msg, type = c("success","warning","error")){
+  type = match.arg(type)
+  bs4Dash::toast(
+    title = stringr::str_to_title(type),
+    body = msg,
+    options = list(
+      autohide = TRUE,
+      delay = 3000,
+      position = "bottomLeft",
+      icon = switch(type,
+        "success" = "fas fa-check",
+        "warning" = "fas fa-triangle-exclamation",
+        "error" = "fas fa-xmark"
+      ),
+      class = switch(type,
+        "success" = "bg-success",
+        "warning" = "bg-warning",
+        "error" = "bg-danger"
+      )
+    )
+  )
+}
+
 print("Common functions initialised!")

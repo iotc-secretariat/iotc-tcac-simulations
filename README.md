@@ -1,292 +1,133 @@
+---
+title: "TCAC Application – Data and Methodological Notes"
+output: html_document
+---
+
 # Overview
 
-This repository hosts a Shiny App developed by the IOTC Secretariat to simulate and explore how different allocation scenarios affect the distribution of total catch among IOTC Contracting Parties and Cooperating Non-Contracting Parties (CPCs). The tool allows users to adjust parameters reflecting various allocation criteria, including each CPC's status (e.g. Coastal State, Small Island Developing State), historical catch levels, and catches taken within National Jurisdiction Areas (NJAs) by foreign fleets. It is designed to support transparent discussions and informed decision-making under the framework of the Technical Committee on Allocation Criteria.
+This repository hosts a Shiny application developed by the IOTC Secretariat to explore how alternative allocation scenarios affect the distribution of total catch among IOTC Contracting Parties and Cooperating Non-Contracting Parties (CPCs). Users can adjust parameters reflecting CPC status, historical catch levels, and catches within National Jurisdiction Areas (NJAs) by foreign fleets. The tool is intended to support transparent discussion and informed decision-making within the framework of the Technical Committee on Allocation Criteria (TCAC).
 
-# Configuration
+# Input Data
 
-The definitions of all relevant parameters characterising each CPC in relation to the allocation criteria are provided in the [`cfg/CPC_CONFIGURATIONS.xlsx`](./CPC_CONFIGURATIONS.xlsx) file which includes two worksheets:
+### Entity Reference Table {#entities}
 
--   A `CPC` worksheet that lists all current IOTC *Contracting Parties* (CP) as well as Liberia as *Cooperating Non-Contracting Party* (CNCP), and Taiwan,China as *Fishing entity* (FE), together with their:
+The definitions of all parameters used to characterise each CPC in relation to the allocation criteria are provided in the [`inputs/data/iotc_entities.csv`](./inputs/data/iotc_entities.csv) file. This file lists all current IOTC *Contracting Parties* (CP) and *Cooperating Non-Contracting Parties* (CNCP), as well as Taiwan,China as a *Fishing Entity* (FE), together with the following information:
 
-    -   CODE: Mnemonic code (generally, the ISO3 code of the country)
-    -   NAME_EN: Official English name
-    -   NAME_FR: Official French name 
-    -   STATUS_CODE: CP, CNCP, and FE
-    -   STATUS: Contracting Party, Cooperating Non-Contracting Party, and Fishing Entity
-    -   IS_SIDS: Small Island Developing States (SIDS) status
-    -   IS_COASTAL: Coastal State status
-    -   HAS_NJA_IO: Presence of a National Jurisdiction Area (NJA) within the [IOTC Area of Competence](https://iotc.org/about-iotc/competence)
-    -   NJA_SIZE: Size of the NJA (km2)
-    -   NJA_IOTC_RELATIVE_SIZE: Relative size of the NJA (percentage; %) with respect to the IOTC Area of Competence.
-    
-</p>
+| Field name        | Description | Source |
+| :------ | :--------------------- | :-------- |
+| `ISO3_CODE`       | Three-letter ISO 3166-1 alpha-3 country code | [IOTC Reference Data (2026)](https://data.iotc.org/reference/latest/domain/admin/#Entities) | 
+| `NAME_EN`         | Official name of the Contracting Party, Cooperating Non-Contracting Party, or Fishing Entity in English | [IOTC Reference Data (2026)](https://data.iotc.org/reference/latest/domain/admin/#Entities) |
+| `NAME_FR`         | Official name of the Contracting Party, Cooperating Non-Contracting Party, or Fishing Entity in French | [IOTC Reference Data (2026))](https://data.iotc.org/reference/latest/domain/admin/#Entities) |
+| `STATUS_CODE`     | IOTC membership status code: `CP` (Contracting Party), `CNCP` (Cooperating Non-Contracting Party), or `FE` (Fishing Entity) | [IOTC Reference Data (2026)](https://data.iotc.org/reference/latest/domain/admin/#CPCs) |
+| `STATUS`          | Descriptive label corresponding to `STATUS_CODE` (e.g. *Contracting Party*, *Cooperating Non-Contracting Party*, *Fishing Entity*) | [IOTC Reference Data (2026)](https://data.iotc.org/reference/latest/domain/admin/#CPCs) |
+| `IS_DEVELOPING`   | Indicator of developing country status* according to [United Nations classification (`TRUE` / `FALSE`) | [UN (2020)](https://www.un.org/development/desa/dpad/wp-content/uploads/sites/45/WESP2020_Annex.pdf) |
+| `IS_LDC`          | Indicator of Least Developed Country (LDC) status according to United Nations classification (`TRUE` / `FALSE`) | [UN (2026)](https://unstats.un.org/unsd/methodology/m49/#ldc) |
+| `IS_SIDS`         | Indicator of Small Island Developing State (SIDS) status according to United Nations classification (`TRUE` / `FALSE`) | [UN (2026)](https://unstats.un.org/unsd/methodology/m49/#sids) |
+| `IS_COASTAL`      | Indicator of coastal State status within the IOTC Area of Competence (`TRUE` / `FALSE`) | [Flanders Marine Institute (2026)](https://www.marineregions.org/) |
+| `NJA_IO_SIZE`     | Surface area (in square kilometres) of the NJA within the Indian Ocean (see [NJA section](#njas) for details) | [Flanders Marine Institute (2026)](https://www.marineregions.org/) |
 
--   A `COASTAL_STATE_SOCIO_ECONOMIC` worksheet that lists all IOTC CPC Coastal States, along with their development status (sourced from [this document](https://www.un.org/development/desa/dpad/wp-content/uploads/sites/45/WESP2020_Annex.pdf)). It also includes a set of socio-economic indicators addressing the requirements of both *Option 1* and *Option 2* in [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E) para. 6.6(1)(b). It is important to note that the indicators required for *Option 1* are not yet available to the IOTC Secretariat. 
+*Seychelles is classified as a coastal developing country within the IOTC, consistent with its status as a SIDS recognised by the United Nations (UN). Although Seychelles has a high level of human development and income per capita, it is not classified as a developed country in the UN system and remains eligible for developing-country and SIDS-specific provisions under IOTC frameworks.
 
-    -   CODE: Mnemonic code (generally, the ISO3 code of the country)
-    -   NAME_EN: Official English name
-    -   NAME_FR: Official French name
-    -   DEVELOPMENT_STATUS: Least developed (LD), developing (DG), developed (DE)
-    -   PER_CAPITA_FISH_CONSUMPTION_KG: Per capita fish consumption (kg / person / year) [*Option 1*]
-    -   CUV_INDEX: Commonwealth Universal Vulnerability index [*Option 1*]
-    -   PROP_WORKERS_EMPLOYED_SSF: Contribution (%) of fish workers employed in small-scale and artisanal fisheries [*Option 1*]
-    -   PROP_FISHERIES_CONTRIBUTION_GDP: Contribution (%) of fisheries to GDP [*Option 1*]
-    -   PROP_EXPORT_VALUE_FISHERY: Contribution (%) of fisheries exports to total export value [*Option 1*]
-    -   HDI_STATUS: Human Development Index status [*Option 2*]
-    -   GNI_STATUS: Gross National Income Status [*Option 2*]
+### Historical Catches {#catch}
 
-The HDI and GNI indicators required for *Option 2* have been sourced from the [UNDP](https://hdr.undp.org/data-center/human-development-index#/indicies/HDI) and [World Bank](https://datahelpdesk.worldbank.org/knowledgebase/articles/906519-world-bank-country-and-lending-group) websites, respectively. The HDI for the EU was averaged using data from this [source](https://www.theglobaleconomy.com/rankings/human_development/European-union/). In absence of HDI data for Somalia, the lowest value in the dataset, 0.446 (reported for Mozambique), was used.
+This information is essential for calculating the third component (*catch-based*) of the allocation criteria and can be downloaded from [`inputs/data/HISTORICAL_CATCH_ESTIMATES.csv`](./HISTORICAL_CATCH_ESTIMATES.csv). The file can be opened as a spreadsheet using MS Excel, LibreOffice Calc, Google Sheets, or any text editor.
 
-## Assumptions
+The catch input file used by the TCAC application contains aggregated catch estimates by year, flag, fleet, fishery, area, and species. The definitions of the fields included in this file are provided below.
 
-### CPC and Coastal State Configuration
+| Field name           | Description |
+|:------- | :-------------------------- |
+| `YEAR` | Gregorian calendar year of the fishing activities |
+| `ENTITY_CODE` | Code identifying the entity, i.e., [CPC](https://data.iotc.org/reference/latest/domain/admin/#CPCs) or the fishing fleet of Taiwan,China (`TWN`) |
+| `FISHERY_TYPE_CODE` | Code identifying the scale of the fishing operations, separating fisheries composed of vessels less than 24 m and operating exclusively in NJAs (`ART` = Artisanal/coastal) and surface and longline fisheries that may operate on the High Seas (`IND` = Industrial) |
+| `GEAR_CODE` | Code identifying the [fishing gear](https://data.iotc.org/reference/latest/domain/fisheries/#Gears) used, as defined in the IOTC reference list of fishing gears |
+| `SCHOOL_TYPE_CODE` |Code identifying the [type of tuna school association](https://data.iotc.org/reference/latest/domain/legacy/#schoolTypes): `LS` = school associated with a drifting floating object, natural or artificial; `FS` = free-swimming school; `UNCL` = unclassified |
+| `ASSIGNED_AREA` | Area where the catch is assigned. Values include Areas Beyond National Jurisdiction (`HIGH_SEAS`) and NJAs, where the last three characters correspond to the relevant [country code](https://data.iotc.org/reference/latest/domain/admin/#countries), e.g. `NJA_SYC` for the NJA of Seychelles. `NJA_OTH` represents all non-IOTC coastal States of the Indian Ocean |
+| `SPECIES_CODE` | ASFIS alpha-3 code identifying the [species](https://data.iotc.org/reference/latest/domain/biology/#IOTCspecies): `ALB` (albacore), `BET` (bigeye tuna), `SKJ` (skipjack tuna), `SWO` (swordfish), `YFT` (yellowfin tuna) |
+| `CATCH_MT` | Amount of fish caught and retained in live-weight equivalent, expressed in metric tonnes |
 
-For the purposes of the simulations, the following assumptions were made:
+Historical catch data are available for all years from 1950 to 2024 stratified by year, fleet, gear, school type, species, and assigned area.
 
--   The NJAs of the IOTC CPCs were sourced from the Flanders Marine Institute [*maritime boundaries* geodatabase](https://doi.org/10.14284/628). They are available for download from the [IOTC Reference Data Catalogue](https://data.iotc.org/reference/latest/domain/admin/shapefiles/IO_NJA_AREAS_1.0.0_SHP.zip)
-
--   For historical reasons, the waters of the Chagos Archipelago were considered to be under the sovereignty of the United Kingdom of Great Britain and Northern Ireland (`GBR`)
-
--   In addition to having an NJA in the Indian Ocean, France (OT) (`FRAT`) shall be considered de facto as an IOTC Coastal State (see Appendix 4, para. 2 of the [Report of the 12th Technical Committee on Allocation Criteria](https://iotc.org/documents/TCAC/12/RE))
-
--   The European Union / REIO (`EUR`) has an NJA in the Indian Ocean (i.e., the NJA around Réunion and Mayotte) and, for this reason, "*should benefit from an allocation that relates to the size of the EEZ of its outermost territories in the IOTC Area of Competence.*" (see Appendix 4, para. 2 of the [Report of the 12th Technical Committee on Allocation Criteria](https://iotc.org/documents/TCAC/12/RE))
-
--   Despite the above, `EUR` "(...) *would not be seeking the application of paragraph 6.6(1)(b) of the coastal state allocation criteria (...)*" (see Appendix 4, para. 2 of [Report of the 12th Technical Committee on Allocation Criteria](https://iotc.org/documents/TCAC/12/RE))
-
--   There are different views as whether `EUR` "(...) *should benefit from the portion of the coastal state allocation criteria related to aspirations under paragraph 6.6(1)(a) (...)*" (see Appendix 4, para. 2 of the [Report of the 12th Technical Committee on Allocation Criteria](https://iotc.org/documents/TCAC/12/RE)). In their current configurations, the simulations considered `EUR` as benefiting from the portion of allocation specified by paragraph 6.6(1)(a) of [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E)
-
--   Following TCAC12, in consultations between the IOTC Secretariat and the United Kingdom of Great Britain and Northern Ireland (`GBR`), `GBR` informed the Secretariat that para 6.6.(1)(b) would not apply to their case, but that paragraph 6.6.(1)(a) and (c) would. This understanding has been incorporated into the current configuration of the TCAC simulations conducted by the Secretariat.
-
-### Historical Catches
-
-This information is essential for calculating the third component (*catch-based*) of the allocation criteria and can be downloaded from [`cfg/HISTORICAL_CATCH_ESTIMATES.csv`](./HISTORICAL_CATCH_ESTIMATES.csv). The file can be opened as a spreadsheet using MS Excel, LibreOffice Calc, Google Sheets, or any text editor.
-
-The fields included in the catch dataset include:  
-
--   YEAR: Year of fishing
--   FLAG_CODE: Code for [flag States](https://data.iotc.org/reference/latest/domain/admin/#countries)
--   FLEET_CODE: Code for [fishing fleets](https://data.iotc.org/reference/latest/domain/admin/#fleets)
--   FISHERY_TYPE: code for main fishery categories (ART = Artisanal, IND = Industrial)
--   FISHERY_CODE: Code for [fishing gears](https://data.iotc.org/reference/latest/domain/fisheries/#Gears) 
--   SCHOOL_TYPE_CODE: Code for [types of tuna school association](https://data.iotc.org/reference/latest/domain/legacy/#schoolTypes) (LS = School associated with a drifting floating object, natural or artificial; FS = Free-swimming school)
--   ASSIGNED_AREA; Areas Beyond National Jurisdiction (HIGH_SEAS) or National Jurisdiction Areas (NJA) where the last three characters correspond to the [country](https://data.iotc.org/reference/latest/domain/admin/#countries) (e.g., NJA_COM = National Jurisdiction Area of Comoros)
--   SPECIES_CODE: ALB = albacore; BET = bigeye tuna; SKJ = skipjack tuna; SWO = swordfish; YFT = yellowfin tuna
--   CATCH_MT: estimated catch in metric tonnes.   
-
-Historical catch data are available for all years from 1950 to 2021 stratified by year, fleet, gear, school type, species, and assigned area.
-
-It is important to note that the need to apportion historical catches by flag or fleet according to the area of operation (high seas versus the NJA of any given coastal state) requires the IOTC Secretariat to estimate this information. This estimation process was presented at the last TCAC meeting in October 2023 and was endorsed by the meeting participants (see [IOTC-2023-TCAC12-INF02](https://iotc.org/documents/TCAC/12/INF02)).
+It is important to note that the need to apportion historical catches by flag or fleet according to the area of operation (high seas versus the NJA of any given coastal State) requires the IOTC Secretariat to estimate this information. This estimation process was presented at the TCAC meeting in October 2023 (see [IOTC-2023-TCAC12-INF02](https://iotc.org/documents/TCAC/12/INF02)).
 
 For this reason, the historical catch series with a full area breakdown is only available for the five major IOTC species (albacore, bigeye tuna, skipjack tuna, swordfish, and yellowfin tuna). These data have been estimated using the regular grid versus the NJA overlapping area fraction to assign catches estimated for the former to the area that falls within a given NJA.
 
-To calculate the catch-based allocation weight for each CPC, information on historical catches is averaged across a selectable time frame using two possible approaches that require computation:
+### National Jurisdiction Areas {#njas}
 
--   the annual average across the entire time period
--   the average of the best "*n*" years across the time period
+#### Source
 
-In the latter case, the *best years* are defined as those with the highest catches during the selected period for a given fleet and species.
+The National Jurisdiction Areas (NJAs) of the IOTC CPCs were sourced from the Flanders Marine Institute (VLIZ) *maritime boundaries* geodatabase (<https://doi.org/10.14284/628>). The corresponding spatial layers are available for download from the IOTC Reference Data Catalogue (see Section [Indian Ocean National Jurisdiction Areas](https://data.iotc.org/reference/latest/domain/admin/#IOareasNJACS)).
 
-# User Interface
+#### Assumptions
 
-The simulation is presented through an interactive R Shiny [web application](https://data.iotc.org/tcac13/simulations/) that is password-protected.
+For the purposes of allocating catches to NJAs within the simulations implemented in the TCAC application, the following assumptions were applied:
 
-The main screen features two tabbed panels: one to display the [reference data](#referenceData) used by the simulation, and [another](#simulationResults) to present users with the [configuration parameters](#inputConfig) and the [simulation outputs](#outputs).
+i. For historical reasons, the waters of the Chagos Archipelago, considered here as part of the NJAs of Mauritius, were treated as being under the sovereignty of the United Kingdom of Great Britain and Northern Ireland (`GBR`), under the administration of the British Indian Ocean Territory prior to 2021. A full Marine Protected Area has been in place since April 2010 and, consequently, no official fisheries catches have been reported from these waters since that date, except for a coastal handline fishery;
 
-![An overview of the web application user interface](assets/images/app_UI_all_rev.png)
+ii. Disputed areas involving Mayotte, Tromelin, and the Glorioso Islands (Îles Glorieuses) were treated as follows: waters associated with Mayotte (France) with Comoros (`FRA_COM_MYT`) were attributed to France (`FRA`), while waters associated with Madagascar with France (`MDG_FRA`) and France with Madagascar and Mauritius (`FRA_MDG_MUS`) were attributed to the France Overseas Territories (`ATF`). This assumption was adopted to simplify the allocation procedure and to ensure internal consistency with long-standing IOTC statistical practices, whereby catches from these areas have historically been attributed accordingly in national submissions and Secretariat compilations. This treatment is applied solely for analytical purposes within the TCAC application and does not prejudice the positions of CPCs with respect to sovereignty or maritime claims;
 
-<br/>
+iii. Although Mayotte became an overseas department of France in 2011, catches associated with Mayotte are attributed to France in IOTC datasets from 2014 onwards, corresponding to the point at which reporting practices and fleet attribution became consistently aligned with French national submissions. Accordingly, catches taken in the waters of Mayotte during the period 1995–2013 were allocated to the France Overseas Territories (`ATF`), and to France (`FRA`) thereafter;
 
-## Reference Data Panel
+iv. The NJA of the European Union (`EUR`) comprises the waters associated with the two French overseas departments of Réunion Island and Mayotte;
 
-This panel provides access to three main categories of configuration datasets which are presented as sortable, filterable tables, and provide an interactive version of the tabular configuration files included with the application:
+v. The NJA for the Islamic Republic of Iran (`IRN`) was defined as the combination of the Iranian NJA (`IRN`) and the maritime areas subject to dispute with the United Arab Emirates (`ARE_IRN`) and Iraq (`IRQ_IRN`);
 
--   ***CPC summary***, with information on each IOTC entity (see fields of `CPC` worksheet described in the Section [Process Configuration](#configuration)
+vi. The NJA for Sudan (SDN) was defined as the combination of the Sudanese NJA (`SDN`) and the maritime area subject to dispute with Egypt (`SDN_EGY`);
 
-    ![CPC summary data panel](assets/images/app_ref_data_cpc_summary_rev.png)
+vii. Catches estimated to have been taken in the NJAs of non-IOTC CPCs -- United Arab Emirates (`ARE`), Bahrain (`BHR`), Djibouti (`DJI`), Egypt (`EGY`), Eritrea (`ERI`), Iraq (`IRQ`), Jordan (`JOR`), Kuwait (`KWT`), Myanmar (`MMR`), Qatar (`QAT`), Saudi Arabia (`SAU`), and Timor-Leste (`TLS`), including disputed areas (Eritrea with Djibouti (`ERI_DJI`) and Qatar with Saudi Arabia and the United Arab Emirates (`QAT_SAU_ARE`) -- were aggregated under the assigned area `OTH`;
 
-    <br/>
+viii. Catch data reported for incorrect spatial grids (i.e. located outside the Indian Ocean) could not be assigned to any NJA or to the high seas and were therefore excluded from the analysis.
 
--   ***Coastal states summary***, with information on each Coastal State (see fields of  `COASTAL_STATE_SOCIO_ECONOMIC` worksheet described in Section [Process Configuration](#configuration))
+#### Surface Areas
 
-    ![Coastal states summary data panel](assets/images/app_ref_data_coastal_states_summary.png)
+Surface areas of NJAs were computed using the _st_area()_ function in R after projecting geometries to the Eckert IV equal-area projection (Eck4). Resulting area estimates were expressed in square kilometres, and geometries were subsequently re-projected to WGS 84 (EPSG:4326) for storage and visualisation.
 
-    <br/>
+## Allocation Computation
 
--   ***Historical catches***, with estimated catches for the five major IOTC species stratified by year, fleet, gear, school type, species, and assigned area (see fields described in the Section [Historical Catches](#historicalCatch))
+All weights are expressed in percentage (%) of the total value of the Total Allowable Catch (TAC) expressed in metric tonnes (t). 
 
-    ![Historical catch data panel](assets/images/app_ref_data_historical_catches_rev.png)
+### Baseline Weight
 
-## Simulation Panel
+The **baseline weight** (%) represents the portion of the TAC that is allocated evenly among the 29 IOTC Contracting Parties (CPs): Australia (`AUS`), Bangladesh (`BGD`), China (`CHN`), Comoros (`COM`), European Union (`EUR`), France Overseas Territories (`ATF`), India (`IND`), Indonesia (`IDN`), I.R. Iran (`IRN`), Japan (`JPN`), Kenya (`KEN`), Madagascar (`MDG`), Malaysia (`MYS`), Maldives (`MDV`), Mauritius (`MUS`), Mozambique (`MOZ`), Oman (`OMN`), Pakistan (`PAK`), Philippines (`PHL`), Republic of Korea (`KOR`), Seychelles (`SYC`), Somalia (`SOM`), South Africa (`ZAF`), Sri Lanka (`LKA`), Sudan (`SDN`), Thailand (`THA`), United Kingdom of Great Britain and Northern Ireland (`GBR`), United Republic of Tanzania (`TZA`), and Yemen (`YEM`).
 
-This panel provides access to the configuration [parameters](#inputConfig) (left panel) and the simulation [results](#outputs) (right panel), projecting up to 10 years into the future to account for the transitional period in the allocation of catches from flag States to Coastal States, where applicable.
+_Example_. If the baseline weight is set to 10%, each contractin party receives an equal share of the TAC equal to 10% ÷ 29 ≈ 0.345%. For a TAC of 421,000 t (the default case for yellowfin tuna), this corresponds to approximately 1,452 t per contracting party.
 
-### Configuration Parameters
+### Developing States Weight
 
--   The ***Species*** subject to the simulation, which affects the catch records to be used to calculate the *catch-based* allocation component
+The **developing states weight** (%) represents the portion of the TAC that is allocated among the 21 IOTC developing coastal States: Bangladesh (`BGD`), Comoros (`COM`), India (`IND`), Indonesia (`IDN`), I.R. Iran (`IRN`), Kenya (`KEN`), Madagascar (`MDG`), Malaysia (`MYS`), Maldives (`MDV`), Mauritius (`MUS`), Mozambique (`MOZ`), Oman (`OMN`), Pakistan (`PAK`), Seychelles (`SYC`), Somalia (`SOM`), South Africa (`ZAF`), Sri Lanka (`LKA`), Sudan (`SDN`), Thailand (`THA`), United Republic of Tanzania (`TZA`), and Yemen (`YEM`).
 
--   The ***Target TAC*** in metric tonnes (t), which affects the estimated annual catches for each CPC and year
+This allocation component comprises three sub-components: (i) an equal-weight component, (ii) a least-developed country (LDC) component, and (iii) a small island developing States (SIDS) component. The relative contribution of each sub-component can be adjusted by the user to reflect different weighting schemes for developing coastal States according to their status.
 
-    ![Species and TAC configuration controls](assets/images/app_config_species_tac_rev.png)
+#### Equal Weight
 
-    <br/>
+The **equal-weight** (%) sub-component of the developing states allocation represents the portion of the TAC that is allocated evenly among the 21 IOTC developing coastal States: Bangladesh (`BGD`), Comoros (`COM`), India (`IND`), Indonesia (`IDN`), I.R. Iran (`IRN`), Kenya (`KEN`), Madagascar (`MDG`), Malaysia (`MYS`), Maldives (`MDV`), Mauritius (`MUS`), Mozambique (`MOZ`), Oman (`OMN`), Pakistan (`PAK`), Seychelles (`SYC`), Somalia (`SOM`), South Africa (`ZAF`), Sri Lanka (`LKA`), Sudan (`SDN`), Thailand (`THA`), United Republic of Tanzania (`TZA`), and Yemen (`YEM`).
 
--   The main component weights
+_Example_. If the developing states weight is set to 10% and the equal weight is set to 35%, each developing coastal State receives an equal share of the TAC equal to 10% x 35% ÷ 21 ≈ 0.17%. For a TAC of 421,000 t (the default case for yellowfin tuna), this corresponds to approximately 702 t per developing coastal State.
 
-    ![Main component weights configuration controls](assets/images/app_config_main_components_wgt_rev.png)
+#### Least-Developed Country Weight
 
-    <br/>
+The **least-developed country weight** (%) sub-component of the developing states allocation represents the portion of the TAC that is allocated evenly among the 8 IOTC least-developed coastal states: Bangladesh (`BGD`), Comoros (`COM`), Madagascar (`MDG`), Mozambique (`MOZ`), Somalia (`SOM`), Sudan (`SDN`), United Republic of Tanzania (`TZA`), and Yemen (`YEM`).
 
-    1.  The ***Baseline weight*** does not require any additional configuration, as it assigns an equal portion of the quota to each CPC (see para. 6.5 of [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E))
+_Example_. If the developing states weight is set to 10% and the least-developed country weight is set to 47.5%, each least-developed coastal state receives an equal share of the TAC equal to 10% x 47.5% ÷ 8 ≈ 0.59%. For a TAC of 421,000 t (the default case for yellowfin tuna), this corresponds to approximately 2,500 t per least-developed coastal state.
 
-        ![Baseline weights configuration controls](assets/images/app_config_baseline_components_wgt_rev.png)
+#### Small Island Developing State Weight
 
-        <br/>
+The **small island developing state weight** (%) sub-component of the developing states allocation represents the portion of the TAC that is allocated evenly among the 4 IOTC SIDS: Comoros (`COM`), Maldives (`MDV`), Mauritius (`MUS`), and Seychelles (`SYC`).
 
-    2.  The ***Coastal state weight*** applies to all IOTC CPCs with a NJA in the IOTC Area of Competence (see para. 6.6(1) of [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E))
+_Example_. If the developing states weight is set to 10% and the small island developing state weight is set to 20%, each SIDS receives an equal share of the TAC equal to 10% x 20% ÷ 4 ≈ 0.5%. For a TAC of 421,000 t (the default case for yellowfin tuna), this corresponds to approximately 2,105 t per SIDS.
 
-        ![Coastal state sub-component weights configuration controls](assets/images/app_config_coastal_state_components_wgt_rev.png)
+### Catch-Based Weight
 
-        <br/>
+The **catch-based weight** (%) represents the portion of the TAC allocated to each CP and to Taiwan,China, in proportion to its contribution to the total catch of the species by all IOTC Contracting Parties over a selected historical reference period.
 
-        This component weight is further broken down into:
+To calculate this allocation component, historical catch data are averaged over a user-selected reference period using one of two alternative approaches:
 
-        1.  ***Equal weight*** (see para. 6.6(1)(a) of [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E))
+-   the annual average over the entire reference period; or
+-   the average of the best _n_ years within the reference period.
 
-        2.  ***Socio-economic weight*** (see para. 6.6(1)(b) of [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E))
+Under the latter approach, the _best years_ are defined as those with the highest reported catches for a given CPC and species during the selected reference period.
 
-            Its sub-components can be selected from two possible options, which consider different aspects of the social and economic environment and status of all IOTC CPCs:
+In a second step, a period of up to 10 years is considered to implement the reallocation of catches taken by foreign fleets in coastal state NJAs. Each coefficient represents the percentage of those catches to be attributed to the coastal state for that year.
 
-            -   **Option #1**: *Vulnerability + Priority sectors + Disproportionate burden* (see para. 6.6(1)(a)[OPTION 1] of [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E))
+_Example_. The average annual catch of yellowfin tuna (YFT) by the IOTC CPs on the high seas and in the IOTC NJAs was estimated at approximately 366,000 t during the period 2000–2016. Over this period, Comoros (`COM`) contributed a mean annual catch of around 2,500 t, corresponding to a share of 2,500 ÷ 365,000 ≈ 0.69% of the total catch. For a TAC of 421,000 t (the default value for yellowfin tuna), if the catch-based weight is set to 100% and the reference period 2000–2016 is selected, this corresponds to an allocation of approximately 2,692 t for Comoros.
 
-                <br/>
-
-                ![Socio-economic sub-component weights configuration controls (Option #1)](assets/images/app_config_socio_economic_wgts_option1_rev.png)
-
-                <br/>
-
-                This option includes three distinct sub-component weights to account for:
-
-                1.  the **Vulnerability** of the CPC (see para. 6.6(1)(a)[OPTION 1 (i)] [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E)), whose main components (equally weighted at 50% each) are:
-                    -   the **Per capita fish consumption**
-                    -   the **Commonwealth Universal Vulnerability index** (CUVI)
-                2.  the **priority sectors** of the CPC (see para. 6.6(1)(a)[OPTION 1 (ii)] of [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E)), whose main components (equally weighted at 50% each) are:
-                    -   the **Proportion of fish workers employed in small-scale and artisanal fisheries**
-                    -   the **SIDS** status (yes / no)
-                3.  the **Disproportionate burden** on developing CPCs (see para. 6.6(1)(a)[OPTION 1 (iii) of [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E)], whose main components (equally weighted at 50% each) are:
-                    -   the **Contribution of the whole fisheries sector to the GDP**
-                    -   the **Proportion of total export value made up of fisheries export**
-
-                <br/>
-
-            -   **Option #2**: *HDI + GNI + SIDS* (see para. 6.6(1)(a)[OPTION 2] [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E))
-
-                <br/>
-
-                ![Socio-economic sub-component weights configuration controls (Option #2)](assets/images/app_config_socio_economic_wgts_option2_rev.png)
-
-                <br/>
-
-                This option includes three distinct sub-component weights to account for:
-
-                1.  The **Human Development Index** (HDI) status
-
-                2.  The **Gross National Income** (GNI) status
-
-                3.  The **Small Island Developing State** (SIDS) status
-
-        3.  ***EEZ weight*** (see para. 6.6(1)(c) of [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E)) to replace the lack of indicators based on spatial stock abundance.
-
-    3.  The ***Catch-based weight*** reflects the requirement that CPCs are eligible to receive allocations based on their historical catches for each stock. The criteria used to consider historical catches in determining this weight are outlined in para. 8 of [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E), and the simulation tool allows for selection and configuration of these criteria:
-
-        1.  The ***Historical catch interval*** influences the calculation of average catches (see para. 6.8(1)(a) of [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E))
-
-            ![Historical catch interval configuration controls](assets/images/app_config_catch_based_config_period_rev.png)
-
-            <br/>
-
-        2.  The type of ***Historical catch average*** to be considered (see para. 6.8(1)(a) of [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E)) must be selected from the following options:
-
-            -   **Selected period** for calculating the average catch by CPC across the entire historical catch interval
-
-                ![Historical catch average configuration controls (selected period)](assets/images/app_config_catch_based_config_period_type_all_rev.png)
-
-                <br/>
-
-            -   **Best "n" years** for calculating the average catch by CPC over the top 'n' years (based on catches) identified within the historical catch interval, with ***Number of years*** as a selectable parameter
-
-                ![Historical catch average configuration controls (best 'n' years)](assets/images/app_config_catch_based_config_period_type_best_rev.png)
-
-            <br/>
-
-        3.  A stepwise approach (see paras. 6.8(2) and 6.12 of [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E)) is employed to implement the NJA attribution to coastal and flag states over a period of 6 or 10 years. This approach presents a species-independent set of 10 coefficients that determine the fraction of catches from a flag state estimated to have been taken into the NJA of a CPC, which shall therefore be assigned to the coastal state owning the NJA. Each coefficient represents the percentage of those catches to be attributed to the coastal state for that year. In theory, these coefficients should represent a progression from a starting value of less than 100% to 100% (indicating that all catches are attributed to the coastal state); however, nothing prevents users from introducing any sequence they prefer for these coefficients.
-
-            ![Historical catch transitional attribution controls](assets/images/app_config_catch_based_config_transition_rev.png){style="border: 1px solid black;"}
-
-            <br/>
-
-        4.  The ***High-seas only catches*** parameter of the simulation tool aims to facilitate the exploration of simulations for high seas-only catches, as the high seas are less affected by data limitations, do not require any assumptions on catch attribution (i.e., existence of fishing agreements), and exclude artisanal fisheries that occur solely within waters under national jurisdiction.
-
-            ![Simulating high seas-only catches](assets/images/app_config_high_seas_only.png)
-
-
-### Outputs
-
-The outputs of the simulation are presented with two tabs: (i) Tables and (ii) Reports.
-
-![](assets/images/app_results.png)
-
-The tab **Tables** provides the final allocation table with CPCs as rows and allocation years as columns (from 1 to indicate the initial year, up to a maximum of 10). Each cell contains the quota assigned to the CPC for a specific year. Depending on the choice of the ***Output unit*** parameter, this quota can be expressed either as a fraction (% of the TAC for a given species) or as an absolute value in tonnes. The absolute value is computed from the output quotas (in %) and the TAC (in metric tonnes) set by the user.
-
-![](assets/images/app_output_unit.png)
-
-By default, each cell has a background colour whose intensity is directly proportional to the value within the cell, relative to other cells or values within the same year, or across the entire table.
-
-The visual representation of the relative cell value can be changed via the ***Heatmap style*** parameter.
-
-![](assets/images/app_output_heatmap_style.png)
-
-This presents two options:
-
--   **Background colour** (default) to represent the (relative) cell value through the intensity of the background
-
-    ![Output table using the 'background colour' heatmap option](assets/images/app_output_heatmap_bg.png)
-
-    <br/>
-
--   **Bar** to represent the (relative) cell value through a horizontal bar
-
-    ![Output table using the 'bar' heatmap option](assets/images/app_output_heatmap_bar.png)
-
-    <br/>
-
-The context in which the relative cell value is calculated can also be modified using the ***Heatmap type*** parameter.
-
-![](assets/images/app_output_heatmap_type.png)
-
-This presents two options:
-
--   **Global** (default), to calculate each cell's relative value with respect to all values in the table, or
-
--   **By year** to calculate each cell's relative value with respect to all values estimated for the same year
-
-The simulation results can be downloaded as an Excel file through the ***Download*** button. The name of the file corresponds to the serialised date (including the time) at which the download request was issued (e.g., `TCAC13_simulation_2024_02_01_150856.xlsx`), while its content includes the following five worksheets:
-
-1.  `CPC_REFERENCES` containing the CPC configuration parameters as in [`cfg/CPC_CONFIGURATIONS.xlsx`](./CPC_CONFIGURATIONS.xlsx)
-
-2.  `COASTAL_STATE_REFERENCES` containing the coastal states configuration parameters as in [`cfg/CPC_CONFIGURATIONS.xlsx`](./CPC_CONFIGURATIONS.xlsx)
-
-3.  `HISTORICAL_CATCHES` containing the historical catches for the selected species as extracted from [`cfg/HISTORICAL_CATCH_ESTIMATES.csv`](./HISTORICAL_CATCH_ESTIMATES.csv)
-
-4.  `SIMULATION_CONFIGURATION` containing all the configuration parameters set by the users for the specific simulation round
-
-5.  `OUTPUT_QUOTAS` containing the outputs of the simulation expressed either as fraction of the annual TAC or as catches in tons by CPC and simulation year (depending on the chosen value of the **output unit** parameter)
-
-### Reports
-
-The **Reports** tab provides access to reports that include the configuration parameters and output tables for all components (baseline, coastal State, and catch-based) and their sub-components. These reports downloadable either for all CPCs (Full report) or for a selected entity.
-
-![](assets/images/app_results_reports.png)
-
-
-
-
+During the same period, Comorian fisheries did not operate outside national jurisdiction, while an average of approximately 2,350 t of yellowfin tuna per year was taken by foreign fleets within the NJAs of Comoros under licensing agreements. Consequently, if the coastal State NJA attribution weight is set to 100%, Comoros would receive a total allocation of approximately 2,692 + 2,350 ≈ 5,040 t.

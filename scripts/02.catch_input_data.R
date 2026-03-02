@@ -25,13 +25,12 @@ read_catch_data = function(file = "./inputs/data/HISTORICAL_CATCH_ESTIMATES.csv"
   # For the time being we consider the Chagos archipelago to still be under sovereignty of GBR
   POSTPROCESSED_CATCH_DATA[ASSIGNED_AREA == "NJA_CHAGOS", ASSIGNED_AREA := "NJA_GBR"]
   
-  # We need to decide if we want to keep only catches from current CPCs for the catch-based allocation part
-  # In that case:
-  POSTPROCESSED_CATCH_DATA = POSTPROCESSED_CATCH_DATA[FLEET_CODE %in% CPC_data[STATUS_CODE %in% c("CP", "FE")]$CODE]
+  # Keep only catches from current CPCs for the catch-based allocation part
+  POSTPROCESSED_CATCH_DATA = POSTPROCESSED_CATCH_DATA[ENTITY_CODE %in% CPC_data[STATUS_CODE %in% c("CP", "FE")]$CODE]
   
-  # We need to decide if we want to consider only catches in the high seas or within CPC NJAs
-  # In that case:
-  POSTPROCESSED_CATCH_DATA = POSTPROCESSED_CATCH_DATA[ASSIGNED_AREA == "HIGH_SEAS" | ASSIGNED_AREA %in% paste0("NJA_", CPC_data[IS_COASTAL == TRUE]$CODE)]
+  # Consider only catches in the high seas and within CPC NJAs (i.e., remove CPC catches from non-IOTC members)
+  #POSTPROCESSED_CATCH_DATA = POSTPROCESSED_CATCH_DATA[ASSIGNED_AREA == "HIGH_SEAS" | ASSIGNED_AREA %in% paste0("NJA_", CPC_data[IS_COASTAL == TRUE]$CODE)]
+  POSTPROCESSED_CATCH_DATA = POSTPROCESSED_CATCH_DATA[ASSIGNED_AREA == "HIGH_SEAS" | gsub("NJA_", "", ASSIGNED_AREA) %in% CPC_data$CODE]
   
   return(POSTPROCESSED_CATCH_DATA)
 }
@@ -44,18 +43,18 @@ subset_and_postprocess_catch_data = function(catch_data,
 # onlyHS: all catches from foreign fleets in NJAs will be set to 0
   
     catch_data = catch_data[SPECIES_CODE == species_code & YEAR %in% years, .(CATCH_MT = sum(CATCH_MT, na.rm = TRUE)),
-                          keyby = .(FLEET_CODE, YEAR, ASSIGNED_AREA)]
+                          keyby = .(ENTITY_CODE, YEAR, ASSIGNED_AREA)]
   
-  catch_data_NJA       = catch_data[ASSIGNED_AREA == paste0("NJA_", FLEET_CODE),                                .(NJA_CATCH_MT     = sum(CATCH_MT, na.rm = TRUE)), keyby = .(CPC_CODE = FLEET_CODE, YEAR)]
-  catch_data_HS        = catch_data[ASSIGNED_AREA == "HIGH_SEAS",                                               .(HS_CATCH_MT      = sum(CATCH_MT, na.rm = TRUE)), keyby = .(CPC_CODE = FLEET_CODE, YEAR)]
-  catch_data_other_NJA = catch_data[ASSIGNED_AREA != paste0("NJA_", FLEET_CODE) & ASSIGNED_AREA != "HIGH_SEAS", .(ABNJ_CATCH_MT    = sum(CATCH_MT, na.rm = TRUE)), keyby = .(CPC_CODE = FLEET_CODE, YEAR)]
-  catch_data_foreign   = catch_data[ASSIGNED_AREA != paste0("NJA_", FLEET_CODE) & ASSIGNED_AREA != "HIGH_SEAS", .(FOREIGN_CATCH_MT = sum(CATCH_MT, na.rm = TRUE)), keyby = .(CPC_CODE = str_sub(ASSIGNED_AREA, 5), YEAR)]
+  catch_data_NJA       = catch_data[ASSIGNED_AREA == paste0("NJA_", ENTITY_CODE),                                .(NJA_CATCH_MT     = sum(CATCH_MT, na.rm = TRUE)), keyby = .(ENTITY_CODE = ENTITY_CODE, YEAR)]
+  catch_data_HS        = catch_data[ASSIGNED_AREA == "HIGH_SEAS",                                               .(HS_CATCH_MT      = sum(CATCH_MT, na.rm = TRUE)), keyby = .(ENTITY_CODE = ENTITY_CODE, YEAR)]
+  catch_data_other_NJA = catch_data[ASSIGNED_AREA != paste0("NJA_", ENTITY_CODE) & ASSIGNED_AREA != "HIGH_SEAS", .(ABNJ_CATCH_MT    = sum(CATCH_MT, na.rm = TRUE)), keyby = .(ENTITY_CODE = ENTITY_CODE, YEAR)]
+  catch_data_foreign   = catch_data[ASSIGNED_AREA != paste0("NJA_", ENTITY_CODE) & ASSIGNED_AREA != "HIGH_SEAS", .(FOREIGN_CATCH_MT = sum(CATCH_MT, na.rm = TRUE)), keyby = .(ENTITY_CODE = str_sub(ASSIGNED_AREA, 5), YEAR)]
   
   catch_data_all = 
     merge.data.table(
       catch_data_NJA, # CPC catches in their own NJA
       catch_data_HS,  # CPC catches on the high seas
-      by = c("CPC_CODE", "YEAR"),
+      by = c("ENTITY_CODE", "YEAR"),
       all.x = TRUE, all.y = TRUE
     )
   
@@ -63,7 +62,7 @@ subset_and_postprocess_catch_data = function(catch_data,
     merge.data.table(
       catch_data_all,
       catch_data_other_NJA, # CPC catches into foreign NJAs
-      by = c("CPC_CODE", "YEAR"),
+      by = c("ENTITY_CODE", "YEAR"),
       all.x = TRUE, all.y = TRUE
     )
   
@@ -71,7 +70,7 @@ subset_and_postprocess_catch_data = function(catch_data,
     merge.data.table(
       catch_data_all,
       catch_data_foreign,   # Foreign catches in the CPC NJA
-      by = c("CPC_CODE", "YEAR"),
+      by = c("ENTITY_CODE", "YEAR"),
       all.x = TRUE, all.y = TRUE
     )
   
@@ -94,6 +93,6 @@ weight_catch_data = function(catch_data,
                                     HS_CATCH_MT + 
                                     ABNJ_CATCH_MT * ( 1 - coastal_weight) + 
                                     FOREIGN_CATCH_MT * coastal_weight)), 
-               keyby = .(CPC_CODE, YEAR)][CATCH_MT > 0]
+               keyby = .(ENTITY_CODE, YEAR)]
   )
 }

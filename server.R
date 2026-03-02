@@ -48,18 +48,27 @@ server = function(input, output, session) {
             fluidRow(
               column(
                 width = 3,
-                h5("Select a entity"),
+                h5("Select an entity"),
                 uiOutput("ref_cpc_selector")
               ),
               column(
-                width = 3,
-                uiOutput("cpc_map_wrapper")
+                width = 9
+              )
+              
+            ),
+            fluidRow(
+              column(
+                width = 4,
+                uiOutput("ref_cpc_map_wrapper"),
+                uiOutput("ref_cpc_map_disclaimer")
+              ),
+              column(
+                width = 2
               ),
               column(
                 width = 6,
                 uiOutput("ref_cpc_card")
               )
-              
             ),
             hr(),
             fluidRow(
@@ -101,21 +110,41 @@ server = function(input, output, session) {
                               selectInput("species", "Species", width = "100%", choices = AVAILABLE_SPECIES, selected = "YFT")
                        ),
                        column(width = 6,
-                              numericInput("tac", "Target TAC (t)", value = 421000, min = 10000, step = 10000),
+                              numericInput("tac", "Target Total Allowable Catch (TAC; t)", value = 421000, min = 10000, step = 10000),
                        )
                      ),
                      
-                     span(
-                       sliderInput("ba_weight", label = "Baseline weight (%)",
-                                   width = "100%",
-                                   min = 0, max = 100, value = 0, step = .1, animate = FALSE
-                       ) 
+                     fluidRow(
+                       column(width = 9,
+                         sliderInput("ba_weight", label = "Baseline weight (%)",
+                                     width = "100%",
+                                     min = 0, max = 100, value = 0, step = .1, animate = FALSE
+                         )
+                       ),
+                       column(width = 3,
+                         br(),
+                         div(
+                          shiny::numericInput("ba_weight_num", label = NULL, width = "100%",
+                                             min = 0, max = 100, value = 0, step = .1),
+                          style = "margin-top:15px;"
+                         )
+                       )
                      ), 
                      
-                     span(
-                       sliderInput("ds_weight", label = "Developing states weight (%)",
-                                   width = "100%",
-                                   min = 0, max = 100, value = 0, step = .5, animate = FALSE
+                     fluidRow(
+                       column(width = 9,
+                         sliderInput("ds_weight", label = "Developing states weight (%)",
+                                     width = "100%",
+                                     min = 0, max = 100, value = 0, step = .5, animate = FALSE
+                         )
+                       ),
+                       column(width = 3,
+                        br(),
+                        div(
+                          shiny::numericInput("ds_weight_num", label = NULL, width = "100%",
+                                              min = 0, max = 100, value = 0, step = .1),
+                          style = "margin-top:15px;"
+                        )
                        )
                      ),
                      
@@ -185,7 +214,7 @@ server = function(input, output, session) {
                              
                              hr(class = "thin"),
                              
-                             strong("Coastal state EEZ attribution weights (%)"),
+                             strong("Coastal state NJA attribution weights (%)"),
                              
                              hr(),
                              
@@ -224,18 +253,8 @@ server = function(input, output, session) {
                                )
                              ),
                              
-                             hr(class = "thin"),
+                             hr(class = "thin")
                              
-                             strong("High-Seas only catches"),
-                             
-                             hr(),
-                             
-                             fluidRow(
-                               column(
-                                 width = 12,
-                                 checkboxInput("onlyHS", "Focus exclusively on catches estimated to have been taken in Areas Beyond National Jurisdiction (High Seas; HS)", FALSE)
-                               )
-                             ) 
                          )
                        )
                      )
@@ -306,7 +325,7 @@ server = function(input, output, session) {
                        tabPanel(
                          title = "By entity",
                          value = "simu_by_entity",
-                         h5("Select a entity"),
+                         h5("Select an entity"),
                          fluidRow(
                            column(width = 3,
                             uiOutput("report_by_entity_selector")
@@ -356,11 +375,11 @@ server = function(input, output, session) {
   })
   selected_cpc_catches <- reactive({
     req(input$ref_cpc)
-    catch_selected <- ALL_CATCH_DATA[ALL_CATCH_DATA$FLEET_CODE == input$ref_cpc]
+    catch_selected <- ALL_CATCH_DATA[ALL_CATCH_DATA$ENTITY_CODE == input$ref_cpc]
     catch_selected[ASSIGNED_AREA == "HIGH_SEAS", ORIGIN := "High Seas"]
-    catch_selected[ASSIGNED_AREA == paste0("NJA_", FLEET_CODE), ORIGIN := "Own NJA"]
-    catch_selected[ASSIGNED_AREA != paste0("NJA_", FLEET_CODE) & ASSIGNED_AREA != "HIGH_SEAS", ORIGIN := "Foreign NJAs"]
-    catch_selected
+    catch_selected[ASSIGNED_AREA == paste0("NJA_", ENTITY_CODE), ORIGIN := "Own NJA"]
+    catch_selected[ASSIGNED_AREA != paste0("NJA_", ENTITY_CODE) & ASSIGNED_AREA != "HIGH_SEAS", ORIGIN := "Foreign NJAs"]
+    catch_selected[,CATCH_MT := round(CATCH_MT, 2)]
   })
   selected_cpc_species_catches <- reactive({
     req(input$ref_cpc)
@@ -377,16 +396,16 @@ server = function(input, output, session) {
                    },options = list( 
                      render = I("{
                       item: function(item, escape) {
-                        var icon_href = 'https://raw.githubusercontent.com/fdiwg/flags/main/'+item.value.toLowerCase()+'.gif';
+                        var icon_href = 'https://raw.githubusercontent.com/fdiwg/flags/release/40/'+item.value.toLowerCase()+'.png';
                         return '<div><img src=\"'+icon_href+'\" height=16 width=28 style=\"margin-bottom:3px\" /> ' + item.label + '</div>'; 
                       },
                       option: function(item, escape) { 
-                        var icon_href = 'https://raw.githubusercontent.com/fdiwg/flags/main/'+item.value.toLowerCase()+'.gif';
+                        var icon_href = 'https://raw.githubusercontent.com/fdiwg/flags/release/40/'+item.value.toLowerCase()+'.png';
                         return '<div><img src=\"'+icon_href+'\" height=16 width=28 style=\"margin-bottom:3px\" /> ' + item.label + '</div>'; 
                       }
                     }"
                      ),
-                     placeholder = "Please select a entity",
+                     placeholder = "Please Select an entity",
                      onInitialize = I('function() { this.setValue(""); }')
                    )
     )
@@ -399,20 +418,44 @@ server = function(input, output, session) {
       tagList(
         h5("Select a species"),
         selectizeInput("ref_cpc_data_species", label = NULL, selected = NULL, multiple = FALSE, 
-                     choices = {
-                       entity_choices <- unique(selected_cpc_catches()$SPECIES_CODE)
-                       entity_choices <- entity_choices[order(entity_choices)]
-                       entity_names = fdi4R::cl_asfis_species[fdi4R::cl_asfis_species$code %in% entity_choices,]
-                       entity_names = entity_names[order(entity_names$code),]$label
-                       setNames(entity_choices, entity_names)
-                     },options = list( 
+                     width = 350,
+                     choices = NULL,
+                     options = list(
+                       options = {
+                         entity_choices <- unique(selected_cpc_catches()$SPECIES_CODE)
+                         entity_choices <- entity_choices[order(entity_choices)]
+                         entity_names = fdi4R::cl_asfis_species[fdi4R::cl_asfis_species$code %in% entity_choices,]
+                         species = data.frame(
+                           code = entity_choices,
+                           label_en = entity_names[order(entity_names$code),]$label,
+                           sciname = entity_names[order(entity_names$code),]$definition,
+                           stringsAsFactors = FALSE
+                         )
+                         lapply(seq_len(nrow(species)), function(i) {
+                           as.list(species[i, ])
+                         })
+                       },
+                       valueField  = "code",
+                       labelField  = "label_en",
+                       searchField = c("code", "label_en", "sciname"),
+                       render = I("{
+                          item: function(item, escape) {
+                            var icon_href = 'species/'+item.code+'.png';
+                            return '<div>' + item.label_en + ' – <em>' + item.sciname + '</em> <img src=\"'+icon_href+'\" height=30 style=\"margin-bottom:3px;float:right;\" /></div>'; 
+                          },
+                          option: function(item, escape) {
+                            var icon_href = 'species/'+item.code+'.png';
+                            return '<div>' + item.label_en + ' – <em>' + item.sciname + '</em> <img src=\"'+icon_href+'\" height=30 style=\"margin-bottom:3px;float:right;\" /></div>'; 
+                          }
+                        }"
+                       ),
                        placeholder = "Please select a species",
                        onInitialize = I('function() { this.setValue(""); }')
                      )
         )
       )
     }else{
-      tags$p(tags$em("Select a entity to get information"))
+      tags$p(tags$em("Select an entity to get information"))
     }
   })
   
@@ -421,7 +464,7 @@ server = function(input, output, session) {
     if(!is.null(input$ref_cpc) & input$ref_cpc != ""){
       bs4Dash::bs4Card(
         title = tagList(
-          img(src = sprintf("https://raw.githubusercontent.com/fdiwg/flags/main/%s.gif", tolower(input$ref_cpc)), height = "20px", width = "30px"),
+          img(src = sprintf("https://raw.githubusercontent.com/fdiwg/flags/release/80/%s.png", tolower(input$ref_cpc)), width = "80px"),
           tags$b(selected_cpc()$NAME_EN)
         ),
         status = "primary",
@@ -438,21 +481,33 @@ server = function(input, output, session) {
               ),
               color = "info",
               width = 12,
-              value = tags$b(selected_cpc()$STATUS)
+              value = if(selected_cpc()$ISO3_CODE != "TWN"){ 
+                tags$b(selected_cpc()$STATUS)
+              }else{
+                tags$b("Fishing entity")
+              }
             )
           ),
           fluidRow(
             bs4Dash::infoBox(
-              title = "Coastal State ?",
+              title = "Coastal State / REIO?",
               width = 6,
               color = "primary",
-              value = if(selected_cpc()$IS_COASTAL) tags$b("Yes") else tags$b("No")
+              value = if(selected_cpc()$ISO3_CODE != "TWN"){
+                if(selected_cpc()$IS_COASTAL) tags$b("Yes") else tags$b("No")
+              }else{
+                tags$b("N/A")
+              }
             ),
             bs4Dash::infoBox(
-              title = "Developing State ?",
+              title = "Developing State / REIO?",
               width = 6,
               color = "gray-dark",
-              value = if(selected_cpc()$IS_DEVELOPING) tags$b("Yes") else tags$b("No")
+              value = if(selected_cpc()$ISO3_CODE != "TWN"){
+                if(selected_cpc()$IS_DEVELOPING) tags$b("Yes") else tags$b("No")
+              }else{
+                tags$b("N/A")
+              }
             )
           ),
           fluidRow(
@@ -460,13 +515,26 @@ server = function(input, output, session) {
               title = "Least-Developed country (LDC) ?",
               width = 6,
               color = "maroon",
-              value = if(selected_cpc()$IS_LDC) tags$b("Yes") else tags$b("No")
+              value = if(selected_cpc()$ISO3_CODE != "TWN"){
+                if(selected_cpc()$IS_LDC) tags$b("Yes") else tags$b("No")
+              }else{
+                "N/A"
+              }
             ),
             bs4Dash::infoBox(
               title = "Small Island Developing State (SIDS) ?",
               width = 6,
               color = "fuchsia",
-              value = if(selected_cpc()$IS_SIDS) tags$b("Yes") else tags$b("No")
+              value = if(selected_cpc()$ISO3_CODE != "TWN"){
+                if(selected_cpc()$IS_SIDS) tags$b("Yes") else tags$b("No")
+              }else{
+                tags$b("N/A")
+              }
+            )
+          ),
+          fluidRow(
+            column(width = 12,
+              uiOutput("ref_cpc_definitions")
             )
           )
         )
@@ -474,6 +542,19 @@ server = function(input, output, session) {
     }else{
       NULL
     }
+  })
+  
+  output$ref_cpc_definitions <- renderUI({
+    shiny::actionLink(inputId = "ref_cpc_definitions_link", label = "Definitions")
+  })
+  observeEvent(input$ref_cpc_definitions_link,{
+    shiny::showModal(
+      shiny::modalDialog(
+        title = "Definitions",
+        easyClose = F,
+        tags$p("REIO = Regional Economic Integration Organisation")
+      )
+    )
   })
   
   output$ref_cpc_characteristics <- renderUI({
@@ -487,26 +568,40 @@ server = function(input, output, session) {
               tags$li(tags$p("SIDS?: ", if(selected_cpc()$IS_SIDS) tags$b("Yes") else tags$b("No")))
       )
     }else{
-      tags$p(tags$em("Select a entity to get information"))
+      tags$p(tags$em("Select an entity to get information"))
     }
   })
   
-  output$cpc_map_wrapper <- renderUI({
-    leafletOutput("cpc_map", height = 375, width = 400)
+  output$ref_cpc_map_wrapper <- renderUI({
+    leafletOutput("ref_cpc_map", height = 375, width = 400)
   })
   
-  output$cpc_map <- renderLeaflet({
+  output$ref_cpc_map <- renderLeaflet({
     leaflet() %>%
       addTiles() %>%
       addLayersControl(
-        overlayGroups = c("Country/Territory boundaries", "Coastline","NJA part in IOTC competence area"),
+        overlayGroups = c("Country/Territory boundaries", "Coastline","NJA part in Indian Ocean", "Overlapping claim part in Indian Ocean"),
         options = layersControlOptions(collapsed = T)
       )
+  })
+  
+  output$ref_cpc_map_disclaimer <- renderUI({
+    shiny::actionLink(inputId = "ref_cpc_map_disclaimer_link", label = "Map disclaimer")
+  })
+  observeEvent(input$ref_cpc_map_disclaimer_link,{
+    shiny::showModal(
+      shiny::modalDialog(
+        title = "Map disclaimer",
+        easyClose = F,
+        tags$p("The boundaries and names shown and the designations used on this map do not imply official endorsement or acceptance by the United Nations. Please refer to the ReadMe file for details on the assumptions applied to disputed areas (shown as Overlapping Claim) in the data processing.")
+      )
+    )
   })
   
   observeEvent(input$ref_cpc, {
     req(input$ref_cpc)
     
+    #MAP
     #sf data
     country_polys = fdi4R::un_countries
     country_lines = fdi4R::un_boundaries
@@ -522,8 +617,30 @@ server = function(input, output, session) {
       )
     
     #NJA
-    njas = fdi4R::wja_level1__x__rfb_comp[fdi4R::wja_level1__x__rfb_comp$code2 == "IOTC",]
+    njas = fdi4R::wja_level1__x__iotc_indian_ocean_areas[fdi4R::wja_level1__x__iotc_indian_ocean_areas$code2 == "IO_ALL",]
+    wja1 = fdi4R::wja_level1 %>% as.data.frame()
+    njas = njas %>% dplyr::left_join(wja1, by = dplyr::join_by(code1 == code))
+    
+    eur_nja = fdi4R::wja_level1_eur_iotc_cpc__x__iotc_indian_ocean_areas[fdi4R::wja_level1_eur_iotc_cpc__x__iotc_indian_ocean_areas$code2 == "IO_ALL",]
+    wja_eur = fdi4R::wja_level1_eur_iotc_cpc %>% as.data.frame()
+    eur_nja = eur_nja %>% dplyr::left_join(wja_eur, by = dplyr::join_by(code1 == code))
+    
+    nja_claims = njas[njas$type == "OC",]
+    eur_nja_claims = eur_nja[eur_nja$type == "OC",]
+    nja_claims = nja_claims[,colnames(nja_claims)[!startsWith(colnames(nja_claims), "gml_id")]]
+    eur_nja_claims = eur_nja_claims[,colnames(eur_nja_claims)[!startsWith(colnames(eur_nja_claims), "gml_id")]]
+    
+    nja_claims = rbind(nja_claims, eur_nja_claims)
+    
+    njas = njas[njas$type == "JA",]
+    eur_nja = eur_nja[eur_nja$type == "JA",]
+    njas = njas[,colnames(njas)[!startsWith(colnames(njas),"gml_id")]]
+    eur_nja = eur_nja[,colnames(eur_nja)[!startsWith(colnames(eur_nja),"gml_id")]]
+    
+    njas = rbind(njas, eur_nja)
+
     cpc_nja = njas[regexpr(input$ref_cpc, njas$code1) > 0,] %>% sf::st_collection_extract()
+    cpc_nja_claims = nja_claims[regexpr(input$ref_cpc, nja_claims$code1) > 0,] %>% sf::st_collection_extract()
     
     # Mutually exclusive styling classes
     coastal_lines <- filtered %>% dplyr::filter(TYPE %in% c(0))
@@ -531,10 +648,11 @@ server = function(input, output, session) {
     dashed_lines  <- filtered %>% dplyr::filter(TYPE %in% c(2, 3) & !TYPE %in% c(8, 9))
     solid_lines   <- filtered %>% dplyr::filter(!TYPE %in% c(0, 2, 3, 4, 8, 9))
     
-    proxy <- leafletProxy("cpc_map") %>%
+    proxy <- leafletProxy("ref_cpc_map") %>%
       clearGroup("Country/Territory boundaries") %>%
       clearGroup("Coastline") %>%
-      clearGroup("NJA part in IOTC competence area")
+      clearGroup("NJA part in Indian Ocean") %>%
+      clearGroup("Overlapping claim part in Indian Ocean")
     
     # Ppolygon FIRST
     if (nrow(cpc_admin) > 0) {
@@ -584,25 +702,46 @@ server = function(input, output, session) {
     }
     
     # Zoom to selection if we have features
-    if (nrow(filtered) > 0) {
-      bb <- do.call(sf::st_bbox, lapply(list(filtered, cpc_admin, cpc_nja), sf::st_bbox))
-      proxy %>% fitBounds(
-        lng1 = as.numeric(bb["xmin"]), lat1 = as.numeric(bb["ymin"]),
-        lng2 = as.numeric(bb["xmax"]), lat2 = as.numeric(bb["ymax"])
-      )
-    }
-    # NJA (intersect with IOTC competence area)?
+    bb <- if(nrow(cpc_nja)>0) sf::st_bbox(rbind(cpc_nja, cpc_nja_claims)) else sf::st_bbox(filtered)
+    proxy %>% fitBounds(
+      lng1 = as.numeric(bb["xmin"]), lat1 = as.numeric(bb["ymin"]),
+      lng2 = as.numeric(bb["xmax"]), lat2 = as.numeric(bb["ymax"])
+    )
+    
+    # NJA (intersect with Indian Ocean)?
     if (nrow(cpc_nja) > 0){
       proxy <- proxy %>%
         addPolygons(
           data = cpc_nja,
           fillColor = "#22a4e6",
           fillOpacity = 0.8,
-          group = "NJA part in IOTC competence area",
+          group = "NJA part in Indian Ocean",
           color = "white", # transparent stroke
           weight = 0
         )
     }
+    # NJA Overlapping claim (intersect with Indian Ocean)?
+    if (nrow(cpc_nja_claims) > 0){
+      proxy <- proxy %>%
+        addPolygons(
+          data = cpc_nja_claims,
+          fillColor = "orange",
+          fillOpacity = 0.8,
+          group = "Overlapping claim part in Indian Ocean",
+          color = "white", # transparent stroke
+          weight = 0
+        )
+    }
+    
+    proxy <- proxy %>%
+      removeControl(layerId = "WJA") %>%
+      addLegend(
+        layerId = "WJA",
+        "bottomright", 
+        colors = c("#22a4e6","orange"), 
+        labels = c("Jurisdiction Area","Overlapping Claim"),
+        values = NULL
+      )
     
   }, ignoreInit = FALSE)
   
@@ -625,46 +764,59 @@ server = function(input, output, session) {
     )
   })
   
-  output$ref_cpc_catch_table = DT::renderDataTable({
-    req(input$ref_cpc)
-    DT::datatable(
-      selected_cpc_catches(),
-      class = "stripe cell-border",
-      rownames = FALSE,
-      escape = FALSE,
-      colnames = c("Year", "Flag state", "entity", "Type of fishery", "Fishery", "School type", "Assigned area", "Species", "Catches", "Water Jurisdiction Area"),
-      options =
-        list(
-          autoWidth = FALSE,
-          dom = 'Bfrtip',
-          deferRender = TRUE,
-          scroll = FALSE,
-          pageLength= 10,
-          searching = TRUE,
-          autoWidth = TRUE,
-          paging    = TRUE,
-          info      = TRUE,
-          buttons = list(
-            list(extend = 'copy'),
-            list(extend = 'csv', filename = sprintf("IOTC_TCAC_Historical_Catches_for_%s_species_%s.csv", input$ref_cpc, input$ref_cpc_data_species) , title = NULL, header = TRUE),
-            list(extend = 'excel', filename =  sprintf("IOTC_TCAC_Historical_Catches_for_%s_species_%s.xlsx", input$ref_cpc, input$ref_cpc_data_species), title = NULL, header = TRUE),
-            list(extend = "pdf", title = sprintf("IOTC_TCAC_Historical_Catches_for_%s_species_%s.pdf", input$ref_cpc, input$ref_cpc_data_species), header = TRUE, orientation = "landscape")
-          )
-        ),
-      filter = list(position = "top")
-    ) %>% DT::formatCurrency("CATCH_MT", mark = ",", digits = 2, currency = "&nbsp;t", before = FALSE)
-  })
+  output$ref_cpc_catch_table = DT::renderDataTable(
+    selected_cpc_catches(),
+    class = "stripe cell-border",
+    colnames = c("Year", "Entity [Code]", "Entity", "Fishery type [Code]", "Fishery type", "Gear [Code]", "Gear", "School type [Code]", "School type", "Species [Code]", "Species", "Catches", "Assigned area [Code]", "Assigned area", "Water Jurisdiction Area"),
+    server = FALSE,
+    escape = FALSE,
+    rownames = FALSE,
+    extensions = c("Buttons"),
+    filter = list(position = 'top', clear = FALSE),
+    options = list(
+      autoWidth = FALSE,
+      dom = 'Bfrtip',
+      deferRender = TRUE,
+      scroll = FALSE,
+      pageLength= 10,
+      searching = TRUE,
+      autoWidth = TRUE,
+      paging    = TRUE,
+      info      = TRUE,
+      buttons = list(
+        list(extend = 'copy'),
+        list(extend = 'csv', filename = sprintf("IOTC_TCAC_Historical_Catches_for_%s", input$ref_cpc) , title = NULL, header = TRUE),
+        list(extend = 'excel', filename =  sprintf("IOTC_TCAC_Historical_Catches_for_%s", input$ref_cpc), title = NULL, header = TRUE),
+        list(extend = "pdf", title = sprintf("IOTC_TCAC_Historical_Catches_for_%s", input$ref_cpc), header = TRUE, orientation = "landscape")
+      ),
+      exportOptions = list(
+        modifiers = list(page = "all", selected = TRUE)
+      )
+    )
+  )
   
   # Baseline weight
   
   output$ba_wgt = renderText({
     formatToPercent(input$ba_weight)
   })
+  observeEvent(input$ba_weight,{
+    shiny::updateNumericInput(session = session, "ba_weight_num", value = input$ba_weight)
+  })
+  observeEvent(input$ba_weight_num,{
+    shiny::updateSliderInput(session = session, "ba_weight", value = input$ba_weight_num)
+  })
   
   # Developing states weight
   
   output$ds_wgt = renderText({
     formatToPercent(input$ds_weight)
+  })
+  observeEvent(input$ds_weight,{
+    shiny::updateNumericInput(session = session, "ds_weight_num", value = input$ds_weight)
+  })
+  observeEvent(input$ds_weight_num,{
+    shiny::updateSliderInput(session = session, "ds_weight", value = input$ds_weight_num)
   })
 
   # Catch-based weight
@@ -722,7 +874,7 @@ server = function(input, output, session) {
     filtered_catch_data = subset_and_postprocess_catch_data(catch_data   = ALL_CATCH_DATA,
                                                             species_code = input$species,
                                                             years        = input$period[1]:input$period[2],
-                                                            onlyHS = input$onlyHS)
+                                                            onlyHS = FALSE)
     average_catch_function = period_average_catch_data
     
     if(input$avg_period == "best") {
@@ -774,12 +926,19 @@ server = function(input, output, session) {
     
     dt_alloc = allocation[[component]]
     if(component != "QUOTAS"){
-      dt_alloc = dt_alloc[, .SD, .SDcols = colnames(dt_alloc) == "CPC_CODE" |
+      dt_alloc = dt_alloc[, .SD, .SDcols = colnames(dt_alloc) == "ENTITY_CODE" |
                             grepl("TAC", colnames(dt_alloc))]
     }
     dt_alloc_basenames = colnames(dt_alloc)
-    dt_alloc = base::merge(dt_alloc, CPC_data[, .(CODE, STATUS_CODE, NAME_EN, NAME_FR)], by.x = "CPC_CODE", by.y = "CODE")
-    dt_alloc = dt_alloc[, .SD, .SDcols = c("NAME_EN", dt_alloc_basenames[dt_alloc_basenames != "CPC_CODE"])]
+    dt_alloc = base::merge(dt_alloc, CPC_data[, .(CODE, STATUS_CODE, NAME_EN, NAME_FR)], by.x = "ENTITY_CODE", by.y = "CODE")
+    dt_alloc = dt_alloc[, .SD, .SDcols = c("NAME_EN", dt_alloc_basenames[dt_alloc_basenames != "ENTITY_CODE"])]
+    
+    if(unit == "quota"){
+      target_cols = colnames(dt_alloc)[2:ncol(dt_alloc)]
+      for(target_col in target_cols){
+        dt_alloc[[target_col]] <- round(dt_alloc[[target_col]] * 100,2)
+      }
+    }
     
     allocation_dt = DT::datatable(
       dt_alloc, 
@@ -787,7 +946,7 @@ server = function(input, output, session) {
       rownames = FALSE,
       escape = FALSE,
       colnames = c(
-        "CPC", 
+        "Entity", 
         if(component %in% c("CB_ALLOCATION", "QUOTAS")){
           paste0("Year #", c(1:10))
         } else{
@@ -805,25 +964,25 @@ server = function(input, output, session) {
         )
     )
     
-    if(unit == "quota")
-      allocation_dt = allocation_dt %>% DT::formatPercentage(2:ncol(dt_alloc), digits = 2)
-    else
-      allocation_dt = allocation_dt %>% DT::formatCurrency(2:ncol(dt_alloc), digits = 2, currency = "&nbsp;t", before = FALSE)
-    
+    if(unit == "quota"){
+      allocation_dt = allocation_dt %>% DT::formatRound(2:ncol(dt_alloc), digits = 2)
+    }else{
+      allocation_dt = allocation_dt %>% DT::formatCurrency(2:ncol(dt_alloc), digits = 0, currency = "", before = FALSE)
+    }
     alloc_NORM = dt_alloc[, 2:ncol(dt_alloc)]
     
     if(input$out_heat_style == "color") {
       if(input$out_heat_type  == "by_year") {
         for(column in colnames(alloc_NORM)) {
           breaks = quantile(range(alloc_NORM[[column]]), probs = seq(0, 1, .05))
-          colors = round(seq(255, 40, length.out = length(breaks) + 1), 0) %>% { paste0("rgb(255, ", ., ",", ., ")") }
+          colors = colorRampPalette(c("#ffffff", "#17a2b8"))(length(breaks) + 1)
           
           allocation_dt = 
             allocation_dt %>% DT::formatStyle(column, backgroundColor = DT::styleInterval(breaks, colors))
         }
       } else if(input$out_heat_type  == "global") {
         breaks = quantile(range(alloc_NORM), probs = seq(0, 1, .05))
-        colors = round(seq(255, 40, length.out = length(breaks) + 1), 0) %>% { paste0("rgb(255, ", ., ",", ., ")") }
+        colors = colorRampPalette(c("#ffffff", "#17a2b8"))(length(breaks) + 1)
         
         allocation_dt = 
           allocation_dt %>% DT::formatStyle(colnames(alloc_NORM), backgroundColor = DT::styleInterval(breaks, colors))
@@ -833,7 +992,7 @@ server = function(input, output, session) {
         for(column in colnames(alloc_NORM)) {
           allocation_dt = 
             allocation_dt %>% DT::formatStyle(column,
-                                          background = DT::styleColorBar(range(alloc_NORM[[column]]), "#FF4444"),
+                                          background = DT::styleColorBar(range(alloc_NORM[[column]]), "#17a2b8"),
                                           backgroundSize = '98% 88%',
                                           backgroundRepeat = 'no-repeat',
                                           backgroundPosition = 'center')
@@ -841,7 +1000,7 @@ server = function(input, output, session) {
       } else if(input$out_heat_type  == "global") {
         allocation_dt = 
           allocation_dt %>% DT::formatStyle(colnames(alloc_NORM),
-                                        background = DT::styleColorBar(range(alloc_NORM), "#FF4444"),
+                                        background = DT::styleColorBar(range(alloc_NORM), "#17a2b8"),
                                         backgroundSize = '98% 88%',
                                         backgroundRepeat = 'no-repeat',
                                         backgroundPosition = 'center')
@@ -858,7 +1017,7 @@ server = function(input, output, session) {
     req(input$reporting_entity)
     if(!is.null(input$reporting_entity) & input$reporting_entity != ""){
       result = lapply(computed_allocation()[1:4], function(x){
-        x[CPC_CODE == input$reporting_entity,]
+        x[ENTITY_CODE == input$reporting_entity,]
       })
       names(result) = names(computed_allocation())[1:4]
       result$UNIT = computed_allocation()$UNIT
@@ -926,42 +1085,41 @@ server = function(input, output, session) {
       
       config = rbind(config, as.list(c("OUTPUT_UNIT", input$out_unit)))
       
-      quotas = prepare_output(input)
+      quotas = computed_allocation()$QUOTAS
       
       if(input$out_unit == "quota") {
         quotas = 
           quotas %>% 
-          dplyr::mutate_if(startsWith(names(.), "QUOTA_"), scales::percent, accuracy = 0.01)
+          dplyr::mutate_if(startsWith(names(.), "QUOTA_"), function(x) round(as.numeric(x)*100, 2))
       } else {
         quotas = 
           quotas %>% 
-          dplyr::mutate_if(startsWith(names(.), "QUOTA_"), function(x) paste0(format(round(as.numeric(x), 1), nsmall = 1, big.mark = ","), " t"))
+          dplyr::mutate_if(startsWith(names(.), "QUOTA_"), function(x) round(as.numeric(x), 1))
       }
       
       WB = createWorkbook()
       
       addWorksheet(WB, "CPC_REFERENCES")
-      addWorksheet(WB, "COASTAL_STATE_REFERENCES")
       addWorksheet(WB, "HISTORICAL_CATCHES")
       addWorksheet(WB, "SIMULATION_CONFIGURATION")
       addWorksheet(WB, "OUTPUT_QUOTAS")
       
       writeData(WB, sheet = 1, ENTITIES, rowNames = FALSE)
-      writeData(WB, sheet = 3, ALL_CATCH_DATA[SPECIES_CODE == input$species], rowNames = FALSE)
-      writeData(WB, sheet = 4, config, rowNames = FALSE)
-      writeData(WB, sheet = 5, quotas, rowNames = FALSE)
+      writeData(WB, sheet = 2, ALL_CATCH_DATA[SPECIES_CODE == input$species], rowNames = FALSE)
+      writeData(WB, sheet = 3, config, rowNames = FALSE)
+      writeData(WB, sheet = 4, quotas, rowNames = FALSE)
       
       # Column widths are taken directly from Excel once all cols have been expanded to their maximum
       
       setColWidths(WB, 1, 1:9,  widths = c(5.14, 48.71, 6.86, 5.43, 8.29, 11.29, 8.29, 23, 19.86))
-      setColWidths(WB, 2, 1:16, widths = c(5.14, 8.29, 10.71, 21.43, 34.71, 10.43, 30, 34.86, 28.29, 11, 8.14, 16.29, 11.14, 19.43, 11.71, 20))
-      setColWidths(WB, 3, 1:9,  widths = c(4.71, 10.57, 11, 12.57, 13.29, 18.71, 15, 13.14, 9.86)) 
-      setColWidths(WB, 4, 1   , widths = 56.43)
-      setColWidths(WB, 5, 2:11, widths = 15.71)
+      setColWidths(WB, 2, 1:9,  widths = c(4.71, 10.57, 11, 12.57, 13.29, 18.71, 15, 13.14, 9.86)) 
+      setColWidths(WB, 3, 1   , widths = 56.43)
+      setColWidths(WB, 4, 2:11, widths = 15.71)
       
-      activeSheet(WB) <- 5
+      activeSheet(WB) <- 4
       
       saveWorkbook(WB, file = file, overwrite = TRUE)
+      postMessage("Successful data file generation, ready to download", type = "success")
     }
   )
   
@@ -999,7 +1157,7 @@ server = function(input, output, session) {
       CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_09 = input$cb_year09_wgt/100
       CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_10 = input$cb_year10_wgt/100
       ALLOCATION_TRANSITION = sapply(1:10, function(x){ eval(parse(text = paste0("CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_", sprintf("%02d",x)))) })
-      OnlyHS = input$onlyHS
+      OnlyHS = FALSE
       
       # Source the R allocation scripts
       source("./initialisation/05_SCENARIO_ALLOCATION_COMPUTATION.R", local = TRUE)
@@ -1012,6 +1170,8 @@ server = function(input, output, session) {
         file.path(tempdir(), "rmd", "00_A_SINGLE_SIMULATION_ALL_CPCS.Rmd"),
         output_file = file
       )
+      
+      postMessage("Successful full report generation, ready to download", "success")
       
       # Convert report to PDF
       # wordApp = COMCreate("Word.Application") #creates COM object
@@ -1032,11 +1192,11 @@ server = function(input, output, session) {
                    },options = list( 
                      render = I("{
                       item: function(item, escape) {
-                        var icon_href = 'https://raw.githubusercontent.com/fdiwg/flags/main/'+item.value.toLowerCase()+'.gif';
+                        var icon_href = 'https://raw.githubusercontent.com/fdiwg/flags/release/40/'+item.value.toLowerCase()+'.png';
                         return '<div><img src=\"'+icon_href+'\" height=16 width=28 style=\"margin-bottom:3px\" /> ' + item.label + '</div>'; 
                       },
                       option: function(item, escape) { 
-                        var icon_href = 'https://raw.githubusercontent.com/fdiwg/flags/main/'+item.value.toLowerCase()+'.gif';
+                        var icon_href = 'https://raw.githubusercontent.com/fdiwg/flags/release/40/'+item.value.toLowerCase()+'.png';
                         return '<div><img src=\"'+icon_href+'\" height=16 width=28 style=\"margin-bottom:3px\" /> ' + item.label + '</div>'; 
                       }
                     }"
@@ -1081,7 +1241,7 @@ server = function(input, output, session) {
       CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_09 = input$cb_year09_wgt/100
       CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_10 = input$cb_year10_wgt/100
       ALLOCATION_TRANSITION = sapply(1:10, function(x){ eval(parse(text = paste0("CATCH_BASED_WEIGHT_NJA_ATTRIBUTION_YEAR_", sprintf("%02d",x)))) })
-      OnlyHS = input$onlyHS
+      OnlyHS = FALSE
       
       # Source the R allocation scripts
       source("./initialisation/05_SCENARIO_ALLOCATION_COMPUTATION.R", local = TRUE)
@@ -1094,6 +1254,8 @@ server = function(input, output, session) {
         file.path(tempdir(), "rmd", "00_A_SINGLE_SIMULATION_ALL_CPCS.Rmd"),
         output_file = file
       )
+      
+      postMessage("Successful entity report generation, ready to download", "success")
       
       # Convert report to PDF
       # wordApp = COMCreate("Word.Application") #creates COM object
@@ -1122,7 +1284,7 @@ server = function(input, output, session) {
       column(
         width = 12,
         bs4Dash::infoBox(
-          title = "Total Allowable Catches (TACs)",
+          title = "Total allocation (t)",
           width = 12,
           icon = icon("fish"),
           color = "primary",
@@ -1212,7 +1374,7 @@ server = function(input, output, session) {
     plotly::plot_ly(quota_result_long, x = ~YEAR, y = ~QUOTA, type = 'bar') %>% 
       plotly::layout(
         xaxis = list(title = "YEAR"), 
-        yaxis = list(title = 'TAC (t)', tickformat = ",.0f"), 
+        yaxis = list(title = 'Total allocation (t)', tickformat = ",.0f"), 
         colorway = RColorBrewer::brewer.pal(3,"Blues"),
         barmode = 'stack', 
         legend = list(
@@ -1228,7 +1390,7 @@ server = function(input, output, session) {
   output$entity_cb_allocation_plot = renderPlotly({
     req(!is.null(computed_allocation_for_entity()))
     cb_result = computed_allocation_for_entity()$CB_ALLOCATION
-    cb_result_long <- cb_result[,.(CPC_CODE, CB_TAC_1, CB_TAC_2, CB_TAC_3, CB_TAC_4, CB_TAC_5,
+    cb_result_long <- cb_result[,.(ENTITY_CODE, CB_TAC_1, CB_TAC_2, CB_TAC_3, CB_TAC_4, CB_TAC_5,
                                    CB_TAC_6, CB_TAC_7, CB_TAC_8, CB_TAC_9, CB_TAC_10)] %>%
       pivot_longer(
         cols = starts_with("CB_TAC_"),
@@ -1264,5 +1426,20 @@ server = function(input, output, session) {
       inputId = "tac",
       value = SCENARIO_PARAMETERS[SCENARIO_PARAMETERS$SPECIES_CODE_SELECTED == input$species,][1,]$TARGET_TAC_T
     )
+  })
+  
+  #observe sum of weight
+  observeEvent(input$ds_weight,{
+    if(input$ba_weight + input$ds_weight > 100){
+      updateSliderInput(session = session, inputId = "ds_weight", value = 100 - input$ba_weight)
+      postMessage(sprintf("Can't set developing state weight to %s %%. Reducing developing states weight to <b>%s</b> %%", input$ds_weight, 100 - input$ba_weight), "warning")
+    }
+  })
+  observeEvent(input$ba_weight,{
+    if(input$ba_weight + input$ds_weight > 100){
+      print(sprintf("Can't set ba_weight = %s, reducing weight to %s", input$ba_weight, 100 - input$ds_weight))
+      updateSliderInput(session = session, inputId = "ba_weight", value = 100 - input$ds_weight)
+      postMessage(sprintf("Can't set baseline weight to %s %%. Reducing baseline weight to <b%s</b> %%", input$ba_weight, 100 - input$ds_weight), "warning")
+    }
   })
 }

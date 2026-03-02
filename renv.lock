@@ -456,7 +456,7 @@
       "RemoteHost": "api.github.com",
       "RemoteRepo": "fdi4R",
       "RemoteUsername": "fdiwg",
-      "RemoteSha": "dbc036cbf8842f432cba5df7f9100a1b1c46825e",
+      "RemoteSha": "c910ce632fca70aba19bfa0068421955586ec02d",
       "Requirements": [
         "R",
         "geosphere",
@@ -469,7 +469,31 @@
         "tmap",
         "worrms"
       ],
-      "Hash": "1ebf4d36c42ee3ab8abb8e5196a1bb3a"
+      "Hash": "566db4b97639ccf2083620f9de3a7385"
+    },
+    "flextable": {
+      "Package": "flextable",
+      "Version": "0.9.10",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "data.table",
+        "gdtools",
+        "grDevices",
+        "graphics",
+        "grid",
+        "htmltools",
+        "knitr",
+        "officer",
+        "ragg",
+        "rlang",
+        "rmarkdown",
+        "stats",
+        "utils",
+        "uuid",
+        "xml2"
+      ],
+      "Hash": "a7cbadbf9c83806beff786c77c5f6970"
     },
     "fontBitstreamVera": {
       "Package": "fontBitstreamVera",
@@ -730,6 +754,21 @@
         "openssl"
       ],
       "Hash": "ac107251d9d9fd72f0ca8049988f1d7f"
+    },
+    "iotc.data.reference.codelists": {
+      "Package": "iotc.data.reference.codelists",
+      "Version": "1.0.0",
+      "Source": "GitHub",
+      "RemoteType": "github",
+      "RemoteHost": "api.github.com",
+      "RemoteRepo": "iotc-data-reference-codelists",
+      "RemoteUsername": "iotc-secretariat",
+      "RemoteSha": "2de551f1c187e29d822d2b2a5d5053456b9f2795",
+      "Requirements": [
+        "R",
+        "data.table"
+      ],
+      "Hash": "d011217b0b9aef1a18c74997224c5119"
     },
     "isoband": {
       "Package": "isoband",

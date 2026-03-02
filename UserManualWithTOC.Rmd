@@ -1,0 +1,11 @@
+---
+title: "TCAC Application – User Manual"
+output:
+  html_document:
+    toc: true         # generate Table of Contents
+    toc_depth: 4      # include headings up to ### level
+    toc_float: true   # floating TOC on the side
+---
+      
+```{r child = 'UserManual.md'}
+```

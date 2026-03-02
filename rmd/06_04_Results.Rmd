@@ -1,15 +1,31 @@
 ## Simulation Results {#simulationResults}
 
-The simulation results can be downloaded as an Excel file using the **Download** button in the 'Tables' tab. The filename corresponds to the date and time the download request was issued. The file contains the following five worksheets:
+Simulation results can be visualised in the App through tables and charts, either for all entities together or for each entity individually. The App also allows users to download configuration and output tables as Excel or Word files.
 
-1. 'CPC_REFERENCES' containing the CPC configuration parameters as in [CPC_CONFIGURATIONS.xlsx](https://www.iotc.org/TCAC/15/Data/02)
+For the "All entities" tab:
 
-2. 'COASTAL_STATE_REFERENCES' containing the coastal states configuration parameters as in [CPC_CONFIGURATIONS.xlsx](https://www.iotc.org/TCAC/15/Data/02)
+- Users can download an Excel file via the 'Download' button, which contains the following worksheets:
 
-3. 'HISTORICAL_CATCHES' containing the historical catches for the selected species as extracted from [HISTORICAL_CATCH_ESTIMATES.csv](https://www.iotc.org/TCAC/15/Data/01)
+  1. 'CPC_REFERENCES' containing the CPC configuration parameters as in [CPC_CONFIGURATIONS.xlsx](https://www.iotc.org/TCAC/15/Data/02)
 
-4. 'SIMULATION_CONFIGURATION' containing all the configuration parameters set by the users for the specific simulation round
+  2. 'HISTORICAL_CATCHES' containing the historical catches for the selected species as extracted from [HISTORICAL_CATCH_ESTIMATES.csv](https://www.iotc.org/TCAC/15/Data/01)
 
-5. 'OUTPUT_QUOTAS' containing the outputs of the simulation expressed either as fraction of the annual TAC or as catches in metric tonnes by CPC and simulation year (depending on the chosen value of the 'output unit' parameter).
+  3. 'SIMULATION_CONFIGURATION' containing all the configuration parameters set by the users for the specific simulation round
 
-Additionally, the 'Reports' tab allows users to download outputs as Word files, either for all CPCs simultaneously or individually for each entity via a drop-down list. The reports include an initial table presenting the general scenario configuration, followed by the final results after a 10-year transition period, as well as allocation and TAC values calculated at each step of the allocation process: (i) baseline allocation, (ii) coastal State allocation including all sub-components, and (iii) catch-based allocation.
+  4. 'OUTPUT_QUOTAS' containing the outputs of the simulation expressed either as fraction of the annual TAC or as catches in metric tonnes by CPC and simulation year (depending on the chosen value of the 'output unit' parameter).
+
+- Users can also download a Word file via the 'Download full report' button. This report includes the same tables as the Excel file, formatted for easier reading and presentation.
+
+For the "By entity" tab:
+
+- Results are displayed for each entity individually, including allocation values and a bar chart illustrating the transition period for the catch-based allocation;
+
+- Only a Word report is available for download, via a drop-down list that allows selection of the desired entity;
+
+- Reports include the scenario configuration, final results after the 10-year transition period, and stepwise values for:
+
+  1. Baseline allocation
+
+  2. Developing-State allocation, including all sub-components
+
+  3. Catch-based allocation

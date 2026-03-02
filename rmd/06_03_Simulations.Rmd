@@ -1,40 +1,56 @@
 ## Simulation Tool {#simulations}
 
-The Secretariat has developed an interactive simulation tool to facilitate the exploration of various configuration options for the components of catch allocation outlined in the Draft Allocation Regime (v7), presented at the 13^th^ session of the TCAC ([IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E)). The tool is an interactive R Shiny web application, available at [https://foodandagricultureorganization.shinyapps.io/iotc-tcac-simulations/](https://foodandagricultureorganization.shinyapps.io/iotc-tcac-simulations/). The App is password-protected to support access control and monitoring, with login credentials provided to participating delegates. To ensure full transparency and reproducibility, all scripts and data used to generate the Shiny App are available in the [iotc-tcac-simulations](https://github.com/iotc-secretariat/iotc-tcac-simulations) repository, hosted on the IOTC Secretariat's GitHub.
+The Secretariat has revised the interactive simulation tool presented at TCAC15, originally developed to facilitate the exploration of various configuration options for the components of catch allocation. The tool is an interactive R Shiny web application (App), available at [https://foodandagricultureorganization.shinyapps.io/iotc-tcac-simulations-review/](https://foodandagricultureorganization.shinyapps.io/iotc-tcac-simulations-review/). The App is password-protected to support access control and monitoring, with login credentials provided to participating delegates. To ensure full transparency and reproducibility, all scripts and data used to generate the Shiny App are publicly available in the [iotc-tcac-simulations](https://github.com/iotc-secretariat/iotc-tcac-simulations) repository, hosted on the IOTC Secretariat's GitHub.
 
 ### Total Allowable Catch Values
 
 The App allows users to set the TAC values, which are pre-filled by default in accordance with the most recent IOTC resolutions for bigeye and skipjack tunas, and with the Maximum Sustainable Yield (MSY) values derived from stock assessments for albacore, swordfish, and yellowfin tuna:
 
-- Albacore: 45,000 t  ([IOTC-2024-SC27-ES01](https://iotc.org/documents/albacore-tuna-0))
+- Albacore: 45,000 t  ([IOTC-2025-SC28-ES01](https://iotc.org/documents/albacore-0))
 
 - Bigeye tuna: 92,670 t ([IOTC Res. 25/04](https://iotc.org/cmm/resolution-2504-establishing-catch-limits-bigeye-tuna-iotc-area-competence)
 
 - Skipjack tuna: 628,606 t ([IOTC Res. 25/03](https://iotc.org/cmm/resolution-2503-establishing-catch-limits-skipjack-tuna-iotc-area-competence))
 
-- Swordfish: 30,000 t  [IOTC-2024-SC27-ES16](https://iotc.org/documents/swordfish-1)
+- Swordfish: 30,000 t ([IOTC-2025-SC28-ES16](https://iotc.org/documents/swordfish-2))
 
-- Yellowfin tuna: 421,000 t  ([IOTC-2024-SC27-ES04](https://iotc.org/documents/yellowfin-tuna-1))
+- Yellowfin tuna: 421,000 t ([IOTC-2025-SC28-ES04](https://iotc.org/documents/yellowfin-tuna-2))
 
 ### Baseline Allocation
 
-The baseline allocation refers to a percentage of the TAC for a given stock that is distributed equally among all current CPCs. In the App, users can adjust the baseline weight percentage, within a range of 0–100%, using an interactive slider in the application interface.
+The baseline allocation represents the portion of the TAC allocated equally among the 29 IOTC Contracting Parties (CPs): Australia (AUS), Bangladesh (BGD), China (CHN), Comoros (COM), European Union (EUR), France Overseas Territories (ATF), India (IND), Indonesia (IDN), I.R. Iran (IRN), Japan (JPN), Kenya (KEN), Madagascar (MDG), Malaysia (MYS), Maldives (MDV), Mauritius (MUS), Mozambique (MOZ), Oman (OMN), Pakistan (PAK), Philippines (PHL), Republic of Korea (KOR), Seychelles (SYC), Somalia (SOM), South Africa (ZAF), Sri Lanka (LKA), Sudan (SDN), Thailand (THA), United Kingdom of Great Britain and Northern Ireland (GBR), United Republic of Tanzania (TZA), and Yemen (YEM).
 
-### Coastal State Allocation
+In the App, users can adjust the baseline allocation or its weighting, expressed as a percentage (0–100%), using an interactive slider in the interface.
 
-Similarly to the baseline allocation, the total weight assigned to the coastal State allocation can be adjusted by users using an interactive slider in the application interface. This allocation component consists of three sub-components: (i) the equal weight, (ii) the socio-economic weight, and (iii) the Exclusive Economic Zone (EEZ) weight. The contribution of each sub-component can be adjusted using interactive sliders in the App.
+### Developing States Allocation
 
-While two options for the socio-economic component were defined at the 13^th^ session of the TCAC ([IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E)), the indicators required for Option 1 are not yet fully available; therefore, only Option 2 is currently operational in the App (see [Appendix 2](#csFields) for details on the indicators).
+The developing states allocation represents the portion of the TAC allocated among the 21 IOTC developing coastal States: Bangladesh (BGD), Comoros (COM), India (IND), Indonesia (IDN), I.R. Iran (IRN), Kenya (KEN), Madagascar (MDG), Malaysia (MYS), Maldives (MDV), Mauritius (MUS), Mozambique (MOZ), Oman (OMN), Pakistan (PAK), Seychelles (SYC), Somalia (SOM), South Africa (ZAF), Sri Lanka (LKA), Sudan (SDN), Thailand (THA), United Republic of Tanzania (TZA), and Yemen (YEM).
 
-The relative contributions of the three components of Option 2 -- the Human Development Index, Gross National Income, and Small Island Developing States (SIDS) status -- can be defined using interactive sliders, with their combined total summing to 100%.
+This allocation component comprises three sub-components, which can be adjusted interactively in the App using sliders to reflect different weighting schemes:
+
+#### Equal Allocation
+
+The equal-weight sub-component of the developing states allocation represents the portion of the TAC allocated evenly among the 21 IOTC developing coastal States: Bangladesh (BGD), Comoros (COM), India (IND), Indonesia (IDN), I.R. Iran (IRN), Kenya (KEN), Madagascar (MDG), Malaysia (MYS), Maldives (MDV), Mauritius (MUS), Mozambique (MOZ), Oman (OMN), Pakistan (PAK), Seychelles (SYC), Somalia (SOM), South Africa (ZAF), Sri Lanka (LKA), Sudan (SDN), Thailand (THA), United Republic of Tanzania (TZA), and Yemen (YEM).
+
+#### Least-Developed Country Allocation
+
+The least-developed country (LDC) sub-component of the developing states allocation represents the portion of the TAC allocated evenly among the eight IOTC least-developed coastal States: Bangladesh (BGD), Comoros (COM), Madagascar (MDG), Mozambique (MOZ), Somalia (SOM), Sudan (SDN), United Republic of Tanzania (TZA), and Yemen (YEM).
+
+#### Small Island Developing State Allocation
+
+The small island developing State (SIDS) sub-component of the developing states allocation represents the portion of the TAC allocated evenly among the four IOTC SIDS: Comoros (COM), Maldives (MDV), Mauritius (MUS), and Seychelles (SYC).
 
 ### Catch-Based Allocation
 
-The weight assigned to the catch-based allocation corresponds to the remaining percentage once the baseline and coastal State weights have been specified. To calculate the catch-based allocation weight for each CPC, historical catch data are averaged over a user-defined time frame using one of two computational approaches:
-  
-- the annual average across the selected time period; or
-- the average of the best _n_ years across the selected time period, where the ‘best years’ are defined as those with the highest catches, within the selected period.
+The catch-based weight allocation represents the portion of the TAC allocated to each Contracting Party (CP) and to Taiwan,China, in proportion to its contribution to the total catch of the species by all IOTC CPs over a selected historical reference period.
+
+To calculate this allocation component, historical catch data are averaged over a user-selected reference period using one of two alternative approaches:
+
+-   the annual average over the entire reference period; or
+-   the average of the best _n_ years within the reference period.
+
+Under the best _n_ years approach, the _best years_ are defined individually for each CP and species, based on the highest reported catches within the reference period.
 
 ### Transition Period for Implementation
 
-The TCAC proposed a stepwise approach for implementing the catch allocation scheme over a period of 6 to 10 years for each stock, through annual increments during this transition period. The App follows the schedule proposed in [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E) whereby each annual percentage value defines the proportion of the catch taken by foreign fleets in the NJAs that is allocated to the quota.
+The TCAC proposed a stepwise approach for implementing the catch allocation scheme over a period of 6 to 10 years for each stock, using annual increments during this transition period. The App follows the schedule proposed in [IOTC-2024-TCAC13-REF02](https://iotc.org/documents/TCAC/13/REF02E), in which each annual percentage value defines the proportion of the catch taken by foreign fleets in the NJAs that is allocated to the quota.

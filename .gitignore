@@ -6,4 +6,5 @@
 README.docx
 rsconnect
 config.yml
-*.html
+./*.html
+
