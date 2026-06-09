@@ -3,31 +3,34 @@ FROM rocker/shiny:4.5.1
 # Environment variables
 ENV _R_SHLIB_STRIP_=true
 
-WORKDIR /
-
 # system libraries for LaTeX reporting & keyring
 RUN apt-get update && apt-get install -y \
     sudo \
-    vim \
     pandoc \
     texlive-xetex \
-    texlive-base \
     texlive-latex-base \
     texlive-latex-recommended \
     texlive-fonts-recommended \
     texlive-fonts-extra \
     texlive-formats-extra \
-    ghostscript 
+    libssl-dev \
+    libxml2-dev \
+    libv8-dev \
+    libsodium-dev \
+    libsecret-1-dev \
+    librdf0 \
+    librdf0-dev
     
 # general system libraries
+# Note: this includes rdf/redland system libraries
 RUN apt-get update && apt-get install -y \
     cmake \
     curl \
     default-jdk \
     fonts-roboto \
+    ghostscript \
     hugo \
     less \
-    libudunits2-dev \
     libbz2-dev \
     libglpk-dev \
     libgmp3-dev \
@@ -51,9 +54,21 @@ RUN apt-get update && apt-get install -y \
     vim \
     wget
     
+RUN install2.r --error --skipinstalled --ncpus -1 redland
+RUN apt-get install -y \
+    libcurl4 \
+    libgit2-dev \
+    libxslt-dev \
+    librdf0 \
+    redland-utils \
+    rasqal-utils \
+    raptor2-utils
+    
+#geospatial libraries install
+RUN /rocker_scripts/install_geospatial.sh
+
 # install R core package dependencies
 RUN install2.r --error --skipinstalled --ncpus -1 httpuv
-RUN R -e "install.packages(c('remotes','jsonlite','yaml'), repos='https://cran.r-project.org/')"
 
 #working directory
 WORKDIR /srv/iotc-tcac-simulations
