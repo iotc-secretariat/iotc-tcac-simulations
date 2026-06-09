@@ -10,7 +10,6 @@ RUN apt-get update && apt-get install -y \
     sudo \
     vim \
     pandoc \
-    pandoc-citeproc \
     texlive-xetex \
     texlive-base \
     texlive-latex-base \
