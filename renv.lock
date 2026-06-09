@@ -1962,14 +1962,14 @@
     },
     "units": {
       "Package": "units",
-      "Version": "1.0-0",
+      "Version": "1.0-1",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
         "R",
         "Rcpp"
       ],
-      "Hash": "3797c73fd3bde8b1601a4e1bf53557ac"
+      "Hash": "14743a941151a12449e8af67497c7b96"
     },
     "urltools": {
       "Package": "urltools",

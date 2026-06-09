@@ -27,6 +27,7 @@ RUN apt-get update && apt-get install -y \
     fonts-roboto \
     hugo \
     less \
+    libudunits2-dev \
     libbz2-dev \
     libglpk-dev \
     libgmp3-dev \
