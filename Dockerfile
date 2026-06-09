@@ -82,7 +82,6 @@ RUN R -e "renv::restore()"
 #copy app
 COPY . /srv/iotc-tcac-simulations
 # To be able to download these files they need to be copied under the 'www' folder
-COPY ./README.html /srv/iotc-tcac-simulations/www       
 COPY ./cfg/CPC_CONFIGURATIONS.xlsx /srv/iotc-tcac-simulations/www  
 #etc dirs (for config)
 RUN mkdir -p /etc/iotc-tcac-simulations/
