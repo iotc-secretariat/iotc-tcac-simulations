@@ -1,7 +1,10 @@
 FROM rocker/shiny:4.5.1
 
-# Environment variables
-ENV _R_SHLIB_STRIP_=true
+LABEL org.opencontainers.image.title="iotc-tcac-simulations"
+LABEL org.opencontainers.image.url="https://github.com/iotc-secretariat/iotc-tcac-simulations"
+LABEL org.opencontainers.image.source="https://github.com/iotc-secretariat/iotc-tcac-simulations"
+LABEL org.opencontainers.image.description="IOTC TCAC Simulations"
+LABEL org.opencontainers.image.authors="Emmanuel Chassot <emmanuel.chassot@fao.org>"
 
 # system libraries for LaTeX reporting & keyring
 RUN apt-get update && apt-get install -y \
