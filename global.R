@@ -31,12 +31,25 @@ options(scipen = 9999)
 source("./initialisation/00_CORE.R")
 
 #users
+user_base <- NULL
 library(config)
 conn_args = config::get("dataconnection")
-user_base <- dplyr::tibble(
-  user = conn_args$user,
-  password = conn_args$password
-)
+if(!is.null(conn_args)){
+  #applies to shinyapps.io deployment
+  user_base <- dplyr::tibble(
+    user = conn_args$user,
+    password = conn_args$password
+  )
+}else{
+  #applies to shinyproxy deployment
+  if(!is.null(Sys.getenv("IOTC_TCAC_USER")) & 
+     !is.null(Sys.getenv("IOTC_TCAC_PASSWORD"))){
+    user_base <- dplyr::tibble(
+      user = Sys.getenv("IOTC_TCAC_USER"),
+      password = Sys.getenv("IOTC_TCAC_PASSWORD")
+    )
+  }
+}
 
 #scenarios
 SCENARIO_PARAMETERS = fread("./inputs/IOTC-2024-TCAC13-REF03_Rev1_-_INPUT_PARAMETERS.csv")
