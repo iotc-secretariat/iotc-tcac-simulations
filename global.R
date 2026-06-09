@@ -32,8 +32,9 @@ source("./initialisation/00_CORE.R")
 
 #users
 user_base <- NULL
-if(!is.null(Sys.getenv("IOTC_TCAC_USER")) & 
-   !is.null(Sys.getenv("IOTC_TCAC_PASSWORD"))){
+if(nzchar(Sys.getenv("IOTC_TCAC_USER")) & 
+   nzchar(Sys.getenv("IOTC_TCAC_PASSWORD"))){
+  print("Use IOTC_TCAC_* environment variables")
   #applies shinyproxy deployment
   user_base <- dplyr::tibble(
     user = Sys.getenv("IOTC_TCAC_USER"),
@@ -42,6 +43,7 @@ if(!is.null(Sys.getenv("IOTC_TCAC_USER")) &
 }else{
   conn_args = try(config::get("dataconnection"), silent = TRUE)
   if(!is(conn_args, "try-error")) if(!is.null(conn_args)){
+    print("Use user config")
     #applies to shinyapps.io deployment
     user_base <- dplyr::tibble(
       user = conn_args$user,
