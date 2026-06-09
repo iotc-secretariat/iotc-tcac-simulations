@@ -55,38 +55,38 @@ RUN apt-get update && apt-get install -y \
 RUN install2.r --error --skipinstalled --ncpus -1 httpuv
 RUN R -e "install.packages(c('remotes','jsonlite','yaml'), repos='https://cran.r-project.org/')"
 
-# Cleaning shiny-server dir
-RUN rm -rf /srv/shiny-server/*
+#working directory
+WORKDIR /srv/iotc-tcac-simulations
 
-#copy shiny-server configuration
-COPY ./conf/shiny-server.conf /etc/shiny-server
+# Set environment variables for renv cache, see doc https://docs.docker.com/build/cache/backends/
+ARG RENV_PATHS_ROOT
 
-#copy shiny app
-COPY . /srv/shiny-server/tcac_simulations
+# Make a directory in the container
+RUN mkdir -p ${RENV_PATHS_ROOT}
 
-# install R app package dependencies
-RUN R -e "source('./srv/shiny-server/tcac_simulations/install.R')"
+#copy renv configuration
+RUN R -e "install.packages(c('renv'), repos='https://cran.r-project.org/')"
+COPY renv.lock renv.lock
+COPY .Rprofile  .Rprofile
+COPY renv/activate.R renv/activate.R
+COPY renv/settings.json renv/settings.json
 
+# Set renv cache location: change default location of cache to project folder
+# see documentation for Multi-stage builds => https://cran.r-project.org/web/packages/renv/vignettes/docker.html
+RUN mkdir renv/.cache
+ENV RENV_PATHS_CACHE=renv/.cache
+
+# Restore the R environment
+RUN R -e "renv::restore()"
+
+#copy app
+COPY . /srv/iotc-tcac-simulations
 # To be able to download these files they need to be copied under the 'www' folder
-COPY ./README.html /srv/shiny-server/tcac_simulations/www       
-COPY ./cfg/CPC_CONFIGURATIONS.xlsx /srv/shiny-server/tcac_simulations/www        
-COPY ./cfg/HISTORICAL_CATCH_ESTIMATES.csv /srv/shiny-server/tcac_simulations/www 
+COPY ./README.html /srv/iotc-tcac-simulations/www       
+COPY ./cfg/CPC_CONFIGURATIONS.xlsx /srv/iotc-tcac-simulations/www  
+#etc dirs (for config)
+RUN mkdir -p /etc/iotc-tcac-simulations/
 
-# Sets the Shiny log level to 'TRACE', stores the environment variable in .Renviron and copies that file under the 'shiny' user folder
-RUN echo SHINY_LOG_LEVEL=TRACE >> /home/shiny/.Renviron && chown shiny.shiny /home/shiny/.Renviron
-
-# Removes an unnecessary directory under the Shiny app folder
-RUN rm -rf /srv/shiny-server/tcac_simulations/conf
-
-# Continues configuring Shiny
-RUN echo "shiny:pass" | chpasswd
-RUN adduser shiny sudo
-
-# User running the Shiny server
-USER shiny
-
-# TCP/IP Port
 EXPOSE 3838
 
-# Starts Shiny
-CMD ["/usr/bin/shiny-server"]
+CMD ["R", "-e shiny::runApp('/srv/iotc-tcac-simulations',port=3838,host='0.0.0.0')"]
