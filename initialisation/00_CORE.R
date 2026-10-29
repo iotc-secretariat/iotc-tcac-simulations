@@ -1,6 +1,3 @@
-# Clears the environment
-rm(list = ls())
-
 # Source the functions
 source("./scripts/00.core.R")
 

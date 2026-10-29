@@ -27,6 +27,11 @@ library(iotc.data.reference.codelists)
 #options
 options(scipen = 9999)
 
+#common scripts
+source("./assets/scripts/package_utils.R")
+source("./assets/scripts/ui_utils.R")
+source("./assets/scripts/common_fao.R")
+
 #scripts
 source("./initialisation/00_CORE.R")
 
