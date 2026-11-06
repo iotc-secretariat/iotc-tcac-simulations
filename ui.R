@@ -39,7 +39,7 @@ ui = function() {
               # ),
               title = tagList(
                 img(src = "https://design-system.fao.org/images/logo/fao-logo-three-lines.svg", height = "48px", alt = "FAO", style = "display:flex"), 
-                #img(src = "iotc-logo.png", height = "48px", alt = "IOTC", style = "margin:5px;"),
+                img(src = "iotc-logo.png", height = "48px", alt = "IOTC", style = "margin:5px;"),
                 tags$span(
                   "IOTC TCAC Simulation Tool",
                   class = "ms-3 ps-3 fw-semibold text-uppercase vertical-sep-header"

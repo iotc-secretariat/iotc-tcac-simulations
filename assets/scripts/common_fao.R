@@ -3,7 +3,6 @@
 fao_header <- function(
     app_title = "Application",
     app_url = "#",
-    logo_url = "https://design-system.fao.org/images/logo/fao-logo-three-lines.svg",
     right_content = NULL
 ) {
   
@@ -20,9 +19,19 @@ fao_header <- function(
         href = app_url,
         style = "display:flex;",
         tags$img(
-          src = logo_url,
+          src = "https://design-system.fao.org/images/logo/fao-logo-three-lines.svg",
           height = "40px",
-          alt = "FAO"
+          alt = "FAO",
+          style = "display:flex"
+          # style = paste(
+          #   "padding-right: 10px;"
+          # )
+        ),
+        tags$img(
+          src = "iotc-logo.png",
+          height = "48px",
+          alt = "IOTC",
+          style = "padding-left: 5px; padding-bottom:5px;"
           # style = paste(
           #   "padding-right: 10px;"
           # )
@@ -67,7 +76,7 @@ fao_footer <- function(
             style = "float:left;",
             
             tags$a(
-              href = "https://www.fao.org/contact-us/en/",
+              href = "mailto:IOTC-Secretariat@fao.org",
               target = "_blank",
               class = "text-decoration-none me-3",
               "Contact us"
